@@ -32,7 +32,7 @@
       };
     }
     {
-      name="nix-env";
+      name = "nix-env";
       src = pkgs.fetchFromGitHub {
         owner = "lilyball";
         repo = "nix-env.fish";
@@ -69,26 +69,26 @@
     "...." = "../../..";
     "....." = "../../../..";
     "......" = "../../../../..";
-    l="ls -l";
-    la="ls -a";
-    lla="ls -la";
-    lt="ls --tree";
+    l = "ls -l";
+    la = "ls -a";
+    lla = "ls -la";
+    lt = "ls --tree";
     cat = "${bat}/bin/bat";
     du = "${du-dust}/bin/dust";
-    pullhead="git pull origin (git rev-parse --abbrev-ref HEAD)";
-    plh="pullhead";
-    pushhead="git push origin (git rev-parse --abbrev-ref HEAD)";
-    psh="pushhead";
-    g="git";
-    gtemp="git commit -m \"temp\" --no-verify";
-    gf="git flow";
-    gl="git log --graph --oneline --all";
-    gll="git log --oneline --decorate --all --graph --stat";
-    gld="git log --oneline --all --pretty=format:\"%h%x09%an%x09%ad%x09%s\"";
-    gls="gl --show-signature";
-    gfa="git fetch --all";
-    grc="git rebase --continue";
-    rm="rm -i";
+    pullhead = "git pull origin (git rev-parse --abbrev-ref HEAD)";
+    plh = "pullhead";
+    pushhead = "git push origin (git rev-parse --abbrev-ref HEAD)";
+    psh = "pushhead";
+    g = "git";
+    gtemp = "git commit -m \"temp\" --no-verify";
+    gf = "git flow";
+    gl = "git log --graph --oneline --all";
+    gll = "git log --oneline --decorate --all --graph --stat";
+    gld = "git log --oneline --all --pretty=format:\"%h%x09%an%x09%ad%x09%s\"";
+    gls = "gl --show-signature";
+    gfa = "git fetch --all";
+    grc = "git rebase --continue";
+    rm = "rm -i";
   };
 
   programs.fish.shellInit = ''

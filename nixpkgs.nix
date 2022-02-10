@@ -1,7 +1,6 @@
-{
-  system ? builtins.currentSystem,
-  config ? {},
-  overlays ? [],
-  ...
+{ system ? builtins.currentSystem
+, config ? { }
+, overlays ? [ ]
+, ...
 }@args:
-  import (import ./default.nix).inputs.nixpkgs-unstable args
+import (import ./default.nix).inputs.nixpkgs-unstable args

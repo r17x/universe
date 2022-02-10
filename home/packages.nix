@@ -1,4 +1,4 @@
-{ config, pkgs, lib,... }:
+{ config, pkgs, lib, ... }:
 
 {
   # Packages with configuration --------------------------------------------------------------- {{{
@@ -71,7 +71,7 @@
     # Dev stuff
     tokei
     pinentry_mac
-    
+
     pass # password management
 
     spotifyd # spotify
@@ -79,11 +79,15 @@
 
     gnupg
 
+    rustPackages.rustc
+    rustPackages.rustfmt
+    rustPackages.cargo
+
     # Useful nix related tools
     cachix
     comma # run without install
   ] ++ lib.optionals stdenv.isDarwin [
     cocoapods
     m-cli # useful macOS CLI commands
-  ]; 
+  ];
 }

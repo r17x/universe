@@ -80,9 +80,9 @@
   # Fonts
   fonts.enableFontDir = true;
   fonts.fonts = with pkgs; [
-     recursive
-     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" "Hack"]; })
-   ];
+    recursive
+    (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" "Hack" ]; })
+  ];
 
   # Keyboard
   system.keyboard.enableKeyMapping = true;

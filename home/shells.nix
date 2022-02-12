@@ -135,5 +135,8 @@
     git_branch = {
       format = "[$symbol$branch]($style) ";
     };
+    gcloud = {
+      format = "[$symbol$active]($style) ";
+    };
   };
 }

@@ -1,6 +1,8 @@
-This is my personal configuration with [nix](https://nixos.org/).
+# Rin's Home
 
-Heavily inspired from @malob ([malob/nixpkgs](https://github.com/malob)).
+> Heavily inspired from @malob ([malob/nixpkgs](https://github.com/malob/nixpkgs)).
+
+This is my personal configuration with [nix](https://nixos.org/).
 
 ## Basic Usage 
 

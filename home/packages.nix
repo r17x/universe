@@ -32,7 +32,9 @@
   # '';
   # };
   home.packages = with pkgs; [
+    ################################## 
     # common
+    ################################## 
     coreutils
     curl
     wget
@@ -40,27 +42,32 @@
     gnupg # required for pass git
     pass # password management
 
-    # fancy
-    neofetch
-    # fancy du
-    du-dust
-    # fancy find
-    fd
-    # fancy cat
-    bat
-    # git
+    ################################## 
+    # Platform specific
+    ################################## 
+    asciinema # screen record
     glab # gitlab cli
     gh # github cli
-    # Manager
-    yadm
-    # Productivity
-    fzf
-    jq
-    fish
-    direnv
-    thefuck
 
+    ################################## 
+    # Manager
+    ################################## 
+    yadm
+
+    ################################## 
+    # Productivity
+    ################################## 
+    fzf # finder
+    neofetch # fancy fetch information
+    du-dust # fancy du
+    fd # fancy find
+    jq # JSON in shell
+    ripgrep # another yet of grep
+    thefuck # hints command
+
+    ################################## 
     # Development
+    ################################## 
     neovim
     yarn
     tokei
@@ -69,17 +76,24 @@
     rustPackages.cargo
     google-cloud-sdk
 
+    ################################## 
     # Shell Integrations
-    tmux
-    ripgrep
-    starship
+    ################################## 
+    tmux # terminal multi-plexer (multiply terminal)
+    starship # theme for shell (bash,fish,zsh)
 
-    spotifyd # spotify
-    spotify-tui
+    ################################## 
+    # Misc
+    ################################## 
+    spotifyd # spotify daemon for TUI
+    spotify-tui # spotify terminal UI
 
-    # Useful nix related tools
+    ################################## 
+    # Useful Nix related tools
+    ################################## 
     cachix
     comma # run without install
+
   ] ++ lib.optionals stdenv.isDarwin [
     cocoapods
     m-cli # useful macOS CLI commands

@@ -9,10 +9,12 @@
   # Bootstrap
   nix.binaryCaches = [
     "https://cache.nixos.org/"
+    "https://r17.cachix.org/"
   ];
 
   nix.binaryCachePublicKeys = [
     "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+    "r17.cachix.org-1:vz0nG6BCbdgTPn7SEiOwe/3QwvjH1sb/VV9WLcBtkAY="
   ];
 
   nix.trustedUsers = [

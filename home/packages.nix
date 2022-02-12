@@ -36,6 +36,9 @@
     coreutils
     curl
     wget
+    tree
+    gnupg # required for pass git
+    pass # password management
 
     # fancy
     neofetch
@@ -57,31 +60,22 @@
     direnv
     thefuck
 
-    # Editor
+    # Development
     neovim
-
-    # another yet of npm
     yarn
+    tokei
+    rustPackages.rustc
+    rustPackages.rustfmt
+    rustPackages.cargo
+    google-cloud-sdk
 
     # Shell Integrations
     tmux
     ripgrep
     starship
 
-    # Dev stuff
-    tokei
-    pinentry_mac
-
-    pass # password management
-
     spotifyd # spotify
     spotify-tui
-
-    gnupg
-
-    rustPackages.rustc
-    rustPackages.rustfmt
-    rustPackages.cargo
 
     # Useful nix related tools
     cachix
@@ -89,5 +83,6 @@
   ] ++ lib.optionals stdenv.isDarwin [
     cocoapods
     m-cli # useful macOS CLI commands
+    pinentry_mac # gpg-agent for mac
   ];
 }

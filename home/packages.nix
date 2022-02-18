@@ -98,6 +98,7 @@
     cachix
     comma # run without install
     nodePackages.node2nix
+    nix-prefetch-git
   ] ++ lib.optionals stdenv.isDarwin [
     cocoapods
     m-cli # useful macOS CLI commands

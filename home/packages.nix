@@ -41,6 +41,7 @@
     tree
     gnupg # required for pass git
     pass # password management
+    ack
 
     ################################## 
     # Platform specific
@@ -48,6 +49,7 @@
     asciinema # screen record
     glab # gitlab cli
     gh # github cli
+    nodePackages.svg-term-cli
 
     ################################## 
     # Manager
@@ -75,6 +77,7 @@
     rustPackages.rustfmt
     rustPackages.cargo
     google-cloud-sdk
+    nodejs-16_x
 
     ################################## 
     # Shell Integrations
@@ -93,7 +96,7 @@
     ################################## 
     cachix
     comma # run without install
-
+    nodePackages.node2nix
   ] ++ lib.optionals stdenv.isDarwin [
     cocoapods
     m-cli # useful macOS CLI commands

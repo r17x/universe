@@ -70,6 +70,7 @@
     ################################## 
     # Development
     ################################## 
+    git
     neovim
     yarn
     tokei
@@ -104,5 +105,7 @@
     cocoapods
     m-cli # useful macOS CLI commands
     pinentry_mac # gpg-agent for mac
+    xcodebuild
+    xcode-install
   ];
 }

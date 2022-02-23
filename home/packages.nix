@@ -79,6 +79,7 @@
     rustPackages.cargo
     google-cloud-sdk
     nodejs-16_x
+    gitlab-runner
 
     ################################## 
     # Shell Integrations

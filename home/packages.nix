@@ -79,6 +79,7 @@
     google-cloud-sdk
     nodejs-16_x
     gitlab-runner
+    comby
 
     ################################## 
     # Shell Integrations

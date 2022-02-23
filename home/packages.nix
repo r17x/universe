@@ -50,7 +50,6 @@
     glab # gitlab cli
     gh # github cli
     nodePackages.svg-term-cli
-    nodePackages.asciicast2gif
 
     ################################## 
     # Manager

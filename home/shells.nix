@@ -75,10 +75,6 @@
     cc = "zi";
     # Others
     p = "ping";
-    "..." = "../..";
-    "...." = "../../..";
-    "....." = "../../../..";
-    "......" = "../../../../..";
     l = "ls -l";
     la = "ls -a";
     lla = "ls -la";
@@ -102,9 +98,7 @@
   };
 
   programs.fish.shellInit = ''
-    # TODO GO
-    # fenv export GOBIN="$GOPATH/bin"
-    # fish_add_path -aP $GOBIN
+    # TODO keybinding for thefuck
 
     # Fish color
     set -U fish_color_command 6CB6EB --bold

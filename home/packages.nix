@@ -81,6 +81,7 @@
     nodejs-16_x
     gitlab-runner
     comby
+    python3
 
     ################################## 
     # Shell Integrations

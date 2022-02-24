@@ -40,6 +40,16 @@
         sha256 = "069ybzdj29s320wzdyxqjhmpm9ir5815yx6n522adav0z2nz8vs4";
       };
     }
+    {
+      name = "thefuck";
+      src = pkgs.fetchFromGitHub
+        {
+          owner = "oh-my-fish";
+          repo = "plugin-thefuck";
+          rev = "6c9a926d045dc404a11854a645917b368f78fc4d";
+          sha256 = "1n6ibqcgsq1p8lblj334ym2qpdxwiyaahyybvpz93c8c9g4f9ipl";
+        };
+    }
   ];
 
   # Fish abbreviations
@@ -95,8 +105,6 @@
     # TODO GO
     # fenv export GOBIN="$GOPATH/bin"
     # fish_add_path -aP $GOBIN
-
-    ${pkgs.thefuck}/bin/thefuck --alias | source
 
     # Fish color
     set -U fish_color_command 6CB6EB --bold

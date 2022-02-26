@@ -66,6 +66,8 @@
     jq # JSON in shell
     ripgrep # another yet of grep
     thefuck # hints command
+    ffmpeg
+    imagemagick
 
     ################################## 
     # Development
@@ -106,7 +108,6 @@
     cocoapods
     m-cli # useful macOS CLI commands
     pinentry_mac # gpg-agent for mac
-    xcodebuild
     xcode-install
   ];
 }

@@ -84,6 +84,7 @@
     gitlab-runner
     comby
     python3
+    pkg-config
 
     ################################## 
     # Shell Integrations

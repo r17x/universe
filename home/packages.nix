@@ -50,6 +50,8 @@
     glab # gitlab cli
     gh # github cli
     nodePackages.svg-term-cli
+    nodePackages."@napi-rs/cli"
+    nodePackages.mrm
 
     ################################## 
     # Manager

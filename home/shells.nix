@@ -52,6 +52,10 @@
     }
   ];
 
+  programs.fish.functions = {
+    gitignore = "curl -sL https://www.gitignore.io/api/$argv";
+  };
+
   # Fish abbreviations
   programs.fish.shellAbbrs = {
     e = "nvim";
@@ -85,6 +89,7 @@
     plh = "pullhead";
     pushhead = "git push origin (git rev-parse --abbrev-ref HEAD)";
     psh = "pushhead";
+    gi = "gitignore";
     g = "git";
     gtemp = "git commit -m \"temp\" --no-verify";
     gf = "git flow";

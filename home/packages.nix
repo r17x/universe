@@ -101,6 +101,12 @@
     spotify-tui # spotify terminal UI
 
     ################################## 
+    # Communication
+    ################################## 
+    discord
+    slack
+
+    ################################## 
     # Useful Nix related tools
     ################################## 
     cachix

@@ -1,5 +1,45 @@
 { config, pkgs, lib, ... }:
+let
+  shellAliases = with pkgs; {
+    # Nix related
+    drb = "darwin-rebuild build --flake ~/.config/nixpkgs/";
+    drs = "darwin-rebuild switch --flake ~/.config/nixpkgs/";
+    # is equivalent to: nix build --recreate-lock-file
+    flakeup = "nix flake update ~/.config/nixpkgs/";
+    nb = "nix build";
+    nd = "nix develop";
+    nf = "nix flake";
+    nr = "nix run";
+    ns = "nix search";
 
+    # Shell related
+    c = "z";
+    cc = "zi";
+    # Others
+    p = "ping";
+    l = "ls -l";
+    la = "ls -a";
+    lla = "ls -la";
+    lt = "ls --tree";
+    cat = "${bat}/bin/bat";
+    du = "${du-dust}/bin/dust";
+    pullhead = "git pull origin (git rev-parse --abbrev-ref HEAD)";
+    plh = "pullhead";
+    pushhead = "git push origin (git rev-parse --abbrev-ref HEAD)";
+    psh = "pushhead";
+    gi = "gitignore";
+    g = "git";
+    gtemp = "git commit -m \"temp\" --no-verify";
+    gf = "git flow";
+    gl = "git log --graph --oneline --all";
+    gll = "git log --oneline --decorate --all --graph --stat";
+    gld = "git log --oneline --all --pretty=format:\"%h%x09%an%x09%ad%x09%s\"";
+    gls = "gl --show-signature";
+    gfa = "git fetch --all";
+    grc = "git rebase --continue";
+    rm = "rm -i";
+  };
+in
 {
   # Fish Shell (Default shell)
   # https://rycee.gitlab.io/home-manager/options.html#opt-programs.fish.enable
@@ -63,45 +103,7 @@
   };
 
   # Fish alias : register alias command in fish
-  programs.fish.shellAliases = with pkgs; {
-    # Nix related
-    drb = "darwin-rebuild build --flake ~/.config/nixpkgs/";
-    drs = "darwin-rebuild switch --flake ~/.config/nixpkgs/";
-    # is equivalent to: nix build --recreate-lock-file
-    flakeup = "nix flake update ~/.config/nixpkgs/";
-    nb = "nix build";
-    nd = "nix develop";
-    nf = "nix flake";
-    nr = "nix run";
-    ns = "nix search";
-
-    # Shell related
-    c = "z";
-    cc = "zi";
-    # Others
-    p = "ping";
-    l = "ls -l";
-    la = "ls -a";
-    lla = "ls -la";
-    lt = "ls --tree";
-    cat = "${bat}/bin/bat";
-    du = "${du-dust}/bin/dust";
-    pullhead = "git pull origin (git rev-parse --abbrev-ref HEAD)";
-    plh = "pullhead";
-    pushhead = "git push origin (git rev-parse --abbrev-ref HEAD)";
-    psh = "pushhead";
-    gi = "gitignore";
-    g = "git";
-    gtemp = "git commit -m \"temp\" --no-verify";
-    gf = "git flow";
-    gl = "git log --graph --oneline --all";
-    gll = "git log --oneline --decorate --all --graph --stat";
-    gld = "git log --oneline --all --pretty=format:\"%h%x09%an%x09%ad%x09%s\"";
-    gls = "gl --show-signature";
-    gfa = "git fetch --all";
-    grc = "git rebase --continue";
-    rm = "rm -i";
-  };
+  programs.fish.shellAliases = shellAliases;
 
   programs.fish.shellInit = ''
     # TODO keybinding for thefuck

@@ -33,6 +33,7 @@
             inherit (final.pkgs-x86)
               nix-index
               discord
+              starship
               niv;
           })
         );

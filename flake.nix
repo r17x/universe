@@ -48,10 +48,15 @@
         ];
       };
 
+      primaryUserInfo = {
+        username = "r17";
+        fullName = "Rin";
+        email = "hi@rin.rocks";
+        nixConfigDirectory = "/Users/r17/.config/nixpkgs";
+      };
+
       # Modules shared by most `nix-darwin` personal configurations.
       nixDarwinCommonModules = attrValues self.darwinModules ++ [
-        # Main `nix-darwin` config
-        ./darwin.nix
         # `home-manager` module
         home-manager.darwinModules.home-manager
         (
@@ -62,11 +67,15 @@
           {
             nixpkgs = nixpkgsConfig;
             # Hack to support legacy worklows that use `<nixpkgs>` etc.
-            nix.nixPath = { nixpkgs = "$HOME/.config/nixpkgs/nixpkgs.nix"; };
+            nix.nixPath = { nixpkgs = "${primaryUser.nixConfigDirectory}/nixpkgs.nix"; };
             # `home-manager` config
-            users.users.${primaryUser}.home = "/Users/${primaryUser}";
+            users.users.${primaryUser.username}.home = "/Users/${primaryUser.username}";
             home-manager.useGlobalPkgs = true;
-            home-manager.users.${primaryUser} = homeManagerCommonConfig;
+            home-manager.users.${primaryUser.username} = {
+              imports = attrValues self.homeManagerModules;
+              home.stateVersion = homeManagerStateVersion;
+              home.user-info = config.users.primaryUser;
+            };
             # Add a registry entry for this flake
             nix.registry.my.flake = self;
           }
@@ -76,11 +85,20 @@
     {
       # Current Macbook Pro M1 from Ruangguru.com
       darwinConfigurations = rec {
+        # TODO refactor darwin.nix to make common or bootstrap configuration
+        bootstrap-x86 = makeOverridable darwinSystem {
+          system = "x86_64-darwin";
+          modules = [ ./darwin.nix { nixpkgs = nixpkgsConfig; } ];
+          # modules = [ ./darwin/bootstrap.nix { nixpkgs = nixpkgsConfig; } ];
+        };
+
+        bootstrap-arm = bootstrap-x86.override { system = "aarch64-darwin"; };
+
         RG = darwinSystem {
           system = "aarch64-darwin";
           modules = nixDarwinCommonModules ++ [
             {
-              users.primaryUser = "r17";
+              users.primaryUser = primaryUserInfo;
               networking.computerName = "RG";
               networking.hostName = "RG";
               networking.knownNetworkServices = [
@@ -134,22 +152,46 @@
       };
 
       # `home-manager` modules
-      homeManagerModules = { };
+      homeManagerModules = {
+        r17-activation = import ./home/activation.nix;
+        r17-packages = import ./home/packages.nix;
+        r17-shell = import ./home/shells.nix;
+
+        home-user-info = { lib, ... }: {
+          options.home.user-info = 
+            (self.darwinModules.users-primaryUser { inherit lib; }).options.users.primaryUser;
+        };
+      };
 
       # `nix-darwin` modules that are pending upstream, or patched versions waiting on upstream
       # fixes.
       darwinModules = {
-        users =
+        r17-darwin = import ./darwin.nix;
+        users-primaryUser =
           { lib, ... }:
           let
             inherit (lib) mkOption types;
           in
           {
             options = {
-              users.primaryUser = mkOption {
-                type = with types; nullOr string;
-                default = null;
-              };
+              users.primaryUser = {
+                username = mkOption {
+                  type = with types; nullOr string;
+                  default = null;
+                };
+                fullName = mkOption {
+                  type = with types; nullOr string;
+                  default = null;
+                };
+                email = mkOption {
+                  type = with types; nullOr string;
+                  default = null;
+                };
+                nixConfigDirectory = mkOption {
+                  type = with types; nullOr string;
+                  default = null;
+                };
+              }; 
             };
           };
         programs-nix-index =

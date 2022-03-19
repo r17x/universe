@@ -8,11 +8,6 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  imports = [
-    ./packages.nix
-    ./shells.nix
-  ];
-
   home.activation =
     if pkgs.stdenv.isDarwin then {
       copyApplications =

@@ -34,6 +34,7 @@
               nix-index
               discord
               starship
+              yadm
               niv;
           })
         );
@@ -158,7 +159,7 @@
         r17-shell = import ./home/shells.nix;
 
         home-user-info = { lib, ... }: {
-          options.home.user-info = 
+          options.home.user-info =
             (self.darwinModules.users-primaryUser { inherit lib; }).options.users.primaryUser;
         };
       };
@@ -191,7 +192,7 @@
                   type = with types; nullOr string;
                   default = null;
                 };
-              }; 
+              };
             };
           };
         programs-nix-index =

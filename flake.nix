@@ -42,12 +42,6 @@
 
       # Personal configuration shared between `nix-darwin` and plain `home-manager` configs.
       homeManagerStateVersion = "22.05";
-      homeManagerCommonConfig = {
-        imports = attrValues self.homeManagerModules ++ [
-          ./home
-          { home.stateVersion = homeManagerStateVersion; }
-        ];
-      };
 
       primaryUserInfo = {
         username = "r17";
@@ -157,6 +151,7 @@
         r17-activation = import ./home/activation.nix;
         r17-packages = import ./home/packages.nix;
         r17-shell = import ./home/shells.nix;
+        r17-git = import ./home/git.nix;
 
         home-user-info = { lib, ... }: {
           options.home.user-info =

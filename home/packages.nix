@@ -52,7 +52,6 @@
       ################################## 
       asciinema # screen record
       glab # gitlab cli
-      gh # github cli
       nodePackages.svg-term-cli
       nodePackages."@napi-rs/cli"
       nodePackages.mrm
@@ -78,7 +77,6 @@
       ################################## 
       # Development
       ################################## 
-      git
       neovim
       yarn
       tokei

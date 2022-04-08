@@ -93,4 +93,18 @@
 
   # Add ability to used TouchID for sudo authentication
   security.pam.enableSudoTouchIdAuth = false;
+
+  # dnscrypt-proxy
+  launchd.user.agents.dnscrypt-proxy = {
+    serviceConfig.RunAtLoad = true;
+    serviceConfig.KeepAlive = true;
+    serviceConfig.ProgramArguments = [
+      "${pkgs.dnscrypt-proxy2}/bin/dnscrypt-proxy"
+      "-config"
+      (toString (pkgs.writeText "dnscrypt-proxy.toml" ''
+        server_names = ['google', 'cloudflare', 'cloud9']
+        listen_addresses = ["127.0.0.1:5053"]
+      ''))
+    ];
+  };
 }

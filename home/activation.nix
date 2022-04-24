@@ -3,6 +3,7 @@
 {
   home.sessionVariables = {
     EDITOR = "nvim";
+    CC = "gcc";
   };
 
   # Let Home Manager install and manage itself.

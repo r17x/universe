@@ -65,6 +65,7 @@
       # Productivity
       ################################## 
       fzf # finder
+      fzy
       neofetch # fancy fetch information
       du-dust # fancy du
       fd # fancy find

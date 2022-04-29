@@ -13,7 +13,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     # Other sources
-    comma = { url = github:Shopify/comma; flake = false; };
+    # comma = { url = github:Shopify/comma; flake = false; };
     flake-compat = { url = github:edolstra/flake-compat; flake = false; };
     flake-utils.url = github:numtide/flake-utils;
   };
@@ -115,12 +115,14 @@
             inherit (nixpkgsConfig) config;
           };
         };
+
         pkgs-stable = final: prev: {
           pkgs-stable = import inputs.nixpkgs-stable {
             inherit (prev.stdenv) system;
             inherit (nixpkgsConfig) config;
           };
         };
+
         pkgs-unstable = final: prev: {
           pkgs-unstable = import inputs.nixpkgs-unstable {
             inherit (prev.stdenv) system;
@@ -128,9 +130,9 @@
           };
         };
 
-        comma = final: prev: {
-          comma = import inputs.comma { inherit (prev) pkgs; };
-        };
+        # comma = final: prev: {
+        #   comma = import inputs.comma { inherit (prev) pkgs; };
+        # };
 
         # Overlay useful on Macs with Apple Silicon
         apple-silicon = final: prev: optionalAttrs (prev.stdenv.system == "aarch64-darwin") {

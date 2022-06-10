@@ -11,6 +11,11 @@ let
     email = "ri7nz@evilfactory.id";
     signingKey = "5CA1E57AFBF76F90";
   };
+  w1 = {
+    name = "r17nz";
+    email = "ri7nz@evilfactory.id";
+    signingKey = "5CA1E57AFBF76F90";
+  };
 in
 {
   programs.git.enable = true;
@@ -56,6 +61,11 @@ in
     {
       condition = "gitdir:~/w0/";
       contents.user = work;
+    }
+
+    {
+      condition = "gitdir:~/w1/";
+      contents.user = w1;
     }
 
     {

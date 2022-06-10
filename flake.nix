@@ -154,6 +154,7 @@
         r17-packages = import ./home/packages.nix;
         r17-shell = import ./home/shells.nix;
         r17-git = import ./home/git.nix;
+        r17-tmux = import ./home/tmux.nix;
 
         home-user-info = { lib, ... }: {
           options.home.user-info =

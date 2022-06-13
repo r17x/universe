@@ -7,12 +7,12 @@ let
     signingKey = "F7B293AE6EAB33EE";
   };
   evil = {
-    name = "ri7nz";
+    name = "r17x";
     email = "ri7nz@evilfactory.id";
     signingKey = "5CA1E57AFBF76F90";
   };
   w1 = {
-    name = "r17nz";
+    name = "r17x";
     email = "ri7nz@evilfactory.id";
     signingKey = "5CA1E57AFBF76F90";
   };

@@ -52,9 +52,9 @@
       ################################## 
       asciinema # screen record
       glab # gitlab cli
-      nodePackages.svg-term-cli
-      nodePackages."@napi-rs/cli"
-      nodePackages.mrm
+      # nodePackages.svg-term-cli
+      # nodePackages."@napi-rs/cli"
+      # nodePackages.mrm
 
       ################################## 
       # Manager

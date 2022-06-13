@@ -143,9 +143,9 @@
           };
         };
 
-        nodePackages = final: prev: {
-          nodePackages = prev.nodePackages // import ./pkgs/node-packages { pkgs = prev; };
-        };
+        # nodePackages = final: prev: {
+        #   nodePackages = prev.nodePackages // import ./pkgs/node-packages { pkgs = prev; };
+        # };
       };
 
       # `home-manager` modules

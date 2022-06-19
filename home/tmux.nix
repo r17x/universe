@@ -1,5 +1,8 @@
 { config, pkgs, lib, ... }:
 
+let
+  isLinux = pkgs.stdenv.isLinux;
+in
 {
   programs.tmux.enable = true;
   programs.tmux.newSession = true;
@@ -38,14 +41,19 @@
     run -b 'tmux bind -t vi-copy L end-of-line 2> /dev/null || true'
     run -b 'tmux bind -T copy-mode-vi L send -X end-of-line 2> /dev/null || true'
     
-    # copy to X11 clipboard
+    ${if isLinux then # copy to X11 clipboard
+    ''
     if -b 'command -v xsel > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | xsel -i -b"'
     if -b '! command -v xsel > /dev/null 2>&1 && command -v xclip > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | xclip -i -selection clipboard >/dev/null 2>&1"'
-    # copy to macOS clipboard
+    '' else
+    ''
     if -b 'command -v pbcopy > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | pbcopy"'
     if -b 'command -v reattach-to-user-namespace > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | reattach-to-user-namespace pbcopy"'
+    ''
+    }
   '';
   programs.tmux.plugins = with pkgs; [
+    # tmuxPlugins.yank
     {
       plugin = tmuxPlugins.resurrect;
       extraConfig = "set -g @resurrect-strategy-nvim 'session'";

@@ -2,69 +2,12 @@
 # and found how to create flake, home-manager, and darwin in nix 
 # Here: https://gist.github.com/jmatsushita/5c50ef14b4b96cb24ae5268dab613050
 
-{ pkgs, config, lib, ... }:
+{ pkgs, ... }:
 {
-  # Nix configuration ------------------------------------------------------------------------------
-
-  # Bootstrap
-  nix.binaryCaches = [
-    "https://cache.nixos.org/"
-    "https://r17.cachix.org/"
-  ];
-
-  nix.binaryCachePublicKeys = [
-    "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-    "r17.cachix.org-1:vz0nG6BCbdgTPn7SEiOwe/3QwvjH1sb/VV9WLcBtkAY="
-  ];
-
-  nix.trustedUsers = [
-    "@admin"
-  ];
-
-  users.nix.configureBuildUsers = true;
-
-  # Enable experimental nix command and flakes
-  # nix.package = pkgs.nixFlakes;
-  nix.extraOptions = ''
-    auto-optimise-store = true
-    experimental-features = nix-command flakes
-  '' + lib.optionalString (pkgs.system == "aarch64-darwin") ''
-    extra-platforms = x86_64-darwin aarch64-darwin
-  '';
-
-  # Shells -----------------------------------------------------------------------------------------
-
-  # Add shells installed by nix to /etc/shells file
-  environment.shells = with pkgs; [
-    bashInteractive
-    fish
-    zsh
-  ];
-
-  # Make Fish the default shell
-  programs.fish.enable = true;
-  programs.fish.useBabelfish = true;
-  programs.fish.babelfishPackage = pkgs.babelfish;
-  # Needed to address bug where $PATH is not properly set for fish:
-  # https://github.com/LnL7/nix-darwin/issues/122
-  programs.fish.shellInit = ''
-    for p in (string split : ${config.environment.systemPath})
-      if not contains $p $fish_user_paths
-        set -g fish_user_paths $fish_user_paths $p
-      end
-    end
-  '';
-  environment.variables.SHELL = "${pkgs.fish}/bin/fish";
-
-  # Install and setup ZSH to work with nix(-darwin) as well
-  programs.zsh.enable = true;
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
-
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
 
   # Apps
   # `home-manager` currently has issues adding them to `~/Applications`
@@ -76,16 +19,8 @@
     terminal-notifier
   ];
 
-  programs.tmux.iTerm2 = config.programs.tmux.enable;
-
-
-  # https://github.com/nix-community/home-manager/issues/423
-  environment.variables = {
-    TMUX_ITERM = "${toString config.programs.tmux.enable}";
-    # 
-    # TERMINFO_DIRS = "${pkgs.kitty.terminfo.outPath}/share/terminfo";
-  };
-  programs.nix-index.enable = true;
+  # something wrong
+  # programs.tmux.iTerm2 = config.programs.tmux.enable;
 
   # Fonts
   fonts.fontDir.enable = true;
@@ -115,6 +50,7 @@
       ''))
     ];
   };
+
   # yggdrasil see https://yggdrasil-network.github.io/
   # launchd.agents.yggdrasil = {
   #   serviceConfig.RunAtLoad = true;

@@ -171,6 +171,7 @@
       darwinModules = {
         r17-darwin = import ./system/darwin;
         security-pam = import ./system/darwin/security.nix;
+        window-manager = import ./system/darwin/wm.nix;
       };
     } // flake-utils.lib.eachDefaultSystem (system: {
       legacyPackages = import inputs.nixpkgs-unstable {

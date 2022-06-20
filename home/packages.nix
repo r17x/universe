@@ -77,6 +77,8 @@
       ################################## 
       # Development
       ################################## 
+      shellcheck
+      ctags
       gcc
       neovim
       yarn
@@ -91,6 +93,7 @@
       python3
       pkg-config
       mob
+      rnix-lsp
 
       ################################## 
       # Shell Integrations

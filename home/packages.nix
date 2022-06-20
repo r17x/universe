@@ -71,7 +71,6 @@
       fd # fancy find
       jq # JSON in shell
       ripgrep # another yet of grep
-      thefuck # hints command
       ffmpeg
       imagemagick
 

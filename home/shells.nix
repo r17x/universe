@@ -52,28 +52,20 @@ in
   # See: 
   # https://github.com/NixOS/nixpkgs/tree/90e20fc4559d57d33c302a6a1dce545b5b2a2a22/pkgs/shells/fish/plugins 
   # for list available plugins built-in nixpkgs
-  home.packages = [
+  home.packages = with pkgs.fishPlugins;[
+    pkgs.thefuck
     # https://github.com/franciscolourenco/done
-    pkgs.fishPlugins.done
+    done
     # use babelfish than foreign-env
-    pkgs.fishPlugins.foreign-env
+    foreign-env
     # https://github.com/wfxr/forgit
-    pkgs.fishPlugins.forgit
-    #  fzf.fizh fail 
-    # https://github.com/PatrickF1/fzf.fish
+    forgit
+    # Paired symbols in the command line
+    pisces
   ];
 
 
-  programs.fish.plugins = [
-    {
-      name = "autopair";
-      src = pkgs.fetchFromGitHub {
-        owner = "jorgebucaran";
-        repo = "autopair.fish";
-        rev = "1222311994a0730e53d8e922a759eeda815fcb62";
-        sha256 = "0lxfy17r087q1lhaz5rivnklb74ky448llniagkz8fy393d8k9cp";
-      };
-    }
+  programs.fish.plugins = with pkgs.fishPlugins;[
     {
       name = "nix-env";
       src = pkgs.fetchFromGitHub {
@@ -106,7 +98,6 @@ in
   programs.fish.shellAliases = shellAliases;
 
   programs.fish.shellInit = ''
-    # TODO keybinding for thefuck
 
     # Fish color
     set -U fish_color_command 6CB6EB --bold
@@ -116,13 +107,18 @@ in
     set -U fish_color_error EC7279 --bold
     set -U fish_color_param 6CB6EB
     set fish_greeting
+
+    # TODO keybinding for thefuck
+    function fish_user_key_bindings
+      bind \e\e 'thefuck-command-line'  # Bind EscEsc to thefuck
+    end
   '';
 
   # jump like `z` or `fasd` 
   programs.zoxide.enable = true;
-  programs.zoxide.enableBashIntegration = true;
-  programs.zoxide.enableZshIntegration = true;
-  programs.zoxide.enableFishIntegration = true;
+  programs.zoxide.enableBashIntegration = config.programs.bash.enable || config.programs.bashInteractive.enable;
+  programs.zoxide.enableZshIntegration = config.programs.zsh.enable;
+  programs.zoxide.enableFishIntegration = config.programs.fish.enable;
 
   # Fish prompt and style
   programs.starship.enable = true;

@@ -71,12 +71,17 @@
   # Issue: https://github.com/nix-community/home-manager/issues/1341
   environment.systemPackages = with pkgs; [
     # yggdrasil
+    iterm2
     dnscrypt-proxy2
     terminal-notifier
   ];
 
+  programs.tmux.iTerm2 = config.programs.tmux.enable;
+
+
   # https://github.com/nix-community/home-manager/issues/423
   environment.variables = {
+    TMUX_ITERM = "${toString config.programs.tmux.enable}";
     # 
     # TERMINFO_DIRS = "${pkgs.kitty.terminfo.outPath}/share/terminfo";
   };

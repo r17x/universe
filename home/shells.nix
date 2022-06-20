@@ -2,8 +2,8 @@
 let
   shellAliases = with pkgs; {
     # Nix related
-    drb = "darwin-rebuild build --flake ~/.config/nixpkgs/";
-    drs = "darwin-rebuild switch --flake ~/.config/nixpkgs/";
+    drb = "cd ~/.config/nixpkgs && darwin-rebuild build --flake ~/.config/nixpkgs/ && cd -";
+    drs = "cd ~/.config/nixpkgs && darwin-rebuild switch --flake ~/.config/nixpkgs/ && cd -";
     # is equivalent to: nix build --recreate-lock-file
     flakeup = "nix flake update ~/.config/nixpkgs/";
     nb = "nix build";
@@ -13,6 +13,8 @@ let
     ns = "nix search";
 
     # Shell related
+    e = "${neovim}/bin/nvim";
+    grep = "${ripgrep}/bin/rg";
     c = "z";
     cc = "zi";
     # Others
@@ -23,6 +25,7 @@ let
     lt = "ls --tree";
     cat = "${bat}/bin/bat";
     du = "${du-dust}/bin/dust";
+    git = "${git}/bin/git";
     pullhead = "git pull origin (git rev-parse --abbrev-ref HEAD)";
     plh = "pullhead";
     pushhead = "git push origin (git rev-parse --abbrev-ref HEAD)";
@@ -97,10 +100,7 @@ in
   };
 
   # Fish abbreviations
-  programs.fish.shellAbbrs = {
-    e = "nvim";
-    grep = "rg";
-  };
+  programs.fish.shellAbbrs = { };
 
   # Fish alias : register alias command in fish
   programs.fish.shellAliases = shellAliases;

@@ -62,7 +62,10 @@
             # Hack to support legacy worklows that use `<nixpkgs>` etc.
             nix.nixPath = { nixpkgs = "${primaryUser.nixConfigDirectory}/nixpkgs.nix"; };
             # `home-manager` config
-            users.users.${primaryUser.username}.home = "/Users/${primaryUser.username}";
+            users.users.${primaryUser.username} = {
+            home = "/Users/${primaryUser.username}";
+            shell = pkgs.fish;
+            };
             home-manager.useGlobalPkgs = true;
             home-manager.users.${primaryUser.username} = {
               imports = attrValues self.homeManagerModules;

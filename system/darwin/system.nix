@@ -5,5 +5,6 @@
 
   users.nix.configureBuildUsers = true;
  
-  security.pam.enableSudoTouchIdAuth = false;
+  # commented this line cause NOT using TouchID
+  # security.pam.enableSudoTouchIdAuth = false;
 }

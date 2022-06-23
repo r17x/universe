@@ -22,7 +22,7 @@
     let
 
       inherit (darwin.lib) darwinSystem;
-      inherit (inputs.nixpkgs-unstable.lib) attrValues makeOverridable optionalAttrs singleton;
+      inherit (inputs.nixpkgs.lib) attrValues makeOverridable optionalAttrs singleton;
 
       # Configuration for `nixpkgs`
       nixpkgsConfig = {

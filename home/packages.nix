@@ -28,12 +28,20 @@
   programs.password-store.enable = true;
   programs.password-store.package = pkgs.pass.withExtensions (exts: [ exts.pass-otp ]);
 
-  # home.file.".gnupg/gpg-agent.conf" = {
-  #   target = ".gnupg/gpg-agent.conf";
-  #   text = ''
-  #   pinentry-program ${pkgs.pinentry_mac}/pinentry-mac.app/Contents/MacOS/pinentry-mac
-  # '';
-  # };
+  programs.gpg = {
+    enable = true;
+    settings = {
+      use-agent = true;
+    };
+  };
+
+  home.file.".gnupg/gpg-agent.conf" = {
+    target = ".gnupg/gpg-agent.conf";
+    text = ''
+      pinentry-program ${pkgs.pinentry_mac}/pinentry-mac.app/Contents/MacOS/pinentry-mac
+    '';
+  };
+
   home.packages = with pkgs;
     [
       ################################## 
@@ -121,7 +129,6 @@
     ] ++ lib.optionals stdenv.isDarwin [
       cocoapods
       m-cli # useful macOS CLI commands
-      pinentry_mac # gpg-agent for mac
       xcode-install
     ];
 }

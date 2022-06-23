@@ -75,6 +75,7 @@ substituters = https://cache.nixos.org https://cache.nixos.org/ https://r17.cach
 
 ### Setup
 
+#### Clone
 - Clone [this repository](https://github.com/r17x/nixpkgs)
 
 ```console
@@ -92,7 +93,8 @@ git clone https://github.com/r17x/nixpkgs ~/.config/nixpkgs
 ```console
 cd ~/.config/nixpkgs
 ```
-
+#### Build
+##### Darwin
 - Run Build  
   command for build: `nix build .#darwinConfigurations.[NAME].system`  
   Available for `[NAME]`:
@@ -110,6 +112,29 @@ nix build .#darwinConfigurations.RG.system
 
 ```console
 ./result/sw/bin/darwin-rebuild switch --flake .#RG
+```
+
+- Done 🚀🎉
+
+##### NixOs (linux or non-darwin)
+
+- Run Build  
+  command for build: `nix build .#nixosConfigurations.[NAME].system`  
+  Available for `[NAME]`:
+  - `RG`
+
+```console
+nix build .#nixosConfigurations.RG.system
+```
+
+- Apply from `Result`  
+  command for apply the result: `./result/sw/bin/nixos-rebuild switch --flake .#[NAME]`  
+  Available for `[NAME]`:
+  - `RG`  
+    After `Run Build` you can apply from `./result` with this command
+
+```console
+./result/sw/bin/nixos-rebuild switch --flake .#RG
 ```
 
 - Done 🚀🎉

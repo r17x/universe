@@ -1,5 +1,5 @@
 {
-  description = "ri7's nix darwin system";
+  description = "ri7's nix for darwin and linux system";
 
   inputs = {
     # Package sets
@@ -81,6 +81,14 @@
       ];
     in
     {
+      #  Current configuration for linux
+      nixosConfigurations = rec {
+        bootstrap-x86 = makeOverridable nixosSystem {
+          system = "x86_64-linux";
+          modules = [ ./system/bootstrap.nix { nixpkgs = nixpkgsConfig; } ];
+        };
+      };
+
       # Current Macbook Pro M1 from Ruangguru.com
       darwinConfigurations = rec {
         # TODO refactor darwin.nix to make common or bootstrap configuration

@@ -87,7 +87,7 @@ jobs:
         # Prevent conflict between Cachix installed by workflow and the one installed in the config
         # nix-env --set-flag priority 1 cachix
         # Build and switch to bootstrap config
-        nix build .#nixosConfigurations.bootstrap-x86.system
+        nix build .#nixosConfigurations.bootstrap-x86.config.system.build.toplevel
         ls ./result/sw/bin
         # ./result/sw/bin/nixos-rebuild switch --flake .#bootstrap-x86
         # Build and switch to full config

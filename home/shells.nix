@@ -2,8 +2,8 @@
 let
   shellAliases = with pkgs; {
     # Nix related
-    drb = "cd ~/.config/nixpkgs && darwin-rebuild build --flake ~/.config/nixpkgs/ && cd -";
-    drs = "cd ~/.config/nixpkgs && darwin-rebuild switch --flake ~/.config/nixpkgs/ && cd -";
+    drb = "darwin-rebuild build --flake ~/.config/nixpkgs/#RG";
+    drs = "darwin-rebuild switch --flake ~/.config/nixpkgs/#RG";
     # is equivalent to: nix build --recreate-lock-file
     flakeup = "nix flake update ~/.config/nixpkgs/";
     nb = "nix build";

@@ -34,6 +34,7 @@ jobs:
       with:
         name: r17
         signingKey: ${{ secrets.CACHIX_SIGNING_KEY }}
+        authToken: ${{ secrets.CACHIX_TOKEN }}
 
     - name: If scheduled, update inputs
       if: ${{ github.event_name == 'schedule' && success() }}

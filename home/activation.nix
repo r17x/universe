@@ -3,7 +3,6 @@
 {
   home.sessionVariables = {
     EDITOR = "nvim";
-    CC = lib.optionalString (pkgs.stdenv.isDarwin) "gcc";
   };
 
   # Let Home Manager install and manage itself.

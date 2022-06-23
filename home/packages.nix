@@ -79,8 +79,6 @@
       ################################## 
       shellcheck
       ctags
-      gcc
-      neovim
       yarn
       tokei
       rustPackages.rustc

@@ -85,7 +85,7 @@ jobs:
         echo -e "run\tprivate/var/run" | sudo tee -a /etc/synthetic.conf >/dev/null
         # /System/Library/Filesystems/apfs.fs/Contents/Resources/apfs.util -t &>/dev/null || true
         # Prevent conflict between Cachix installed by workflow and the one installed in the config
-        nix-env --set-flag priority 1 cachix
+        # nix-env --set-flag priority 1 cachix
         # Build and switch to bootstrap config
         nix build .#nixosConfigurations.bootstrap-x86.system
         ls ./result/sw/bin

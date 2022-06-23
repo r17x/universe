@@ -16,7 +16,6 @@
     home-manager.inputs.flake-compat.follows = "flake-compat";
     home-manager.inputs.utils.follows = "flake-utils";
 
-
     # Other sources
     flake-compat = { url = "github:edolstra/flake-compat"; flake = false; };
     flake-utils.url = "github:numtide/flake-utils";

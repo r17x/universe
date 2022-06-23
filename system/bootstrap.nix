@@ -19,6 +19,12 @@
 
   users.nix.configureBuildUsers = true;
 
+  # enable garbage-collection on weekly and delete-older-than 30 day
+  nix.gc = {
+    automatic = true;
+    options = "--delete-older-than 30d";
+  };
+
   # Enable experimental nix command and flakes
   # nix.package = pkgs.nixFlakes;
   nix.extraOptions = ''

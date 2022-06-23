@@ -97,7 +97,9 @@ in
   # Fish alias : register alias command in fish
   programs.fish.shellAliases = shellAliases;
 
-  programs.fish.shellInit = ''
+  programs.fish.interactiveShellInit = ''
+
+    ${pkgs.thefuck}/bin/thefuck --alias | source
 
     # Fish color
     set -U fish_color_command 6CB6EB --bold
@@ -108,10 +110,6 @@ in
     set -U fish_color_param 6CB6EB
     set fish_greeting
 
-    # TODO keybinding for thefuck
-    function fish_user_key_bindings
-      bind \e\e 'thefuck-command-line'  # Bind EscEsc to thefuck
-    end
   '';
 
   # jump like `z` or `fasd` 

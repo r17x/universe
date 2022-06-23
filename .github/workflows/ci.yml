@@ -62,30 +62,30 @@ jobs:
         git cm "Update inputs"
         git push
 
-  build-linux-env:
-    name: Build/cache Linux Nix env
-    runs-on: ubuntu-latest
+# build-linux-env:
+#   name: Build/cache Linux Nix env
+#   runs-on: ubuntu-latest
 
-    steps:
+#   steps:
 
-    - name: Checkout repository
-      uses: actions/checkout@v2
+#   - name: Checkout repository
+#     uses: actions/checkout@v2
 
-    - name: Install Nix
-      uses: cachix/install-nix-action@v17
-      with:
-        extra_nix_config: |
-          access-tokens = github.com=${{ secrets.GH_TOKEN }}
+#   - name: Install Nix
+#     uses: cachix/install-nix-action@v17
+#     with:
+#       extra_nix_config: |
+#         access-tokens = github.com=${{ secrets.GH_TOKEN }}
 
-    - name: Setup Cachix
-      uses: cachix/cachix-action@v10
-      with:
-        name: r17
-        signingKey: ${{ secrets.CACHIX_SIGNING_KEY }}
+#   - name: Setup Cachix
+#     uses: cachix/cachix-action@v10
+#     with:
+#       name: r17
+#       signingKey: ${{ secrets.CACHIX_SIGNING_KEY }}
 
-    - name: Build and switch to home-manager env
-      run: |
-        # Prevent conflict between Cachix installed by workflow and the one installed in the config
-        nix-env --set-flag priority 1 cachix
-        # Build and switch to home-manager env
-        nix build .#homeConfigurations.r17.activationPackage; ./result/activate
+#   - name: Build and switch to home-manager env
+#     run: |
+#       # Prevent conflict between Cachix installed by workflow and the one installed in the config
+#       nix-env --set-flag priority 1 cachix
+#       # Build and switch to home-manager env
+#       nix build .#homeConfigurations.r17.activationPackage; ./result/activate

@@ -16,6 +16,7 @@ jobs:
 
   build-macos-env:
     name: Build/cache macOS Nix env
+    if: ${{ false }} # disable for now
     runs-on: macos-latest
 
     steps:
@@ -63,30 +64,38 @@ jobs:
         git cm "Update inputs"
         git push
 
-# build-linux-env:
-#   name: Build/cache Linux Nix env
-#   runs-on: ubuntu-latest
-
-#   steps:
-
-#   - name: Checkout repository
-#     uses: actions/checkout@v2
-
-#   - name: Install Nix
-#     uses: cachix/install-nix-action@v17
-#     with:
-#       extra_nix_config: |
-#         access-tokens = github.com=${{ secrets.GH_TOKEN }}
-
-#   - name: Setup Cachix
-#     uses: cachix/cachix-action@v10
-#     with:
-#       name: r17
-#       signingKey: ${{ secrets.CACHIX_SIGNING_KEY }}
-
-#   - name: Build and switch to home-manager env
-#     run: |
-#       # Prevent conflict between Cachix installed by workflow and the one installed in the config
-#       nix-env --set-flag priority 1 cachix
-#       # Build and switch to home-manager env
-#       nix build .#homeConfigurations.r17.activationPackage; ./result/activate
+  build-linux-env:
+    name: Build/cache Linux Nix env
+    runs-on: ubuntu-latest
+  
+    steps:
+  
+    - name: Checkout repository
+      uses: actions/checkout@v2
+  
+    - name: Install Nix
+      uses: cachix/install-nix-action@v17
+      with:
+        extra_nix_config: |
+          access-tokens = github.com=${{ secrets.GH_TOKEN }}
+  
+    - name: Build and switch to nixos (linux) env
+      run: |
+        # Create /run directory
+        echo -e "run\tprivate/var/run" | sudo tee -a /etc/synthetic.conf >/dev/null
+        # /System/Library/Filesystems/apfs.fs/Contents/Resources/apfs.util -t &>/dev/null || true
+        # Prevent conflict between Cachix installed by workflow and the one installed in the config
+        nix-env --set-flag priority 1 cachix
+        # Build and switch to bootstrap config
+        nix build .#nixosConfigurations.bootstrap-x86.system
+        ls ./result/sw/bin
+        # ./result/sw/bin/nixos-rebuild switch --flake .#bootstrap-x86
+        # Build and switch to full config
+        # /run/current-system/sw/bin/fish -c 'darwin-rebuild switch --flake .#githubCI'
+  
+    # - name: Setup Cachix
+    #   uses: cachix/cachix-action@v10
+    #   with:
+    #     name: r17
+    #     signingKey: ${{ secrets.CACHIX_SIGNING_KEY }}
+    #     authToken: ${{ secrets.CACHIX_TOKEN }}

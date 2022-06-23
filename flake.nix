@@ -105,6 +105,18 @@
             }
           ];
         };
+
+        githubCI = darwinSystem {
+          system = "x86_64-darwin";
+          modules = nixDarwinCommonModules ++ [
+            {
+              users.primaryUser = primaryUserInfo // {
+                username = "runner";
+                nixConfigDirectory = "/Users/runner/work/nixpkgs/nixpkgs";
+              };
+            }
+          ];
+        };
       };
 
       # Overlays --------------------------------------------------------------- {{{

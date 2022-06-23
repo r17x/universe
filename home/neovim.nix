@@ -11,6 +11,8 @@ in
   lua require 'utils'.apply_settings(require 'settings')
   " -- apply all plugins
   lua require 'plugins'
+  set packpath^=~/.local/share/nvim/pack
+  set runtimepath^=~/.local/share/nvim
   '';
 
   xdg.configFile."nvim/lua".source = mkOutOfStoreSymlink "${nixConfigDirectory}/configs/nvim/lua";

@@ -223,7 +223,7 @@ local fly = function(use)
 
   use {
     "glepnir/dashboard-nvim",
-    setup = config_load 'plugins.setup.dashboard'
+    config = config_load 'plugins.config.dashboard'
   }
 
   use {

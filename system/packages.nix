@@ -23,7 +23,10 @@
     end
   '';
 
-  environment.variables.SHELL = "${pkgs.fish}/bin/fish";
+  environment.variables = {
+    SHELL = "${pkgs.fish}/bin/fish";
+    CC = "${pkgs.gcc}/bin/gcc";
+  };
 
   # Install and setup ZSH to work with nix(-darwin) as well
   programs.zsh.enable = true;

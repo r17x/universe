@@ -86,7 +86,11 @@
         # TODO refactor darwin.nix to make common or bootstrap configuration
         bootstrap-x86 = makeOverridable darwinSystem {
           system = "x86_64-darwin";
-          modules = [ ./system/bootstrap.nix { nixpkgs = nixpkgsConfig; } ];
+          modules = [ 
+            ./system/bootstrap.nix { nixpkgs = nixpkgsConfig; } 
+            ./system/packages.nix { nixpkgs = nixpkgsConfig; } 
+            ./system/nix-index.nix { nixpkgs = nixpkgsConfig; } 
+          ];
         };
 
         bootstrap-arm = bootstrap-x86.override { system = "aarch64-darwin"; };

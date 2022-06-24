@@ -34,11 +34,12 @@
       use-agent = true;
     };
   };
-
-  home.file.".gnupg/gpg-agent.conf" = {
-    target = ".gnupg/gpg-agent.conf";
-    text = ''
-      pinentry-program ${pkgs.pinentry_mac}/pinentry-mac.app/Contents/MacOS/pinentry-mac
+  # creating file with contents, that file will stored in nix-store
+  # then symlink to homeDirectory.
+  home.file.".gnupg/gpg-agent.conf".source = pkgs.writeTextFile {
+    name = "home-gpg-agent.conf";
+    text = lib.optionalString (pkgs.stdenv.isDarwin) ''
+      pinentry-program ${pkgs.pinentry_mac}/Applications/pinentry-mac.app/Contents/MacOS/pinentry-mac
     '';
   };
 

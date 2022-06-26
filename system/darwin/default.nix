@@ -18,7 +18,6 @@
     dnscrypt-proxy2
     terminal-notifier
     gcc
-    libiconv
   ];
 
   # something wrong

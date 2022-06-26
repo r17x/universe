@@ -6,6 +6,7 @@ require("filetype").setup({
       rei = "reason",
       res = "rescript",
       resi = "rescript",
+      mjs = "javascript",
     },
     shebang = {
       node = "javascript"

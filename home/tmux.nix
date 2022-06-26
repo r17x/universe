@@ -1,8 +1,5 @@
 { config, pkgs, lib, ... }:
 
-let
-  isLinux = pkgs.stdenv.isLinux;
-in
 {
   programs.tmux.enable = true;
   programs.tmux.newSession = true;
@@ -40,30 +37,27 @@ in
     run -b 'tmux bind -T copy-mode-vi H send -X start-of-line 2> /dev/null || true'
     run -b 'tmux bind -t vi-copy L end-of-line 2> /dev/null || true'
     run -b 'tmux bind -T copy-mode-vi L send -X end-of-line 2> /dev/null || true'
-    
-    ${if isLinux then # copy to X11 clipboard
-    ''
+    '' + lib.optionalString pkgs.stdenv.isLinux  ''
     if -b 'command -v xsel > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | xsel -i -b"'
     if -b '! command -v xsel > /dev/null 2>&1 && command -v xclip > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | xclip -i -selection clipboard >/dev/null 2>&1"'
-    '' else
-    ''
+    '' + lib.optionalString pkgs.stdenv.isDarwin ''
     if -b 'command -v pbcopy > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | pbcopy"'
     if -b 'command -v reattach-to-user-namespace > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | reattach-to-user-namespace pbcopy"'
-    ''
-    }
-  '';
+    '';
+
+  # Plugin disable cause in version 3.3a tmux server crashed
   programs.tmux.plugins = with pkgs; [
     # tmuxPlugins.yank
-    {
-      plugin = tmuxPlugins.resurrect;
-      extraConfig = "set -g @resurrect-strategy-nvim 'session'";
-    }
-    {
-      plugin = tmuxPlugins.continuum;
-      extraConfig = ''
-        set -g @continuum-restore 'on'
-        set -g @continuum-save-interval '60' # minutes
-      '';
-    }
+    # {
+    #   plugin = tmuxPlugins.resurrect;
+    #   extraConfig = "set -g @resurrect-strategy-nvim 'session'";
+    # }
+    # {
+    #   plugin = tmuxPlugins.continuum;
+    #   extraConfig = ''
+    #     set -g @continuum-restore 'on'
+    #     set -g @continuum-save-interval '60' # minutes
+    #   '';
+    # }
   ];
 }

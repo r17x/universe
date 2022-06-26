@@ -86,6 +86,7 @@
       ################################## 
       # Development
       ################################## 
+      paperkey
       shellcheck
       ctags
       yarn

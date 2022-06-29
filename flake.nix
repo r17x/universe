@@ -119,6 +119,7 @@
         r17-git = import ./home/git.nix;
         r17-tmux = import ./home/tmux.nix;
         r17-neovim = import ./home/neovim.nix;
+        r17-alacritty = import ./home/alacritty.nix;
         r17-devshell = import ./home/devShell.nix;
 
         home-user-info = { lib, ... }: {

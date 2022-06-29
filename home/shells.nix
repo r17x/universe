@@ -4,6 +4,10 @@ let
     # Nix related
     drb = "darwin-rebuild build --flake ~/.config/nixpkgs/#RG";
     drs = "darwin-rebuild switch --flake ~/.config/nixpkgs/#RG";
+
+    # show list generations aka list build version
+    ldrb = "nix-env --list-generations";
+
     # is equivalent to: nix build --recreate-lock-file
     flakeup = "nix flake update ~/.config/nixpkgs/";
     nb = "nix build";

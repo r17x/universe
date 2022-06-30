@@ -109,7 +109,7 @@
 
       # Overlays --------------------------------------------------------------- {{{
 
-      overlays = import ./overlays inputs nixpkgsConfig;
+      overlays = import ./modules/overlays inputs nixpkgsConfig;
 
       # `home-manager` modules
       homeManagerModules = {

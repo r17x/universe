@@ -101,7 +101,6 @@
       python3
       pkg-config
       mob
-      rnix-lsp
 
       ################################## 
       # Shell Integrations
@@ -127,6 +126,8 @@
       cachix
       comma # run without install
       nodePackages.node2nix
+      rnix-lsp
+      home-manager
       nix-prefetch-git
       yarn2nix
     ] ++ lib.optionals stdenv.isDarwin [

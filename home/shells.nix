@@ -5,8 +5,18 @@ let
     drb = "darwin-rebuild build --flake ~/.config/nixpkgs/#RG";
     drs = "darwin-rebuild switch --flake ~/.config/nixpkgs/#RG";
 
-    # show list generations aka list build version
-    ldrb = "nix-env --list-generations";
+    # lenv show list generations aka list build version
+    # senv switch generation <number>
+    # denv delete generation <number>
+    # renv rollback to previous version number
+    # param: <GENEREATION_NUMBER> 
+    # run lenv before if you want to see <GENEREATION_NUMBER>
+    lenv = "nix-env --list-generations";
+    senv = "nix-env --switch-generation";
+    denv = "nix-env --delete-generations";
+    doenv = "denv old";
+    renv = "nix-env --rollback";
+
 
     # is equivalent to: nix build --recreate-lock-file
     flakeup = "nix flake update ~/.config/nixpkgs/";

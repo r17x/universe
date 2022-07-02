@@ -1,5 +1,7 @@
 { pkgs, lib, ... }:
+
 let
+  mkAfter = lib.mkAfter;
   shellAliases = with pkgs; {
     # Nix related
     drb = "darwin-rebuild build --flake ~/.config/nixpkgs/#RG";
@@ -72,6 +74,12 @@ in
       pisces
     ];
   }; 
+
+  xdg.configFile."fish/conf.d/plugin-git-now.fish".text = mkAfter ''
+  for f in $plugin_dir/*.fish
+    source $f
+  end
+  '';
 
   programs = {
     # jump like `z` or `fasd` 

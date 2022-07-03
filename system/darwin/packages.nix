@@ -4,11 +4,6 @@
 
 { pkgs, ... }:
 {
-
-  # Used for backwards compatibility, please read the changelog before changing.
-  # $ darwin-rebuild changelog
-  system.stateVersion = 4;
-
   # Apps
   # `home-manager` currently has issues adding them to `~/Applications`
   # Issue: https://github.com/nix-community/home-manager/issues/1341
@@ -17,7 +12,6 @@
     iterm2
     dnscrypt-proxy2
     terminal-notifier
-    gcc
   ];
 
   # something wrong
@@ -29,13 +23,6 @@
     recursive
     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" "Hack" ]; })
   ];
-
-  # Keyboard
-  system.keyboard.enableKeyMapping = true;
-  system.keyboard.remapCapsLockToEscape = true;
-
-  # Add ability to used TouchID for sudo authentication
-  security.pam.enableSudoTouchIdAuth = false;
 
   # Networks
   # dnscrypt-proxy
@@ -109,6 +96,4 @@
   #     ''))
   #   ];
   # };
-
-
 }

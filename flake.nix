@@ -24,7 +24,7 @@
   outputs = { self, darwin, home-manager, flake-utils,  ... }@inputs:
     let
       inherit (darwin.lib) darwinSystem;
-      inherit (inputs.nixpkgs-unstable.lib) attrValues makeOverridable optionalAttrs singleton;
+      inherit (inputs.nixpkgs-unstable.lib) attrValues makeOverridable optionalAttrs singleton nixosSystem;
 
       # Configuration for `nixpkgs`
       nixpkgsConfig = {

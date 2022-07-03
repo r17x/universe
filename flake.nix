@@ -129,19 +129,20 @@
       };
 
       commonModules = {
-        bootstrap-nix = import ./system/bootstrap.nix;
-        system-packages = import ./system/packages.nix;
-        users-primaryUser = import ./system/user.nix;
+        system = import ./system/system.nix;
+        system-shells = import ./system/shells.nix;
+        users-primaryUser = import ./modules/user.nix;
         programs-nix-index = import ./system/nix-index.nix;
       };
 
       # `nix-darwin` modules that are pending upstream, or patched versions waiting on upstream
       # fixes.
       darwinModules = {
-        r17-darwin = import ./system/darwin;
-        security-pam = import ./system/darwin/security.nix;
-        r17-gpg = import ./system/darwin/gpg.nix;
-        window-manager = import ./system/darwin/wm.nix;
+        system-darwin = import ./system/darwin/system.nix; 
+        system-darwin-packages = import ./system/darwin/packages.nix;
+        system-darwin-security-pam = import ./system/darwin/security.nix;
+        system-darwin-gpg = import ./system/darwin/gpg.nix;
+        system-darwin-window-manager = import ./system/darwin/wm.nix;
       };
     } // flake-utils.lib.eachDefaultSystem (system: {
       legacyPackages = import inputs.nixpkgs-unstable {

@@ -1,5 +1,7 @@
 { pkgs, lib, ... }:
 {
+  # https://github.com/nix-community/home-manager/issues/423
+  programs.nix-index.enable = true;
   # Nix configuration ------------------------------------------------------------------------------
 
   # Bootstrap
@@ -38,5 +40,13 @@
     '';
   };
 
-  users.nix.configureBuildUsers = true;
+  system = {
+    # Used for backwards compatibility, please read the changelog before changing.
+    # $ darwin-rebuild changelog
+    stateVersion = 4;
+    # Keyboard
+    keyboard.enableKeyMapping = true;
+    keyboard.remapCapsLockToEscape = true;
+    # Add ability to used TouchID for sudo authentication
+  };
 }

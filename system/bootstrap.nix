@@ -38,5 +38,5 @@
     '';
   };
 
-  users.nix.configureBuildUsers = pkgs.stdenv.isDarwin or nil;
+  users.nix.configureBuildUsers = pkgs.stdenv.isDarwin or null;
 }

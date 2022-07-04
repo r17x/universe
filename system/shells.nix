@@ -5,9 +5,7 @@
   # Add shells installed by nix to /etc/shells file
   environment = with pkgs; {
     shells = [
-      bashInteractive
       fish
-      zsh
     ];
 
     variables = {
@@ -30,7 +28,5 @@
         end
       end
     '';
-    # Install and setup ZSH to work with nix(-darwin) as well
-    zsh.enable = true;
   };
 }

@@ -4,8 +4,8 @@ let
   mkAfter = lib.mkAfter;
   shellAliases = with pkgs; {
     # Nix related
-    drb = "darwin-rebuild build --flake ~/.config/nixpkgs/#RG";
-    drs = "darwin-rebuild switch --flake ~/.config/nixpkgs/#RG";
+    drb = "darwin-rebuild build --flake ~/.config/nixpkgs/";
+    drs = "darwin-rebuild switch --flake ~/.config/nixpkgs/";
 
     # lenv show list generations aka list build version
     # senv switch generation <number>

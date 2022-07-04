@@ -91,7 +91,7 @@
 
         bootstrap-arm = bootstrap-x86.override { system = "aarch64-darwin"; };
 
-        RG = darwinSystem {
+        RG = makeOverridable darwinSystem {
           system = "aarch64-darwin";
           modules = nixDarwinCommonModules ++ [
             {
@@ -105,6 +105,22 @@
             }
           ];
         };
+
+        eR17 = makeOverridable darwinSystem {
+          system = "aarch64-darwin";
+          modules = nixDarwinCommonModules ++ [
+            {
+              users.primaryUser = primaryUserInfo;
+              networking.computerName = "eR17";
+              networking.hostName = "eR17";
+              networking.knownNetworkServices = [
+                "Wi-Fi"
+                "USB 10/100/1000 LAN"
+              ];
+            }
+          ];
+        };
+
       };
 
       # Overlays --------------------------------------------------------------- {{{

@@ -12,10 +12,10 @@ let
   pname = "obs-studio";
 
   x86_64-darwin-version = "27.2.4";
-  x86_64-darwin-sha256 = "1wimcjq195j26d4h5gg08sram2hmkjc0q6zb354dngzj2qldkvls";
+  x86_64-darwin-sha256 = "mu7ZKBbyP9tIGesbDJicFYqqskbgvQJJM0KWFLBkNfI=";
 
   aarch64-darwin-version = "27.2.4";
-  aarch64-darwin-sha256 = "1wimcjq195j26d4h5gg08sram2hmkjc0q6zb354dngzj2qldkvls";
+  aarch64-darwin-sha256 = "mu7ZKBbyP9tIGesbDJicFYqqskbgvQJJM0KWFLBkNfI=";
 
   version = {
     x86_64-darwin = x86_64-darwin-version;

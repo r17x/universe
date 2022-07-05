@@ -22,16 +22,15 @@
               };
             in
             ''
-              baseDir="$HOME/Applications/Home Manager Apps"
-              if [ -d "$baseDir" ]; then
-                rm -rf "$baseDir"
+              echo "setting up ${config.home.homeDirectory}/Applications/Home\ Manager\ Applications...">&2
+
+              if [ ! -e ~/Applications -o -L ~/Applications ]; then
+                ln -sfn ${apps}/Applications ~/Applications
+              elif [ ! -e ~/Applications/Home\ Manager\ Apps -o -L ~/Applications/Home\ Manager\ Apps ]; then
+                ln -sfn ${apps}/Applications ~/Applications/Home\ Manager\ Apps
+              else
+                echo "warning: ~/Applications and ~/Applications/Home Manager Apps are directories, skipping App linking..." >&2
               fi
-              mkdir -p "$baseDir"
-              for appFile in ${apps}/Applications/*; do
-                target="$baseDir/$(basename "$appFile")"
-                $DRY_RUN_CMD cp ''${VERBOSE_ARG:+-v} -fHRL "$appFile" "$baseDir"
-                $DRY_RUN_CMD chmod ''${VERBOSE_ARG:+-v} -R +w "$target"
-              done
             ''
           )
         )

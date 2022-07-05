@@ -7,4 +7,5 @@
 
 {
   rectangle = pkgs.callPackage ./rectangle.nix {};
+  xbar = pkgs.callPackage ./xbar.nix {};
 }

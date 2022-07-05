@@ -113,6 +113,7 @@
       ################################## 
       spotifyd # spotify daemon for TUI
       spotify-tui # spotify terminal UI
+      obs-studio
 
       ################################## 
       # Communication

@@ -131,6 +131,8 @@
       nix-prefetch-git
       yarn2nix
     ] ++ lib.optionals stdenv.isDarwin [
+      xbar
+      rectangle
       cocoapods
       m-cli # useful macOS CLI commands
       xcode-install

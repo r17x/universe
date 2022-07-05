@@ -8,4 +8,5 @@
 {
   rectangle = pkgs.callPackage ./rectangle.nix {};
   xbar = pkgs.callPackage ./xbar.nix {};
+  obs-studio = pkgs.callPackage ./obs-studio.nix {};
 }

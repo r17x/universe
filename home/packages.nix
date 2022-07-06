@@ -117,7 +117,16 @@
       ################################## 
       discord-ptb
       slack
-
+      (zoom-us.overrideAttrs
+        (oldAttrs: rec
+        {
+          src = lib.optionals pkgs.stdenv.isDarwin fetchurl {
+            url = "https://zoom.us/client/${oldAttrs.version}/Zoom.pkg?archType=arm64";
+            sha256 = "sha256-btp7y/pmxr2qUrwhMEP2cqW5aTyy9GDPvkXaH/cYv5s=";
+          };
+        }
+        )
+      )
       ################################## 
       # Useful Nix related tools
       ################################## 
@@ -128,11 +137,13 @@
       home-manager
       nix-prefetch-git
       yarn2nix
-    ] ++ lib.optionals stdenv.isDarwin [
-      xbar
-      rectangle
-      cocoapods
-      m-cli # useful macOS CLI commands
-      xcode-install
-    ];
+    ] ++ lib.optionals
+      stdenv.isDarwin
+      [
+        xbar
+        rectangle
+        cocoapods
+        m-cli # useful macOS CLI commands
+        xcode-install
+      ];
 }

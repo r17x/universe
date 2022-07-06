@@ -1,21 +1,54 @@
-{ pkgs, ... }:
-let 
-  shellEnv = import ./shellEnv.nix {inherit pkgs;};
+{ pkgs, lib, ... }:
 
-  node14 = pkgs.mkShell { packages = [ pkgs.nodejs-14_x ]; };
+let
+  recursiveMergeAttrs = listOfAttrsets: lib.fold (attrset: acc: lib.recursiveUpdate attrset acc) { } listOfAttrsets;
 
-  node16 = pkgs.mkShell { packages = with pkgs; [ nodejs-16_x ]; };
+  shellEnv = import ./shellEnv.nix { inherit pkgs; };
+  # for use devShell
+  # write a file .envrc in some directory with contents:
+  # use nix-envs [devShell_Name]
+  #
+  # for [devShell_Name] see the attributes set of devShells
+  # you can combine one or many devShell on environment, example:
+  # use nix-env go node14
+  devShells = with pkgs; {
+    node14 = mkShell { packages = [ nodejs-14_x ]; };
 
-  node18 = pkgs.mkShell { packages = with pkgs; [ nodejs-18_x ]; };
+    node16 = mkShell { packages = [ nodejs-16_x ]; };
+
+    node18 = mkShell { packages = [ nodejs-18_x ]; };
+
+    go = mkShell { packages = [ go ]; };
+
+    go16 = mkShell {
+      packages = [
+        (go.overrideAttrs (oldAttrs: rec {
+          version = "1.16.5";
+
+          src = fetchurl {
+            url = "https://dl.google.com/go/go${version}.src.tar.gz";
+            sha256 = "sha256-e/p+WQjHzJ512l3fMGbXy88/2fpRlFhRMl7rwX9QuoA=";
+          };
+        }))
+      ];
+    };
+  };
+
+  useNixShell =
+    {
+      xdg.configFile."direnv/lib/use_nix-env.sh".text = ''
+        function use_nix-env(){
+          for name in $@; do
+            . "$HOME/.config/direnv/nix-envs/''${name}/env"
+          done
+        }
+      '';
+    };
+
+  toWriteShell = name: devShell: { xdg.configFile."direnv/nix-envs/${name}".source = shellEnv devShell; };
+
+  devShellsConfigurations = [ useNixShell ] ++ lib.attrsets.mapAttrsToList toWriteShell devShells;
+
 in
-{
-  xdg.configFile."direnv/lib/use_nix-env.sh".text = ''
-    function use_nix-env(){
-      . "$HOME/.config/direnv/nix-envs/''${1}/env"
-    }
-  '';
 
-  xdg.configFile."direnv/nix-envs/node14".source = shellEnv node14;
-  xdg.configFile."direnv/nix-envs/node16".source = shellEnv node16;
-  xdg.configFile."direnv/nix-envs/node18".source = shellEnv node18;
-}
+recursiveMergeAttrs devShellsConfigurations

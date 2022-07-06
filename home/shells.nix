@@ -6,6 +6,8 @@ let
     # Nix related
     drb = "darwin-rebuild build --flake ~/.config/nixpkgs/";
     drs = "darwin-rebuild switch --flake ~/.config/nixpkgs/";
+    psc0 = "nix build ~/.config/nixpkgs#darwinConfigurations.RG.system --json | jq -r '.[].outputs | to_entries[].value' | cachix push r17";
+    psc1 = "nix build ~/.config/nixpkgs#darwinConfigurations.eR17.system --json | jq -r '.[].outputs | to_entries[].value' | cachix push r17";
 
     # lenv show list generations aka list build version
     # senv switch generation <number>
@@ -61,7 +63,7 @@ let
 in
 {
   home = {
-    shellAliases = shellAliases; 
+    shellAliases = shellAliases;
     packages = with pkgs.fishPlugins;[
       pkgs.thefuck
       # https://github.com/franciscolourenco/done
@@ -73,12 +75,12 @@ in
       # Paired symbols in the command line
       pisces
     ];
-  }; 
+  };
 
   xdg.configFile."fish/conf.d/plugin-git-now.fish".text = mkAfter ''
-  for f in $plugin_dir/*.fish
-    source $f
-  end
+    for f in $plugin_dir/*.fish
+      source $f
+    end
   '';
 
   programs = {

@@ -98,6 +98,7 @@
       python3
       pkg-config
       mob
+      openvpn
 
       ################################## 
       # Shell Integrations

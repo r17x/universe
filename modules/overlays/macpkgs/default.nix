@@ -13,6 +13,7 @@ let
     "xbar"
     "obs-studio"
     "telegram"
+    "iriun-webcam"
   ];
 in
 attrsets.genAttrs packages (name: pkgs.callPackage ./${name}.nix { })

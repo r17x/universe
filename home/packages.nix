@@ -146,5 +146,6 @@
         cocoapods
         m-cli # useful macOS CLI commands
         xcode-install
+        telegram
       ];
 }

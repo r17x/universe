@@ -1,8 +1,8 @@
-{ 
- lib,
- stdenv,
- fetchurl,
- undmg,
+{ lib
+, stdenv
+, fetchurl
+, undmg
+,
 }:
 
 let
@@ -19,21 +19,23 @@ let
 
   version = {
     x86_64-darwin = x86_64-darwin-version;
-    aarch64-darwin =  aarch64-darwin-version;
+    aarch64-darwin = aarch64-darwin-version;
   }.${system} or throwSystem;
 
-    src = let
+  src =
+    let
       base = "https://github.com/matryer/xbar/releases/download";
-  in {
-    x86_64-darwin = fetchurl {
-      url = "${base}/v${version}/xbar.v${version}.dmg";
-      sha256 = x86_64-darwin-sha256;
-    };
-    aarch64-darwin = fetchurl {
-      url = "${base}/v${version}/xbar.v${version}.dmg";
-      sha256 = aarch64-darwin-sha256;
-    };
-  }.${system} or throwSystem;
+    in
+      {
+        x86_64-darwin = fetchurl {
+          url = "${base}/v${version}/xbar.v${version}.dmg";
+          sha256 = x86_64-darwin-sha256;
+        };
+        aarch64-darwin = fetchurl {
+          url = "${base}/v${version}/xbar.v${version}.dmg";
+          sha256 = aarch64-darwin-sha256;
+        };
+      }.${system} or throwSystem;
 
   meta = with lib; {
     description = "Move and resize windows on macOS with keyboard shortcuts and snap areas";
@@ -42,7 +44,7 @@ let
     platforms = [ "x86_64-darwin" "aarch64-darwin" ];
   };
 
-   darwin = stdenv.mkDerivation {
+  darwin = stdenv.mkDerivation {
     inherit pname version src meta;
 
     nativeBuildInputs = [ undmg ];
@@ -57,5 +59,5 @@ let
     '';
   };
 in
-  darwin
+darwin
 

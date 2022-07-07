@@ -1,13 +1,14 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 let
-  mkAfter = lib.mkAfter;
+  inherit (config.home.user-info) nixConfigDirectory;
+  inherit (lib) mkAfter;
   shellAliases = with pkgs; {
     # Nix related
-    drb = "darwin-rebuild build --flake ~/.config/nixpkgs/";
-    drs = "darwin-rebuild switch --flake ~/.config/nixpkgs/";
-    psc0 = "nix build ~/.config/nixpkgs#darwinConfigurations.RG.system --json | jq -r '.[].outputs | to_entries[].value' | cachix push r17";
-    psc1 = "nix build ~/.config/nixpkgs#darwinConfigurations.eR17.system --json | jq -r '.[].outputs | to_entries[].value' | cachix push r17";
+    drb = "darwin-rebuild build --flake ${nixConfigDirectory}";
+    drs = "darwin-rebuild switch --flake ${nixConfigDirectory}";
+    psc0 = "nix build ${nixConfigDirectory}#darwinConfigurations.RG.system --json | jq -r '.[].outputs | to_entries[].value' | cachix push r17";
+    psc1 = "nix build ${nixConfigDirectory}#darwinConfigurations.eR17.system --json | jq -r '.[].outputs | to_entries[].value' | cachix push r17";
 
     # lenv show list generations aka list build version
     # senv switch generation <number>
@@ -23,7 +24,7 @@ let
 
 
     # is equivalent to: nix build --recreate-lock-file
-    flakeup = "nix flake update ~/.config/nixpkgs/";
+    flakeup = "nix flake update ${nixConfigDirectory}";
     nb = "nix build";
     nd = "nix develop";
     nf = "nix flake";

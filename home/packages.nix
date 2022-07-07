@@ -31,6 +31,7 @@
       use-agent = true;
     };
   };
+
   # creating file with contents, that file will stored in nix-store
   # then symlink to homeDirectory.
   home.file.".gnupg/gpg-agent.conf".source = pkgs.writeTextFile {

@@ -1,6 +1,6 @@
 inputs: nixpkgsConfig:
-let 
-  inherit (inputs.nixpkgs-unstable.lib) optionalAttrs singleton;
+let
+  inherit (inputs.nixpkgs-unstable.lib) optionalAttrs singleton attrsets;
 in
 {
   # Overlays to add different versions `nixpkgs` into package set
@@ -38,8 +38,8 @@ in
     };
   };
 
-  mac-pkgs = final: prev: 
-    import ./macpkgs { pkgs = prev; };
+  mac-pkgs = final: prev:
+    import ./macpkgs { pkgs = prev; inherit attrsets; };
 
   # nodePackages = final: prev: {
   #   nodePackages = prev.nodePackages // import ./pkgs/node-packages { pkgs = prev; };

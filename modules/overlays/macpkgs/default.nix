@@ -1,12 +1,18 @@
-{
-  system ? builtins.currentSystem,
-  pkgs ? import <nixpkgs> {
+{ system ? builtins.currentSystem
+, pkgs ? import <nixpkgs> {
     inherit system;
-  },
+  }
+, attrsets
+,
 }:
 
-{
-  rectangle = pkgs.callPackage ./rectangle.nix {};
-  xbar = pkgs.callPackage ./xbar.nix {};
-  obs-studio = pkgs.callPackage ./obs-studio.nix {};
-}
+
+let
+  packages = [
+    "rectangle"
+    "xbar"
+    "obs-studio"
+    "telegram"
+  ];
+in
+attrsets.genAttrs packages (name: pkgs.callPackage ./${name}.nix { })

@@ -150,5 +150,6 @@
         telegram
         iriun-webcam
         clipy
+        googlechrome
       ];
 }

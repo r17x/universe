@@ -15,6 +15,7 @@ let
     "telegram"
     "iriun-webcam"
     "clipy"
+    "googlechrome"
   ];
 in
 attrsets.genAttrs packages (name: pkgs.callPackage ./${name}.nix { })

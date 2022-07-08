@@ -24,18 +24,20 @@ let
     x86_64-darwin = aarch64-darwin;
   }.${system} or throwSystem;
 
-  src =
+  srcs =
     let
       base = "https://1758658189.rsc.cdn77.org";
     in
-      rec {
-        aarch64-darwin = fetchurl {
-          url = "${base}/IriunWebcam-${version}.pkg";
-          sha256 = sha256;
-        };
+    rec {
+      aarch64-darwin = {
+        url = "${base}/IriunWebcam-${version}.pkg";
+        sha256 = sha256;
+      };
+      x86_64-darwin = aarch64-darwin;
+    };
 
-        x86_64-darwin = aarch64-darwin;
-      }.${system} or throwSystem;
+  src =
+    fetchurl (srcs.${system} or throwSystem);
 
   meta = with lib; {
     description = "Use your phone's camera as a wireless webcam in your PC or Mac.";

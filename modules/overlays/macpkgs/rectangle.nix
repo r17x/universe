@@ -11,31 +11,29 @@ let
 
   pname = "rectangle";
 
-  x86_64-darwin-version = "0.57";
-  x86_64-darwin-sha256 = "0pxk76q07m85j5sjf6z1zpqkjxqppr4acwwaj3xjh1k0pp2gdwnb";
-
-  aarch64-darwin-version = "0.57";
-  aarch64-darwin-sha256 = "0pxk76q07m85j5sjf6z1zpqkjxqppr4acwwaj3xjh1k0pp2gdwnb";
-
-  version = {
-    x86_64-darwin = x86_64-darwin-version;
-    aarch64-darwin = aarch64-darwin-version;
+  version = rec {
+    aarch64-darwin = "0.57";
+    x86_64-darwin = aarch64-darwin;
   }.${system} or throwSystem;
 
-  src =
+  sha256 = rec {
+    aarch64-darwin = "0pxk76q07m85j5sjf6z1zpqkjxqppr4acwwaj3xjh1k0pp2gdwnb";
+    x86_64-darwin = aarch64-darwin;
+  }.${system} or throwSystem;
+
+  srcs =
     let
       base = "https://github.com/rxhanson/Rectangle/releases/download";
     in
-      {
-        x86_64-darwin = fetchurl {
-          url = "${base}/v${version}/Rectangle${version}.dmg";
-          sha256 = x86_64-darwin-sha256;
-        };
-        aarch64-darwin = fetchurl {
-          url = "${base}/v${version}/Rectangle${version}.dmg";
-          sha256 = aarch64-darwin-sha256;
-        };
-      }.${system} or throwSystem;
+    rec {
+      aarch64-darwin = {
+        url = "${base}/v${version}/Rectangle${version}.dmg";
+        sha256 = sha256;
+      };
+      x86_64-darwin = aarch64-darwin;
+    };
+
+  src = fetchurl (srcs.${system} or throwSystem);
 
   meta = with lib; {
     description = "Move and resize windows on macOS with keyboard shortcuts and snap areas";

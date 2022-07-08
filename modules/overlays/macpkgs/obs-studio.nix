@@ -11,31 +11,29 @@ let
 
   pname = "obs-studio";
 
-  x86_64-darwin-version = "27.2.4";
-  x86_64-darwin-sha256 = "mu7ZKBbyP9tIGesbDJicFYqqskbgvQJJM0KWFLBkNfI=";
-
-  aarch64-darwin-version = "27.2.4";
-  aarch64-darwin-sha256 = "mu7ZKBbyP9tIGesbDJicFYqqskbgvQJJM0KWFLBkNfI=";
-
-  version = {
-    x86_64-darwin = x86_64-darwin-version;
-    aarch64-darwin = aarch64-darwin-version;
+  version = rec {
+    aarch64-darwin = "27.2.4";
+    x86_64-darwin = aarch64-darwin;
   }.${system} or throwSystem;
 
-  src =
+  sha256 = rec {
+    aarch64-darwin = "mu7ZKBbyP9tIGesbDJicFYqqskbgvQJJM0KWFLBkNfI=";
+    x86_64-darwin = aarch64-darwin;
+  }.${system} or throwSystem;
+
+  srcs =
     let
       base = "https://cdn-fastly.obsproject.com/downloads";
     in
-      {
-        x86_64-darwin = fetchurl {
-          url = "${base}/obs-mac-${x86_64-darwin-version}.dmg";
-          sha256 = x86_64-darwin-sha256;
-        };
-        aarch64-darwin = fetchurl {
-          url = "${base}/obs-mac-${aarch64-darwin-version}.dmg";
-          sha256 = aarch64-darwin-sha256;
-        };
-      }.${system} or throwSystem;
+    rec {
+      aarch64-darwin = {
+        url = "${base}/obs-mac-${version}.dmg";
+        sha256 = sha256;
+      };
+      x86_64-darwin = aarch64-darwin;
+    };
+
+  src = fetchurl (srcs.${system} or throwSystem);
 
   meta = with lib; {
     description = "Open Broadcaster Software";
@@ -60,4 +58,3 @@ let
   };
 in
 darwin
-

@@ -11,25 +11,29 @@ let
 
   pname = "telegram-desktop";
 
-  aarch64-darwin-version = "4.0.2";
-  aarch64-darwin-sha256 = "sha256-Jr0jP15TQOJwWmo8Rbn2fGWMvMoSQTQ+Tl9e4HgFjBc=";
-
-  version = {
-    x86_64-darwin = aarch64-darwin-version;
-    aarch64-darwin = aarch64-darwin-version;
+  version = rec {
+    aarch64-darwin = "4.0.2";
+    x86_64-darwin = aarch64-darwin;
   }.${system} or throwSystem;
 
-  src =
+  sha256 = rec {
+    aarch64-darwin = "sha256-Jr0jP15TQOJwWmo8Rbn2fGWMvMoSQTQ+Tl9e4HgFjBc=";
+    x86_64-darwin = aarch64-darwin;
+  }.${system} or throwSystem;
+
+  srcs =
     let
       base = "https://updates.tdesktop.com/tmac";
     in
-      rec {
-        aarch64-darwin = fetchurl {
-          url = "${base}/tsetup.${version}.dmg";
-          sha256 = aarch64-darwin-sha256;
-        };
-        x86_64-darwin = aarch64-darwin;
-      }.${system} or throwSystem;
+    rec {
+      aarch64-darwin = {
+        url = "${base}/tsetup.${version}.dmg";
+        sha256 = sha256;
+      };
+      x86_64-darwin = aarch64-darwin;
+    };
+
+  src = fetchurl (srcs.${system} or throwSystem);
 
   meta = with lib; {
     description = "Telegram Desktop";

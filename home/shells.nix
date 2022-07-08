@@ -22,6 +22,8 @@ let
     doenv = "denv old";
     renv = "nix-env --rollback";
 
+    # Cryptography
+    age = "${rage}/bin/rage";
 
     # is equivalent to: nix build --recreate-lock-file
     flakeup = "nix flake update ${nixConfigDirectory}";

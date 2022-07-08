@@ -80,6 +80,7 @@
       ripgrep # another yet of grep
       ffmpeg
       imagemagick
+      himalaya # CLI based email client
 
       ################################## 
       # Development

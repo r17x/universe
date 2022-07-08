@@ -14,6 +14,7 @@ let
     "obs-studio"
     "telegram"
     "iriun-webcam"
+    "clipy"
   ];
 in
 attrsets.genAttrs packages (name: pkgs.callPackage ./${name}.nix { })

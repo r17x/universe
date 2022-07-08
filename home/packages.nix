@@ -149,5 +149,6 @@
         xcode-install
         telegram
         iriun-webcam
+        clipy
       ];
 }

@@ -65,10 +65,13 @@ let
   };
 in
 {
-  home = {
+  home = with pkgs;{
     shellAliases = shellAliases;
-    packages = with pkgs.fishPlugins;[
-      pkgs.thefuck
+    sessionVariables = {
+      RUST_SRC_PATH = "${rust.packages.stable.rustPlatform.rustLibSrc}";
+    };
+    packages = with fishPlugins;[
+      thefuck
       # https://github.com/franciscolourenco/done
       done
       # use babelfish than foreign-env

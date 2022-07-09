@@ -9,7 +9,7 @@ let
   inherit (stdenv.hostPlatform) system;
   throwSystem = throw "Unsupported system: ${system}";
 
-  pname = "telegram-desktop";
+  pname = "telegram";
 
   version = rec {
     aarch64-darwin = "4.0.2";

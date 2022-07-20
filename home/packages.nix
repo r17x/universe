@@ -88,7 +88,7 @@
       paperkey
       shellcheck
       ctags
-      yarn
+      # yarn # currently defined in devShell.nix
       tokei
       rustPackages.rustc
       rustPackages.rustfmt
@@ -100,7 +100,7 @@
       python3
       pkg-config
       mob
-      openvpn
+      # openvpn # currently not used
 
       ################################## 
       # Shell Integrations

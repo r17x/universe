@@ -12,11 +12,11 @@ let
   # you can combine one or many devShell on environment, example:
   # use nix-env go node14
   devShells = with pkgs; {
-    node14 = mkShell { packages = [ nodejs-14_x ]; };
+    node14 = mkShell { packages = [ nodejs-14_x nodePackages.yarn ]; };
 
-    node16 = mkShell { packages = [ nodejs-16_x ]; };
+    node16 = mkShell { packages = [ nodejs-16_x nodePackages.yarn ]; };
 
-    node18 = mkShell { packages = [ nodejs-18_x ]; };
+    node18 = mkShell { packages = [ nodejs-18_x nodePackages.yarn ]; };
 
     go = mkShell { packages = [ go ]; };
 

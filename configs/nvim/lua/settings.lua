@@ -63,6 +63,7 @@ M.mappings = {
   },
 
   nnoremap = {
+    ["<Leader>gc"] = "<cmd>Calendar<cr>",
     -- go back to daashboard
     ["<Leader>gb"] = "<cmd>Dashboard<cr>",
     -- telescope mappings

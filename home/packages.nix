@@ -93,8 +93,8 @@
       rustPackages.rustc
       rustPackages.rustfmt
       rustPackages.cargo
-      google-cloud-sdk
-      nodejs-16_x
+      # google-cloud-sdk
+      # nodejs-16_x
       gitlab-runner
       comby
       python3

@@ -43,7 +43,7 @@
       
         listen_addresses = ['127.0.0.1:53', '[::1]:53']
       
-        server_names = ['cloudflare', 'mullvad-adblock-doh', 'doh-crypto-sx', 'doh-crypto-sx-ipv6', 'doh-de-blahdns-v6', 'doh-de-blahdns', 'dnscrypt-ch-blahdns-ipv4', 'dnscrypt-ch-blahdns-ipv6', 'dnscrypt-de-blahdns-ipv4', 'dnscrypt-de-blahdns-ipv6']
+        server_names = ['cloudflare', 'cloudflare-ipv6']
       
         max_clients = 250
       

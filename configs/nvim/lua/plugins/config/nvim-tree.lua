@@ -31,6 +31,5 @@ return require 'nvim-tree'.setup {
   disable_netrw = true,
   filters = {
     dotfiles = false,
-    ignore = { '__pycache__', '.git', 'node_modules', '.cache' }
   }
 }

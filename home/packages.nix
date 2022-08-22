@@ -53,6 +53,7 @@
       gnupg # required for pass git
       # pass # password management
       ack
+      fswatch
 
       ################################## 
       # Platform specific

@@ -12,6 +12,20 @@ let
   # you can combine one or many devShell on environment, example:
   # use nix-env go node14
   devShells = with pkgs; {
+    android =
+      let
+        android-sdk = androidSdk (sdkPkgs: with sdkPkgs; [
+          cmdline-tools-latest
+          build-tools-32-0-0
+          platform-tools
+          platforms-android-31
+          emulator
+        ]);
+      in
+      mkShell {
+        buildInputs = [ android-sdk ];
+      };
+
     node14 = mkShell {
       buildInputs = [ python27 ];
       packages = [ nodejs-14_x nodePackages.yarn ];

@@ -16,6 +16,13 @@
     home-manager.inputs.flake-compat.follows = "flake-compat";
     home-manager.inputs.utils.follows = "flake-utils";
 
+
+    # Android Development
+    android-nixpkgs = {
+      url = "github:tadfisher/android-nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     # Other sources
     flake-compat = { url = "github:edolstra/flake-compat"; flake = false; };
     flake-utils.url = "github:numtide/flake-utils";
@@ -29,14 +36,16 @@
       # Configuration for `nixpkgs`
       nixpkgsConfig = {
         config = { allowUnfree = true; };
-        overlays = attrValues self.overlays ++ singleton (
+        overlays = attrValues self.overlays
+          ++ singleton (
           # Sub in x86 version of packages that don't build on Apple Silicon yet
           final: prev: (optionalAttrs (prev.stdenv.system == "aarch64-darwin") {
             inherit (final.pkgs-x86)
               yadm
               niv;
           })
-        );
+        )
+          ++ singleton (inputs.android-nixpkgs.overlays.default);
       };
 
       # Personal configuration shared between `nix-darwin` and plain `home-manager` configs.

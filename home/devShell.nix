@@ -20,6 +20,7 @@ let
           platform-tools
           platforms-android-30
           emulator
+          # see here: https://github.com/tadfisher/android-nixpkgs/blob/1d27f12eb37772b0ae1354e68a898f71394c28e4/channels/stable/default.nix#L7162 
           system-images-android-30-google-apis-x86-64
           system-images-android-30-google-apis-playstore-arm64-v8a
         ]);

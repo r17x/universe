@@ -15,19 +15,27 @@ let
     android =
       let
         android-sdk = androidSdk (sdkPkgs: with sdkPkgs; [
-          cmdline-tools-latest
-          build-tools-32-0-0
-          platform-tools
-          platforms-android-30
           emulator
+          cmdline-tools-latest
+          tools
+          platform-tools
+          platforms-android-29
+          # platforms-android-30
+          # build system tools for android related 
+          build-tools-29-0-2
+          # build-tools-32-0-0
+          # patch
+          patcher-v4
           # see here: https://github.com/tadfisher/android-nixpkgs/blob/1d27f12eb37772b0ae1354e68a898f71394c28e4/channels/stable/default.nix#L7162 
-          system-images-android-30-google-apis-x86-64
-          system-images-android-30-google-apis-playstore-arm64-v8a
+          # android for create avd and use in emulator
+          # system-images-android-30-google-apis-x86-64
+          # system-images-android-30-google-apis-playstore-arm64-v8a
+          # platforms-android-30
+          system-images-android-29-google-apis-playstore-arm64-v8a
         ]);
       in
       mkShell {
-        buildInputs = [ android-sdk ];
-        packages = [ jre8 ];
+        buildInputs = [ android-sdk jre8 gradle ];
       };
 
     node14 = mkShell {

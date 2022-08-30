@@ -27,6 +27,7 @@ let
       in
       mkShell {
         buildInputs = [ android-sdk ];
+        packages = [ jre8 ];
       };
 
     node14 = mkShell {

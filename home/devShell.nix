@@ -21,6 +21,7 @@ let
           platforms-android-30
           emulator
           system-images-android-30-google-apis-x86-64
+          system-images-android-30-google-apis-playstore-arm64-v8a
         ]);
       in
       mkShell {

@@ -18,7 +18,7 @@ let
           cmdline-tools-latest
           build-tools-32-0-0
           platform-tools
-          platforms-android-31
+          platforms-android-30
           emulator
         ]);
       in

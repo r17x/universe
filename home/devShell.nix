@@ -32,6 +32,7 @@ let
           # system-images-android-30-google-apis-playstore-arm64-v8a
           # platforms-android-30
           system-images-android-29-google-apis-playstore-arm64-v8a
+          extras-google-google-play-services
         ]);
       in
       mkShell {

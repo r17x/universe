@@ -4,6 +4,9 @@ let
   recursiveMergeAttrs = listOfAttrsets: lib.fold (attrset: acc: lib.recursiveUpdate attrset acc) { } listOfAttrsets;
 
   shellEnv = import ./shellEnv.nix { inherit pkgs; };
+  yarnOverride = { nodejs }: pkgs.yarn.overrideAttrs (oldAttrs: {
+    buildInputs = [ nodejs ];
+  });
   # for use devShell
   # write a file .envrc in some directory with contents:
   # use nix-envs [devShell_Name]
@@ -41,32 +44,51 @@ let
 
     node14 = mkShell {
       buildInputs = [ python27 ];
-      packages = [ nodejs-14_x nodePackages.yarn ];
-    };
-
-    node16 = mkShell {
-      buildInputs = [ python27 ];
-      packages = [ nodejs-16_x nodePackages.yarn ];
-    };
-
-    node18 = mkShell {
-      packages = [ nodejs-18_x nodePackages.yarn ];
-    };
-
-    go = mkShell { packages = [ go ]; };
-
-    go16 = mkShell {
       packages = [
-        (go.overrideAttrs (oldAttrs: rec {
-          version = "1.16.5";
-
-          src = fetchurl {
-            url = "https://dl.google.com/go/go${version}.src.tar.gz";
-            sha256 = "sha256-e/p+WQjHzJ512l3fMGbXy88/2fpRlFhRMl7rwX9QuoA=";
-          };
-        }))
+        nodejs-14_x
+        (yarnOverride {
+          nodejs = nodejs-14_x;
+        })
       ];
     };
+
+    node16 = mkShell
+      {
+        buildInputs = [ python27 ];
+        packages = [
+          nodejs-16_x
+          (yarnOverride {
+            nodejs = nodejs-16_x;
+          })
+        ];
+      };
+
+    node18 = mkShell
+      {
+        packages = [
+          nodejs-18_x
+          (yarnOverride {
+            nodejs = nodejs-18_x;
+          })
+        ];
+      };
+
+    go = mkShell
+      { packages = [ go ]; };
+
+    go16 = mkShell
+      {
+        packages = [
+          (go.overrideAttrs (oldAttrs: rec {
+            version = "1.16.5";
+
+            src = fetchurl {
+              url = "https://dl.google.com/go/go${version}.src.tar.gz";
+              sha256 = "sha256-e/p+WQjHzJ512l3fMGbXy88/2fpRlFhRMl7rwX9QuoA=";
+            };
+          }))
+        ];
+      };
   };
 
   useNixShell =
@@ -82,8 +104,11 @@ let
 
   toWriteShell = name: devShell: { xdg.configFile."direnv/nix-envs/${name}".source = shellEnv devShell; };
 
-  devShellsConfigurations = [ useNixShell ] ++ lib.attrsets.mapAttrsToList toWriteShell devShells;
+  devShellsConfigurations = [ useNixShell ] ++ lib.attrsets.mapAttrsToList
+    toWriteShell
+    devShells;
 
 in
 
-recursiveMergeAttrs devShellsConfigurations
+recursiveMergeAttrs
+  devShellsConfigurations

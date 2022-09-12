@@ -15,7 +15,7 @@ let
     "telegram"
     "iriun-webcam"
     "clipy"
-    "googlechrome"
+    # "googlechrome" # see system/darwin/homebrew.nix
   ];
 in
 attrsets.genAttrs packages (name: pkgs.callPackage ./${name}.nix { })

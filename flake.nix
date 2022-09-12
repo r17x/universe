@@ -129,6 +129,7 @@
                 "Wi-Fi"
                 "USB 10/100/1000 LAN"
               ];
+              homebrew.enable = true;
             }
           ];
         };
@@ -171,7 +172,7 @@
         system-darwin-security-pam = import ./system/darwin/security.nix;
         system-darwin-gpg = import ./system/darwin/gpg.nix;
         system-darwin-window-manager = import ./system/darwin/wm.nix;
-        system-homebrew = import ./system/darwin/homebrew.nix;
+        system-darwin-homebrew = import ./system/darwin/homebrew.nix;
       };
     } // flake-utils.lib.eachDefaultSystem (system: {
       legacyPackages = import inputs.nixpkgs-unstable {

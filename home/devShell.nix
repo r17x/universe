@@ -9,12 +9,21 @@ let
   });
   # for use devShell
   # write a file .envrc in some directory with contents:
-  # use nix-envs [devShell_Name]
+  # use nix-env [devShell_Name]
   #
   # for [devShell_Name] see the attributes set of devShells
   # you can combine one or many devShell on environment, example:
   # use nix-env go node14
   devShells = with pkgs; {
+    rust-wasm = mkShell {
+      buildInputs = [
+        (rust-bin.stable.latest.minimal.override {
+          extensions = [ "rustc" ];
+          targets = [ "wasm32-wasi" ];
+        })
+      ];
+    };
+
     android =
       let
         android-sdk = androidSdk (sdkPkgs: with sdkPkgs; [

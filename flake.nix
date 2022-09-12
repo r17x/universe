@@ -17,6 +17,9 @@
     home-manager.inputs.utils.follows = "flake-utils";
 
 
+    # rust-overlay
+    rust-overlay.url = "github:oxalica/rust-overlay";
+
     # Android Development
     android-nixpkgs = {
       url = "github:tadfisher/android-nixpkgs";
@@ -45,7 +48,8 @@
               niv;
           })
         )
-          ++ singleton (inputs.android-nixpkgs.overlays.default);
+          ++ singleton (inputs.android-nixpkgs.overlays.default)
+          ++ singleton (inputs.rust-overlay.overlays.default);
       };
 
       # Personal configuration shared between `nix-darwin` and plain `home-manager` configs.

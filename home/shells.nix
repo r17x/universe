@@ -125,6 +125,11 @@ in
 
       functions = {
         gitignore = "curl -sL https://www.gitignore.io/api/$argv";
+        use-nix = ''
+          for name in $argv
+            cat "$HOME/.config/direnv/nix-envs/$name/env" | ${pkgs.babelfish}/bin/babelfish | source
+          end
+        '';
       };
 
       interactiveShellInit = ''

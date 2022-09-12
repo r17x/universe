@@ -19,6 +19,10 @@ in
   xdg.configFile."nvim/stylua.toml".source = mkOutOfStoreSymlink "${nixConfigDirectory}/configs/nvim/stylua.toml";
 
   programs.neovim.extraPackages = with pkgs; [
+    rustPackages.rustc
+    rustPackages.rustfmt
+    rustPackages.cargo
+    ctags
     gcc
   ];
 }

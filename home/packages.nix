@@ -9,6 +9,7 @@
   programs.bat.enable = true;
   programs.bat.config = {
     style = "plain";
+    theme = "TwoDark";
   };
   # Direnv, load and unload environment variables depending on the current directory.
 
@@ -86,14 +87,12 @@
       ################################## 
       # Development
       ################################## 
+      babelfish
       paperkey
       shellcheck
       ctags
       # yarn # currently defined in devShell.nix
       tokei
-      rustPackages.rustc
-      rustPackages.rustfmt
-      rustPackages.cargo
       # google-cloud-sdk
       # nodejs-16_x
       gitlab-runner
@@ -144,6 +143,7 @@
     ] ++ lib.optionals
       stdenv.isDarwin
       [
+        mas
         xbar
         rectangle
         cocoapods

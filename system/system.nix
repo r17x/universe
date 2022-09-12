@@ -6,21 +6,26 @@
 
   # Bootstrap
   nix = {
-    binaryCaches = [
-      "https://cache.nixos.org/"
-      # using cachix from r17
-      "https://r17.cachix.org/"
-    ];
+    configureBuildUsers = true;
+    settings = {
+      trusted-users = [
+        "@admin"
+      ];
 
-    binaryCachePublicKeys = [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      # using cachix from r17
-      "r17.cachix.org-1:vz0nG6BCbdgTPn7SEiOwe/3QwvjH1sb/VV9WLcBtkAY="
-    ];
+      substituters = [
+        "https://cache.nixos.org/"
+        # using cachix from r17
+        "https://r17.cachix.org/"
+      ];
 
-    trustedUsers = [
-      "@admin"
-    ];
+
+      trusted-public-keys = [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        # using cachix from r17
+        "r17.cachix.org-1:vz0nG6BCbdgTPn7SEiOwe/3QwvjH1sb/VV9WLcBtkAY="
+      ];
+    };
+
 
     # enable garbage-collection on weekly and delete-older-than 30 day
     gc = {

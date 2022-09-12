@@ -60,7 +60,7 @@
       # Platform specific
       ################################## 
       asciinema # screen record
-      glab # gitlab cli
+      # glab # gitlab cli
       # nodePackages.svg-term-cli
       # nodePackages."@napi-rs/cli"
       # nodePackages.mrm
@@ -95,7 +95,7 @@
       tokei
       # google-cloud-sdk
       # nodejs-16_x
-      gitlab-runner
+      # gitlab-runner
       comby
       python3
       pkg-config
@@ -135,11 +135,12 @@
       ################################## 
       cachix
       comma # run without install
-      nodePackages.node2nix
-      rnix-lsp
+      # nodePackages.node2nix # use with comma 
+      # rnix-lsp # use in neovim and install with nvim-lsp-install
       home-manager
       nix-prefetch-git
-      yarn2nix
+      # nodePackages.node2nix # use with comma 
+      # yarn2nix
     ] ++ lib.optionals
       stdenv.isDarwin
       [

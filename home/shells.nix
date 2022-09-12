@@ -27,12 +27,15 @@ let
 
     # is equivalent to: nix build --recreate-lock-file
     flakeup-all = "nix flake update ${nixConfigDirectory}";
+    # example: 
+    # $ flakeup home-manager
     flakeup = "nix flake lock ${nixConfigDirectory} --update-input";
     nb = "nix build";
     nd = "nix develop";
     nf = "nix flake";
     nr = "nix run";
-    ns = "nix search";
+    ns = "nix-shell";
+    nq = "nix search";
 
     # Shell related
     e = "${neovim}/bin/nvim";

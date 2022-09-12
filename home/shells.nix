@@ -26,7 +26,8 @@ let
     age = "${rage}/bin/rage";
 
     # is equivalent to: nix build --recreate-lock-file
-    flakeup = "nix flake update ${nixConfigDirectory}";
+    flakeup-all = "nix flake update ${nixConfigDirectory}";
+    flakeup = "nix flake lock ${nixConfigDirectory} --update-input";
     nb = "nix build";
     nd = "nix develop";
     nf = "nix flake";

@@ -129,11 +129,11 @@ in
 
       functions = {
         gitignore = "curl -sL https://www.gitignore.io/api/$argv";
-        use-nix = ''
-          for name in $argv
-            cat "$HOME/.config/direnv/nix-envs/$name/env" | ${pkgs.babelfish}/bin/babelfish | source
-          end
-        '';
+        # FIXME
+        # use-nix = ''
+        #   ${pkgs.babelfish} < $HOME/.config/direnv/lib/use_nix-env.sh | source
+        #   use_nix-env $argv
+        # '';
         rpkgjson = ''
           ${pkgs.nodejs}/bin/node -e "console.log(Object.entries(require('./package.json').$argv[1]).map(([k,v]) => k.concat(\"@\").concat(v)).join(\"\n\") )"
         '';

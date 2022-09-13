@@ -134,6 +134,9 @@ in
             cat "$HOME/.config/direnv/nix-envs/$name/env" | ${pkgs.babelfish}/bin/babelfish | source
           end
         '';
+        rpkgjson = ''
+          ${pkgs.nodejs}/bin/node -e "console.log(Object.entries(require('./package.json').$argv[1]).map(([k,v]) => k.concat(\"@\").concat(v)).join(\"\n\") )"
+        '';
       };
 
       interactiveShellInit = ''

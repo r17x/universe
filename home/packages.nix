@@ -90,7 +90,7 @@
       babelfish
       paperkey
       shellcheck
-      ctags
+      gcc
       # yarn # currently defined in devShell.nix
       tokei
       # google-cloud-sdk

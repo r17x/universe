@@ -23,6 +23,7 @@ in
     rustPackages.rustfmt
     rustPackages.cargo
     ctags
-    gcc
+    tree-sitter
+    rnix-lsp
   ];
 }

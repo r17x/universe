@@ -66,6 +66,9 @@ let
     gfa = "git fetch --all";
     grc = "git rebase --continue";
     rm = "rm -i";
+
+    # Development
+    docker = "${pkgs.podman}/bin/podman";
   };
 in
 {

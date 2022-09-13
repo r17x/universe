@@ -87,6 +87,8 @@
       ################################## 
       # Development
       ################################## 
+      podman
+      qemu
       babelfish
       paperkey
       shellcheck

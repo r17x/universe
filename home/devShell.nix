@@ -57,6 +57,30 @@ let
       ];
     };
 
+    pnpm5 = mkShell {
+      packages = [
+        (nodePackages.pnpm.override {
+          version = "5.18.7";
+          src = fetchurl {
+            url = "https://registry.npmjs.org/pnpm/-/pnpm-5.18.7.tgz";
+            sha512 = "7LSLQSeskkDtzAuq8DxEcVNWlqFd0ppWPT6Z4+TiS8SjxGCRSpnCeDVzwliAPd0hedl6HuUiSnDPgmg/kHUVXw==";
+          };
+        })
+      ];
+    };
+
+    pnpm5_18_10 = mkShell {
+      packages = [
+        (nodePackages.pnpm.override {
+          version = "5.18.10";
+          src = fetchurl {
+            url = "https://registry.npmjs.org/pnpm/-/pnpm-5.18.10.tgz";
+            sha512 = "M3oH42XqtUZv0Hnfp4A1klTFQT3/9ghBkDrPHh0GTd9nP39I14/GDjN+BiHx95hH60CigOip+oK/h389GhizeQ==";
+          };
+        })
+      ];
+    };
+
     node14 = mkShell {
       buildInputs = [ python27 ];
       packages = [

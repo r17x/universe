@@ -51,6 +51,12 @@ let
         buildInputs = [ android-sdk jre8 gradle ];
       };
 
+    pnpm = mkShell {
+      packages = [
+        nodePackages.pnpm
+      ];
+    };
+
     node14 = mkShell {
       buildInputs = [ python27 ];
       packages = [

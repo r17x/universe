@@ -88,6 +88,7 @@
       # Development
       ################################## 
       podman
+      podman-compose
       qemu
       babelfish
       paperkey

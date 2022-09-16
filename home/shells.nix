@@ -69,6 +69,7 @@ let
 
     # Development
     docker = "${pkgs.podman}/bin/podman";
+    docker-compose = "${pkgs.podman-compose}/bin/podman-compose";
   };
 in
 {

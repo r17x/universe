@@ -30,6 +30,7 @@ in
     "firefox"
     "google-chrome"
     "raycast"
+    "visual-studio-code"
   ];
 
 }

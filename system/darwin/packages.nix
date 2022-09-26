@@ -18,11 +18,11 @@
   # programs.tmux.iTerm2 = config.programs.tmux.enable;
 
   # Fonts
-  # fonts.fontDir.enable = true;
-  # fonts.fonts = with pkgs; [
-  #   recursive
-  #   (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" "Hack" ]; })
-  # ];
+  fonts.fontDir.enable = true;
+  fonts.fonts = with pkgs; [
+    recursive
+    (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" "Hack" ]; })
+  ];
 
   # Networks
   # dnscrypt-proxy

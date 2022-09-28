@@ -8,6 +8,10 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixos-stable.url = "github:NixOS/nixpkgs/nixos-22.05";
 
+    # Other sources / nix utilities
+    flake-compat = { url = "github:edolstra/flake-compat"; flake = false; };
+    flake-utils.url = "github:numtide/flake-utils";
+
     # Environment/system management
     darwin.url = "github:LnL7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -15,7 +19,6 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
     home-manager.inputs.flake-compat.follows = "flake-compat";
     home-manager.inputs.utils.follows = "flake-utils";
-
 
     # rust-overlay
     rust-overlay.url = "github:oxalica/rust-overlay";
@@ -26,9 +29,6 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
-    # Other sources
-    flake-compat = { url = "github:edolstra/flake-compat"; flake = false; };
-    flake-utils.url = "github:numtide/flake-utils";
   };
 
   outputs = { self, darwin, home-manager, flake-utils, ... }@inputs:
@@ -168,7 +168,7 @@
       darwinModules = {
         system-darwin = import ./system/darwin/system.nix;
         system-darwin-packages = import ./system/darwin/packages.nix;
-        system-darwin-security-pam = import ./system/darwin/security.nix;
+        # system-darwin-security-pam = import ./system/darwin/security.nix;
         system-darwin-gpg = import ./system/darwin/gpg.nix;
         system-darwin-window-manager = import ./system/darwin/wm.nix;
         system-darwin-homebrew = import ./system/darwin/homebrew.nix;

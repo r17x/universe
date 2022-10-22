@@ -166,6 +166,11 @@ local fly = function(use)
   }
 
   use {
+    "jreybert/vimagit",
+    after = "dashboard-nvim"
+  }
+
+  use {
     "lambdalisue/gina.vim",
     cmd = { "Gina" }
   }
@@ -223,6 +228,7 @@ local fly = function(use)
 
   use {
     "glepnir/dashboard-nvim",
+    event = "VimEnter",
     config = config_load 'plugins.config.dashboard'
   }
 
@@ -246,8 +252,8 @@ local fly = function(use)
   use {
     "nvim-neorg/neorg",
     -- tag = "latest",
-    -- ft = "norg",
-    after = "dashboard-nvim",
+    ft = "norg",
+    run = ":Neorg sync-parsers",
     config = config_load 'plugins.config.neorg',
     requires = {
       "nvim-neorg/neorg-telescope",

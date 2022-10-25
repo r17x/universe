@@ -21,10 +21,6 @@ let
     denv = "nix-env --delete-generations";
     doenv = "denv old";
     renv = "nix-env --rollback";
-
-    # Cryptography
-    age = "${rage}/bin/rage";
-
     # is equivalent to: nix build --recreate-lock-file
     flakeup-all = "nix flake update ${nixConfigDirectory}";
     # example: 
@@ -36,6 +32,8 @@ let
     nr = "nix run";
     ns = "nix-shell";
     nq = "nix search";
+    # Cryptography
+    age = "${rage}/bin/rage";
 
     # Shell related
     e = "${neovim}/bin/nvim";

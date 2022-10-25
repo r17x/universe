@@ -18,6 +18,7 @@
   # programs.tmux.iTerm2 = config.programs.tmux.enable;
 
   # Fonts
+  # ENABLED when fontrestore issue in monterey is solved
   fonts.fontDir.enable = true;
   fonts.fonts = with pkgs; [
     recursive

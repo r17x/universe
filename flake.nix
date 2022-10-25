@@ -15,6 +15,7 @@
     # Environment/system management
     darwin.url = "github:LnL7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    # home-manager inputs
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
     home-manager.inputs.flake-compat.follows = "flake-compat";
@@ -22,12 +23,11 @@
 
     # rust-overlay
     rust-overlay.url = "github:oxalica/rust-overlay";
+    rust-overlay.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     # Android Development
-    android-nixpkgs = {
-      url = "github:tadfisher/android-nixpkgs";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
+    android-nixpkgs.url = "github:tadfisher/android-nixpkgs";
+    android-nixpkgs.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
   };
 
@@ -40,15 +40,15 @@
       nixpkgsConfig = {
         config = { allowUnfree = true; };
         overlays = attrValues self.overlays
-          ++ singleton (
-          # Sub in x86 version of packages that don't build on Apple Silicon yet
-          final: prev: (optionalAttrs (prev.stdenv.system == "aarch64-darwin") {
-            inherit (final.pkgs-x86)
-              yadm;
-          })
-        )
           ++ singleton (inputs.android-nixpkgs.overlays.default)
           ++ singleton (inputs.rust-overlay.overlays.default);
+        #  ++ singleton (
+        #  # Sub in x86 version of packages that don't build on Apple Silicon yet
+        #  final: prev: (optionalAttrs (prev.stdenv.system == "aarch64-darwin") {
+        #    inherit (final.pkgs-x86)
+        #      yadm;
+        #  })
+        #)
       };
 
       # Personal configuration shared between `nix-darwin` and plain `home-manager` configs.

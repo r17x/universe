@@ -18,7 +18,6 @@
     # home-manager inputs
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    home-manager.inputs.flake-compat.follows = "flake-compat";
     home-manager.inputs.utils.follows = "flake-utils";
 
     # rust-overlay

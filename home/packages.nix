@@ -87,6 +87,7 @@
       ################################## 
       # Development
       ################################## 
+      nodePackages.vercel
       podman
       podman-compose
       qemu

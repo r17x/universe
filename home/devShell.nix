@@ -142,19 +142,19 @@ let
     go = mkShell
       { packages = [ go ]; };
 
-    go16 = mkShell
-      {
-        packages = [
-          (go.overrideAttrs (oldAttrs: rec {
-            version = "1.16.5";
+    # go16 = mkShell
+    #   {
+    #     packages = [
+    #       (go.overrideAttrs (oldAttrs: rec {
+    #         version = "1.16.5";
 
-            src = fetchurl {
-              url = "https://dl.google.com/go/go${version}.src.tar.gz";
-              sha256 = "sha256-e/p+WQjHzJ512l3fMGbXy88/2fpRlFhRMl7rwX9QuoA=";
-            };
-          }))
-        ];
-      };
+    #         src = fetchurl {
+    #           url = "https://dl.google.com/go/go${version}.src.tar.gz";
+    #           sha256 = "sha256-e/p+WQjHzJ512l3fMGbXy88/2fpRlFhRMl7rwX9QuoA=";
+    #         };
+    #       }))
+    #     ];
+    #   };
   };
 
   useNixShell =

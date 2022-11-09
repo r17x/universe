@@ -124,16 +124,7 @@
       ################################## 
       discord-ptb
       slack
-      (zoom-us.overrideAttrs
-        (oldAttrs: rec
-        {
-          src = lib.optionals pkgs.stdenv.isDarwin fetchurl {
-            url = "https://zoom.us/client/${oldAttrs.version}/Zoom.pkg?archType=arm64";
-            sha256 = "sha256-btp7y/pmxr2qUrwhMEP2cqW5aTyy9GDPvkXaH/cYv5s=";
-          };
-        }
-        )
-      )
+      zoom-us
       ################################## 
       # Useful Nix related tools
       ################################## 

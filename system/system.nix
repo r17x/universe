@@ -15,6 +15,7 @@
       ];
 
       substituters = [
+        "https://cache.komunix.org"
         "https://nix-community.cachix.org"
         # using cachix from r17
         "https://r17.cachix.org/"

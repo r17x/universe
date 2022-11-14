@@ -7,6 +7,16 @@ let
   yarnOverride = { nodejs }: pkgs.yarn.overrideAttrs (oldAttrs: {
     buildInputs = [ nodejs ];
   });
+
+  pkgsPnpm_5_18_10 = { nodejs }:
+    (pkgs.nodePackages.pnpm.override {
+      version = "5.18.10";
+      src = fetchurl {
+        url = "https://registry.npmjs.org/pnpm/-/pnpm-5.18.10.tgz";
+        sha512 = "M3oH42XqtUZv0Hnfp4A1klTFQT3/9ghBkDrPHh0GTd9nP39I14/GDjN+BiHx95hH60CigOip+oK/h389GhizeQ==";
+      };
+    });
+
   # for use devShell
   # write a file .envrc in some directory with contents:
   # use nix-env [devShell_Name]
@@ -98,13 +108,7 @@ let
 
     pnpm5_18_10 = mkShell {
       packages = [
-        (nodePackages.pnpm.override {
-          version = "5.18.10";
-          src = fetchurl {
-            url = "https://registry.npmjs.org/pnpm/-/pnpm-5.18.10.tgz";
-            sha512 = "M3oH42XqtUZv0Hnfp4A1klTFQT3/9ghBkDrPHh0GTd9nP39I14/GDjN+BiHx95hH60CigOip+oK/h389GhizeQ==";
-          };
-        })
+        pkgsPnpm_5_18_10
       ];
     };
 
@@ -115,6 +119,11 @@ let
         (yarnOverride {
           nodejs = nodejs-14_x;
         })
+        (
+          pkgsPnpm_5_18_10 {
+            nodejs = nodejs-14_x;
+          }
+        )
       ];
     };
 

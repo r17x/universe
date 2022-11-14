@@ -4,19 +4,27 @@ let
   recursiveMergeAttrs = listOfAttrsets: lib.fold (attrset: acc: lib.recursiveUpdate attrset acc) { } listOfAttrsets;
 
   shellEnv = import ./shellEnv.nix { inherit pkgs; };
-  yarnOverride = { nodejs }: pkgs.yarn.overrideAttrs (oldAttrs: {
-    buildInputs = [ nodejs ];
-  });
 
-  pkgsPnpm_5_18_10 = { nodejs }:
-    (pkgs.nodePackages.pnpm.override {
-      version = "5.18.10";
-      src = fetchurl {
-        url = "https://registry.npmjs.org/pnpm/-/pnpm-5.18.10.tgz";
-        sha512 = "M3oH42XqtUZv0Hnfp4A1klTFQT3/9ghBkDrPHh0GTd9nP39I14/GDjN+BiHx95hH60CigOip+oK/h389GhizeQ==";
+  makeNodeShell = { nodejs, python ? pkgs.python27 }:
+    let
+      nodePackages = pkgs.nodePackages.override {
+        inherit nodejs;
       };
-    });
-
+    in
+    pkgs.mkShell {
+      buildInputs = [ python ];
+      packages = [
+        nodejs
+        nodePackages.yarn
+        (nodePackages.pnpm.override {
+          version = "5.18.7";
+          src = pkgs.fetchurl {
+            url = "https://registry.npmjs.org/pnpm/-/pnpm-5.18.7.tgz";
+            sha512 = "7LSLQSeskkDtzAuq8DxEcVNWlqFd0ppWPT6Z4+TiS8SjxGCRSpnCeDVzwliAPd0hedl6HuUiSnDPgmg/kHUVXw==";
+          };
+        })
+      ];
+    };
   # for use devShell
   # write a file .envrc in some directory with contents:
   # use nix-env [devShell_Name]
@@ -88,82 +96,21 @@ let
         buildInputs = [ android-sdk jre8 gradle ];
       };
 
-    pnpm = mkShell {
-      packages = [
-        nodePackages.pnpm
-      ];
+    node14 = makeNodeShell {
+      nodejs = nodejs-14_x;
     };
 
-    pnpm5 = mkShell {
-      packages = [
-        (nodePackages.pnpm.override {
-          version = "5.18.7";
-          src = fetchurl {
-            url = "https://registry.npmjs.org/pnpm/-/pnpm-5.18.7.tgz";
-            sha512 = "7LSLQSeskkDtzAuq8DxEcVNWlqFd0ppWPT6Z4+TiS8SjxGCRSpnCeDVzwliAPd0hedl6HuUiSnDPgmg/kHUVXw==";
-          };
-        })
-      ];
+    node16 = makeNodeShell {
+      nodejs = nodejs-14_x;
     };
 
-    pnpm5_18_10 = mkShell {
-      packages = [
-        pkgsPnpm_5_18_10
-      ];
+    node18 = makeNodeShell {
+      nodejs = nodejs-18_x;
+      python = python3;
     };
-
-    node14 = mkShell {
-      buildInputs = [ python27 ];
-      packages = [
-        nodejs-14_x
-        (yarnOverride {
-          nodejs = nodejs-14_x;
-        })
-        (
-          pkgsPnpm_5_18_10 {
-            nodejs = nodejs-14_x;
-          }
-        )
-      ];
-    };
-
-    node16 = mkShell
-      {
-        buildInputs = [ python27 ];
-        packages = [
-          nodejs-16_x
-          (yarnOverride {
-            nodejs = nodejs-16_x;
-          })
-        ];
-      };
-
-    node18 = mkShell
-      {
-        packages = [
-          nodejs-18_x
-          (yarnOverride {
-            nodejs = nodejs-18_x;
-          })
-        ];
-      };
 
     go = mkShell
       { packages = [ go ]; };
-
-    # go16 = mkShell
-    #   {
-    #     packages = [
-    #       (go.overrideAttrs (oldAttrs: rec {
-    #         version = "1.16.5";
-
-    #         src = fetchurl {
-    #           url = "https://dl.google.com/go/go${version}.src.tar.gz";
-    #           sha256 = "sha256-e/p+WQjHzJ512l3fMGbXy88/2fpRlFhRMl7rwX9QuoA=";
-    #         };
-    #       }))
-    #     ];
-    #   };
   };
 
   useNixShell =

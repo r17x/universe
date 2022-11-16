@@ -73,6 +73,9 @@ in
 {
   home = with pkgs;{
     shellAliases = shellAliases;
+    sessionPath = [
+      "$HOME/.yarn/bin"
+    ];
     sessionVariables = {
       RUST_SRC_PATH = "${rust.packages.stable.rustPlatform.rustLibSrc}";
     };

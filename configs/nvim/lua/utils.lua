@@ -32,7 +32,7 @@ local function make_keymap_fn(mode, o)
   end
 end
 
-local map_opts = {noremap = false, silent = true}
+local map_opts = { noremap = false, silent = true }
 M.nmap = make_keymap_fn("n", map_opts)
 M.xmap = make_keymap_fn("x", map_opts)
 M.imap = make_keymap_fn("i", map_opts)
@@ -42,7 +42,7 @@ M.tmap = make_keymap_fn("t", map_opts)
 M.smap = make_keymap_fn("s", map_opts)
 M.cmap = make_keymap_fn("c", map_opts)
 
-local noremap_opts = {noremap = true, silent = true}
+local noremap_opts = { noremap = true, silent = true }
 M.nnoremap = make_keymap_fn("n", noremap_opts)
 M.xnoremap = make_keymap_fn("x", noremap_opts)
 M.vnoremap = make_keymap_fn("v", noremap_opts)
@@ -56,7 +56,7 @@ M.has_map = function(map, mode)
   return fn.maparg(map, mode) ~= ""
 end
 
-M.has_module=function(name)
+M.has_module = function(name)
   if pcall(require, name) then
     return true
   else
@@ -64,44 +64,44 @@ M.has_module=function(name)
   end
 end
 
-M.termcodes=function(str)
+M.termcodes = function(str)
   return api.nvim_replace_termcodes(str, true, true, true)
 end
 
 -- apply options aka vim.opt
-M.apply_options=function(options)
-   fun.each( function(k,v) opt[k] = v end, options)
+M.apply_options = function(options)
+  fun.each(function(k, v) opt[k] = v end, options)
 end
 -- apply "cmd" vim
-M.apply_cmd=function(cmds)
-    fun.each( function(v) cmd(v) end, cmds)
+M.apply_cmd = function(cmds)
+  fun.each(function(v) cmd(v) end, cmds)
 end
 -- apply vim global options
-M.apply_g=function(gs)
-    fun.each( function(k,v) g[k] = v end, gs)
+M.apply_g = function(gs)
+  fun.each(function(k, v) g[k] = v end, gs)
 end
 -- apply mappings
 M.apply_mappings = function(mappings)
   fun.each(
     function(k, vs)
       if k == "vmap" then
-        fun.each( M.vmap, vs)
+        fun.each(M.vmap, vs)
       end
 
       if k == "nnoremap" then
-        fun.each( M.nnoremap, vs)
+        fun.each(M.nnoremap, vs)
       end
 
       if k == "xnoremap" then
-        fun.each( M.xnoremap, vs)
+        fun.each(M.xnoremap, vs)
       end
 
       if k == "vnoremap" then
-        fun.each( M.vnoremap, vs)
+        fun.each(M.vnoremap, vs)
       end
 
       if k == "nmap" then
-        fun.each( M.nmap, vs)
+        fun.each(M.nmap, vs)
       end
     end,
     mappings

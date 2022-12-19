@@ -34,6 +34,7 @@ return require('neorg').setup {
       config = {
         workspaces = {
           work = "~/w0/notes", -- Format: <name_of_workspace> = <path_to_workspace_root>
+          work1 = "~/w1/notes", -- Format: <name_of_workspace> = <path_to_workspace_root>
           me = "~/evl/notes",
         },
         autochdir = true, -- Automatically change the directory to the current workspace's root every time

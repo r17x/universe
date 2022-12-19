@@ -9,7 +9,7 @@ local parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
 --     branch = "main"
 --   },
 -- }
--- 
+--
 -- parser_configs.norg_table = {
 --   install_info = {
 --     url = "https://github.com/nvim-neorg/tree-sitter-norg-table",
@@ -29,6 +29,7 @@ parser_configs.rescript = {
 }
 ]] --
 
+require 'nvim-treesitter.install'.compilers = { 'clang' }
 require 'nvim-treesitter.configs'.setup {
   -- One of "all", "maintained" (parsers with maintainers), or a list of languages
   ensure_installed = {
@@ -38,7 +39,7 @@ require 'nvim-treesitter.configs'.setup {
     "lua", "regex",
     "html", "json", "yaml",
     "nix", "go",
-    "norg", 
+    "norg",
   },
   -- Install languages synchronously (only applied to `ensure_installed`)
   sync_install = false,

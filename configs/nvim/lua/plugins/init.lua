@@ -92,11 +92,12 @@ local fly = function(use)
 
   -- lsp
   use {
-    'williamboman/nvim-lsp-installer',
-    run = ":LspInstall sumneko_lua rescriptls tsserver eslint",
+    'williamboman/mason.nvim',
+    -- run = ":LspInstall sumneko_lua rescriptls tsserver eslint",
     config = config_load("lspconfig", "plugins.config.lsp"),
     event = "BufRead"
   }
+  use { "williamboman/mason-lspconfig.nvim" }
 
   use {
     'neovim/nvim-lspconfig',
@@ -251,9 +252,8 @@ local fly = function(use)
 
   use {
     "nvim-neorg/neorg",
-    -- tag = "latest",
-    ft = "norg",
     run = ":Neorg sync-parsers",
+    after = "nvim-treesitter",
     config = config_load 'plugins.config.neorg',
     requires = {
       "nvim-neorg/neorg-telescope",

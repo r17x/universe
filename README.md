@@ -114,6 +114,13 @@ nix build .#darwinConfigurations.RG.system
 
 - Done 🚀🎉
 
+## Command List
+
+* `drb` - darwin rebuild aliases - rebuild this nixpkgs.
+* `drs` - darwin rebuild and switch the build version (make current build to current version of environment).
+* `lenv` - list of build version `<VERSION>`, that's usefull for switch aka rollback environment.
+* `senv <VERSION>` - switch spesific version (number).
+
 ## Acknowledgement
 
 - [**malob/nixpkgs**](https://github.com/malob/nixpkgs) ~ [malob](https://github.com/malob) Nix System configs!.

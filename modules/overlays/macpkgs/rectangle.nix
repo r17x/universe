@@ -12,12 +12,12 @@ let
   pname = "rectangle";
 
   version = rec {
-    aarch64-darwin = "0.57";
+    aarch64-darwin = "0.64";
     x86_64-darwin = aarch64-darwin;
   }.${system} or throwSystem;
 
   sha256 = rec {
-    aarch64-darwin = "0pxk76q07m85j5sjf6z1zpqkjxqppr4acwwaj3xjh1k0pp2gdwnb";
+    aarch64-darwin = "z4xji072hGUFnxwCmME3FxW+dZuzNKoMvMQ17oRZocc=";
     x86_64-darwin = aarch64-darwin;
   }.${system} or throwSystem;
 

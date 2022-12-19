@@ -1,4 +1,5 @@
 { config, pkgs, lib, ... }:
+
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
   inherit (config.home.user-info) nixConfigDirectory;
@@ -8,11 +9,17 @@ in
     {
       enable = true;
 
+      vimdiffAlias = true;
+
+      withNodeJs = true;
+      withPython3 = true;
+
       extraConfig = ''
         " -- apply all settings (option, global option, autocmds, & mappings)
         lua require 'utils'.apply_settings(require 'settings')
         " -- apply all plugins
         lua require 'plugins'
+        " -- impure configurations
         set packpath^=~/.local/share/nvim/pack
         set runtimepath^=~/.local/share/nvim
       '';
@@ -24,8 +31,10 @@ in
         ctags
         tree-sitter
         rnix-lsp
+        gcc
       ];
     };
+
   # impure configurations
   xdg.configFile."nvim/lua".source = mkOutOfStoreSymlink "${nixConfigDirectory}/configs/nvim/lua";
   xdg.configFile."nvim/stylua.toml".source = mkOutOfStoreSymlink "${nixConfigDirectory}/configs/nvim/stylua.toml";

@@ -109,7 +109,6 @@
       ################################## 
       # Shell Integrations
       ################################## 
-      tmux # terminal multi-plexer (multiply terminal)
       starship # theme for shell (bash,fish,zsh)
 
       ################################## 

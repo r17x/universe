@@ -14,6 +14,7 @@
     terminal-notifier
     darwin.cf-private
     darwin.apple_sdk.frameworks.CoreServices
+    libiconv
   ];
 
   # something wrong

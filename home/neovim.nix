@@ -24,15 +24,15 @@ in
         set runtimepath^=~/.local/share/nvim
       '';
 
-      extraPackages = with pkgs; [
-        rustPackages.rustc
-        rustPackages.rustfmt
-        rustPackages.cargo
-        ctags
-        tree-sitter
-        rnix-lsp
-        gcc
-      ];
+      # extraPackages = with pkgs; [
+      #   rustPackages.rustc
+      #   rustPackages.rustfmt
+      #   rustPackages.cargo
+      #   ctags
+      #   tree-sitter
+      #   rnix-lsp
+      #   gcc
+      # ];
     };
 
   # impure configurations

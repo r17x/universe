@@ -45,6 +45,7 @@ let
     android31 =
       let
         android-sdk = androidSdk (sdkPkgs: with sdkPkgs; [
+          ndk-bundle
           emulator
           cmdline-tools-latest
           tools
@@ -126,9 +127,8 @@ let
 
   toWriteShell = name: devShell: { xdg.configFile."direnv/nix-envs/${name}".source = shellEnv devShell; };
 
-  devShellsConfigurations = [ useNixShell ] ++ lib.attrsets.mapAttrsToList
-    toWriteShell
-    devShells;
+  devShellsConfigurations = [ useNixShell ]
+    ++ lib.attrsets.mapAttrsToList toWriteShell devShells;
 
 in
 

@@ -22,6 +22,7 @@ in
         " -- impure configurations
         set packpath^=~/.local/share/nvim/pack
         set runtimepath^=~/.local/share/nvim
+        set mouse=
       '';
 
       # extraPackages = with pkgs; [

@@ -15,6 +15,7 @@
     darwin.cf-private
     darwin.apple_sdk.frameworks.CoreServices
     libiconv
+    stdenv
   ];
 
   # something wrong

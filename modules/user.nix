@@ -21,6 +21,10 @@ in
         type = with types; nullOr string;
         default = null;
       };
+      within.neovim.enable = mkOption {
+        type = with types; bool;
+        default = false;
+      };
     };
   };
 }

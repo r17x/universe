@@ -1,42 +1,51 @@
-{ config, pkgs, lib, ... }:
+{ lib, config, pkgs, ... }:
+
+with lib;
 
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
-  inherit (config.home.user-info) nixConfigDirectory;
+  inherit (config.home.user-info) nixConfigDirectory within;
+
+  cfg = within.neovim;
+
 in
 {
-  programs.neovim =
-    {
-      enable = true;
+  options.within.vim.enable = mkEnableOption "Enables Within's vim config";
 
-      vimdiffAlias = true;
+  config = mkIf cfg.enable {
+    programs.neovim =
+      {
+        enable = cfg.enable;
 
-      withNodeJs = true;
-      withPython3 = true;
+        vimdiffAlias = true;
 
-      extraConfig = ''
-        " -- apply all settings (option, global option, autocmds, & mappings)
-        lua require 'utils'.apply_settings(require 'settings')
-        " -- apply all plugins
-        lua require 'plugins'
-        " -- impure configurations
-        set packpath^=~/.local/share/nvim/pack
-        set runtimepath^=~/.local/share/nvim
-        set mouse=
-      '';
+        withNodeJs = true;
+        withPython3 = true;
 
-      # extraPackages = with pkgs; [
-      #   rustPackages.rustc
-      #   rustPackages.rustfmt
-      #   rustPackages.cargo
-      #   ctags
-      #   tree-sitter
-      #   rnix-lsp
-      #   gcc
-      # ];
-    };
+        extraConfig = ''
+          " -- apply all settings (option, global option, autocmds, & mappings)
+          lua require 'utils'.apply_settings(require 'settings')
+          " -- apply all plugins
+          lua require 'plugins'
+          " -- impure configurations
+          set packpath^=~/.local/share/nvim/pack
+          set runtimepath^=~/.local/share/nvim
+          set mouse=
+        '';
 
-  # impure configurations
-  xdg.configFile."nvim/lua".source = mkOutOfStoreSymlink "${nixConfigDirectory}/configs/nvim/lua";
-  xdg.configFile."nvim/stylua.toml".source = mkOutOfStoreSymlink "${nixConfigDirectory}/configs/nvim/stylua.toml";
+        # extraPackages = with pkgs; [
+        #   rustPackages.rustc
+        #   rustPackages.rustfmt
+        #   rustPackages.cargo
+        #   ctags
+        #   tree-sitter
+        #   rnix-lsp
+        #   gcc
+        # ];
+      };
+
+    # impure configurations
+    xdg.configFile."nvim/lua".source = mkOutOfStoreSymlink "${nixConfigDirectory}/configs/nvim/lua";
+    xdg.configFile."nvim/stylua.toml".source = mkOutOfStoreSymlink "${nixConfigDirectory}/configs/nvim/stylua.toml";
+  };
 }

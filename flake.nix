@@ -58,6 +58,7 @@
         fullName = "Rin";
         email = "hi@rin.rocks";
         nixConfigDirectory = "/Users/r17/.config/nixpkgs";
+        within.neovim.enable = true;
       };
 
       # Modules shared by most `nix-darwin` personal configurations.
@@ -78,6 +79,7 @@
               home = "/Users/${primaryUser.username}";
               shell = pkgs.fish;
             };
+
             home-manager.useGlobalPkgs = true;
             home-manager.users.${primaryUser.username} = {
               imports = attrValues self.homeManagerModules;

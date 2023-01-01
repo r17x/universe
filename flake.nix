@@ -51,9 +51,9 @@
       };
 
       # Personal configuration shared between `nix-darwin` and plain `home-manager` configs.
-      homeManagerStateVersion = "22.11";
+      homeManagerStateVersion = "23.05";
 
-      primaryUserInfo = {
+      primaryUserInfo = rec {
         username = "r17";
         fullName = "Rin";
         email = "hi@rin.rocks";

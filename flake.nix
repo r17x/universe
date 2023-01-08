@@ -227,21 +227,14 @@
       # OR with current shell
       #
       # nix develop -C $SHELL 
-      devShells.default = legacyPackages.mkShell {
-        name = "r17x_nixpkgs";
-        shellHook = '''' + checks.pre-commit-check.shellHook;
-        buildInputs = checks.pre-commit-check.buildInputs or [ ];
-        packages = checks.pre-commit-check.packages or [ ];
-      };
+      devShells.default = let pkgs = self.legacyPackages; in
+        pkgs.mkShell {
+          name = "r17x_nixpkgs";
+          shellHook = '''' + self.checks.pre-commit-check.shellHook;
+          buildInputs = self.checks.pre-commit-check.buildInputs or [ ];
+          packages = self.checks.pre-commit-check.packages or [ ];
+        };
 
-      legacyPackages = import inputs.nixpkgs-unstable {
-        inherit system;
-        inherit (defaultNixpkgs) config;
-        overlays = with self.overlays; [
-          pkgs-master
-          pkgs-stable
-          apple-silicon
-        ];
-      };
+      legacyPackages = import inputs.nixpkgs-unstable (defaultNixpkgs // { inherit system; });
     });
 }

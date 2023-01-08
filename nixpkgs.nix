@@ -1,1 +1,1 @@
-{ system ? builtins.currentSystem, ... }@args: import (import ./default.nix).inputs.nixpkgs-unstable args
+{ ... }@args: import (import ./default.nix).inputs.nixpkgs-unstable args

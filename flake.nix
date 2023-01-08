@@ -15,6 +15,7 @@
     # Environment/system management
     darwin.url = "github:LnL7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
+
     # home-manager inputs
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -28,12 +29,23 @@
     android-nixpkgs.url = "github:tadfisher/android-nixpkgs";
     android-nixpkgs.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
+    # utilities
+    pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
+    pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
-  outputs = { self, darwin, home-manager, flake-utils, ... }@inputs:
+  outputs =
+    { self
+    , darwin
+    , home-manager
+    , flake-utils
+    , pre-commit-hooks
+    , ...
+    } @inputs:
+
     let
       inherit (darwin.lib) darwinSystem;
-      inherit (inputs.nixpkgs-unstable.lib) attrValues makeOverridable optionalAttrs singleton;
+      inherit (inputs.nixpkgs-unstable.lib) attrValues makeOverridable singleton;
 
       # Configuration for `nixpkgs`
       nixpkgsConfig = {
@@ -66,7 +78,7 @@
         # `home-manager` module
         home-manager.darwinModules.home-manager
         (
-          { config, lib, pkgs, ... }:
+          { config, pkgs, ... }:
           let
             inherit (config.users) primaryUser;
           in
@@ -174,7 +186,40 @@
         system-darwin-window-manager = import ./system/darwin/wm.nix;
         system-darwin-homebrew = import ./system/darwin/homebrew.nix;
       };
-    } // flake-utils.lib.eachDefaultSystem (system: {
+    } // flake-utils.lib.eachDefaultSystem (system: rec {
+      # nix flake check
+      checks = {
+        pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
+          src = ./.;
+          # you can enable more hooks here {https://github.com/cachix/pre-commit-hooks.nix/blob/a4548c09eac4afb592ab2614f4a150120b29584c/modules/hooks.nix}
+          hooks = {
+            actionlint.enable = true;
+            shellcheck.enable = true;
+            stylua.enable = true;
+            # TODO https://github.com/cachix/pre-commit-hooks.nix/issues/196
+            # make override and pass configuration
+            luacheck.enable = false;
+
+            # .nix related
+            deadnix.enable = true;
+            nixpkgs-fmt.enable = true;
+          };
+        };
+      };
+
+      # nix develop 
+      #
+      # OR with current shell
+      #
+      # nix develop -C $SHELL 
+      devShells.default = legacyPackages.mkShell {
+        name = "r17x_nixpkgs";
+        shellHook = '''' + checks.pre-commit-check.shellHook;
+        buildInputs = checks.pre-commit-check.buildInputs or [ ];
+        packages = checks.pre-commit-check.packages or [ ];
+      };
+
+
       legacyPackages = import inputs.nixpkgs-unstable {
         inherit system;
         inherit (nixpkgsConfig) config;

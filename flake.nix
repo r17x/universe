@@ -105,6 +105,20 @@
       ];
     in
     {
+      homeConfigurations = {
+        r17 = inputs.home-manager.lib.homeManagerConfiguration rec {
+          pkgs = import inputs.nixpkgs-unstable (defaultNixpkgs // { system = "x86_64-linux"; });
+          modules = attrValues self.homeManagerModules ++ singleton ({ config, ... }: {
+            home.username = config.home.user-info.username;
+            home.homeDirectory = "/${if pkgs.stdenv.isDarwin then "Users" else "home"}/${config.home.username}";
+            home.stateVersion = homeManagerStateVersion;
+            home.user-info = primaryUserInfo // {
+              nixConfigDirectory = "${config.home.homeDirectory}/.config/nixpkgs";
+            };
+          });
+        };
+      };
+
 
       # Current Macbook Pro M1 from Ruangguru.com
       darwinConfigurations = rec {
@@ -218,18 +232,6 @@
         shellHook = '''' + checks.pre-commit-check.shellHook;
         buildInputs = checks.pre-commit-check.buildInputs or [ ];
         packages = checks.pre-commit-check.packages or [ ];
-      };
-
-      homeConfigurations.r17 = inputs.home-manager.lib.homeManagerConfiguration rec {
-        pkgs = import inputs.nixpkgs-unstable (defaultNixpkgs // { system = "x86_64-linux"; });
-        modules = attrValues self.homeManagerModules ++ singleton ({ config, ... }: {
-          home.username = config.home.user-info.username;
-          home.homeDirectory = "/${if pkgs.stdenv.isDarwin then "Users" else "home"}/${config.home.username}";
-          home.stateVersion = homeManagerStateVersion;
-          home.user-info = primaryUserInfo // {
-            nixConfigDirectory = "${config.home.homeDirectory}/.config/nixpkgs";
-          };
-        });
       };
 
       legacyPackages = import inputs.nixpkgs-unstable {

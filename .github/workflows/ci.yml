@@ -78,6 +78,10 @@ jobs:
        with:
          extra_nix_config: |
            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+
+     - name: run info
+       run: nix-shell -p nix-info --run "nix-info -m"
+
      - name: Setup Cachix
        uses: cachix/cachix-action@v10
        with:

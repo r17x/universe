@@ -48,7 +48,7 @@
       inherit (inputs.nixpkgs-unstable.lib) attrValues makeOverridable singleton;
 
       # Configuration for `nixpkgs`
-      nixpkgsConfig = {
+      defaultNixpkgs = {
         config = { allowUnfree = true; };
         overlays = attrValues self.overlays
           ++ singleton (inputs.android-nixpkgs.overlays.default)
@@ -83,7 +83,7 @@
             inherit (config.users) primaryUser;
           in
           {
-            nixpkgs = nixpkgsConfig;
+            nixpkgs = defaultNixpkgs;
             # Hack to support legacy worklows that use `<nixpkgs>` etc.
             nix.nixPath = { nixpkgs = "${primaryUser.nixConfigDirectory}/nixpkgs.nix"; };
             # `home-manager` config
@@ -105,12 +105,13 @@
       ];
     in
     {
+
       # Current Macbook Pro M1 from Ruangguru.com
       darwinConfigurations = rec {
         # TODO refactor darwin.nix to make common or bootstrap configuration
         bootstrap-x86 = makeOverridable darwinSystem {
           system = "x86_64-darwin";
-          modules = [ ./system/bootstrap.nix { nixpkgs = nixpkgsConfig; } ];
+          modules = [ ./system/bootstrap.nix { nixpkgs = defaultNixpkgs; } ];
         };
 
         bootstrap-arm = bootstrap-x86.override { system = "aarch64-darwin"; };
@@ -150,7 +151,7 @@
 
       # Overlays --------------------------------------------------------------- {{{
 
-      overlays = import ./modules/overlays inputs nixpkgsConfig;
+      overlays = import ./modules/overlays inputs defaultNixpkgs;
 
       # `home-manager` modules
       homeManagerModules = {
@@ -219,10 +220,21 @@
         packages = checks.pre-commit-check.packages or [ ];
       };
 
+      homeConfigurations.r17 = inputs.home-manager.lib.homeManagerConfiguration rec {
+        pkgs = import inputs.nixpkgs-unstable (defaultNixpkgs // { system = "x86_64-linux"; });
+        modules = attrValues self.homeManagerModules ++ singleton ({ config, ... }: {
+          home.username = config.home.user-info.username;
+          home.homeDirectory = "/${if pkgs.stdenv.isDarwin then "Users" else "home"}/${config.home.username}";
+          home.stateVersion = homeManagerStateVersion;
+          home.user-info = primaryUserInfo // {
+            nixConfigDirectory = "${config.home.homeDirectory}/.config/nixpkgs";
+          };
+        });
+      };
 
       legacyPackages = import inputs.nixpkgs-unstable {
         inherit system;
-        inherit (nixpkgsConfig) config;
+        inherit (defaultNixpkgs) config;
         overlays = with self.overlays; [
           pkgs-master
           pkgs-stable

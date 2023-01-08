@@ -146,8 +146,22 @@
             }
           ];
         };
-
       };
+
+      homeConfigurations.r17 =
+        let
+          pkgs = import inputs.nixpkgs-unstable (defaultNixpkgs // { system = "x86_64-linux"; });
+        in
+        inputs.home-manager.lib.homeManagerConfiguration {
+          modules = attrValues self.homeManagerModules ++ singleton ({ config, ... }: {
+            home.username = config.home.user-info.username;
+            home.homeDirectory = "/${if pkgs.stdenv.isDarwin then "Users" else "home"}/${config.home.username}";
+            home.stateVersion = homeManagerStateVersion;
+            home.user-info = primaryUserInfo // {
+              nixConfigDirectory = "${config.home.homeDirectory}/.config/nixpkgs";
+            };
+          });
+        };
 
       # Overlays --------------------------------------------------------------- {{{
 
@@ -213,33 +227,18 @@
       # OR with current shell
       #
       # nix develop -C $SHELL 
-      devShells.default = legacyPackages.mkShell {
-        name = "r17x_nixpkgs";
-        shellHook = '''' + checks.pre-commit-check.shellHook;
-        buildInputs = checks.pre-commit-check.buildInputs or [ ];
-        packages = checks.pre-commit-check.packages or [ ];
-      };
+      devShells.default =
+        let
+          pkgs = self.legacyPackages.${system};
+          pre-commit-check = checks.pre-commit-check;
+        in
+        pkgs.mkShell {
+          name = "r17x_nixpkgs";
+          shellHook = '''' + pre-commit-check.shellHook;
+          buildInputs = pre-commit-check.buildInputs or [ ];
+          packages = pre-commit-check.packages or [ ];
+        };
 
-      homeConfigurations.r17 = inputs.home-manager.lib.homeManagerConfiguration rec {
-        pkgs = import inputs.nixpkgs-unstable (defaultNixpkgs // { system = "x86_64-linux"; });
-        modules = attrValues self.homeManagerModules ++ singleton ({ config, ... }: {
-          home.username = config.home.user-info.username;
-          home.homeDirectory = "/${if pkgs.stdenv.isDarwin then "Users" else "home"}/${config.home.username}";
-          home.stateVersion = homeManagerStateVersion;
-          home.user-info = primaryUserInfo // {
-            nixConfigDirectory = "${config.home.homeDirectory}/.config/nixpkgs";
-          };
-        });
-      };
-
-      legacyPackages = import inputs.nixpkgs-unstable {
-        inherit system;
-        inherit (defaultNixpkgs) config;
-        overlays = with self.overlays; [
-          pkgs-master
-          pkgs-stable
-          apple-silicon
-        ];
-      };
+      legacyPackages = import inputs.nixpkgs-unstable (defaultNixpkgs // { inherit system; });
     });
 }

@@ -28,8 +28,8 @@ in
           " -- apply all plugins
           lua require 'plugins'
           " -- impure configurations
-          set packpath^=~/.local/share/nvim/pack
-          set runtimepath^=~/.local/share/nvim
+          " set packpath^=~/.local/share/nvim/pack
+          " set runtimepath^=~/.local/share/nvim
           set mouse=
         '';
 

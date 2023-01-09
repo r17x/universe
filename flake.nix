@@ -153,6 +153,7 @@
           pkgs = import inputs.nixpkgs-unstable (defaultNixpkgs // { system = "x86_64-linux"; });
         in
         inputs.home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
           modules = attrValues self.homeManagerModules ++ singleton ({ config, ... }: {
             home.username = config.home.user-info.username;
             home.homeDirectory = "/${if pkgs.stdenv.isDarwin then "Users" else "home"}/${config.home.username}";

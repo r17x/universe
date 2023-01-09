@@ -6,10 +6,8 @@
 ,
 }:
 
-
 let
   packages = [
-    "rectangle"
     "xbar"
     "obs-studio"
     "telegram"
@@ -18,4 +16,5 @@ let
     # "googlechrome" # see system/darwin/homebrew.nix
   ];
 in
+
 attrsets.genAttrs packages (name: pkgs.callPackage ./${name}.nix { })

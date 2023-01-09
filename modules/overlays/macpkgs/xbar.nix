@@ -1,61 +1,28 @@
-{ lib
-, stdenv
-, fetchurl
-, undmg
-,
-}:
+{ lib, stdenv, fetchurl, undmg, ... }:
 
-let
-  inherit (stdenv.hostPlatform) system;
-  throwSystem = throw "Unsupported system: ${system}";
-
+stdenv.mkDerivation rec {
   pname = "xbar";
+  version = "2.1.7-beta";
+  src = fetchurl {
+    url = "https://github.com/matryer/xbar/releases/download/v${version}/xbar.v${version}.dmg";
+    sha256 = "sha256-Cn6nxA5NTi7M4NrjycN3PUWd31r4Z0T3DES5+ZAbxz8=";
+  };
 
-  version = rec {
-    aarch64-darwin = "2.1.7-beta";
-    x86_64-darwin = aarch64-darwin;
-  }.${system} or throwSystem;
+  sourceRoot = "xbar.app";
 
-  sha256 = rec {
-    aarch64-darwin = "0gy73f8gkfa41kvl8rzqbbgrsi9xfz1wkqysw362wkjd1v2afzha";
-    x86_64-darwin = aarch64-darwin;
-  }.${system} or throwSystem;
+  nativeBuildInputs = [ undmg ];
 
-  srcs =
-    let
-      base = "https://github.com/matryer/xbar/releases/download";
-    in
-    rec {
-      aarch64-darwin = {
-        url = "${base}/v${version}/xbar.v${version}.dmg";
-        sha256 = sha256;
-      };
-      x86_64-darwin = aarch64-darwin;
-    };
-
-  src = fetchurl (srcs.${system} or throwSystem);
+  installPhase = ''
+    mkdir -p $out/Applications/xbar.app
+    cp -R . $out/Applications/xbar.app
+  '';
 
   meta = with lib; {
-    description = "Move and resize windows on macOS with keyboard shortcuts and snap areas";
+    description = "Put the output from any script or program into your macOS Menu Bar (the BitBar reboot)";
     homepage = "https://xbarapp.com/";
+    sourceProvenance = with sourceTypes; [ binaryNativeCode ];
+    platforms = platforms.darwin;
+    maintainers = with maintainers; [ r17x ];
     license = licenses.mit;
-    platforms = [ "x86_64-darwin" "aarch64-darwin" ];
   };
-
-  darwin = stdenv.mkDerivation {
-    inherit pname version src meta;
-
-    nativeBuildInputs = [ undmg ];
-
-    sourceRoot = "xbar.app";
-
-    installPhase = ''
-      runHook preInstall
-      mkdir -p $out/Applications/xbar.app
-      cp -R . $out/Applications/xbar.app
-      runHook postInstall
-    '';
-  };
-in
-darwin
-
+}

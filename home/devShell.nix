@@ -5,7 +5,7 @@ let
 
   shellEnv = import ./shellEnv.nix { inherit pkgs; };
 
-  makeNodeShell = { nodejs, python ? pkgs.python27 }:
+  makeNodeShell = { nodejs, python ? pkgs.python3 }:
     let
       nodePackages = pkgs.nodePackages.override {
         inherit nodejs;

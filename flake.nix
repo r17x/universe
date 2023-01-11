@@ -53,13 +53,6 @@
         overlays = attrValues self.overlays
           ++ singleton (inputs.android-nixpkgs.overlays.default)
           ++ singleton (inputs.rust-overlay.overlays.default);
-        #  ++ singleton (
-        #  # Sub in x86 version of packages that don't build on Apple Silicon yet
-        #  final: prev: (optionalAttrs (prev.stdenv.system == "aarch64-darwin") {
-        #    inherit (final.pkgs-x86)
-        #      yadm;
-        #  })
-        #)
       };
 
       # Personal configuration shared between `nix-darwin` and plain `home-manager` configs.
@@ -69,12 +62,14 @@
         username = "r17";
         fullName = "Rin";
         email = "hi@rin.rocks";
-        nixConfigDirectory = "/Users/r17/.config/nixpkgs";
+        nixConfigDirectory = "/Users/${username}/.config/nixpkgs";
         within.neovim.enable = true;
       };
 
       # Modules shared by most `nix-darwin` personal configurations.
-      nixDarwinCommonModules = attrValues self.commonModules ++ attrValues self.darwinModules ++ [
+      nixDarwinCommonModules = attrValues self.commonModules
+        ++ attrValues self.darwinModules
+        ++ [
         # `home-manager` module
         home-manager.darwinModules.home-manager
         (
@@ -111,13 +106,12 @@
         # TODO refactor darwin.nix to make common or bootstrap configuration
         bootstrap-x86 = makeOverridable darwinSystem {
           system = "x86_64-darwin";
-          modules = [ ./system/bootstrap.nix { nixpkgs = defaultNixpkgs; } ];
+          modules = attrValues self.commonModules;
         };
 
         bootstrap-arm = bootstrap-x86.override { system = "aarch64-darwin"; };
 
-        RG = makeOverridable darwinSystem {
-          system = "aarch64-darwin";
+        RG = bootstrap-arm.override {
           modules = nixDarwinCommonModules ++ [
             {
               users.primaryUser = primaryUserInfo;
@@ -131,8 +125,7 @@
           ];
         };
 
-        eR17 = makeOverridable darwinSystem {
-          system = "aarch64-darwin";
+        eR17 = RG.override {
           modules = nixDarwinCommonModules ++ [
             {
               users.primaryUser = primaryUserInfo;

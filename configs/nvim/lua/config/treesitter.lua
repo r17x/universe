@@ -32,24 +32,30 @@ parser_configs.rescript = {
 
 require("nvim-treesitter.install").compilers = { "gcc" }
 require("nvim-treesitter.configs").setup({
+	ensure_installed = {},
 	-- One of "all", "maintained" (parsers with maintainers), or a list of languages
-	ensure_installed = {
-		"rust",
-		"ocaml",
-		-- "haskell",
-		"javascript",
-		"typescript",
-		"tsx",
-		"lua",
-		"regex",
-		"html",
-		"json",
-		"yaml",
-		"nix",
-		"go",
-		"norg",
-	},
+	-- ensure_installed = {
+	--   "commonlisp",
+	--   "go",
+	--   "graphql",
+	--   "html",
+	--   "javascript",
+	--   "json",
+	--   "latex",
+	--   "lua",
+	--   "markdown",
+	--   "nix",
+	--   "norg",
+	--   "ocaml",
+	--   "ocaml_interface",
+	--   "rust",
+	--   "regex",
+	--   "tsx",
+	--   "typescript",
+	--   "yaml",
+	-- },
 	-- Install languages synchronously (only applied to `ensure_installed`)
+	-- parser_install_dir = "/nix/store/c31pwri2flmy87vy5zdp1n9bj377shvj-treesitter-parsers/parser",
 	sync_install = false,
 	-- List of parsers to ignore installing
 	-- ignore_install = { "javascript" },

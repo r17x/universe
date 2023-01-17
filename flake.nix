@@ -31,7 +31,6 @@
 
     # utilities
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
-    pre-commit-hooks.inputs.nixpkgs.follows = "flake-utils";
 
     # neovim
     neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
@@ -53,6 +52,7 @@
       inherit (darwin.lib) darwinSystem;
       inherit (inputs.nixpkgs-unstable.lib) attrValues makeOverridable singleton optionalAttrs;
 
+      # default configurations --------------------------------------------------------------{{{
       # Configuration for `nixpkgs`
       defaultNixpkgs = {
         config = { allowUnfree = true; };
@@ -105,6 +105,8 @@
           }
         )
       ];
+
+      # }}}
     in
     {
 
@@ -346,13 +348,12 @@
       devShells.default =
         let
           inherit (self.legacyPackages.${system}) mkShell;
-          fromChecks = checks.pre-commit-check;
         in
         mkShell {
           name = "r17x_nixpkgs";
-          shellHook = fromChecks.shellHook;
-          buildInputs = fromChecks.buildInputs or [ ];
-          packages = fromChecks.packages or [ ];
+          shellHook = '''' + checks.pre-commit-check.shellHook;
+          buildInputs = checks.pre-commit-check.buildInputs or [ ];
+          packages = checks.pre-commit-check.packages or [ ];
         };
 
       # }}}

@@ -37,7 +37,7 @@ let
     age = "${rage}/bin/rage";
 
     # Shell related
-    e = "${neovim}/bin/nvim";
+    e = "nvim";
     grep = "${ripgrep}/bin/rg";
     c = "z";
     cc = "zi";

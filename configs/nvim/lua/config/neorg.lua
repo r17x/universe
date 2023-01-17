@@ -1,4 +1,4 @@
-return require("neorg").setup({
+require("neorg").setup({
 	logger = { level = "warn" },
 	load = {
 		["core.defaults"] = {},

@@ -20,6 +20,7 @@
     # BORDERS COLOR
     set -g pane-border-style "fg=$bg_color bg=$bg_color"
     set -g pane-active-border-style "fg=$bg_color bg=$bg_color"
+    set -sg escape-time 10 
    '';
 
   # Plugin disable cause in version 3.3a tmux server crashed

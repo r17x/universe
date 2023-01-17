@@ -31,7 +31,12 @@
 
     # utilities
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
-    pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    pre-commit-hooks.inputs.nixpkgs.follows = "flake-utils";
+
+    # neovim
+    neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
+    neorg-overlay.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    neorg-overlay.inputs.flake-utils.follows = "flake-utils";
   };
 
   outputs =
@@ -40,19 +45,21 @@
     , home-manager
     , flake-utils
     , pre-commit-hooks
+    , neorg-overlay
     , ...
     } @inputs:
 
     let
       inherit (darwin.lib) darwinSystem;
-      inherit (inputs.nixpkgs-unstable.lib) attrValues makeOverridable singleton;
+      inherit (inputs.nixpkgs-unstable.lib) attrValues makeOverridable singleton optionalAttrs;
 
       # Configuration for `nixpkgs`
       defaultNixpkgs = {
         config = { allowUnfree = true; };
         overlays = attrValues self.overlays
           ++ singleton (inputs.android-nixpkgs.overlays.default)
-          ++ singleton (inputs.rust-overlay.overlays.default);
+          ++ singleton (inputs.rust-overlay.overlays.default)
+          ++ singleton (inputs.neorg-overlay.overlays.default);
       };
 
       # Personal configuration shared between `nix-darwin` and plain `home-manager` configs.
@@ -80,7 +87,7 @@
           {
             nixpkgs = defaultNixpkgs;
             # Hack to support legacy worklows that use `<nixpkgs>` etc.
-            nix.nixPath = { nixpkgs = "${primaryUser.nixConfigDirectory}/nixpkgs.nix"; };
+            nix.nixPath = { nixpkgs = "${inputs.nixpkgs-unstable}"; };
             # `home-manager` config
             users.users.${primaryUser.username} = {
               home = "/Users/${primaryUser.username}";
@@ -101,6 +108,117 @@
     in
     {
 
+      # Overlays --------------------------------------------------------------------------------{{{
+
+      overlays = {
+        # Overlays to add different versions `nixpkgs` into package set
+        pkgs-master = _: prev: {
+          pkgs-master = import inputs.nixpkgs-master {
+            inherit (prev.stdenv) system;
+            inherit (defaultNixpkgs) config;
+          };
+        };
+        pkgs-stable = _: prev: {
+          pkgs-stable = import inputs.nixpkgs-stable {
+            inherit (prev.stdenv) system;
+            inherit (defaultNixpkgs) config;
+          };
+        };
+        pkgs-unstable = _: prev: {
+          pkgs-unstable = import inputs.nixpkgs-unstable {
+            inherit (prev.stdenv) system;
+            inherit (defaultNixpkgs) config;
+          };
+        };
+        apple-silicon = _: prev: optionalAttrs (prev.stdenv.system == "aarch64-darwin") {
+          # Add access to x86 packages system is running Apple Silicon
+          pkgs-x86 = import inputs.nixpkgs-unstable {
+            system = "x86_64-darwin";
+            inherit (defaultNixpkgs) config;
+          };
+        };
+
+        mac-pkgs = import ./overlays/mac-pkgs;
+
+        # Overlay that adds various additional utility functions to `vimUtils`
+        vimUtils = import ./overlays/vimUtils.nix;
+
+        # Overlya that add some additional lua library
+        luajitPackages = _final: prev: {
+          luajitPackages = prev.luajitPackages // {
+            luafun = prev.luajitPackages.buildLuarocksPackage {
+              pname = "fun";
+              version = "scm-1";
+
+              src = prev.fetchgit (removeAttrs
+                (builtins.fromJSON ''{
+  "url": "https://github.com/luafun/luafun",
+  "rev": "cb6a7e25d4b55d9578fd371d1474b00e47bd29f3",
+  "date": "2022-05-20T12:32:27+03:00",
+  "path": "/nix/store/4ka959fym7brzx1hg7shlwsbrb5s5q5v-luafun",
+  "sha256": "0p7s6jj2d8c7h6jar89b94i3jbbd092vq1a5grhhqga7glz979cn",
+  "fetchLFS": false,
+  "fetchSubmodules": false,
+  "deepClone": false,
+  "leaveDotGit": false
+}'') [ "date" "path" ]);
+
+              disabled = with prev.lua; (prev.luajitPackages.luaOlder "5.1") || (prev.luajitPackages.luaAtLeast "5.4");
+              propagatedBuildInputs = [ prev.lua ];
+
+              meta = {
+                homepage = "https://luafun.github.io/";
+                description = "High-performance functional programming library for Lua";
+                license.fullName = "MIT/X11";
+              };
+            };
+          };
+        };
+
+        # Overlay that adds some additional Neovim plugins
+        vimPlugins = final: prev:
+          let
+            inherit (self.overlays.pkgs-unstable final prev) pkgs-unstable;
+            inherit (pkgs-unstable) fetchFromGitHub;
+            inherit (self.overlays.vimUtils final prev) vimUtils;
+          in
+          {
+            vimPlugins = prev.vimPlugins.extend (_: _:
+              # Useful for testing/using Vim plugins that aren't in `nixpkgs`.
+              vimUtils.buildVimPluginsFromFlakeInputs inputs [
+                # Add flake input names here for a Vim plugin repos
+              ] // {
+                # Other Vim plugins
+                # how to put packages here?
+                # 1. add in schema inputs `inputs.repo_flake.url`
+                # 2. add package name from inputs.repo_flake.packages.${prev.stdenv.system} package_name;
+                # 3. done
+                # e.g., `inherit (inputs.cornelis.packages.${prev.stdenv.system}) cornelis-vim;`
+
+                # vimPlugins - overlays --------------------------------------------------------{{{
+
+                lazy-nvim = vimUtils.buildVimPluginFrom2Nix {
+                  pname = "lazy.nvim";
+                  version = "2023-01-15";
+                  src = fetchFromGitHub {
+                    owner = "folke";
+                    repo = "lazy.nvim";
+                    rev = "984008f7ae17c1a8009d9e2f6dc007e13b90a744";
+                    sha256 = "19hqm6k9qr5ghi6v6brxr410bwyi01mqnhcq071h8bibdi4f66cg";
+                  };
+                  meta.homepage = "https://github.com/folke/lazy.nvim";
+                };
+
+                # }}}
+              }
+            );
+          };
+      };
+
+      # }}}
+
+
+      # Modules --------------------------------------------------------------------------------{{{
       # Current Macbook Pro M1 from Ruangguru.com
       darwinConfigurations = rec {
         # TODO refactor darwin.nix to make common or bootstrap configuration
@@ -156,10 +274,6 @@
           });
         };
 
-      # Overlays --------------------------------------------------------------- {{{
-
-      overlays = import ./modules/overlays inputs defaultNixpkgs;
-
       # `home-manager` modules
       homeManagerModules = {
         r17-activation = import ./home/activation.nix;
@@ -184,7 +298,6 @@
         programs-nix-index = import ./system/nix-index.nix;
       };
 
-      # `nix-darwin` modules that are pending upstream, or patched versions waiting on upstream
       # fixes.
       darwinModules = {
         system-darwin = import ./system/darwin/system.nix;
@@ -194,8 +307,16 @@
         system-darwin-window-manager = import ./system/darwin/wm.nix;
         system-darwin-homebrew = import ./system/darwin/homebrew.nix;
       };
+
+      # }}}
+
     } // flake-utils.lib.eachDefaultSystem (system: rec {
-      # nix flake check
+
+      legacyPackages = import inputs.nixpkgs-unstable (defaultNixpkgs // { inherit system; });
+
+      # Checks ----------------------------------------------------------------------{{{
+      # e.g., run `nix flake check` in $HOME/.config/nixpkgs.
+
       checks = {
         pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
           src = ./.;
@@ -215,23 +336,28 @@
         };
       };
 
-      # nix develop 
-      #
-      # OR with current shell
-      #
-      # nix develop -C $SHELL 
+      # }}}
+
+      # Development shells ----------------------------------------------------------------------{{{
+      # Shell environments for development
+      # With `nix.registry.my.flake = inputs.self`, development shells can be created by running,
+      # e.g., `nix develop my#python`.
+
       devShells.default =
         let
-          pkgs = self.legacyPackages.${system};
-          pre-commit-check = checks.pre-commit-check;
+          inherit (self.legacyPackages.${system}) mkShell;
+          fromChecks = checks.pre-commit-check;
         in
-        pkgs.mkShell {
+        mkShell {
           name = "r17x_nixpkgs";
-          shellHook = '''' + pre-commit-check.shellHook;
-          buildInputs = pre-commit-check.buildInputs or [ ];
-          packages = pre-commit-check.packages or [ ];
+          shellHook = fromChecks.shellHook;
+          buildInputs = fromChecks.buildInputs or [ ];
+          packages = fromChecks.packages or [ ];
         };
 
-      legacyPackages = import inputs.nixpkgs-unstable (defaultNixpkgs // { inherit system; });
+      # }}}
+
     });
 }
+
+# vim: foldmethod=marker

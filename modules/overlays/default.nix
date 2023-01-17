@@ -41,6 +41,8 @@ in
   mac-pkgs = _final: prev:
     import ./macpkgs { pkgs = prev; inherit attrsets; };
 
+  luaRelateds = (final: prev: (import ./luaPackages { pkgs = prev; }) final prev);
+
   # nodePackages = final: prev: {
   #   nodePackages = prev.nodePackages // import ./pkgs/node-packages { pkgs = prev; };
   # };

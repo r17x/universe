@@ -87,7 +87,7 @@
           {
             nixpkgs = defaultNixpkgs;
             # Hack to support legacy worklows that use `<nixpkgs>` etc.
-            nix.nixPath = { nixpkgs = "${inputs.nixpkgs-unstable}"; };
+            nix.nixPath = { nixpkgs = "${self}"; };
             # `home-manager` config
             users.users.${primaryUser.username} = {
               home = "/Users/${primaryUser.username}";

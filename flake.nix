@@ -345,16 +345,20 @@
       # With `nix.registry.my.flake = inputs.self`, development shells can be created by running,
       # e.g., `nix develop my#python`.
 
-      devShells.default =
-        let
-          inherit (self.legacyPackages.${system}) mkShell;
-        in
-        mkShell {
-          name = "r17x_nixpkgs";
+      devShells = with self.legacyPackages.${system}; {
+        # e.g., `nix develop my`.
+        default = mkShell {
+          name = "r17x_devshells_default";
           shellHook = '''' + checks.pre-commit-check.shellHook;
           buildInputs = checks.pre-commit-check.buildInputs or [ ];
           packages = checks.pre-commit-check.packages or [ ];
         };
+
+        lua = mkShell {
+          name = "r17x_devshells_lua";
+          buildInputs = [ luajit luajitPackages.luafun ];
+        };
+      };
 
       # }}}
 

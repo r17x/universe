@@ -87,7 +87,7 @@
           {
             nixpkgs = defaultNixpkgs;
             # Hack to support legacy worklows that use `<nixpkgs>` etc.
-            nix.nixPath = { nixpkgs = "${self}"; };
+            nix.nixPath = { nixpkgs = "${inputs.nixpkgs-unstable}"; };
             # `home-manager` config
             users.users.${primaryUser.username} = {
               home = "/Users/${primaryUser.username}";
@@ -285,7 +285,12 @@
         r17-tmux = import ./home/tmux.nix;
         r17-neovim = import ./home/neovim.nix;
         r17-alacritty = import ./home/alacritty.nix;
-        r17-devshell = import ./home/devShell.nix;
+        # this module disabled, because shell environment
+        # defined is evaluated first & it takes more spaces
+        # in /nix/store
+        # 
+        # currently, using nix devShells.*
+        # r17-devshell = import ./home/devShell.nix;
 
         home-user-info = { lib, ... }: {
           options.home.user-info =
@@ -343,22 +348,20 @@
       # Development shells ----------------------------------------------------------------------{{{
       # Shell environments for development
       # With `nix.registry.my.flake = inputs.self`, development shells can be created by running,
-      # e.g., `nix develop my#python`.
+      # e.g., `nix develop my#node`. 
 
-      devShells = with self.legacyPackages.${system}; {
-        # e.g., `nix develop my`.
-        default = mkShell {
-          name = "r17x_devshells_default";
-          shellHook = '''' + checks.pre-commit-check.shellHook;
-          buildInputs = checks.pre-commit-check.buildInputs or [ ];
-          packages = checks.pre-commit-check.packages or [ ];
-        };
+      devShells = let pkgs = self.legacyPackages.${system}; in
+        import ./devShells.nix { inherit pkgs; inherit (inputs.nixpkgs-unstable) lib; } // {
 
-        lua = mkShell {
-          name = "r17x_devshells_lua";
-          buildInputs = [ luajit luajitPackages.luafun ];
+          # `nix develop my`.
+          default = pkgs.mkShell {
+            name = "r17x_devshells_default";
+            shellHook = '''' + checks.pre-commit-check.shellHook;
+            buildInputs = checks.pre-commit-check.buildInputs or [ ];
+            packages = checks.pre-commit-check.packages or [ ];
+          };
+
         };
-      };
 
       # }}}
 

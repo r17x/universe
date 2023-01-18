@@ -1,3 +1,4 @@
+# DEPRECREATED
 { pkgs, lib, ... }:
 
 let

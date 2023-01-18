@@ -79,7 +79,7 @@ let
       {
         # Tree files
         plugin = nvim-tree-lua;
-        cmd = "NvimTreeToggle";
+        event = "UIEnter";
       }
 
       {
@@ -163,6 +163,7 @@ let
   attrToLazyNvimSpec = name: value:
     if name == "plugin" then ''dir = "${value.outPath}"''
     else if name == "lazy" then ''lazy = '' + lib.optionalString value "true"
+    else if name == "cmd" && (builtins.typeOf value) == "list" then ''${name} = { ${lib.strings.concatMapStringsSep "," (p: "'${p}'")value } }''
     else ''${name} = "${value}"'';
 
   /*

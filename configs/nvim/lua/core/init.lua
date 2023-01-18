@@ -1,9 +1,20 @@
+local f = require("fun")
 local M = {}
 -- local api = vim.api
 
 --- neovim/vim common configurations
-local set = vim.opt -- same with set tabstop=2
-local global = vim.g -- let g:zoom#statustext = 'Z'
+local set = function(k, v)
+	vim.opt[k] = v
+end -- same with set tabstop=2
+local global = function(k, v)
+	vim.g[k] = v
+end -- let g:zoom#statustext = 'Z'
+local global_only = function(k, v)
+	vim.o[k] = v
+end -- let g:zoom#statustext = 'Z'
+local command = function(cmd)
+	vim.cmd(cmd)
+end
 
 local indent = 2
 
@@ -29,25 +40,22 @@ M.defaultOptions = {
 }
 
 function M.cmd(cmds)
-	for _, cmd in pairs(cmds) do
-		vim.cmd(cmd)
-	end
+	f.each(command, cmds or {})
 	return M
 end
 
 function M.options(opts)
-	local opts_ = opts or M.defaultOptions
-	for key, value in pairs(opts_) do
-		set[key] = value
-	end
+	f.each(set, opts or M.defaultOptions)
 	return M
 end
 
-function M.global(opts)
-	local opts_ = opts or M.defaultGlobal
-	for key, value in pairs(opts_) do
-		global[key] = value
-	end
+function M.g(opts)
+	f.each(global, opts or M.defaultOptions)
+	return M
+end
+
+function M.o(opts)
+	f.each(global_only, opts or M.defaultOptions)
 	return M
 end
 
@@ -65,7 +73,9 @@ function M.init(opts, callback)
 			lazy_gen.init()
 		end
 	end
+
 	M.options()
+
 	pcall(callback or function() end)
 end
 

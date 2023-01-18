@@ -3,8 +3,6 @@ local present, cmp = pcall(require, "cmp")
 if not present then
 	return
 end
--- Set completeopt to have a better completion experience
-vim.o.completeopt = "menu,menuone,noselect"
 
 cmp.setup({
 	snippet = {

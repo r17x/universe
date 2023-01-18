@@ -1,122 +1,134 @@
-local fn = vim.fn
-local M = {}
+local wk = require("which-key")
 
-local indent = 2
-
-M.options = {
-	encoding = "utf8",
-	termguicolors = true,
-	backspace = { "indent", "eol", "start" },
-	cursorline = false,
-	wrap = false,
-	number = true,
-	relativenumber = true,
-	background = "dark",
-	tabstop = indent,
-	shiftwidth = indent,
-	smarttab = true,
-	expandtab = true,
-	laststatus = 2,
-	foldmethod = "syntax",
-	compatible = false,
-}
-
-M.g_options = {
-	-- theme
-	elite_mode = 1,
-	edge_style = "neon",
-	-- markdown preview
-	mkdp_browser = "chrome",
-}
-
-M.cmd_options = {
-	"filetype plugin on",
-	"syntax on",
-	"silent! colorscheme edge",
-	"nnoremap <SPACE> <Nop>",
-	"let mapleader = ' '",
-}
-
-M.fun = {
-	inject_metadata = function()
-		vim.cmd("NeorgStart silent=true")
-		vim.cmd("Neorg inject-metadata")
-	end,
-	create_task = function()
-		vim.cmd("NeorgStart silent=true")
-		vim.cmd("Neorg gtd capture")
-	end,
-	search_tasks = function()
-		vim.cmd("NeorgStart silent=true")
-		vim.cmd("Telescope neorg find_project_tasks")
-	end,
-}
-
-M.mappings = {
-	vmap = {
-		-- Copy & paste to system clipboard with {<Space> + p} and {<Space> + y}
-		["<Leader>y"] = '"+y',
-		["<Leader>d"] = '"+d',
-		["<Leader>p"] = '"+p',
-		["<Leader>P"] = '"+P',
+local opts = {
+	plugins = {
+		marks = true, -- shows a list of your marks on ' and `
+		registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
+		spelling = {
+			enabled = false, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
+			suggestions = 20, -- how many suggestions should be shown in the list?
+		},
+		-- the presets plugin, adds help for a bunch of default keybindings in Neovim
+		-- No actual key bindings are created
+		presets = {
+			operators = true, -- adds help for operators like d, y, ... and registers them for motion / text object completion
+			motions = true, -- adds help for motions
+			text_objects = true, -- help for text objects triggered after entering an operator
+			windows = true, -- default bindings on <c-w>
+			nav = true, -- misc bindings to work with windows
+			z = true, -- bindings for folds, spelling and others prefixed with z
+			g = true, -- bindings for prefixed with g
+		},
 	},
-
-	nnoremap = {
-		["<Leader>gc"] = "<cmd>Calendar<cr>",
-		-- go back to daashboard
-		["<Leader>gb"] = "<cmd>Dashboard<cr>",
-		-- telescope mappings
-		["<Leader>ff"] = "<cmd>lua require('telescope.builtin').find_files()<cr>",
-		["<Leader>fw"] = "<cmd>lua require('telescope.builtin').live_grep()<cr>",
-		["<Leader>fb"] = "<cmd>lua require('telescope.builtin').buffers()<cr>",
-		["<Leader>fh"] = "<cmd>lua require('telescope.builtin').help_tags()<cr>",
-		-- markdown preview
-		["<Leader>md"] = "<cmd>MarkdownPreviewToggle<cr>",
-		-- open settings nvim
-		["<Leader>om"] = "<cmd>vnew ~/.config/nvim/lua/settings.lua<cr>",
-		-- search task
-		["<Leader>ft"] = "<cmd>lua require('settings').fun.search_tasks()<cr>",
-		-- create task
-		["<Leader>c"] = "<cmd>lua require('settings').fun.create_task()<cr>",
-		-- inject metadata in norg files
-		["<Leader>i"] = "<cmd>lua require('settings').fun.inject_metadata()<cr>",
-		-- zenmode
-		["<Leader>z"] = "<cmd>ZenMode<cr>",
-		-- quit
-		["<Leader>q"] = "<cmd>q<cr>",
-		--[[
-    -- create new map here
-    ["<Leader>?"] = "<cmd>?</cr>",
-    ]]
-		--
+	-- add operators that will trigger motion and text object completion
+	-- to enable all native operators, set the preset / operators plugin above
+	operators = { gc = "Comments" },
+	key_labels = {
+		-- override the label used to display some keys. It doesn't effect WK in any other way.
+		-- For example:
+		-- ["<space>"] = "SPC",
+		-- ["<cr>"] = "RET",
+		-- ["<tab>"] = "TAB",
 	},
-
-	nmap = {
-		["<C-n>"] = "<cmd>NvimTreeToggle<cr>",
-		-- CTRL+[h,j,k,l] for movement buffer window
-		-- Type {Ctrl+h} for navigated to left
-		-- Type {Ctrl+j} for navigated to bottom
-		-- Type {Ctrl+k} for navigated to up
-		-- Type {Ctrl+l} for navigated to right
-		["<C-h>"] = "<C-w>h",
-		["<C-j>"] = "<C-w>j",
-		["<C-k>"] = "<C-w>k",
-		["<C-l>"] = "<C-w>l",
-
-		-- Disable arrow movement, resize splits instead.
-		-- <- : for resize(+2) to left
-		-- -> : for resize(+2) to righ
-		--  V : for resize(+2) to bottom
-		--  ^ : for resize(+2) to up
-		["<Up>"] = "<cmd>resize +2<cr>",
-		["<Down>"] = "<cmd>resize -2<CR>",
-		["<Left>"] = "<cmd>vertical resize +2<CR>",
-		["<Right>"] = "<cmd>vertical resize -2<CR>",
+	icons = {
+		breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
+		separator = "➜", -- symbol used between a key and it's label
+		group = "+", -- symbol prepended to a group
+	},
+	popup_mappings = {
+		scroll_down = "<c-d>", -- binding to scroll down inside the popup
+		scroll_up = "<c-u>", -- binding to scroll up inside the popup
+	},
+	window = {
+		border = "none", -- none, single, double, shadow
+		position = "bottom", -- bottom, top
+		margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]
+		padding = { 2, 2, 2, 2 }, -- extra window padding [top, right, bottom, left]
+		winblend = 0,
+	},
+	layout = {
+		height = { min = 4, max = 25 }, -- min and max height of the columns
+		width = { min = 20, max = 50 }, -- min and max width of the columns
+		spacing = 3, -- spacing between columns
+		align = "left", -- align columns left, center or right
+	},
+	ignore_missing = false, -- enable this to hide mappings for which you didn't specify a label
+	hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ " }, -- hide mapping boilerplate
+	show_help = true, -- show help message on the command line when the popup is visible
+	show_keys = true, -- show the currently pressed key and its label as a message in the command line
+	triggers = "auto", -- automatically setup triggers
+	-- triggers = {"<leader>"} -- or specify a list manually
+	triggers_blacklist = {
+		-- list of mode / prefixes that should never be hooked by WhichKey
+		-- this is mostly relevant for key maps that start with a native binding
+		-- most people should not need to change this
+		i = { "j", "k" },
+		v = { "j", "k" },
+	},
+	-- disable the WhichKey popup for certain buf types and file types.
+	-- Disabled by deafult for Telescope
+	disable = {
+		buftypes = {},
+		filetypes = { "TelescopePrompt" },
 	},
 }
 
-if fn.exists(":tnoremap") then
-	table.insert(M.cmd_options, [[tnoremap <Esc> <C-\\><C-n>]])
-end
+wk.setup(opts)
+wk.register({
+	y = {
+		y = { '"+y' },
+		d = { '"+d' },
+		p = { '"+p' },
+		P = { '"+P' },
+	},
 
-return M
+	f = {
+		name = "Find...",
+		f = { require("telescope.builtin").find_files, "Find file" },
+		g = { require("telescope.builtin").live_grep, "Find words" },
+		b = { require("telescope.builtin").buffers, "Find Buffers" },
+		h = { require("telescope.builtin").help_tags, "Find Help Tags" },
+	},
+
+	["<up>"] = {
+		function()
+			vim.cmd([[resize +2]])
+		end,
+		"Resize Up",
+	},
+	["<down>"] = {
+		function()
+			vim.cmd([[resize -2]])
+		end,
+		"Resize Down",
+	},
+	["<left>"] = {
+		function()
+			vim.cmd([[vertical resize +2]])
+		end,
+		"Resize Left",
+	},
+	["<right>"] = {
+		function()
+			vim.cmd([[vertical resize -2]])
+		end,
+		"Resize Right",
+	},
+	["<c-h>"] = { "<c-w>h", "Move top" },
+	["<c-j>"] = { "<c-w>j", "Move down" },
+	["<c-k>"] = { "<c-w>k", "Move left" },
+	["<c-l>"] = { "<c-w>l", "Move right" },
+	["<c-n>"] = {
+		function()
+			vim.cmd([[ NvimTreeToggle ]])
+		end,
+		"Show Tree side",
+	},
+}, {
+	mode = "n", -- Normal mode
+	prefix = "",
+	buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
+	silent = true, -- use `silent` when creating keymaps
+	noremap = true, -- use `noremap` when creating keymaps
+	nowait = false, -- use `nowait` when creating keymaps
+})

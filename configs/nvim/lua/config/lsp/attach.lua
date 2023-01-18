@@ -32,22 +32,34 @@ return function(client, bufnr)
 	end
 
 	buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
-
-	-- TODO move to keymaps Mappings
-	-- local nnoremap = require('core.utils').nnoremap
-	-- nnoremap('ff', function() vim.lsp.buf.format { async = true } end)
-	-- nnoremap('gD', vim.lsp.buf.declaration)
-	-- nnoremap('gd', vim.lsp.buf.definition)
-	-- nnoremap('K', vim.lsp.buf.hover)
-	-- nnoremap('gi', vim.lsp.buf.implementation)
-	-- nnoremap('gk', vim.lsp.buf.signature_help)
-	-- nnoremap('gr', vim.lsp.buf.references)
-	-- nnoremap('rn', vim.lsp.buf.rename)
-	-- nnoremap('[d', vim.lsp.diagnostic.goto_prev)
-	-- nnoremap(']d', vim.lsp.diagnostic.goto_next)
-
+	require("which-key").register({
+		F = {
+			function()
+				vim.lsp.buf.format({ async = true })
+			end,
+			"Format current file",
+		},
+		K = { vim.lsp.buf.hover, "Hover text" },
+		g = {
+			D = { vim.lsp.buf.declaration, "Go to declaration" },
+			d = { vim.lsp.buf.definition, "Go to definitions" },
+			i = { vim.lsp.buf.implementation, "Go to implementations" },
+			r = { vim.lsp.buf.references, "Go to references" },
+			k = { vim.lsp.buf.signature_help, "Open signature helps" },
+		},
+		["[d"] = { vim.lsp.diagnostic.goto_prev, "Previous diagnostic" },
+		["]d'"] = { vim.lsp.diagnostic.goto_next, "Next diagnostic" },
+		["rn"] = { vim.lsp.buf.rename, "Rename declaration" },
+	}, {
+		mode = "n",
+		prefix = "",
+		buffer = bufnr,
+		silent = true,
+		noremap = true,
+		nowait = true,
+	})
 	-- autoformat on save
 	if client.server_capabilities.documentFormattingProvider then
-		vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.format()")
+		vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]])
 	end
 end

@@ -9,7 +9,10 @@ let
 
   cfg = within.neovim;
 
-  mkOptionalPlugin = plugins: map (plugin: { inherit (plugin) plugin; optional = true; }) plugins;
+  plugin2Optional = p: { plugin = p; optional = true; };
+
+  mkOptionalPlugin = plugins: map plugin2Optional
+    (builtins.foldl' (ps: p: ps ++ singleton p.plugin ++ p.dependencies or [ ]) [ ] plugins);
 
   # TODO specific grammar
   # treesitter = vimPlugins.nvim-treesitter.withPlugins (p: [
@@ -28,131 +31,102 @@ let
       '';
     });
 
-  lazyPlugins = with vimPlugins;
-    let
-      # finder with telescope
-      telescope = builtins.map (plugin: { inherit plugin; lazy = true; }) [
+  # lazy-nvim - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - {{{
+
+  lazyPlugins = with vimPlugins; [
+
+    # finder with telescope ---{{{
+    {
+      plugin = telescope-nvim;
+      cmd = "Telescope";
+      dependencies = [
         telescope-project-nvim
         telescope-github-nvim
         telescope-frecency-nvim
         neorg-telescope
       ];
-    in
-    telescope ++
-    [
-      {
-        plugin = which-key-nvim;
-        lazy = true;
-      }
+    }
+    # }}}
 
-      {
-        plugin = telescope-nvim;
-        cmd = "Telescope";
-      }
+    # lang-server-protocol ---{{{
+    {
+      plugin = lazy-lsp-nvim;
+      event = "BufReadPre";
+      dependencies = [
+        nvim-lspconfig
+        treesitter
+        lsp_signature-nvim
+        lsp-colors-nvim
+      ];
+    }
+    # }}}
 
-      {
-        plugin = dashboard-nvim;
-        event = "VimEnter";
-      }
+    # completions ------------{{{
+    {
+      plugin = nvim-cmp;
+      event = "InsertEnter";
+      dependencies = [
+        friendly-snippets
+        cmp-nvim-lsp
+        cmp-buffer
+        cmp-cmdline
+        cmp-path
+        luasnip
+        cmp_luasnip
+      ];
+    }
+    # }}}
 
-      {
-        plugin = nvim-web-devicons;
-        event = "UIEnter";
-      }
+    {
+      plugin = which-key-nvim;
+      event = "UIEnter";
+    }
 
-      {
-        # Theme
-        plugin = edge;
-        lazy = true;
-      }
+    {
+      plugin = dashboard-nvim;
+      event = "VimEnter";
+    }
 
-      {
-        plugin = lsp-colors-nvim;
-        event = "UIEnter";
-      }
+    {
+      plugin = nvim-web-devicons;
+      event = "UIEnter";
+    }
 
-      {
-        plugin = nvim-colorizer-lua;
-        event = "UIEnter";
-      }
+    {
+      # Theme
+      plugin = edge;
+      lazy = true;
+    }
 
-      {
-        # Tree files
-        plugin = nvim-tree-lua;
-        event = "UIEnter";
-      }
+    {
+      plugin = nvim-colorizer-lua;
+      event = "BufReadPre";
+    }
 
-      {
-        # Taking notes
-        plugin = neorg;
-        cmd = "Neorg";
-      }
+    {
+      # Tree files
+      plugin = nvim-tree-lua;
+      event = "UIEnter";
+    }
 
-      {
-        plugin = treesitter;
-        lazy = true;
-      }
+    {
+      # Taking notes
+      plugin = neorg;
+      cmd = "Neorg";
+    }
 
-      {
-        # magit in neovim
-        plugin = vimagit;
-        cmd = "Magit";
-      }
+    {
+      # magit in neovim
+      plugin = vimagit;
+      cmd = "Magit";
+    }
+  ];
 
-      # LSP
-      {
-        plugin = nvim-lspconfig;
-        lazy = true;
-      }
+  # plugins =
 
-      {
-        plugin = lazy-lsp-nvim;
-        lazy = true;
-      }
-
-      {
-        plugin = lsp_signature-nvim;
-        lazy = true;
-      }
-
-      {
-        plugin = friendly-snippets;
-        lazy = true;
-      }
-
-      {
-        plugin = cmp-nvim-lsp;
-        lazy = true;
-      }
-
-      {
-        plugin = cmp-buffer;
-        lazy = true;
-      }
-
-      {
-        plugin = cmp-cmdline;
-        lazy = true;
-      }
-
-      {
-        plugin = cmp-path;
-        lazy = true;
-      }
-
-      {
-        plugin = luasnip;
-        lazy = true;
-      }
-
-      {
-        plugin = cmp_luasnip;
-        lazy = true;
-      }
-    ];
-
-  plugins = with vimPlugins; [ lazy-nvim ] ++ (mkOptionalPlugin lazyPlugins);
-
+  # }}}
+  doubleQuote = v: ''"${v}"'';
+  brackets = v: ''{ ${v} }'';
   /*
     https://github.com/folke/lazy.nvim#-plugin-spec
     Example:
@@ -161,10 +135,14 @@ let
     => [ "plugin=derivation_plugin" "event=\"VimEnter\"" ] 
   */
   attrToLazyNvimSpec = name: value:
-    if name == "plugin" then ''dir = "${value.outPath}"''
-    else if name == "lazy" then ''lazy = '' + lib.optionalString value "true"
-    else if name == "cmd" && (builtins.typeOf value) == "list" then ''${name} = { ${lib.strings.concatMapStringsSep "," (p: "'${p}'")value } }''
-    else ''${name} = "${value}"'';
+    let
+      k = if name == "plugin" then "dir" else name;
+      v = if isBool value then boolToString value else
+      if isList value
+      then brackets (strings.concatMapStringsSep "," (p: if isDerivation p then doubleQuote "${p.outPath}" else doubleQuote p) value)
+      else doubleQuote value;
+    in
+    ''${k} = ${v}'';
 
   /*
     this function for generate nix attributes to lazy.nvim plguins spec
@@ -175,18 +153,20 @@ let
     { event = "VimEnter",dir = "/nix/store/68x1cir0qd423zrzf07r5k7s0p73nacc-vimplugin-edge-2022-12-31" },
     { event = "VimEnter",dir = "/nix/store/cc4ry1dmnpgy1b78nqqny59c5g9qbxl0-vimplugin-lsp-colors.nvim-2023-01-04" }
   */
+  attrToTables = plugin: strings.concatStringsSep "," (attrsets.mapAttrsToList attrToLazyNvimSpec plugin);
   list2lazyNvimSpec = lazyPlugins:
-    lib.strings.concatMapStringsSep ",\n" (p: "\t{ ${p} }")
-      (builtins.map
-        (lazyPlugin: lib.strings.concatStringsSep "," (lib.attrsets.mapAttrsToList attrToLazyNvimSpec lazyPlugin))
-        lazyPlugins);
+    strings.concatMapStringsSep ",\n" (p: "\t{ ${p} }")
+      (builtins.foldl' (ps: p: ps ++ map attrToTables (singleton p ++ map (p: { plugin = p; lazy = true; }) p.dependencies or [ ])) [ ] lazyPlugins);
+  # (lazyPlugin: strings.concatStringsSep "," (attrsets.mapAttrsToList attrToLazyNvimSpec lazyPlugin))
+  # lazyPlugins);
 in
 {
   options.within.vim.enable = mkEnableOption "Enables Within's vim config";
 
   config = mkIf cfg.enable {
     programs.neovim = {
-      inherit plugins;
+      plugins = singleton vimPlugins.lazy-nvim
+        ++ mkOptionalPlugin lazyPlugins;
       defaultEditor = true;
       enable = cfg.enable;
       vimdiffAlias = true;
@@ -197,7 +177,6 @@ in
         # overlays
         pkgs.luajitPackages.luafun
         plenary-nvim
-        nvim-cmp
       ];
     };
 
@@ -238,3 +217,6 @@ in
     });
   };
 }
+
+# vim: foldmethod=marker
+

@@ -11,6 +11,7 @@ require("core")
 		-- edge_better_performance = 1, -- https://github.com/sainnhe/edge/blob/master/doc/edge.txt#L416
 		-- when use nix edge_better_performance it's fail to configured, because /nix/store cannot to write
 		mapleader = " ",
+		mouse = "",
 	})
 	-- same with vim.o
 	.o({

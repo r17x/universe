@@ -39,7 +39,7 @@ let
       # $ flakeup home-manager
       flakeup = "nix flake lock ${nixConfigDirectory} --update-input";
       nb = "nix build";
-      nd = "nix develop";
+      ndp = "nix develop";
       nf = "nix flake";
       nr = "nix run";
       ns = "nix-shell";
@@ -151,6 +151,9 @@ in
         #   ${pkgs.babelfish} < $HOME/.config/direnv/lib/use_nix-env.sh | source
         #   use_nix-env $argv
         # '';
+        nd = ''
+          nix develop my#$argv[1] -c $SHELL
+        '';
         rpkgjson = ''
           ${pkgs.nodejs}/bin/node -e "console.log(Object.entries(require('./package.json').$argv[1]).map(([k,v]) => k.concat(\"@\").concat(v)).join(\"\n\") )"
         '';

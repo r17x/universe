@@ -56,6 +56,7 @@ rec {
     buildInputs = [
       (androidSdk (mkAndroidSdk "29"))
       gradle
+      jdk11
     ];
   };
 
@@ -64,6 +65,7 @@ rec {
     buildInputs = [
       (androidSdk (mkAndroidSdk "31"))
       gradle
+      jdk11
     ];
   };
 

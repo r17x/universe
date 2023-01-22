@@ -87,13 +87,11 @@
       ################################## 
       # Development
       ################################## 
-      nodePackages.vercel
       podman
       podman-compose
       qemu
       babelfish
       paperkey
-      shellcheck
       gcc
       # yarn # currently defined in devShell.nix
       tokei
@@ -114,8 +112,8 @@
       ################################## 
       # Misc
       ################################## 
-      spotifyd # spotify daemon for TUI
-      spotify-tui # spotify terminal UI
+      # spotifyd # spotify daemon for TUI
+      # spotify-tui # spotify terminal UI
       obs-studio
 
       ################################## 

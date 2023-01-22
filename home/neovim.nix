@@ -33,103 +33,119 @@ let
 
   # lazy-nvim - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - {{{
 
-  lazyPlugins = with vimPlugins; [
+  lazyPlugins = with vimPlugins;
+    let
+      ui = [
+        # Theme
+        { plugin = edge; lazy = true; }
 
-    # finder with telescope ---{{{
-    {
-      plugin = telescope-nvim;
-      cmd = "Telescope";
-      dependencies = [
-        telescope-project-nvim
-        telescope-github-nvim
-        telescope-frecency-nvim
-        neorg-telescope
+        # Tree files
+        { plugin = nvim-tree-lua; event = "UIEnter"; }
+
+        { plugin = which-key-nvim; event = "UIEnter"; }
+
+        {
+          plugin = dashboard-nvim;
+          event = "UIEnter";
+          dependencies = [
+            neoscroll-nvim
+          ];
+        }
+
+        { plugin = nvim-web-devicons; event = "UIEnter"; }
+
       ];
-    }
-    # }}}
 
-    # lang-server-protocol ---{{{
-    {
-      plugin = lazy-lsp-nvim;
-      event = "BufReadPre";
-      dependencies = [
-        nvim-lspconfig
-        treesitter
-        lsp_signature-nvim
-        lsp-colors-nvim
-        trouble-nvim
+      userTyping = [
+        { plugin = nvim-colorizer-lua; event = "BufReadPre"; }
+
+        # git
+        { plugin = gitsigns-nvim; event = "BufReadPost"; }
+
+        # platform integrations
+        { plugin = vim-wakatime; event = "BufRead"; }
+
+        # lang-server-protocol ---{{{
+        {
+          plugin = lazy-lsp-nvim;
+          event = "BufReadPre";
+          dependencies = [
+            nvim-lspconfig
+            treesitter
+            lsp_signature-nvim
+            lsp-colors-nvim
+            trouble-nvim
+          ];
+        }
+        # }}}
+
+        # completions ------------{{{
+        {
+          plugin = nvim-cmp;
+          event = "InsertEnter";
+          dependencies = [
+            friendly-snippets
+            cmp-nvim-lsp
+            cmp-buffer
+            cmp-cmdline
+            cmp-path
+            luasnip
+            cmp_luasnip
+          ];
+        }
+        # }}}
+
+        { plugin = git-conflict-nvim; event = "BufRead"; }
+
+        { plugin = indent-blankline-nvim; event = "BufRead"; }
+
+        {
+          plugin = lualine-nvim;
+          event = "BufRead";
+          dependencies = [
+            lualine-lsp-progress
+          ];
+        }
       ];
-    }
-    # }}}
 
-    # completions ------------{{{
-    {
-      plugin = nvim-cmp;
-      event = "InsertEnter";
-      dependencies = [
-        friendly-snippets
-        cmp-nvim-lsp
-        cmp-buffer
-        cmp-cmdline
-        cmp-path
-        luasnip
-        cmp_luasnip
+      byCommand = [
+        # finder with telescope ---{{{
+        {
+          plugin = telescope-nvim;
+          cmd = "Telescope";
+          dependencies = [
+            telescope-project-nvim
+            telescope-github-nvim
+            telescope-frecency-nvim
+            neorg-telescope
+          ];
+        }
+        # }}}
+
+        # learn - repl related
+        {
+          plugin = codi-vim;
+          cmd = [ "Codi" "CodiNew" "CodiSelect" "CodeExpand" ];
+        }
+
+        # secrets
+        {
+          plugin = vim-gnupg;
+          ft = [ "gpg" "gnugpg" "pgp" ];
+        }
+
+        { plugin = git-messenger-vim; cmd = "GitMessenger"; }
+
+        # Writing & Taking notes
+        { plugin = neorg; cmd = "Neorg"; }
+        { plugin = zen-mode-nvim; cmd = "ZenMode"; }
+
+        # magit in neovim
+        { plugin = vimagit; cmd = "Magit"; }
+
       ];
-    }
-    # }}}
-    # learn - repl related
-    {
-      plugin = codi-vim;
-      cmd = [ "Codi" "CodiNew" "CodiSelect" "CodeExpand" ];
-    }
-
-    # platform integrations
-    { plugin = vim-wakatime; event = "BufRead"; }
-
-    # secrets
-    {
-      plugin = vim-gnupg;
-      ft = [ "gpg" "gnugpg" "pgp" ];
-    }
-
-    # git
-    { plugin = gitsigns-nvim; event = "BufReadPost"; }
-
-    { plugin = git-messenger-vim; cmd = "GitMessenger"; }
-
-    { plugin = git-conflict-nvim; event = "BufRead"; }
-
-    { plugin = indent-blankline-nvim; event = "BufRead"; }
-
-    {
-      plugin = lualine-nvim;
-      event = "BufRead";
-      dependencies = [
-        lualine-lsp-progress
-      ];
-    }
-
-    { plugin = which-key-nvim; event = "UIEnter"; }
-
-    { plugin = dashboard-nvim; event = "VimEnter"; }
-
-    { plugin = nvim-web-devicons; event = "UIEnter"; }
-
-    # Theme
-    { plugin = edge; lazy = true; }
-
-    { plugin = nvim-colorizer-lua; event = "BufReadPre"; }
-
-    # Tree files
-    { plugin = nvim-tree-lua; event = "UIEnter"; }
-
-    # Writing & Taking notes
-    { plugin = neorg; cmd = "Neorg"; }
-    { plugin = zen-mode-nvim; cmd = "ZenMode"; }
-
-    # magit in neovim
-    { plugin = vimagit; cmd = "Magit"; }
-  ];
+    in
+    ui ++ userTyping ++ byCommand;
 
   # plugins =
 

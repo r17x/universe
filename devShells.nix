@@ -139,6 +139,9 @@ rec {
         targets = [ "wasm32-wasi" ];
       })
     ];
+    packages = [
+      rustfmt
+    ];
   };
 
   # }}}

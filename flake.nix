@@ -211,6 +211,18 @@
                   meta.homepage = "https://github.com/folke/lazy.nvim";
                 };
 
+                git-conflict-nvim = vimUtils.buildVimPluginFrom2Nix {
+                  pname = "git-conflict.nvim";
+                  version = "2022-12-31";
+                  src = fetchFromGitHub {
+                    owner = "akinsho";
+                    repo = "git-conflict.nvim";
+                    rev = "cbefa7075b67903ca27f6eefdc9c1bf0c4881017";
+                    sha256 = "1pli57rl2sglmz2ibbnjf5dxrv5a0nxk8kqqkq1b0drc30fk9aqi";
+                  };
+                  meta.homepage = "https://github.com/akinsho/git-conflict.nvim";
+                };
+
                 # }}}
               }
             );

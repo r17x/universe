@@ -1,4 +1,10 @@
 local wk = require("which-key")
+local tb = require("telescope.builtin")
+local neorg = require("telescope._extensions.neorg")
+neorg.journal = function()
+	vim.cmd([[Neorg journal]])
+end
+local gs = require("gitsigns")
 
 local opts = {
 	plugins = {
@@ -74,6 +80,7 @@ local opts = {
 }
 
 wk.setup(opts)
+
 wk.register({
 	y = {
 		y = { '"+y' },
@@ -84,10 +91,35 @@ wk.register({
 
 	f = {
 		name = "Find...",
-		f = { require("telescope.builtin").find_files, "Find file" },
-		g = { require("telescope.builtin").live_grep, "Find words" },
-		b = { require("telescope.builtin").buffers, "Find Buffers" },
-		h = { require("telescope.builtin").help_tags, "Find Help Tags" },
+		t = {
+			function()
+				vim.cmd([[Telescope]])
+			end,
+			"Telescope 🔭",
+		},
+		j = { neorg.journal, "New Journal ✍️" },
+		f = { tb.find_files, "Find file" },
+		g = { tb.live_grep, "Find words" },
+		b = { tb.buffers, "Find Buffers" },
+		h = { tb.help_tags, "Find Help Tags" },
+		n = {
+			name = "Neorg...",
+			w = { neorg.switch_workspace, "Find Workspaces" },
+			l = { neorg.insert_link, "Insert Link" },
+			f = { neorg.insert_file_link, "Insert File Linke" },
+		},
+	},
+
+	g = {
+		s = {
+			name = "Git Signs",
+			s = { gs.toggle_signs, "Toggle Sign Column" },
+			n = { gs.toggle_numhl, "Toggle Num Hightlight" },
+			l = { gs.toggle_linehl, "Toggle Line Hightlight" },
+			w = { gs.toggle_word_diff, "Toggle Word Diff" },
+			d = { gs.toggle_deleted, "Toggle Deleted" },
+			b = { gs.toggle_current_line_blame, "Toggle Current line blame" },
+		},
 	},
 
 	["<up>"] = {

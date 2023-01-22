@@ -7,6 +7,19 @@
 
 local on_attach = require("config.lsp.attach")
 local capabilities = require("config.lsp.capabilities")
+local function lspSymbol(name, icon)
+	local hl = "DiagnosticSign" .. name
+	vim.fn.sign_define(hl, { text = icon, numhl = hl, texthl = hl })
+end
+
+lspSymbol("Error", "")
+lspSymbol("Info", "")
+lspSymbol("Hint", "")
+lspSymbol("Warn", "")
+
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+	border = "rounded",
+})
 
 require("lazy-lsp").setup({
 	-- By default all available servers are set up. Exclude unwanted or misbehaving servers.
@@ -17,18 +30,12 @@ require("lazy-lsp").setup({
 		"denols",
 		"flow",
 		"quick_lint_js",
+		"rls",
 	},
 	-- Default config passed to all servers to specify on_attach callback and other options.
 	default_config = {
-		flags = {
-			debounce_text_changes = 150,
-		},
+		flags = { debounce_text_changes = 150 },
 		on_attach = on_attach,
 		capabilities = capabilities,
 	},
-	-- Override config for specific servers that will passed down to lspconfig setup.
-	-- configs = {
-	--   rnix = {
-	--   },
-	-- },
 })

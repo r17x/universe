@@ -49,5 +49,10 @@ require("neorg").setup({
 				index = "index.norg", -- The name of the main (root) .norg file
 			},
 		},
+		["core.norg.esupports.metagen"] = {
+			config = {
+				type = "auto",
+			},
+		},
 	},
 })

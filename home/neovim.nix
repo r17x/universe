@@ -9,7 +9,7 @@ let
 
   cfg = within.neovim;
 
-  plugin2Optional = p: { plugin = p; optional = true; };
+  plugin2Optional = p: { plugin = p; optional = p.lazy or true; };
 
   mkOptionalPlugin = plugins: map plugin2Optional
     (builtins.foldl' (ps: p: ps ++ singleton p.plugin ++ p.dependencies or [ ]) [ ] plugins);
@@ -57,6 +57,7 @@ let
         treesitter
         lsp_signature-nvim
         lsp-colors-nvim
+        trouble-nvim
       ];
     }
     # }}}
@@ -76,57 +77,67 @@ let
       ];
     }
     # }}}
-
+    # learn - repl related
     {
-      plugin = which-key-nvim;
-      event = "UIEnter";
+      plugin = codi-vim;
+      cmd = [ "Codi" "CodiNew" "CodiSelect" "CodeExpand" ];
     }
 
+    # platform integrations
+    { plugin = vim-wakatime; event = "BufRead"; }
+
+    # secrets
     {
-      plugin = dashboard-nvim;
-      event = "VimEnter";
+      plugin = vim-gnupg;
+      ft = [ "gpg" "gnugpg" "pgp" ];
     }
 
-    {
-      plugin = nvim-web-devicons;
-      event = "UIEnter";
-    }
+    # git
+    { plugin = gitsigns-nvim; event = "BufReadPost"; }
+
+    { plugin = git-messenger-vim; cmd = "GitMessenger"; }
+
+    { plugin = git-conflict-nvim; event = "BufRead"; }
+
+    { plugin = indent-blankline-nvim; event = "BufRead"; }
 
     {
-      # Theme
-      plugin = edge;
-      lazy = true;
+      plugin = lualine-nvim;
+      event = "BufRead";
+      dependencies = [
+        lualine-lsp-progress
+      ];
     }
 
-    {
-      plugin = nvim-colorizer-lua;
-      event = "BufReadPre";
-    }
+    { plugin = which-key-nvim; event = "UIEnter"; }
 
-    {
-      # Tree files
-      plugin = nvim-tree-lua;
-      event = "UIEnter";
-    }
+    { plugin = dashboard-nvim; event = "VimEnter"; }
 
-    {
-      # Taking notes
-      plugin = neorg;
-      cmd = "Neorg";
-    }
+    { plugin = nvim-web-devicons; event = "UIEnter"; }
 
-    {
-      # magit in neovim
-      plugin = vimagit;
-      cmd = "Magit";
-    }
+    # Theme
+    { plugin = edge; lazy = true; }
+
+    { plugin = nvim-colorizer-lua; event = "BufReadPre"; }
+
+    # Tree files
+    { plugin = nvim-tree-lua; event = "UIEnter"; }
+
+    # Writing & Taking notes
+    { plugin = neorg; cmd = "Neorg"; }
+    { plugin = zen-mode-nvim; cmd = "ZenMode"; }
+
+    # magit in neovim
+    { plugin = vimagit; cmd = "Magit"; }
   ];
 
   # plugins =
 
   # }}}
   doubleQuote = v: ''"${v}"'';
-  brackets = v: ''{ ${v} }'';
+  brackets = v: "{ ${v} }";
+  tab = v: "\t${v}";
+  commaEnter = ",\n";
   /*
     https://github.com/folke/lazy.nvim#-plugin-spec
     Example:
@@ -143,7 +154,6 @@ let
       else doubleQuote value;
     in
     ''${k} = ${v}'';
-
   /*
     this function for generate nix attributes to lazy.nvim plguins spec
 
@@ -155,8 +165,11 @@ let
   */
   attrToTables = plugin: strings.concatStringsSep "," (attrsets.mapAttrsToList attrToLazyNvimSpec plugin);
   list2lazyNvimSpec = lazyPlugins:
-    strings.concatMapStringsSep ",\n" (p: "\t{ ${p} }")
-      (builtins.foldl' (ps: p: ps ++ map attrToTables (singleton p ++ map (p: { plugin = p; lazy = true; }) p.dependencies or [ ])) [ ] lazyPlugins);
+    strings.concatMapStringsSep commaEnter (p: tab (brackets p))
+      (builtins.foldl'
+        (ps: p: ps
+          ++ map attrToTables (singleton p ++ map (p: { plugin = p; lazy = true; }) p.dependencies or [ ])) [ ]
+        lazyPlugins);
   # (lazyPlugin: strings.concatStringsSep "," (attrsets.mapAttrsToList attrToLazyNvimSpec lazyPlugin))
   # lazyPlugins);
 in
@@ -219,4 +232,3 @@ in
 }
 
 # vim: foldmethod=marker
-

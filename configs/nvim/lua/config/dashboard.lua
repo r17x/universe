@@ -58,3 +58,11 @@ dash.custom_center = {
 	{ icon = " ", desc = "Bookmarks                 SPC b m", action = "Telescope marks" },
 	{ icon = " ", desc = "Load Last Session         SPC l  ", action = "SessionLoad" },
 }
+
+dash.custom_footer = function()
+	local ls = require("lazy").stats()
+	return {
+		icon = "",
+		desc = string.format("🚀 Loaded [%d / %d] plugins. 🎉", ls.loaded, ls.count),
+	}
+end

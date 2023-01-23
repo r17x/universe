@@ -48,7 +48,7 @@ return function(client, bufnr)
 			k = { vim.lsp.buf.signature_help, "Open signature helps" },
 		},
 		["[d"] = { vim.lsp.diagnostic.goto_prev, "Previous diagnostic" },
-		["]d'"] = { vim.lsp.diagnostic.goto_next, "Next diagnostic" },
+		["]d"] = { vim.lsp.diagnostic.goto_next, "Next diagnostic" },
 		["rn"] = { vim.lsp.buf.rename, "Rename declaration" },
 	}, {
 		mode = "n",

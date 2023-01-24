@@ -1,31 +1,35 @@
 { pkgs, ... }:
 
 let
+  inherit (pkgs) stdenv;
   # a high-order-function for make android sdk with specific versions tools
   # such a plaftorm-andrid-X, build-tools-X, or system-images-android-X.
   #
   # mkAndroidSdk -------------------------------------------------------{{{
-  mkAndroidSdk = version: s: [
-    s.ndk-bundle
-    s.emulator
-    s.cmdline-tools-latest
-    s.tools
-    s.platform-tools
-    s."platforms-android-${version}"
-    # platforms-android-30
-    # build system tools for android related 
-    s."build-tools-${version}-0-0"
-    # build-tools-32-0-0
-    # patch
-    s.patcher-v4
-    # see here: https://github.com/tadfisher/android-nixpkgs/blob/1d27f12eb37772b0ae1354e68a898f71394c28e4/channels/stable/default.nix#L7162 
-    # android for create avd and use in emulator
-    # system-images-android-30-google-apis-x86-64
-    # system-images-android-30-google-apis-playstore-arm64-v8a
-    # platforms-android-30
-    s."system-images-android-${version}-google-apis-playstore-arm64-v8a"
-    s.extras-google-google-play-services
-  ];
+  mkAndroidSdk =
+    let cpuArch = if stdenv.isAarch64 then "arm64-v8a" else "x86-64";
+    in
+    version: s: [
+      s.ndk-bundle
+      s.emulator
+      s.cmdline-tools-latest
+      s.tools
+      s.platform-tools
+      s."platforms-android-${version}"
+      # platforms-android-30
+      # build system tools for android related 
+      s."build-tools-${version}-0-0"
+      # build-tools-32-0-0
+      # patch
+      s.patcher-v4
+      # see here: https://github.com/tadfisher/android-nixpkgs/blob/1d27f12eb37772b0ae1354e68a898f71394c28e4/channels/stable/default.nix#L7162 
+      # android for create avd and use in emulator
+      # system-images-android-30-google-apis-x86-64
+      # system-images-android-30-google-apis-playstore-arm64-v8a
+      # platforms-android-30
+      s."system-images-android-${version}-google-apis-playstore-${cpuArch}"
+      s.extras-google-google-play-services
+    ];
 
   # }}}
 
@@ -77,9 +81,7 @@ rec {
   # `nix develop my#node` 
   node = mkNodejs {
     inherit nodejs;
-    withNodePackages = p: [
-      p.yarn
-    ];
+    withNodePackages = p: [ p.yarn ];
   };
 
   # `nix develop my#node14` 
@@ -95,6 +97,7 @@ rec {
   eFnode = mkNodejs {
     nodejs = nodejs-14_x;
     withNodePackages = p: [
+      p.yarn
       (p.pnpm.override {
         version = "5.18.7";
         src = pkgs.fetchurl {

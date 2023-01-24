@@ -152,7 +152,7 @@ in
         #   use_nix-env $argv
         # '';
         nd = ''
-          nix develop my#$argv[1] -c $SHELL
+          nix develop ${nixConfigDirectory}#$argv[1] -c $SHELL
         '';
         rpkgjson = ''
           ${pkgs.nodejs}/bin/node -e "console.log(Object.entries(require('./package.json').$argv[1]).map(([k,v]) => k.concat(\"@\").concat(v)).join(\"\n\") )"

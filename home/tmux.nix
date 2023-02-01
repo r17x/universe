@@ -32,6 +32,19 @@
 
         set -g @shell_mode 'vi'
         set -g @yank_selection_mouse 'clipboard'
+
+        run -b 'tmux bind -t vi-copy v begin-selection 2> /dev/null || true'
+        run -b 'tmux bind -T copy-mode-vi v send -X begin-selection 2> /dev/null || true'
+        run -b 'tmux bind -t vi-copy C-v rectangle-toggle 2> /dev/null || true'
+        run -b 'tmux bind -T copy-mode-vi C-v send -X rectangle-toggle 2> /dev/null || true'
+        run -b 'tmux bind -t vi-copy y copy-selection 2> /dev/null || true'
+        run -b 'tmux bind -T copy-mode-vi y send -X copy-selection-and-cancel 2> /dev/null || true'
+        run -b 'tmux bind -t vi-copy Escape cancel 2> /dev/null || true'
+        run -b 'tmux bind -T copy-mode-vi Escape send -X cancel 2> /dev/null || true'
+        run -b 'tmux bind -t vi-copy H start-of-line 2> /dev/null || true'
+        run -b 'tmux bind -T copy-mode-vi H send -X start-of-line 2> /dev/null || true'
+        run -b 'tmux bind -t vi-copy L end-of-line 2> /dev/null || true'
+        run -b 'tmux bind -T copy-mode-vi L send -X end-of-line 2> /dev/null || true'
       '';
     }
     {

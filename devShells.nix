@@ -2,34 +2,27 @@
 
 let
   inherit (pkgs) stdenv;
+  inherit (pkgs.lib) singleton;
+
   # a high-order-function for make android sdk with specific versions tools
   # such a plaftorm-andrid-X, build-tools-X, or system-images-android-X.
   #
   # mkAndroidSdk -------------------------------------------------------{{{
-  mkAndroidSdk =
-    let cpuArch = if stdenv.isAarch64 then "arm64-v8a" else "x86-64";
-    in
-    version: s: [
-      s.ndk-bundle
-      s.emulator
-      s.cmdline-tools-latest
-      s.tools
-      s.platform-tools
-      s."platforms-android-${version}"
-      # platforms-android-30
-      # build system tools for android related 
-      s."build-tools-${version}-0-0"
-      # build-tools-32-0-0
-      # patch
-      s.patcher-v4
-      # see here: https://github.com/tadfisher/android-nixpkgs/blob/1d27f12eb37772b0ae1354e68a898f71394c28e4/channels/stable/default.nix#L7162 
-      # android for create avd and use in emulator
-      # system-images-android-30-google-apis-x86-64
-      # system-images-android-30-google-apis-playstore-arm64-v8a
-      # platforms-android-30
-      s."system-images-android-${version}-google-apis-playstore-${cpuArch}"
-      s.extras-google-google-play-services
-    ];
+  cpuArchForAndroid = if stdenv.isAarch64 then "arm64-v8a" else "x86-64";
+  commonSdkInputs = s: [
+    s.platform-tools
+    s.cmdline-tools-latest
+    s.tools
+    s.patcher-v4
+    s.extras-google-google-play-services
+    s.emulator
+  ];
+
+  mkShellAndroid = { buildInputs ? [ ], sdkInputs ? _: [ ] }:
+    pkgs.mkShell {
+      buildInputs = buildInputs
+        ++ singleton (pkgs.androidSdk sdkInputs);
+    };
 
   # }}}
 
@@ -56,21 +49,43 @@ rec {
   # Android development environments ------------------- {{{
   #
   # `nix develop my#android29` 
-  android29 = mkShell {
+  android29 = mkShellAndroid {
     buildInputs = [
-      (androidSdk (mkAndroidSdk "29"))
       gradle
       jdk11
     ];
+    sdkInputs = s: [
+      s.build-tools-29-0-2
+      s.platforms-android-29
+      s.platforms-android-31
+      s."system-images-android-31-google-apis-playstore-${cpuArchForAndroid}"
+    ] ++ commonSdkInputs s;
+  };
+
+  # `nix develop my#android30` 
+  android30 = mkShellAndroid {
+    buildInputs = [
+      gradle
+      jdk11
+    ];
+    sdkInputs = s: [
+      s.build-tools-30-0-2
+      s.platforms-android-31
+      s."system-images-android-31-google-apis-playstore-${cpuArchForAndroid}"
+    ] ++ commonSdkInputs s;
   };
 
   # `nix develop my#android31` 
-  android31 = mkShell {
+  android31 = mkShellAndroid {
     buildInputs = [
-      (androidSdk (mkAndroidSdk "31"))
       gradle
       jdk11
     ];
+    sdkInputs = s: [
+      s.build-tools-31-0-0
+      s.platforms-android-31
+      s."system-images-android-31-google-apis-playstore-${cpuArchForAndroid}"
+    ] ++ commonSdkInputs s;
   };
 
   # }}}
@@ -107,7 +122,7 @@ rec {
       })
 
     ];
-    buildInputs = [ python3 ];
+    buildInputs = [ python3 pkg-config ];
   };
 
   # `nix develop my#node16` 
@@ -155,6 +170,13 @@ rec {
     buildInputs = [
       luajit
       luajitPackages.luafun
+    ];
+  };
+
+  go = mkShell {
+    name = "go-environments";
+    buildInputs = [
+      go
     ];
   };
 

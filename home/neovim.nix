@@ -106,6 +106,16 @@ let
             lualine-lsp-progress
           ];
         }
+
+        # this plugins is utilities before new buffer want to write a file when directory is NOT existed.
+        {
+          plugin = mkdir-nvim;
+          event = "FileWritePre";
+        }
+        {
+          plugin = comment-nvim;
+          keys = [ "gcc" "gbc" ];
+        }
       ];
 
       byCommand = [

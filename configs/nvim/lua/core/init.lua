@@ -19,8 +19,9 @@ end
 local indent = 2
 
 M.defaultOptions = {
-	--- vim/neovim options
-	-- vim.opt.[KEY] = value
+	-- vim/neovim options
+	--- same with vim.opt.[KEY] = value
+	--- e.g. `set encoding=utf8`
 	encoding = "utf8",
 	termguicolors = true,
 	backspace = { "indent", "eol", "start" },
@@ -37,6 +38,8 @@ M.defaultOptions = {
 	foldmethod = "expr",
 	compatible = false,
 	foldexpr = "nvim_treesitter#foldexpr()",
+	clipboard = "unnamed",
+	mouse = "",
 }
 
 function M.cmd(cmds)

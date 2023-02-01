@@ -80,15 +80,22 @@ local opts = {
 }
 
 wk.setup(opts)
+wk.register({
+	-- depends with command `set clipboard=unnamed`
+	y = { "*+y" },
+	d = { "*+d" },
+	p = { "*+p" },
+	P = { "*+P" },
+}, {
+	mode = "v", -- Normal mode
+	prefix = "<leader>",
+	buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
+	silent = true, -- use `silent` when creating keymaps
+	noremap = true, -- use `noremap` when creating keymaps
+	nowait = true, -- use `nowait` when creating keymaps
+})
 
 wk.register({
-	y = {
-		y = { '"+y' },
-		d = { '"+d' },
-		p = { '"+p' },
-		P = { '"+P' },
-	},
-
 	f = {
 		name = "Find...",
 		t = {

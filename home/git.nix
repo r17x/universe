@@ -58,9 +58,6 @@ in
       "git@bitbucket.org:" = {
         insteadOf = "https://bitbucket.org/";
       };
-      "git@bitbucket.org:" = {
-        insteadOf = "https://bitbucket.com/";
-      };
     };
   };
 

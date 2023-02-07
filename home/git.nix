@@ -52,8 +52,14 @@ in
     difftool.prompt = false;
     merge.tool = "vimdiff";
     url = {
-      "git@gitlab.com" = {
-        insteadOf = "https://gitlab.com";
+      "git@gitlab.com:" = {
+        insteadOf = "https://gitlab.com/";
+      };
+      "git@bitbucket.org:" = {
+        insteadOf = "https://bitbucket.org/";
+      };
+      "git@bitbucket.org:" = {
+        insteadOf = "https://bitbucket.com/";
       };
     };
   };

@@ -138,6 +138,12 @@ let
           cmd = [ "Codi" "CodiNew" "CodiSelect" "CodeExpand" ];
         }
 
+        # markdown preview
+        {
+          plugin = markdown-preview-nvim;
+          cmd = [ "MarkdownPreview" ];
+        }
+
         # secrets
         {
           plugin = vim-gnupg;

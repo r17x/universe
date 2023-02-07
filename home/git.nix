@@ -71,7 +71,7 @@ in
 
     {
       condition = "gitdir:~/go/";
-      contents.user = work;
+      contents.user = w1;
     }
 
     {

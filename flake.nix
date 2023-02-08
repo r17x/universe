@@ -36,6 +36,10 @@
     neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
     neorg-overlay.inputs.nixpkgs.follows = "nixpkgs-unstable";
     neorg-overlay.inputs.flake-utils.follows = "flake-utils";
+
+    # dvt
+    dvt.url = "github:efishery/dvt";
+    dvt.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
   outputs =
@@ -45,6 +49,7 @@
     , flake-utils
     , pre-commit-hooks
     , neorg-overlay
+    , dvt
     , ...
     } @inputs:
 
@@ -239,6 +244,10 @@
               }
             );
           };
+
+        dvt = _final: prev: {
+          dvt = inputs.dvt.packages.${prev.stdenv.system}.dvt;
+        };
       };
 
       # }}}

@@ -67,6 +67,27 @@
         "type": "github"
       }
     },
+    "dvt": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ],
+        "utils": "utils"
+      },
+      "locked": {
+        "lastModified": 1675797478,
+        "narHash": "sha256-d1mpV9VI3KzMXAk/MUnsqA1M2fEaq9/m+T+FXQJF/SA=",
+        "owner": "efishery",
+        "repo": "dvt",
+        "rev": "6ad771694d869bf8923ad8798b5ec3ee8b2d432a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "efishery",
+        "repo": "dvt",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -519,6 +540,7 @@
       "inputs": {
         "android-nixpkgs": "android-nixpkgs",
         "darwin": "darwin",
+        "dvt": "dvt",
         "flake-compat": "flake-compat",
         "flake-utils": "flake-utils_2",
         "home-manager": "home-manager",
@@ -549,6 +571,21 @@
       "original": {
         "owner": "oxalica",
         "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "utils": {
+      "locked": {
+        "lastModified": 1667395993,
+        "narHash": "sha256-nuEHfE/LcWyuSWnS8t12N1wc105Qtau+/OdUAjtQ0rA=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "5aed5285a952e0b949eb3ba02c12fa4fcfef535f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
         "type": "github"
       }
     }

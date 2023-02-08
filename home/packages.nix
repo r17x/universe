@@ -133,6 +133,7 @@
       nix-prefetch-git
       # nodePackages.node2nix # use with comma 
       # yarn2nix
+      dvt
     ] ++ lib.optionals
       stdenv.isDarwin
       [

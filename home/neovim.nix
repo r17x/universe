@@ -65,6 +65,8 @@ let
         # platform integrations
         { plugin = vim-wakatime; event = "BufRead"; }
 
+        { plugin = codeium-vim; cmd = "EnableCodeium"; }
+
         # lang-server-protocol ---{{{
         {
           plugin = lazy-lsp-nvim;

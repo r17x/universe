@@ -223,6 +223,18 @@
                   meta.homepage = "https://github.com/akinsho/git-conflict.nvim";
                 };
 
+                codeium-vim = vimUtils.buildVimPluginFrom2Nix {
+                  pname = "codeium-vim";
+                  version = "2023-02-08";
+                  src = fetchFromGitHub {
+                    owner = "Exafunction";
+                    repo = "codeium.vim";
+                    rev = "78382694eb15e1818ec6ff9ccd0389f63661b56f";
+                    sha256 = "1b4lf0s8x3qqvpmyzz0a7j3ynvlzx8sx621dqbf8l3vl7nfkc4gy";
+                  };
+                  meta.homepage = "https://github.com/Exafunction/codeium.vim";
+                };
+
                 # }}}
               }
             );

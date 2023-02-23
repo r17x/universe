@@ -12,6 +12,7 @@
 
       trusted-users = [
         "@admin"
+        "r17"
       ];
 
       substituters = [

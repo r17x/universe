@@ -31,7 +31,6 @@ in
     "firefox"
     "google-chrome"
     "raycast"
-    "visual-studio-code"
     "blackhole-16ch"
   ];
 

@@ -78,8 +78,8 @@ let
       rm = "rm -i";
 
       # Development
-      docker = "${pkgs.podman}/bin/podman";
-      docker-compose = "${pkgs.podman-compose}/bin/podman-compose";
+      # docker = "${pkgs.podman}/bin/podman";
+      # docker-compose = "${pkgs.podman-compose}/bin/podman-compose";
     };
 in
 {

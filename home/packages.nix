@@ -87,8 +87,10 @@
       ################################## 
       # Development
       ################################## 
-      podman
-      podman-compose
+      # podman
+      # podman-compose
+      colima
+      docker
       qemu
       babelfish
       paperkey

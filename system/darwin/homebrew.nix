@@ -31,7 +31,6 @@ in
     "firefox"
     "google-chrome"
     "raycast"
-    "blackhole-16ch"
   ];
 
 }

@@ -239,6 +239,16 @@
                   meta.homepage = "https://github.com/Exafunction/codeium.vim";
                 };
 
+                nvim-treesitter-rescript = vimUtils.buildVimPluginFrom2Nix {
+                  pname = "nvim-treesitter-rescript";
+                  version = "2023-03-05";
+                  src = fetchFromGitHub {
+                    owner = "nkrkv";
+                    repo = "nvim-treesitter-rescript";
+                    rev = "21ce711396b1d836a75781d65f34241f14161f94";
+                    sha256 = "1bzlc8a9fsbda6dg27g52d9mcwfrpmk1b00bspksvq18d69m6n53";
+                  };
+                };
                 # }}}
               }
             );

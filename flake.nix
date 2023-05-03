@@ -393,6 +393,22 @@
             packages = checks.pre-commit-check.packages or [ ];
           };
 
+          # this development shell use for ocaml.org
+          ocamlorg =
+            let ocamlPackages = pkgs.ocaml-ng.ocamlPackages_4_14; in
+            pkgs.mkShell {
+              name = "r17x_ocaml_org";
+              buildInputs = with ocamlPackages; [ ocaml ];
+              nativeBuildInputs = with pkgs; [
+                opam
+                pkg-config
+                libev
+                oniguruma
+                openssl
+                gmp
+              ];
+            };
+
         };
 
       # }}}

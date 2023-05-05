@@ -1,0 +1,11 @@
+{
+  "url": "https://github.com/luafun/luafun",
+  "rev": "cb6a7e25d4b55d9578fd371d1474b00e47bd29f3",
+  "date": "2022-05-20T12:32:27+03:00",
+  "path": "/nix/store/4ka959fym7brzx1hg7shlwsbrb5s5q5v-luafun",
+  "sha256": "0p7s6jj2d8c7h6jar89b94i3jbbd092vq1a5grhhqga7glz979cn",
+  "fetchLFS": false,
+  "fetchSubmodules": false,
+  "deepClone": false,
+  "leaveDotGit": false
+}

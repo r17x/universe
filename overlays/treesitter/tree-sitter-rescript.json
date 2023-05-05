@@ -1,0 +1,11 @@
+{
+  "url": "https://github.com/nkrkv/tree-sitter-rescript",
+  "rev": "ecdf5a05a942203458b96efa56f4a87c23b46654",
+  "date": "2023-04-27T21:06:40+02:00",
+  "path": "/nix/store/kr51pz9gn23jn6swd9n4f4br4k3s53yh-tree-sitter-rescript",
+  "sha256": "1brxp2s8zdhdprmar9bcfc9aik9wby9daf29ry3ha29cm3c503r6",
+  "fetchLFS": false,
+  "fetchSubmodules": false,
+  "deepClone": false,
+  "leaveDotGit": false
+}

@@ -36,9 +36,9 @@ require("neorg").setup({
 		["core.export"] = {},
 		["core.export.markdown"] = {},
 		-- ["core.integrations.nvim-cmp"] = {},
-		-- ["core.norg.completion"] = { config = { engine = "nvim-cmp" } },
-		["core.norg.concealer"] = { config = {} },
-		["core.norg.dirman"] = {
+		["core.completion"] = { config = { engine = "nvim-cmp" } },
+		["core.concealer"] = { config = {} },
+		["core.dirman"] = {
 			config = {
 				workspaces = {
 					work = "~/w0/notes", -- Format: <name_of_workspace> = <path_to_workspace_root>
@@ -49,7 +49,7 @@ require("neorg").setup({
 				index = "index.norg", -- The name of the main (root) .norg file
 			},
 		},
-		["core.norg.esupports.metagen"] = {
+		["core.esupports.metagen"] = {
 			config = {
 				type = "auto",
 			},

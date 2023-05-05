@@ -54,7 +54,7 @@
 
     let
       inherit (darwin.lib) darwinSystem;
-      inherit (inputs.nixpkgs-unstable.lib) attrValues makeOverridable singleton optionalAttrs;
+      inherit (inputs.nixpkgs-unstable.lib) attrValues makeOverridable singleton optionalAttrs importJSON;
 
       # default configurations --------------------------------------------------------------{{{
       # Configuration for `nixpkgs`
@@ -149,6 +149,18 @@
         # Overlay that adds various additional utility functions to `vimUtils`
         vimUtils = import ./overlays/vimUtils.nix;
 
+        treesitter = _: prev: {
+          tree-sitter-grammars = prev.tree-sitter-grammars // {
+            tree-sitter-rescript = let rescript_src = importJSON ./overlays/treesitter/tree-sitter-rescript.json; in
+              prev.tree-sitter.buildGrammar {
+                version = "2023-04-27";
+                language = "rescript";
+                generate = true;
+                src = rescript_src.path;
+              };
+          };
+        };
+
         # Overlya that add some additional lua library
         luajitPackages = _final: prev: {
           luajitPackages = prev.luajitPackages // {
@@ -157,17 +169,7 @@
               version = "scm-1";
 
               src = prev.fetchgit (removeAttrs
-                (builtins.fromJSON ''{
-  "url": "https://github.com/luafun/luafun",
-  "rev": "cb6a7e25d4b55d9578fd371d1474b00e47bd29f3",
-  "date": "2022-05-20T12:32:27+03:00",
-  "path": "/nix/store/4ka959fym7brzx1hg7shlwsbrb5s5q5v-luafun",
-  "sha256": "0p7s6jj2d8c7h6jar89b94i3jbbd092vq1a5grhhqga7glz979cn",
-  "fetchLFS": false,
-  "fetchSubmodules": false,
-  "deepClone": false,
-  "leaveDotGit": false
-}'') [ "date" "path" ]);
+                (importJSON ./overlays/lua/luafun.json) [ "date" "path" ]);
 
               disabled = with prev.lua; (prev.luajitPackages.luaOlder "5.1") || (prev.luajitPackages.luaAtLeast "5.4");
               propagatedBuildInputs = [ prev.lua ];
@@ -189,7 +191,7 @@
             inherit (self.overlays.vimUtils final prev) vimUtils;
           in
           {
-            vimPlugins = prev.vimPlugins.extend (_: _:
+            vimPlugins = prev.vimPlugins.extend (_: p:
               # Useful for testing/using Vim plugins that aren't in `nixpkgs`.
               vimUtils.buildVimPluginsFromFlakeInputs inputs [
                 # Add flake input names here for a Vim plugin repos
@@ -249,6 +251,28 @@
                     sha256 = "1bzlc8a9fsbda6dg27g52d9mcwfrpmk1b00bspksvq18d69m6n53";
                   };
                 };
+
+                nvim-treesitter = p.nvim-treesitter.overrideAttrs (_: {
+                  version = "2023-05-04";
+                  src = fetchFromGitHub {
+                    owner = "r17x";
+                    repo = "nvim-treesitter";
+                    rev = "4762ab19d15c00ae586aa50ba62adc6307b91a28";
+                    sha256 = "0xk7qk1ds6s0n8kflv6q75rlgrqwd9wzw9sk9dgjbq0yc36p0y69";
+                  };
+                });
+
+                vim-rescript = vimUtils.buildVimPluginFrom2Nix {
+                  pname = "vim-rescript";
+                  version = "2022-12-23";
+                  src = fetchFromGitHub {
+                    owner = "rescript-lang";
+                    repo = "vim-rescript";
+                    rev = "8128c04ad69487b449936a6fa73ea6b45338391e";
+                    sha256 = "0x5lhzlvfyz8aqbi5abn6fj0mr80yvwlwj43n7qc2yha8h3w17kr";
+                  };
+                };
+
                 # }}}
               }
             );
@@ -305,9 +329,10 @@
 
       homeConfigurations.r17 =
         let
-          pkgs = import inputs.nixpkgs-unstable (defaultNixpkgs // { system = "x86_64-linux"; });
+          pkgs = import inputs.nixpkgs-unstable (defaultNixpkgs // { system = "aarch64-darwin"; });
         in
         inputs.home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
           modules = attrValues self.homeManagerModules ++ singleton ({ config, ... }: {
             home.username = config.home.user-info.username;
             home.homeDirectory = "/${if pkgs.stdenv.isDarwin then "Users" else "home"}/${config.home.username}";

@@ -16,7 +16,9 @@ let
 
   # TODO specific grammar
   # treesitter = vimPlugins.nvim-treesitter.withPlugins (p: [
-  treesitter = vimPlugins.nvim-treesitter.withAllGrammars.overrideAttrs (_:
+  treesitter = (vimPlugins.nvim-treesitter.withPlugins (_:
+    vimPlugins.nvim-treesitter.allGrammars
+    ++ [ pkgs.tree-sitter-grammars.tree-sitter-rescript ])).overrideAttrs (_:
     let
       treesitter-parser-paths =
         pkgs.symlinkJoin {
@@ -57,6 +59,8 @@ let
       ];
 
       userTyping = [
+        { plugin = vim-rescript; ft = [ "rescript" ]; }
+
         { plugin = nvim-colorizer-lua; event = "BufReadPre"; }
 
         # git
@@ -225,6 +229,11 @@ in
         pkgs.luajitPackages.luafun
         plenary-nvim
       ];
+      package = pkgs.neovim-unwrapped.overrideAttrs (old: {
+        postFixup = old.preFixup or "" + ''
+          $out/bin/nvim --headless +TSInstall rescript +qa
+        '';
+      });
     };
 
     # impure configurations

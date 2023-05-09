@@ -140,6 +140,7 @@
       stdenv.isDarwin
       [
         mas
+        # orbstack # UNSTABLE, may be install in System (NEED Root)
         xbar
         rectangle
         cocoapods

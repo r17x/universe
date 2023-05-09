@@ -6,6 +6,7 @@ let
   packages = [
     "xbar"
     "obs-studio"
+    "orbstack"
     "telegram"
     "iriun-webcam"
     "clipy"

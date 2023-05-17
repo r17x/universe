@@ -436,7 +436,6 @@
               buildInputs = with ocamlPackages; [ ocaml merlin ];
               nativeBuildInputs = with pkgs; [
                 opam
-                ocamlformat
                 pkg-config
                 libev
                 oniguruma

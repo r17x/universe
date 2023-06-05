@@ -72,6 +72,8 @@ let
         { plugin = codeium-vim; cmd = "EnableCodeium"; }
 
         # lang-server-protocol ---{{{
+        { plugin = conjure; cmd = "ConjureShadowSelect"; }
+
         {
           plugin = lazy-lsp-nvim;
           event = "BufReadPre";
@@ -97,6 +99,7 @@ let
             cmp-path
             luasnip
             cmp_luasnip
+            cmp-conjure
           ];
         }
         # }}}

@@ -315,6 +315,22 @@
             }
           ];
         };
+
+        eR17x = RG.override {
+          modules = nixDarwinCommonModules ++ [
+            {
+              users.primaryUser = primaryUserInfo;
+              networking.computerName = "eR17x";
+              networking.hostName = "eR17x";
+              networking.knownNetworkServices = [
+                "Wi-Fi"
+                "USB 10/100/1000 LAN"
+              ];
+              homebrew.enable = true;
+            }
+          ];
+        };
+
       };
 
       homeConfigurations.r17 =

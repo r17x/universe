@@ -26,8 +26,6 @@ in
   programs.htop.enable = true;
   programs.htop.settings.show_program_path = true;
 
-  programs.password-store.enable = true;
-  programs.password-store.package = pkgs.pass.withExtensions (p: [ p.pass-otp ]);
   home.packages = with pkgs;
     [
       ################################## 

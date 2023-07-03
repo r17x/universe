@@ -67,6 +67,7 @@
         within = {
           neovim.enable = true;
           gpg.enable = true;
+          pass.enable = true;
         };
       };
 
@@ -361,6 +362,7 @@
         r17-tmux = import ./home/tmux.nix;
         r17-neovim = import ./home/neovim.nix;
         gpg = import ./home/gpg.nix;
+        pass = import ./home/pass.nix;
         r17-alacritty = import ./home/alacritty.nix;
         # this module disabled, because shell environment
         # defined is evaluated first & it takes more spaces

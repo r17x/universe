@@ -64,7 +64,10 @@
         fullName = "Rin";
         email = "hi@rin.rocks";
         nixConfigDirectory = "/Users/${username}/.config/nixpkgs";
-        within.neovim.enable = true;
+        within = {
+          neovim.enable = true;
+          gpg.enable = true;
+        };
       };
 
       # Modules shared by most `nix-darwin` personal configurations.
@@ -357,6 +360,7 @@
         r17-git = import ./home/git.nix;
         r17-tmux = import ./home/tmux.nix;
         r17-neovim = import ./home/neovim.nix;
+        gpg = import ./home/gpg.nix;
         r17-alacritty = import ./home/alacritty.nix;
         # this module disabled, because shell environment
         # defined is evaluated first & it takes more spaces

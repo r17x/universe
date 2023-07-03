@@ -25,6 +25,14 @@ in
         type = with types; bool;
         default = false;
       };
+      within.gpg.enable = mkOption {
+        type = with types; bool;
+        default = false;
+      };
+      within.pass.enable = mkOption {
+        type = with types; bool;
+        default = false;
+      };
     };
   };
 }

@@ -1,5 +1,8 @@
 { config, pkgs, lib, ... }:
 
+let
+  inherit (pkgs.stdenv) isDarwin;
+in
 {
   # Packages with configuration --------------------------------------------------------------- {{{
 
@@ -24,24 +27,7 @@
   programs.htop.settings.show_program_path = true;
 
   programs.password-store.enable = true;
-  programs.password-store.package = pkgs.pass.withExtensions (exts: [ exts.pass-otp ]);
-
-  programs.gpg = {
-    enable = true;
-    settings = {
-      use-agent = true;
-    };
-  };
-
-  # creating file with contents, that file will stored in nix-store
-  # then symlink to homeDirectory.
-  home.file.".gnupg/gpg-agent.conf".source = pkgs.writeTextFile {
-    name = "home-gpg-agent.conf";
-    text = lib.optionalString (pkgs.stdenv.isDarwin) ''
-      pinentry-program ${pkgs.pinentry_mac}/Applications/pinentry-mac.app/Contents/MacOS/pinentry-mac
-    '';
-  };
-
+  programs.password-store.package = pkgs.pass.withExtensions (p: [ p.pass-otp ]);
   home.packages = with pkgs;
     [
       ################################## 
@@ -66,11 +52,6 @@
       # nodePackages.mrm
 
       ################################## 
-      # Manager
-      ################################## 
-      yadm
-
-      ################################## 
       # Productivity
       ################################## 
       fzf # finder
@@ -82,7 +63,6 @@
       ripgrep # another yet of grep
       ffmpeg
       imagemagick
-      himalaya # CLI based email client
 
       ################################## 
       # Development
@@ -94,15 +74,12 @@
       qemu
       babelfish
       paperkey
-      gcc
       # yarn # currently defined in devShell.nix
       tokei
       # google-cloud-sdk
       # nodejs-16_x
       # gitlab-runner
       comby
-      python3
-      pkg-config
       mob
       # openvpn # currently not used
 
@@ -136,19 +113,17 @@
       # nodePackages.node2nix # use with comma 
       # yarn2nix
       dvt
-    ] ++ lib.optionals
-      stdenv.isDarwin
-      [
-        mas
-        # orbstack # UNSTABLE, may be install in System (NEED Root)
-        xbar
-        rectangle
-        cocoapods
-        m-cli # useful macOS CLI commands
-        xcode-install
-        telegram
-        iriun-webcam
-        clipy
-        # googlechrome
-      ];
+    ] ++ lib.optionals isDarwin [
+      mas
+      # orbstack # UNSTABLE, may be install in System (NEED Root)
+      xbar
+      rectangle
+      cocoapods
+      m-cli # useful macOS CLI commands
+      xcode-install
+      telegram
+      iriun-webcam
+      clipy
+      # googlechrome
+    ];
 }

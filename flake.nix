@@ -430,7 +430,7 @@
       # e.g., `nix develop my#node`. 
 
       devShells = let pkgs = self.legacyPackages.${system}; in
-        import ./devShells.nix { inherit pkgs; inherit (inputs.nixpkgs-unstable) lib; } // {
+        {
 
           # `nix develop my`.
           default = pkgs.mkShell {

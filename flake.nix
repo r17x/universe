@@ -149,7 +149,10 @@
               home.user-info = config.users.primaryUser;
             };
             # Add a registry entry for this flake
-            nix.registry.my.flake = self;
+            nix.registry = {
+              my.flake = self;
+              dvt.flake = inputs.dvt;
+            };
           }
         )
       ];

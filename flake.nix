@@ -10,7 +10,7 @@
 
     # Other sources / nix utilities
     flake-compat = { url = "github:edolstra/flake-compat"; flake = false; };
-    flake-utils.url = "github:numtide/flake-utils";
+    utils.url = "github:numtide/flake-utils";
 
     # Environment/system management
     darwin.url = "github:LnL7/nix-darwin";
@@ -21,12 +21,13 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     # utilities
-    pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
+    precommit.url = "github:cachix/pre-commit-hooks.nix";
+    precommit.inputs.nixpkgs.follows = "nixpkgs";
 
     # neovim
     neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
     neorg-overlay.inputs.nixpkgs.follows = "nixpkgs";
-    neorg-overlay.inputs.flake-utils.follows = "flake-utils";
+    neorg-overlay.inputs.flake-utils.follows = "utils";
 
     # dvt
     dvt.url = "github:efishery/dvt";
@@ -37,7 +38,7 @@
     { self
     , darwin
     , home-manager
-    , flake-utils
+    , utils
     , ...
     } @inputs:
 
@@ -273,7 +274,7 @@
 
       # }}}
 
-    } // flake-utils.lib.eachDefaultSystem (system: rec {
+    } // utils.lib.eachDefaultSystem (system: rec {
 
       legacyPackages = import inputs.nixpkgs (defaultNixpkgs // { inherit system; });
 
@@ -281,7 +282,7 @@
       # e.g., run `nix flake check` in $HOME/.config/nixpkgs.
 
       checks = {
-        pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
+        pre-commit-check = inputs.precommit.lib.${system}.run {
           src = ./.;
           # you can enable more hooks here {https://github.com/cachix/pre-commit-hooks.nix/blob/a4548c09eac4afb592ab2614f4a150120b29584c/modules/hooks.nix}
           hooks = {

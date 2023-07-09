@@ -195,6 +195,22 @@
         "type": "github"
       }
     },
+    "luafun": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1653039147,
+        "narHash": "sha256-lqWTPn1HPQxhfkUFvEUCbS05IkkroaykgYehJqQ0+lw=",
+        "owner": "luafun",
+        "repo": "luafun",
+        "rev": "cb6a7e25d4b55d9578fd371d1474b00e47bd29f3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "luafun",
+        "repo": "luafun",
+        "type": "github"
+      }
+    },
     "neorg": {
       "flake": false,
       "locked": {
@@ -407,6 +423,22 @@
         "type": "github"
       }
     },
+    "nvim-treesitter": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1683220453,
+        "narHash": "sha256-yXhwzWAe4CVfS1Mn/nlqHOdHcznYbOomskAb3cLEZ3Y=",
+        "owner": "r17x",
+        "repo": "nvim-treesitter",
+        "rev": "4762ab19d15c00ae586aa50ba62adc6307b91a28",
+        "type": "github"
+      },
+      "original": {
+        "owner": "r17x",
+        "repo": "nvim-treesitter",
+        "type": "github"
+      }
+    },
     "precommit": {
       "inputs": {
         "flake-compat": "flake-compat_4",
@@ -437,13 +469,21 @@
         "dvt": "dvt",
         "flake-compat": "flake-compat",
         "home-manager": "home-manager",
+        "luafun": "luafun",
         "neorg-overlay": "neorg-overlay",
         "nixpkgs": "nixpkgs_3",
         "nixpkgs-master": "nixpkgs-master",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "nvim-treesitter": "nvim-treesitter",
         "precommit": "precommit",
-        "utils": "utils_2"
+        "ts-rescript": "ts-rescript",
+        "utils": "utils_2",
+        "vimPlugins_codeium-vim": "vimPlugins_codeium-vim",
+        "vimPlugins_git-conflict-nvim": "vimPlugins_git-conflict-nvim",
+        "vimPlugins_lazy-nvim": "vimPlugins_lazy-nvim",
+        "vimPlugins_nvim-treesitter-rescript": "vimPlugins_nvim-treesitter-rescript",
+        "vimPlugins_vim-rescript": "vimPlugins_vim-rescript"
       }
     },
     "systems": {
@@ -473,6 +513,22 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "ts-rescript": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1686399124,
+        "narHash": "sha256-6wEJLLkwHaezVXwkQK/yPnjoU2MWijjT3+RAyDaXuJA=",
+        "owner": "nkrkv",
+        "repo": "tree-sitter-rescript",
+        "rev": "6376fa028f31aa4e26ca2c8f007e322cd2a5eb4a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nkrkv",
+        "repo": "tree-sitter-rescript",
         "type": "github"
       }
     },
@@ -506,6 +562,86 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "vimPlugins_codeium-vim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1688856040,
+        "narHash": "sha256-fLfP9V6S2tWfD/0PQ/ZPxgjqJwzAf+vUcQHAi803Hq8=",
+        "owner": "Exafunction",
+        "repo": "codeium.vim",
+        "rev": "276c424ac5c9e94117efb902d75a5580ce4ccc9a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Exafunction",
+        "repo": "codeium.vim",
+        "type": "github"
+      }
+    },
+    "vimPlugins_git-conflict-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1684827541,
+        "narHash": "sha256-yQvV8tDpjmMfmnWZrsXHgOEQsTFadHC46N6VdPXoX6o=",
+        "owner": "akinsho",
+        "repo": "git-conflict.nvim",
+        "rev": "3c89812a83ac749b8851a473863958325a1cd57c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "akinsho",
+        "repo": "git-conflict.nvim",
+        "type": "github"
+      }
+    },
+    "vimPlugins_lazy-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1688888819,
+        "narHash": "sha256-+sp8opLLJhZVb98IkqqKDbdKuKOhNIgnllySIr8zUKw=",
+        "owner": "folke",
+        "repo": "lazy.nvim",
+        "rev": "da8b00581a52f5f87ad2aba9f52171fda7491f18",
+        "type": "github"
+      },
+      "original": {
+        "owner": "folke",
+        "repo": "lazy.nvim",
+        "type": "github"
+      }
+    },
+    "vimPlugins_nvim-treesitter-rescript": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1678031872,
+        "narHash": "sha256-o1hTk2ko4K3n1QuAFWa92XFWUxPlHfGaUW1plxRi9K8=",
+        "owner": "nkrkv",
+        "repo": "nvim-treesitter-rescript",
+        "rev": "21ce711396b1d836a75781d65f34241f14161f94",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nkrkv",
+        "repo": "nvim-treesitter-rescript",
+        "type": "github"
+      }
+    },
+    "vimPlugins_vim-rescript": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1671818887,
+        "narHash": "sha256-eZ7AB0QKesHwsYNITvn2AOUKpDN2qRIXVuh7t+mHtHQ=",
+        "owner": "rescript-lang",
+        "repo": "vim-rescript",
+        "rev": "8128c04ad69487b449936a6fa73ea6b45338391e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rescript-lang",
+        "repo": "vim-rescript",
         "type": "github"
       }
     }

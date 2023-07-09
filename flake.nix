@@ -32,6 +32,20 @@
     # dvt
     dvt.url = "github:efishery/dvt";
     dvt.inputs.nixpkgs.follows = "nixpkgs";
+
+    # vimPlugins from flake inputs
+    # prefix "vimPlugins_"
+    # e.g: rescript-nvim to be vimPlugins_rescript-nvim
+    vimPlugins_vim-rescript = { url = "github:rescript-lang/vim-rescript"; flake = false; };
+    vimPlugins_nvim-treesitter-rescript = { url = "github:nkrkv/nvim-treesitter-rescript"; flake = false; };
+    vimPlugins_lazy-nvim = { url = "github:folke/lazy.nvim"; flake = false; };
+    vimPlugins_codeium-vim = { url = "github:Exafunction/codeium.vim"; flake = false; };
+    vimPlugins_git-conflict-nvim = { url = "github:akinsho/git-conflict.nvim"; flake = false; };
+
+    # others 
+    nvim-treesitter = { url = "github:r17x/nvim-treesitter"; flake = false; };
+    ts-rescript = { url = "github:nkrkv/tree-sitter-rescript"; flake = false; };
+    luafun = { url = "github:luafun/luafun"; flake = false; };
   };
 
   outputs =
@@ -44,7 +58,7 @@
 
     let
       inherit (darwin.lib) darwinSystem;
-      inherit (inputs.nixpkgs.lib) attrValues makeOverridable singleton optionalAttrs;
+      inherit (self.lib) attrValues makeOverridable singleton optionalAttrs;
       # Overlays --------------------------------------------------------------------------------{{{
 
       config = { allowUnfree = true; };
@@ -85,13 +99,49 @@
           # Overlay that adds various additional utility functions to `vimUtils`
           vimUtils = import ./overlays/vimUtils.nix;
 
-          treesitter = import ./overlays/treesitter.nix;
+          treesitter = _final: prev: {
+            tree-sitter-grammars = prev.tree-sitter-grammars // {
+              tree-sitter-rescript =
+                prev.pkgs-unstable.tree-sitter.buildGrammar {
+                  version = inputs.ts-rescript.lastModifiedDate;
+                  language = "rescript";
+                  generate = true;
+                  src = inputs.ts-rescript;
+                };
+            };
+          };
 
-          # Overlya that add some additional lua library
-          luajitPackages = import ./overlays/luajitPackages.nix;
+          # Overlay that add some additional lua library
+          luajitPackages = _final: prev: {
+            luajitPackages = prev.luajitPackages // {
+              luafun = prev.luajitPackages.buildLuarocksPackage {
+                pname = "fun";
+                version = "scm-1";
+
+                src = inputs.luafun;
+
+                disabled = with prev.lua; (prev.luajitPackages.luaOlder "5.1") || (prev.luajitPackages.luaAtLeast "5.4");
+                propagatedBuildInputs = [ prev.lua ];
+
+                meta = {
+                  homepage = "https://luafun.github.io/";
+                  description = "High-performance functional programming library for Lua";
+                  license.fullName = "MIT/X11";
+                };
+              };
+            };
+          }
+          ;
 
           # Overlay that adds some additional Neovim plugins
-          vimPlugins = import ./overlays/vimPlugins.nix;
+          vimPlugins = _final: prev: {
+            vimPlugins = prev.vimPlugins.extend (_: p: {
+              nvim-treesitter = p.nvim-treesitter.overrideAttrs (_: {
+                version = inputs.nvim-treesitter.rev;
+                src = inputs.nvim-treesitter;
+              });
+            } // self.lib.mkFlake2VimPlugin { pkgs = prev; });
+          };
 
         };
 
@@ -160,6 +210,10 @@
       # }}}
     in
     {
+
+      lib = inputs.nixpkgs.lib.extend (_: _: {
+        mkFlake2VimPlugin = import ./lib/mkFlake2VimPlugin.nix inputs;
+      });
 
       # Modules --------------------------------------------------------------------------------{{{
       # Current Macbook Pro M1 from Ruangguru.com

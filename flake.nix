@@ -3,10 +3,10 @@
 
   inputs = {
     # Package sets
+    nixpkgs.url = "github:NixOS/nixpkgs/release-23.05";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixpkgs-22.11-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixos-stable.url = "github:NixOS/nixpkgs/nixos-22.11";
 
     # Other sources / nix utilities
     flake-compat = { url = "github:edolstra/flake-compat"; flake = false; };
@@ -14,23 +14,23 @@
 
     # Environment/system management
     darwin.url = "github:LnL7/nix-darwin";
-    darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     # home-manager inputs
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    home-manager.url = "github:nix-community/home-manager/release-23.05";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     # utilities
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
 
     # neovim
     neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
-    neorg-overlay.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    neorg-overlay.inputs.nixpkgs.follows = "nixpkgs";
     neorg-overlay.inputs.flake-utils.follows = "flake-utils";
 
     # dvt
     dvt.url = "github:efishery/dvt";
-    dvt.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    dvt.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -38,22 +38,71 @@
     , darwin
     , home-manager
     , flake-utils
-    , pre-commit-hooks
-    , neorg-overlay
-    , dvt
     , ...
     } @inputs:
 
     let
       inherit (darwin.lib) darwinSystem;
-      inherit (inputs.nixpkgs-unstable.lib) attrValues makeOverridable singleton optionalAttrs importJSON;
+      inherit (inputs.nixpkgs.lib) attrValues makeOverridable singleton optionalAttrs;
+      # Overlays --------------------------------------------------------------------------------{{{
+
+      config = { allowUnfree = true; };
+
+      overlays =
+        {
+          # Overlays Package Sets ---------------------------------------------------------------{{{
+          # Overlays to add different versions `nixpkgs` into package set
+          pkgs-master = _: prev: {
+            pkgs-master = import inputs.nixpkgs-master {
+              inherit (prev.stdenv) system;
+              inherit config;
+            };
+          };
+          pkgs-stable = _: prev: {
+            pkgs-stable = import inputs.nixpkgs-stable {
+              inherit (prev.stdenv) system;
+              inherit config;
+            };
+          };
+          pkgs-unstable = _: prev: {
+            pkgs-unstable = import inputs.nixpkgs-unstable {
+              inherit (prev.stdenv) system;
+              inherit config;
+            };
+          };
+          apple-silicon = _: prev: optionalAttrs (prev.stdenv.system == "aarch64-darwin") {
+            # Add access to x86 packages system is running Apple Silicon
+            pkgs-x86 = import inputs.nixpkgs {
+              system = "x86_64-darwin";
+              inherit config;
+            };
+          };
+          # ------------------------------------------------------------------------------------}}}
+
+          mac-pkgs = import ./overlays/mac-pkgs;
+
+          # Overlay that adds various additional utility functions to `vimUtils`
+          vimUtils = import ./overlays/vimUtils.nix;
+
+          treesitter = import ./overlays/treesitter.nix;
+
+          # Overlya that add some additional lua library
+          luajitPackages = import ./overlays/luajitPackages.nix;
+
+          # Overlay that adds some additional Neovim plugins
+          vimPlugins = import ./overlays/vimPlugins.nix;
+
+        };
+
+      # }}}
 
       # default configurations --------------------------------------------------------------{{{
       # Configuration for `nixpkgs`
       defaultNixpkgs = {
-        config = { allowUnfree = true; };
-        overlays = attrValues self.overlays
-          ++ singleton (inputs.neorg-overlay.overlays.default);
+        inherit config;
+        overlays = attrValues overlays
+          ++ singleton (inputs.neorg-overlay.overlays.default)
+          ++ singleton (inputs.dvt.overlay);
       };
 
       # Personal configuration shared between `nix-darwin` and plain `home-manager` configs.
@@ -85,7 +134,7 @@
           {
             nixpkgs = defaultNixpkgs;
             # Hack to support legacy worklows that use `<nixpkgs>` etc.
-            nix.nixPath = { nixpkgs = "${inputs.nixpkgs-unstable}"; };
+            nix.nixPath = { nixpkgs = "${inputs.nixpkgs}"; };
             # `home-manager` config
             users.users.${primaryUser.username} = {
               home = "/Users/${primaryUser.username}";
@@ -107,178 +156,6 @@
       # }}}
     in
     {
-
-      # Overlays --------------------------------------------------------------------------------{{{
-
-      overlays = {
-        # Overlays to add different versions `nixpkgs` into package set
-        pkgs-master = _: prev: {
-          pkgs-master = import inputs.nixpkgs-master {
-            inherit (prev.stdenv) system;
-            inherit (defaultNixpkgs) config;
-          };
-        };
-        pkgs-stable = _: prev: {
-          pkgs-stable = import inputs.nixpkgs-stable {
-            inherit (prev.stdenv) system;
-            inherit (defaultNixpkgs) config;
-          };
-        };
-        pkgs-unstable = _: prev: {
-          pkgs-unstable = import inputs.nixpkgs-unstable {
-            inherit (prev.stdenv) system;
-            inherit (defaultNixpkgs) config;
-          };
-        };
-        apple-silicon = _: prev: optionalAttrs (prev.stdenv.system == "aarch64-darwin") {
-          # Add access to x86 packages system is running Apple Silicon
-          pkgs-x86 = import inputs.nixpkgs-unstable {
-            system = "x86_64-darwin";
-            inherit (defaultNixpkgs) config;
-          };
-        };
-
-        mac-pkgs = import ./overlays/mac-pkgs;
-
-        # Overlay that adds various additional utility functions to `vimUtils`
-        vimUtils = import ./overlays/vimUtils.nix;
-
-        treesitter = _: prev: {
-          tree-sitter-grammars = prev.tree-sitter-grammars // {
-            tree-sitter-rescript = let rescript_src = importJSON ./overlays/treesitter/tree-sitter-rescript.json; in
-              prev.tree-sitter.buildGrammar {
-                version = "2023-04-27";
-                language = "rescript";
-                generate = true;
-                src = rescript_src.path;
-              };
-          };
-        };
-
-        # Overlya that add some additional lua library
-        luajitPackages = _final: prev: {
-          luajitPackages = prev.luajitPackages // {
-            luafun = prev.luajitPackages.buildLuarocksPackage {
-              pname = "fun";
-              version = "scm-1";
-
-              src = prev.fetchgit (removeAttrs
-                (importJSON ./overlays/lua/luafun.json) [ "date" "path" ]);
-
-              disabled = with prev.lua; (prev.luajitPackages.luaOlder "5.1") || (prev.luajitPackages.luaAtLeast "5.4");
-              propagatedBuildInputs = [ prev.lua ];
-
-              meta = {
-                homepage = "https://luafun.github.io/";
-                description = "High-performance functional programming library for Lua";
-                license.fullName = "MIT/X11";
-              };
-            };
-          };
-        };
-
-        # Overlay that adds some additional Neovim plugins
-        vimPlugins = final: prev:
-          let
-            inherit (self.overlays.pkgs-unstable final prev) pkgs-unstable;
-            inherit (pkgs-unstable) fetchFromGitHub;
-            inherit (self.overlays.vimUtils final prev) vimUtils;
-          in
-          {
-            vimPlugins = prev.vimPlugins.extend (_: p:
-              # Useful for testing/using Vim plugins that aren't in `nixpkgs`.
-              vimUtils.buildVimPluginsFromFlakeInputs inputs [
-                # Add flake input names here for a Vim plugin repos
-              ] // {
-                # Other Vim plugins
-                # how to put packages here?
-                # 1. add in schema inputs `inputs.repo_flake.url`
-                # 2. add package name from inputs.repo_flake.packages.${prev.stdenv.system} package_name;
-                # 3. done
-                # e.g., `inherit (inputs.cornelis.packages.${prev.stdenv.system}) cornelis-vim;`
-
-                # vimPlugins - overlays --------------------------------------------------------{{{
-
-                lazy-nvim = vimUtils.buildVimPluginFrom2Nix {
-                  pname = "lazy.nvim";
-                  version = "2023-01-15";
-                  src = fetchFromGitHub {
-                    owner = "folke";
-                    repo = "lazy.nvim";
-                    rev = "984008f7ae17c1a8009d9e2f6dc007e13b90a744";
-                    sha256 = "19hqm6k9qr5ghi6v6brxr410bwyi01mqnhcq071h8bibdi4f66cg";
-                  };
-                  meta.homepage = "https://github.com/folke/lazy.nvim";
-                };
-
-                git-conflict-nvim = vimUtils.buildVimPluginFrom2Nix {
-                  pname = "git-conflict.nvim";
-                  version = "2022-12-31";
-                  src = fetchFromGitHub {
-                    owner = "akinsho";
-                    repo = "git-conflict.nvim";
-                    rev = "cbefa7075b67903ca27f6eefdc9c1bf0c4881017";
-                    sha256 = "1pli57rl2sglmz2ibbnjf5dxrv5a0nxk8kqqkq1b0drc30fk9aqi";
-                  };
-                  meta.homepage = "https://github.com/akinsho/git-conflict.nvim";
-                };
-
-                codeium-vim = vimUtils.buildVimPluginFrom2Nix {
-                  pname = "codeium-vim";
-                  version = "2023-02-08";
-                  src = fetchFromGitHub {
-                    owner = "Exafunction";
-                    repo = "codeium.vim";
-                    rev = "78382694eb15e1818ec6ff9ccd0389f63661b56f";
-                    sha256 = "1b4lf0s8x3qqvpmyzz0a7j3ynvlzx8sx621dqbf8l3vl7nfkc4gy";
-                  };
-                  meta.homepage = "https://github.com/Exafunction/codeium.vim";
-                };
-
-                nvim-treesitter-rescript = vimUtils.buildVimPluginFrom2Nix {
-                  pname = "nvim-treesitter-rescript";
-                  version = "2023-03-05";
-                  src = fetchFromGitHub {
-                    owner = "nkrkv";
-                    repo = "nvim-treesitter-rescript";
-                    rev = "21ce711396b1d836a75781d65f34241f14161f94";
-                    sha256 = "1bzlc8a9fsbda6dg27g52d9mcwfrpmk1b00bspksvq18d69m6n53";
-                  };
-                };
-
-                nvim-treesitter = p.nvim-treesitter.overrideAttrs (_: {
-                  version = "2023-05-04";
-                  src = fetchFromGitHub {
-                    owner = "r17x";
-                    repo = "nvim-treesitter";
-                    rev = "4762ab19d15c00ae586aa50ba62adc6307b91a28";
-                    sha256 = "0xk7qk1ds6s0n8kflv6q75rlgrqwd9wzw9sk9dgjbq0yc36p0y69";
-                  };
-                });
-
-                vim-rescript = vimUtils.buildVimPluginFrom2Nix {
-                  pname = "vim-rescript";
-                  version = "2022-12-23";
-                  src = fetchFromGitHub {
-                    owner = "rescript-lang";
-                    repo = "vim-rescript";
-                    rev = "8128c04ad69487b449936a6fa73ea6b45338391e";
-                    sha256 = "0x5lhzlvfyz8aqbi5abn6fj0mr80yvwlwj43n7qc2yha8h3w17kr";
-                  };
-                };
-
-                # }}}
-              }
-            );
-          };
-
-        dvt = _final: prev: {
-          dvt = inputs.dvt.packages.${prev.stdenv.system}.dvt;
-        };
-      };
-
-      # }}}
-
 
       # Modules --------------------------------------------------------------------------------{{{
       # Current Macbook Pro M1 from Ruangguru.com
@@ -339,7 +216,7 @@
 
       homeConfigurations.r17 =
         let
-          pkgs = import inputs.nixpkgs-unstable (defaultNixpkgs // { system = "aarch64-darwin"; });
+          pkgs = import inputs.nixpkgs (defaultNixpkgs // { system = "aarch64-darwin"; });
         in
         inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
@@ -398,7 +275,7 @@
 
     } // flake-utils.lib.eachDefaultSystem (system: rec {
 
-      legacyPackages = import inputs.nixpkgs-unstable (defaultNixpkgs // { inherit system; });
+      legacyPackages = import inputs.nixpkgs (defaultNixpkgs // { inherit system; });
 
       # Checks ----------------------------------------------------------------------{{{
       # e.g., run `nix flake check` in $HOME/.config/nixpkgs.

@@ -5,6 +5,7 @@ let
 in
 {
   # Packages with configuration --------------------------------------------------------------- {{{
+  programs.home-manager.enable = true;
 
   # Bat, a substitute for cat.
   # https://github.com/sharkdp/bat
@@ -106,7 +107,6 @@ in
       comma # run without install
       # nodePackages.node2nix # use with comma 
       # rnix-lsp # use in neovim and install with nvim-lsp-install
-      home-manager
       nix-prefetch-git
       # nodePackages.node2nix # use with comma 
       # yarn2nix

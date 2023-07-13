@@ -36,6 +36,7 @@
     # vimPlugins from flake inputs
     # prefix "vimPlugins_"
     # e.g: rescript-nvim to be vimPlugins_rescript-nvim
+    # e.g usage: programs.neovim.plugins = p: [p.rescript-nvim] or [pkgs.vimPlugins.rescript-nvim];
     vimPlugins_vim-rescript = { url = "github:rescript-lang/vim-rescript"; flake = false; };
     vimPlugins_nvim-treesitter-rescript = { url = "github:nkrkv/nvim-treesitter-rescript"; flake = false; };
     vimPlugins_lazy-nvim = { url = "github:folke/lazy.nvim"; flake = false; };
@@ -130,14 +131,13 @@
                 };
               };
             };
-          }
-          ;
+          };
 
           # Overlay that adds some additional Neovim plugins
           vimPlugins = _final: prev: {
             vimPlugins = prev.vimPlugins.extend (_: p: {
               nvim-treesitter = p.nvim-treesitter.overrideAttrs (_: {
-                version = inputs.nvim-treesitter.rev;
+                version = inputs.nvim-treesitter.lastModifiedDate;
                 src = inputs.nvim-treesitter;
               });
             } // self.lib.mkFlake2VimPlugin { pkgs = prev; });

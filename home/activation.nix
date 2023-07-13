@@ -2,7 +2,6 @@
 
 {
   # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
   # home.activation = {
   # copyApplications =
   #   lib.hm.dag.entryAfter [ "writeBoundary" ]

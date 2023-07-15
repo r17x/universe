@@ -204,6 +204,7 @@
               home.stateVersion = homeManagerStateVersion;
               home.user-info = config.users.primaryUser;
             };
+
             # Add a registry entry for this flake
             nix.registry = {
               my.flake = self;
@@ -258,6 +259,17 @@
               ];
               homebrew.enable = true;
             }
+
+            home-manager.darwinModules.home-manager
+            ({ config, pkgs, ... }: {
+              home-manager.users.${config.users.primaryUser.username} = {
+                imports = singleton sops.homeManagerModule;
+                home.packages = [ pkgs.sops ];
+                sops.gnupg.home = "~/.gnupg";
+                sops.gnupg.sshKeyPaths = [ ];
+                sops.defaultSopsFile = ./secrets/secret.yaml;
+              };
+            })
           ];
         };
 
@@ -292,8 +304,7 @@
             home.user-info = primaryUserInfo // {
               nixConfigDirectory = "${config.home.homeDirectory}/.config/nixpkgs";
             };
-          })
-          ++ singleton sops.homeManagerModule;
+          });
         };
 
       # `home-manager` modules

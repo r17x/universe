@@ -20,6 +20,11 @@
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    # secret management 
+    sops.url = "github:Mic92/sops-nix";
+    sops.inputs.nixpkgs.follows = "nixpkgs";
+    sops.inputs.nixpkgs-stable.follows = "nixpkgs-stable";
+
     # utilities
     precommit.url = "github:cachix/pre-commit-hooks.nix";
     precommit.inputs.nixpkgs.follows = "nixpkgs";
@@ -53,6 +58,7 @@
     { self
     , darwin
     , home-manager
+    , sops
     , utils
     , ...
     } @inputs:
@@ -278,14 +284,16 @@
         in
         inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          modules = attrValues self.homeManagerModules ++ singleton ({ config, ... }: {
+          modules = attrValues self.homeManagerModules
+          ++ singleton ({ config, ... }: {
             home.username = config.home.user-info.username;
             home.homeDirectory = "/${if pkgs.stdenv.isDarwin then "Users" else "home"}/${config.home.username}";
             home.stateVersion = homeManagerStateVersion;
             home.user-info = primaryUserInfo // {
               nixConfigDirectory = "${config.home.homeDirectory}/.config/nixpkgs";
             };
-          });
+          })
+          ++ singleton sops.homeManagerModule;
         };
 
       # `home-manager` modules

@@ -477,6 +477,7 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nvim-treesitter": "nvim-treesitter",
         "precommit": "precommit",
+        "sops": "sops",
         "ts-rescript": "ts-rescript",
         "utils": "utils_2",
         "vimPlugins_codeium-vim": "vimPlugins_codeium-vim",
@@ -484,6 +485,29 @@
         "vimPlugins_lazy-nvim": "vimPlugins_lazy-nvim",
         "vimPlugins_nvim-treesitter-rescript": "vimPlugins_nvim-treesitter-rescript",
         "vimPlugins_vim-rescript": "vimPlugins_vim-rescript"
+      }
+    },
+    "sops": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "nixpkgs-stable": [
+          "nixpkgs-stable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1689405598,
+        "narHash": "sha256-80fuO3FiXgJmUDQgB7sc2lq8Qe/oSkqDNwx9N/fCtBs=",
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "rev": "cfe47aff8660fd760b1db89613a3205c2c4ba7b6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "type": "github"
       }
     },
     "systems": {

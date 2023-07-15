@@ -273,7 +273,7 @@
           ];
         };
 
-        eR17x = RG.override {
+        eR17x = eR17.override {
           modules = nixDarwinCommonModules ++ [
             {
               users.primaryUser = primaryUserInfo;
@@ -309,6 +309,7 @@
 
       # `home-manager` modules
       homeManagerModules = {
+        r17-alacritty = import ./home/alacritty.nix;
         r17-activation = import ./home/activation.nix;
         r17-packages = import ./home/packages.nix;
         r17-shell = import ./home/shells.nix;
@@ -317,13 +318,6 @@
         r17-neovim = import ./home/neovim.nix;
         gpg = import ./home/gpg.nix;
         pass = import ./home/pass.nix;
-        r17-alacritty = import ./home/alacritty.nix;
-        # this module disabled, because shell environment
-        # defined is evaluated first & it takes more spaces
-        # in /nix/store
-        # 
-        # currently, using nix devShells.*
-        # r17-devshell = import ./home/devShell.nix;
 
         home-user-info = { lib, ... }: {
           options.home.user-info =
@@ -383,34 +377,10 @@
       # With `nix.registry.my.flake = inputs.self`, development shells can be created by running,
       # e.g., `nix develop my#node`. 
 
-      devShells = let pkgs = self.legacyPackages.${system}; in
-        {
-
-          # `nix develop my`.
-          default = pkgs.mkShell {
-            name = "r17x_devshells_default";
-            shellHook = '''' + checks.pre-commit-check.shellHook;
-            buildInputs = checks.pre-commit-check.buildInputs or [ ];
-            packages = checks.pre-commit-check.packages or [ ];
-          };
-
-          # this development shell use for ocaml.org
-          ocamlorg =
-            let ocamlPackages = pkgs.ocaml-ng.ocamlPackages_4_14; in
-            pkgs.mkShell {
-              name = "r17x_ocaml_org";
-              buildInputs = with ocamlPackages; [ ocaml merlin ];
-              nativeBuildInputs = with pkgs; [
-                opam
-                pkg-config
-                libev
-                oniguruma
-                openssl
-                gmp
-              ];
-            };
-
-        };
+      devShells = import ./devShells.nix {
+        pkgs = self.legacyPackages.${system};
+        precommit = checks.pre-commit-check;
+      };
 
       # }}}
 

@@ -268,6 +268,8 @@
                 sops.gnupg.home = "~/.gnupg";
                 sops.gnupg.sshKeyPaths = [ ];
                 sops.defaultSopsFile = ./secrets/secret.yaml;
+                # git diff integrations
+                programs.git.extraConfig.diff.sopsdiffer.textconv = "sops -d";
               };
             })
           ];

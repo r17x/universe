@@ -13,10 +13,19 @@ let
   #       esac
   #   done
   # '';
+  commandFoldl' = builtins.foldl' (a: b: a + b + '' &&'') '''';
   shellAliases = with pkgs;
     {
       # Nix related
-      nclean = "nix-collect-garbage && nix-collect-garbage -d";
+      nclean = commandFoldl' [
+        "nix profile wipe-history"
+        "nix-collect-garbage"
+        "nix-collect-garbage -d"
+        "nix-collect-garbage --delete-old"
+        "nix store gc"
+        "nix store optimise"
+        "nix-store --verify --repair --check-contents"
+      ];
       drb = "darwin-rebuild build --flake ${nixConfigDirectory}";
       drs = "darwin-rebuild switch --flake ${nixConfigDirectory}";
       psc0 = "nix build ${nixConfigDirectory}#darwinConfigurations.RG.system --json | jq -r '.[].outputs | to_entries[].value' | cachix push r17";

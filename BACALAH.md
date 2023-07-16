@@ -1,22 +1,22 @@
 # Rin's Home 🏚
 
-> This "README" is available in 🇮🇩 [**Bahasa**](./BACALAH.md).
+> "BACALAH" juga tersedia dalam [**Bahasa Inggris**](./README.md).
 
 ## Motivation
 
-(DRY) - Don't repeat yourself is a principle in software development. We should use this principle to reduce repetitive and time-consuming work. Personally, I just try to apply this principle in my professional and personal work. The most basic example is making these dotfiles, so that I don't have to provide the needs of the devices or tools used in everyday life. So, from this motivation you can see the main goal (Goal).
+(DRY) - Don't repeat yourself sebuah prinsip dalam pengembangan perangkat lunak (software development). Prinsip tersebut harusnya kita gunakan untuk mengurangi pekerjaan yang berulang-ulang dan menghabiskan waktu. Secara pribadi saya hanya mencoba menerapkan prinsip tersebut dalam bekerja secara professional atau personal. Contoh paling dasar yakni membuat dotfiles ini, yah gunannya agar saya tak perlu menyediakan kebutuhan perangkat atau alat yang digunakan dalam sehari - hari. Maka, dari motivasi ini kamu dapat melihat tujuan utamanya (Goal).
 
-The work of a software developer, software engineer, or software laborer requires tools that are used on top of a running system (termed an operating system or OS). I am familiar with using operating systems such as OSX based on Darwin/Unix made by Apple and ArchLinux based on Linux. Well my goal is to become a human user agnostic (not religiously attached to a system but still loyal to the creator of the user, except for the operating system made by Mikocok). The tools are collected in one place to store everything about tools, configurations, settings, credentials, and others that support the needs of working or just operating a computer. Where is my container? In this github, then we need git or other tools, which is clear that we stay in sync between each machine we use so that we don't do repetitive things.
+Pekerjaan seorang pengembang perangkat lunak, perekayasa perangkat lunak, atau buruh perangkat lunak membutuhkan alat yang digunakan diatas sebuah sistem yang berjalan (istilahnya sistem operasi atau OS). Saya familiar dalam menggunakan sistem operasi seperti OSX yang berbasis Darwin/unix besutan si buah apple dan ArchLinux yang berbasis Linux. Yah tujuan saya untuk menjadi seorang manusia pengguna yang agnostik (tidak beragama terikat pada sebuah sistem tetapi tetap setia kepada pencipta pengguna, kecuali sistem operasi buatan Mikocok). Alat - alat tersebut dikumpulkan dalam satu tempat untuk menyimpan segala hal mengenai alat - alat, konfigurasi, pengaturan, kredensial, dan lain - lain yang menunjang kebutuhan bekerja atau sekedar mengoperasikan komputer. Wadah saya dimana ? di github ini, maka kita memerlukan git atau alat lain, yang jelas kita tetap sinkron diantara setiap mesin yang kita gunakan sehingga kita tidak melakukan hal yang berulang-ulang.
 
-To keep it pure and the same between each machine, I decided to use Nix.
+agar tetap murni dan sama antara setiap mesin maka saya memutuskan untuk menggunakan Nix.
 
 ## Nix
 
-Nix is a "purely functional package manager", the Nix experience is completely different than other package managers. For some people it may seem complicated to use, but it is worth it if you understood what you really need.
+Nix merupakan "purely functional package manager", pengalaman yang dirasakan oleh Nix benar - benar berbeda dari pada package manager yang lain. Untuk beberapa orang mungkin terlihat rumit untuk digunakan, namun hal tersebut sangat worth it jika kamu benar - benar paham apa yang kamu butuhkan.
 
-If you have ever used the "virtual env" tool popular in the "python" ecosystem then you can experience the same thing but across operating systems, platforms, and programming language ecosystems.
+Jika kamu pernah menggunakan  "virtual env" alat yang populer di ekosistem "python" maka kamu dapat merasakan hal yang sama namun lintas sistem operasi, platform, dan ekosistem bahasa pemrograman.
 
-Since nix uses functional concepts like declarative then it should be utilized well. such as declaring needs and then declaring with nix language.
+Karena nix menggunakan konsep functional seperti declarative maka sebaiknya dimanfaatkan dengan baik. seperti mendeklarasikan kebutuhan lalu mendeklarasikan dengan bahasa nix.
 
 <hr/>
 

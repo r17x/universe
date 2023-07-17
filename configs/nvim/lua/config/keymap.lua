@@ -157,6 +157,12 @@ wk.register({
 	["<c-j>"] = { "<c-w>j", "Move down" },
 	["<c-k>"] = { "<c-w>k", "Move left" },
 	["<c-l>"] = { "<c-w>l", "Move right" },
+	["<c-t>"] = {
+		function()
+			vim.cmd([[ TagbarToggle ]])
+		end,
+		"Show Tag List",
+	},
 	["<c-n>"] = {
 		function()
 			vim.cmd([[ NvimTreeToggle ]])

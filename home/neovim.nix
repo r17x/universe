@@ -59,6 +59,8 @@ let
       ];
 
       userTyping = [
+        { plugin = tagbar; cmd = "TagbarToggle"; }
+
         { plugin = vim-rescript; ft = [ "rescript" ]; }
 
         { plugin = nvim-colorizer-lua; event = "BufReadPre"; }
@@ -226,7 +228,7 @@ in
       vimdiffAlias = true;
       withNodeJs = true;
       withPython3 = true;
-      extraPackages = [ pkgs.gcc ];
+      extraPackages = with pkgs; [ ];
       extraLuaPackages = ps: with ps; [
         # overlays
         pkgs.luajitPackages.luafun
@@ -269,6 +271,7 @@ in
 
         M.init = function(opts)
           require("lazy").setup(M.plugins, opts or M.opts)
+          vim.g.tagbar_ctags_bin = "${pkgs.universal-ctags}/bin/ctags"
         end
 
         return M

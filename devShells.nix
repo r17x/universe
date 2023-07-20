@@ -9,6 +9,13 @@
     packages = precommit.packages or [ ];
   };
 
+  node18 = pkgs.mkShell {
+    description = "Node.js 18 Development Environment";
+    buildInputs = with pkgs; [
+      nodejs_18
+      (nodePackages.yarn.override { nodejs = nodejs_18; })
+    ];
+  };
 
   # this development shell use for ocaml.org
   ocamlorg =

@@ -4,6 +4,8 @@ if not present then
 	return
 end
 
+local function displayUnicode() end
+
 cmp.setup({
 	snippet = {
 		expand = function(args)
@@ -19,7 +21,7 @@ cmp.setup({
 				Constructor = " ",
 				Enum = "了 ",
 				EnumMember = " ",
-				Field = " ",
+				Field = "ï",
 				File = " ",
 				Folder = " ",
 				Function = " ",

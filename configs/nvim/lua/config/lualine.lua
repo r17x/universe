@@ -1,3 +1,12 @@
+local function location_with_unicode()
+	local line = vim.fn.line(".")
+	local col = vim.fn.virtcol(".")
+	local currentLine = vim.api.nvim_get_current_line() or ""
+	local currentChar = string.format("U+%04X", string.byte(currentLine:sub(col, col))) or ""
+	-- will be display 5:5 U+006
+	return string.format("%3d:%d %s", line, col, currentChar)
+end
+
 local opts = {
 	options = {
 		theme = "edge",
@@ -13,7 +22,11 @@ local opts = {
 		lualine_x = { "lsp_progress" },
 		lualine_y = { "filetype", "progress" },
 		lualine_z = {
-			{ "location", separator = { right = "" }, left_padding = 2 },
+			{
+				location_with_unicode,
+				separator = { right = "" },
+				left_padding = 2,
+			},
 		},
 	},
 	inactive_sections = {

@@ -83,6 +83,7 @@ let
             nvim-lspconfig
             treesitter
             lsp_signature-nvim
+            lsp-inlayhints-nvim
             lsp-colors-nvim
             trouble-nvim
           ];

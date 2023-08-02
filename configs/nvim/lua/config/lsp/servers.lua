@@ -26,7 +26,8 @@ require("lazy-lsp").setup({
 	excluded_servers = {
 		"diagnosticls",
 		"efm",
-		"nil_ls",
+		-- "nil_ls",
+		-- "rnix",
 		"denols",
 		"flow",
 		"quick_lint_js",

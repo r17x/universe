@@ -115,7 +115,13 @@ in
       mas
       # orbstack # UNSTABLE, may be install in System (NEED Root)
       xbar
-      rectangle
+      (rectangle.overrideAttrs (_: rec {
+        version = "0.69";
+        src = fetchurl {
+          url = "https://github.com/rxhanson/Rectangle/releases/download/v${version}/Rectangle${version}.dmg";
+          hash = "sha256-8EQ8AzpYndDOZSMLtMZ9GHInvMBENBha9NKfhzHGcFM=";
+        };
+      }))
       cocoapods
       m-cli # useful macOS CLI commands
       xcode-install

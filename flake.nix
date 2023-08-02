@@ -340,7 +340,7 @@
         system-darwin-packages = import ./system/darwin/packages.nix;
         # system-darwin-security-pam = import ./system/darwin/security.nix;
         system-darwin-gpg = import ./system/darwin/gpg.nix;
-        system-darwin-window-manager = import ./system/darwin/wm.nix;
+        system-darwin-window-manager = import ./system/darwin/mouseless.nix;
         system-darwin-homebrew = import ./system/darwin/homebrew.nix;
       };
 

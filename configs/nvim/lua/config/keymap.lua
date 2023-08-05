@@ -160,6 +160,7 @@ wk.register({
 	["<c-t>"] = {
 		function()
 			vim.cmd([[ TagbarToggle ]])
+			vim.cmd([[ TroubleToggle ]])
 		end,
 		"Show Tag List",
 	},

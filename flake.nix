@@ -127,7 +127,7 @@
 
                 src = inputs.luafun;
 
-                disabled = with prev.lua; (prev.luajitPackages.luaOlder "5.1") || (prev.luajitPackages.luaAtLeast "5.4");
+                disabled = (prev.luajitPackages.luaOlder "5.1") || (prev.luajitPackages.luaAtLeast "5.4");
                 propagatedBuildInputs = [ prev.lua ];
 
                 meta = {

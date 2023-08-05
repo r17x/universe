@@ -28,7 +28,7 @@ end
 local ih = require("lsp-inlayhints")
 
 return function(client, bufnr)
-	ih.on_attach(client, bufnr)
+	ih.on_attach(client, bufnr, false)
 	signature_on_attach(bufnr)
 
 	local function buf_set_option(...)

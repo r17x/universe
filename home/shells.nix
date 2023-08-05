@@ -16,6 +16,7 @@ let
   commandFoldl' = builtins.foldl' (a: b: a + b + '' &&'') '''';
   shellAliases = with pkgs;
     {
+      tg = "tree --gitignore";
       # Nix related
       nclean = commandFoldl' [
         "nix profile wipe-history"

@@ -7,6 +7,19 @@
 
 local on_attach = require("config.lsp.attach")
 local capabilities = require("config.lsp.capabilities")
+
+local get_settings_to_configs = function()
+	-- TODO make more magically
+	return {
+		jsonls = {
+			settings = require("config.lsp.settings.lsp.jsonls"),
+		},
+		lua_ls = {
+			settings = require("config.lsp.settings.lsp.lua_ls"),
+		},
+	}
+end
+
 local function lspSymbol(name, icon)
 	local hl = "DiagnosticSign" .. name
 	vim.fn.sign_define(hl, { text = icon, numhl = hl, texthl = hl })
@@ -39,4 +52,6 @@ require("lazy-lsp").setup({
 		on_attach = on_attach,
 		capabilities = capabilities,
 	},
+
+	configs = get_settings_to_configs(),
 })

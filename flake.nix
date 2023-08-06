@@ -45,7 +45,8 @@
     vimPlugins_vim-rescript = { url = "github:rescript-lang/vim-rescript"; flake = false; };
     vimPlugins_nvim-treesitter-rescript = { url = "github:nkrkv/nvim-treesitter-rescript"; flake = false; };
     vimPlugins_lazy-nvim = { url = "github:folke/lazy.nvim"; flake = false; };
-    vimPlugins_codeium-vim = { url = "github:Exafunction/codeium.vim"; flake = false; };
+    # vimPlugins_codeium-vim = { url = "github:Exafunction/codeium.vim"; flake = false; };
+    vimPlugins_codeium = { url = "github:jcdickinson/codeium.nvim"; flake = false; };
     vimPlugins_git-conflict-nvim = { url = "github:akinsho/git-conflict.nvim"; flake = false; };
 
     # others 

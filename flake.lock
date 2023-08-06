@@ -480,7 +480,7 @@
         "sops": "sops",
         "ts-rescript": "ts-rescript",
         "utils": "utils_2",
-        "vimPlugins_codeium-vim": "vimPlugins_codeium-vim",
+        "vimPlugins_codeium": "vimPlugins_codeium",
         "vimPlugins_git-conflict-nvim": "vimPlugins_git-conflict-nvim",
         "vimPlugins_lazy-nvim": "vimPlugins_lazy-nvim",
         "vimPlugins_nvim-treesitter-rescript": "vimPlugins_nvim-treesitter-rescript",
@@ -589,19 +589,19 @@
         "type": "github"
       }
     },
-    "vimPlugins_codeium-vim": {
+    "vimPlugins_codeium": {
       "flake": false,
       "locked": {
-        "lastModified": 1689206605,
-        "narHash": "sha256-hqxMqnYMUZZzxuv70pcu2cxbDgcmkFUcxBdrnP6sYLM=",
-        "owner": "Exafunction",
-        "repo": "codeium.vim",
-        "rev": "f6ad6cba45dc467a51f053a6c557ef701084ccd5",
+        "lastModified": 1691251289,
+        "narHash": "sha256-dqJ0ee2/ZYAYS4LQj3vUTh2oUX7kHGHRIH6UtJlzLPI=",
+        "owner": "jcdickinson",
+        "repo": "codeium.nvim",
+        "rev": "bc1505b8ad9591dc342e377136237fb0babae557",
         "type": "github"
       },
       "original": {
-        "owner": "Exafunction",
-        "repo": "codeium.vim",
+        "owner": "jcdickinson",
+        "repo": "codeium.nvim",
         "type": "github"
       }
     },

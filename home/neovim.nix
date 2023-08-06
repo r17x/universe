@@ -71,7 +71,7 @@ let
         # platform integrations
         { plugin = vim-wakatime; event = "BufRead"; }
 
-        { plugin = codeium-vim; cmd = "EnableCodeium"; }
+        # { plugin = codeium-vim; cmd = "EnableCodeium"; }
 
         # lang-server-protocol ---{{{
         { plugin = conjure; cmd = "ConjureShadowSelect"; }
@@ -95,8 +95,10 @@ let
           plugin = nvim-cmp;
           event = "InsertEnter";
           dependencies = [
+            codeium
             friendly-snippets
             cmp-nvim-lsp
+            cmp-nvim-lsp-signature-help
             cmp-buffer
             cmp-cmdline
             cmp-path

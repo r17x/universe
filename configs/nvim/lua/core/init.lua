@@ -53,12 +53,12 @@ function M.options(opts)
 end
 
 function M.g(opts)
-	f.each(global, opts or M.defaultOptions)
+	f.each(global, opts or {})
 	return M
 end
 
 function M.o(opts)
-	f.each(global_only, opts or M.defaultOptions)
+	f.each(global_only, opts or {})
 	return M
 end
 

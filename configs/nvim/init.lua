@@ -7,6 +7,7 @@ require("core")
 	-- will set vim.g[KEY]-
 	--- e.g. let g:some_key = value
 	.g({
+		codeium_disable_bindings = 1,
 		elite_mode = 1,
 		edge_style = "neon", -- https://github.com/sainnhe/edge/blob/master/doc/edge.txt#L198
 		-- edge_better_performance = 1, -- https://github.com/sainnhe/edge/blob/master/doc/edge.txt#L416

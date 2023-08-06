@@ -80,6 +80,19 @@ local opts = {
 }
 
 wk.setup(opts)
+
+-- register keymap for Normal mode
+-- wk.register({
+-- key
+-- }, {
+--   mode = "n",     -- Normal mode
+--   prefix = "<leader>",
+--   buffer = nil,   -- Global mappings. Specify a buffer number for buffer local mappings
+--   silent = true,  -- use `silent` when creating keymaps
+--   noremap = true, -- use `noremap` when creating keymaps
+--   nowait = true,  -- use `nowait` when creating keymaps
+-- })
+
 wk.register({
 	-- depends with command `set clipboard=unnamed`
 	y = { "*+y" },
@@ -87,13 +100,22 @@ wk.register({
 	p = { "*+p" },
 	P = { "*+P" },
 }, {
-	mode = "v", -- Normal mode
+	mode = "v", -- Visual mode
 	prefix = "<leader>",
 	buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
 	silent = true, -- use `silent` when creating keymaps
 	noremap = true, -- use `noremap` when creating keymaps
 	nowait = true, -- use `nowait` when creating keymaps
 })
+
+-- wk.register({
+-- }, {
+--   mode = "i",     -- Visual mode
+--   prefix = "",
+--   silent = true,  -- use `silent` when creating keymaps
+--   noremap = true, -- use `noremap` when creating keymaps
+--   nowait = true,  -- use `nowait` when creating keymaps
+-- })
 
 wk.register({
 	f = {
@@ -127,6 +149,13 @@ wk.register({
 			d = { gs.toggle_deleted, "Toggle Deleted" },
 			b = { gs.toggle_current_line_blame, "Toggle Current line blame" },
 		},
+	},
+
+	["//"] = {
+		function()
+			vim.cmd([[ nohlsearch ]])
+		end,
+		"Clear Hightlight search",
 	},
 
 	["<up>"] = {

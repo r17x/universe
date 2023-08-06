@@ -4,7 +4,13 @@ if not present then
 	return
 end
 
-local function displayUnicode() end
+local presentCodeium, codeium = pcall(require, "codeium")
+
+if not presentCodeium then
+	return
+end
+
+codeium.setup({})
 
 cmp.setup({
 	snippet = {
@@ -19,6 +25,7 @@ cmp.setup({
 				Color = " ",
 				Constant = " ",
 				Constructor = " ",
+				Codeium = "",
 				Enum = "了 ",
 				EnumMember = " ",
 				Field = "ï",
@@ -44,6 +51,7 @@ cmp.setup({
 					or "[LSP]",
 				nvim_lua = "[Lua]",
 				buffer = "[BUF]",
+				codeium = "[AI]",
 			})[entry.source.name]
 
 			return vim_item
@@ -82,7 +90,9 @@ cmp.setup({
 
 	sources = cmp.config.sources({
 		{ name = "nvim_lsp" },
+		{ name = "nvim_lsp_signature_help" },
 		{ name = "luasnip" },
+		{ name = "codeium" },
 	}, {
 		{ name = "buffer" },
 	}),

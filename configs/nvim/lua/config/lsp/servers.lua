@@ -46,6 +46,16 @@ require("lazy-lsp").setup({
 		"quick_lint_js",
 		"rls",
 	},
+
+	preferred_servers = {
+		nix = { "nil_ls", "rnix" },
+		javascript = { "eslint", "tsserver" },
+		javascriptreact = { "eslint", "tsserver" },
+		typescript = { "eslint", "tsserver" },
+		typescriptreact = { "eslint", "tsserver" },
+		markdown = { "marksman", "ltex" },
+	},
+
 	-- Default config passed to all servers to specify on_attach callback and other options.
 	default_config = {
 		flags = { debounce_text_changes = 150 },

@@ -155,6 +155,12 @@ in
       ];
 
       functions = {
+        ghds = ''
+          for repo in $argv
+            gh repo delete $r --yes
+          end
+        '';
+
         gitignore = "curl -sL https://www.gitignore.io/api/$argv";
         # FIXME
         # use-nix = ''

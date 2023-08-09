@@ -11,6 +11,15 @@ local capabilities = require("config.lsp.capabilities")
 local get_settings_to_configs = function()
 	-- TODO make more magically
 	return {
+		jdtls = {
+			cmd = {
+				"jdt-language-server",
+				"-configuration",
+				"~/.cache/jdtls/config",
+				"-data",
+				"~/.cache/jdtls/workspace",
+			},
+		},
 		jsonls = {
 			settings = require("config.lsp.settings.lsp.jsonls"),
 		},

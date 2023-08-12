@@ -116,10 +116,10 @@ in
       # orbstack # UNSTABLE, may be install in System (NEED Root)
       xbar
       (rectangle.overrideAttrs (_: rec {
-        version = "0.69";
+        version = "0.70";
         src = fetchurl {
           url = "https://github.com/rxhanson/Rectangle/releases/download/v${version}/Rectangle${version}.dmg";
-          hash = "sha256-8EQ8AzpYndDOZSMLtMZ9GHInvMBENBha9NKfhzHGcFM=";
+          hash = "sha256-YJYDzmFfLlXDupyEjoEAin5qynyLjXjuav1DSS/Q5zU=";
         };
       }))
       cocoapods

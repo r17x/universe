@@ -33,4 +33,13 @@
       ];
     };
 
+  pnpm = pkgs.mkShell {
+    description = "Nodejs with PNPM";
+
+    buildInputs = with pkgs; [
+      nodejs_18
+      (nodePackages.pnpm.override { nodejs = nodejs_18; })
+    ];
+  };
+
 }

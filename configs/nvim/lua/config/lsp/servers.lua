@@ -11,6 +11,9 @@ local capabilities = require("config.lsp.capabilities")
 local get_settings_to_configs = function()
 	-- TODO make more magically
 	return {
+		gopls = {
+			settings = require("config.lsp.settings.lsp.gopls"),
+		},
 		jdtls = {
 			cmd = {
 				"jdt-language-server",
@@ -25,6 +28,9 @@ local get_settings_to_configs = function()
 		},
 		lua_ls = {
 			settings = require("config.lsp.settings.lsp.lua_ls"),
+		},
+		tsserver = {
+			settings = require("config.lsp.settings.lsp.tsserver"),
 		},
 	}
 end

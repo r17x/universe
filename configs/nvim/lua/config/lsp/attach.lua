@@ -27,6 +27,10 @@ end
 -- local ih = require("inlay-hints")
 local ih = require("lsp-inlayhints")
 
+ih.setup({
+	renderer = "inlay-hints/render/virtline",
+})
+
 return function(client, bufnr)
 	ih.on_attach(client, bufnr, false)
 	signature_on_attach(bufnr)

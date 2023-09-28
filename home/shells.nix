@@ -94,13 +94,10 @@ let
 in
 {
   home = with pkgs;{
-    shellAliases = shellAliases;
+    inherit shellAliases;
     sessionPath = [
       "$HOME/.yarn/bin"
     ];
-    sessionVariables = {
-      RUST_SRC_PATH = "${rust.packages.stable.rustPlatform.rustLibSrc}";
-    };
     packages = with fishPlugins;[
       thefuck
       # https://github.com/franciscolourenco/done

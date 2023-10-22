@@ -1,11 +1,5 @@
 {
-  "Ansi 5 Color" : {
-    "Red Component" : 0.78114920854568481,
-    "Color Space" : "sRGB",
-    "Blue Component" : 0.87712705135345459,
-    "Alpha Component" : 1,
-    "Green Component" : 0.45849359035491943
-  },
+  "Thin Strokes" : 4,
   "Working Directory" : "\/Users\/r17",
   "Prompt Before Closing 2" : false,
   "Selected Text Color" : {
@@ -36,11 +30,11 @@
   "Show Status Bar" : false,
   "Character Encoding" : 4,
   "Selection Color" : {
-    "Red Component" : 0.24705882352941178,
+    "Red Component" : 0.24123278260231018,
     "Color Space" : "sRGB",
-    "Blue Component" : 0.35686274509803922,
+    "Blue Component" : 0.31928470730781555,
     "Alpha Component" : 1,
-    "Green Component" : 0.2627450980392157
+    "Green Component" : 0.26668757200241089
   },
   "Blend" : 0.16980701731465997,
   "Mouse Reporting" : true,
@@ -62,6 +56,7 @@
     "slogin",
     "telnet"
   ],
+  "Non-ASCII Ligatures" : false,
   "Scrollback Lines" : 1000,
   "Draw Powerline Glyphs" : true,
   "Status Bar Layout" : {
@@ -449,8 +444,8 @@
     "Green Component" : 0.1734282374382019
   },
   "Blur" : false,
+  "Normal Font" : "FiraCodeNF-Ret 10",
   "Vertical Spacing" : 1,
-  "Normal Font" : "FiraCodeNerdFontCompleteM-Regular 10",
   "Ansi 7 Color" : {
     "Red Component" : 0.67070978879928589,
     "Color Space" : "sRGB",
@@ -483,14 +478,14 @@
   },
   "Transparency" : 0,
   "Background Color" : {
-    "Red Component" : 0.16862745098039217,
+    "Red Component" : 0.16862745583057404,
     "Color Space" : "sRGB",
-    "Blue Component" : 0.22745098039215686,
+    "Blue Component" : 0.22352941334247589,
     "Alpha Component" : 1,
-    "Green Component" : 0.17254901960784313
+    "Green Component" : 0.17254902422428131
   },
   "Screen" : -1,
-  "Non Ascii Font" : "Monaco 12",
+  "Non Ascii Font" : "HackNFM-Regular 13",
   "Ansi 13 Color" : {
     "Red Component" : 0.78114920854568481,
     "Color Space" : "sRGB",
@@ -501,7 +496,13 @@
   "Columns" : 80,
   "Unicode Normalization" : 0,
   "Visual Bell" : true,
+  "Custom Directory" : "No",
   "ASCII Ligatures" : true,
-  "Thin Strokes" : 4,
-  "Custom Directory" : "No"
+  "Ansi 5 Color" : {
+    "Red Component" : 0.78114920854568481,
+    "Color Space" : "sRGB",
+    "Blue Component" : 0.87712705135345459,
+    "Alpha Component" : 1,
+    "Green Component" : 0.45849359035491943
+  }
 }

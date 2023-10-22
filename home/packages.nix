@@ -126,7 +126,7 @@ in
       m-cli # useful macOS CLI commands
       xcode-install
       telegram
-      iriun-webcam
+      # iriun-webcam
       clipy
       # googlechrome
     ];

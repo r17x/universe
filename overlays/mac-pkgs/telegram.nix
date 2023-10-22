@@ -12,12 +12,12 @@ let
   pname = "telegram";
 
   version = rec {
-    aarch64-darwin = "4.0.2";
+    aarch64-darwin = "4.10.2";
     x86_64-darwin = aarch64-darwin;
   }.${system} or throwSystem;
 
   sha256 = rec {
-    aarch64-darwin = "sha256-Jr0jP15TQOJwWmo8Rbn2fGWMvMoSQTQ+Tl9e4HgFjBc=";
+    aarch64-darwin = "sha256-Rev1b2gqBGVXoCsNMlKKO8YBJkXZ3QswntvlEfRV2QE=";
     x86_64-darwin = aarch64-darwin;
   }.${system} or throwSystem;
 

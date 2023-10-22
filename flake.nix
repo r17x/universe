@@ -279,7 +279,9 @@
         eR17x = eR17.override {
           modules = nixDarwinCommonModules ++ [
             {
-              users.primaryUser = primaryUserInfo;
+              users.primaryUser = primaryUserInfo // {
+                username = "er17x";
+              };
               networking.computerName = "eR17x";
               networking.hostName = "eR17x";
               networking.knownNetworkServices = [

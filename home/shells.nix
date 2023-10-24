@@ -38,6 +38,9 @@ let
       gpbp = "gpg --export-options backup --export";
       # secret or public gpg import
       gprs = "gpg --export-options restore --import";
+      # gpg trust data
+      gpbt = "gpg --export-ownertrust";
+      gprt = "gpg --import-ownertrust";
 
       # lenv show list generations aka list build version
       # senv switch generation <number>

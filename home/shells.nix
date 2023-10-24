@@ -32,6 +32,13 @@ let
       psc0 = "nix build ${nixConfigDirectory}#darwinConfigurations.RG.system --json | jq -r '.[].outputs | to_entries[].value' | cachix push r17";
       psc1 = "nix build ${nixConfigDirectory}#darwinConfigurations.eR17.system --json | jq -r '.[].outputs | to_entries[].value' | cachix push r17";
 
+      # secret gpg export
+      gpbs = "gpg --export-options backup --export-secret-keys";
+      # public gpg export
+      gpbp = "gpg --export-options backup --export";
+      # secret or public gpg import
+      gprs = "gpg --export-options restore --import";
+
       # lenv show list generations aka list build version
       # senv switch generation <number>
       # denv delete generation <number>

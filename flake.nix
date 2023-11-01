@@ -346,6 +346,7 @@
         system-darwin-gpg = import ./system/darwin/gpg.nix;
         system-darwin-window-manager = import ./system/darwin/mouseless.nix;
         system-darwin-homebrew = import ./system/darwin/homebrew.nix;
+        system-darwin-network = import ./system/darwin/network.nix;
       };
 
       # }}}

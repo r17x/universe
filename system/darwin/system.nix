@@ -9,6 +9,8 @@
   system.defaults.dock.showhidden = true;
   # keyboard UI
   system.defaults.NSGlobalDomain.AppleKeyboardUIMode = 3;
+  services.karabiner-elements.enable = true;
+
   # finder 
   system.defaults.finder.AppleShowAllExtensions = true;
   system.defaults.finder.QuitMenuItem = true;

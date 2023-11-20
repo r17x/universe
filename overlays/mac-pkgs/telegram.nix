@@ -11,13 +11,14 @@ let
 
   pname = "telegram";
 
+  # see version history https://desktop.telegram.org/changelog
   version = rec {
-    aarch64-darwin = "4.10.2";
+    aarch64-darwin = "4.11.6";
     x86_64-darwin = aarch64-darwin;
   }.${system} or throwSystem;
 
   sha256 = rec {
-    aarch64-darwin = "sha256-Rev1b2gqBGVXoCsNMlKKO8YBJkXZ3QswntvlEfRV2QE=";
+    aarch64-darwin = "sha256-g6Cm3bMq8nVPf2On94yNYmKdfnCyxaEsnVbsJYBaVZs";
     x86_64-darwin = aarch64-darwin;
   }.${system} or throwSystem;
 

@@ -52,6 +52,7 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 require("lazy-lsp").setup({
 	-- By default all available servers are set up. Exclude unwanted or misbehaving servers.
 	excluded_servers = {
+		"ocamlls",
 		"diagnosticls",
 		"efm",
 		-- "nil_ls",

@@ -6,7 +6,13 @@
 
 listen_addresses = ['127.0.0.1:53', '[::1]:53']
 
-server_names = ['cloudflare', 'cloudflare-ipv6']
+server_names = [
+  'adguard-dns-doh',
+  'cloudflare',
+  'cloudflare-security',
+  'cloudflare-ipv6',
+  'cloudflare-security-ipv6',
+]
 
 max_clients = 250
 

@@ -84,7 +84,8 @@ let
       pullhead = "git pull origin (git rev-parse --abbrev-ref HEAD)";
       plh = "pullhead";
       pushhead = "git push origin (git rev-parse --abbrev-ref HEAD)";
-      psh = "pushhead";
+      gas = "pushhead";
+      gasin = "pushhead --force";
       gi = "gitignore";
       g = "git";
       gtemp = "git commit -m \"temp\" --no-verify";

@@ -12,9 +12,9 @@ let
     signingKey = "5CA1E57AFBF76F90";
   };
   w1 = {
-    name = "r17x";
-    email = "ri7nz@evilfactory.id";
-    signingKey = "5CA1E57AFBF76F90";
+    name = "Rin";
+    email = "adysurya.agus@efishery.com";
+    signingKey = "4B7C9003F501380C";
   };
 in
 {

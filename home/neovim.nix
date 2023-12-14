@@ -173,6 +173,19 @@ let
         # magit in neovim
         { plugin = vimagit; cmd = "Magit"; }
 
+        # AI
+        { plugin = nui-nvim; }
+
+        {
+          plugin = chatgpt-nvim;
+          event = "VeryLazy";
+          dependencies = [
+            nui-nvim
+            plenary-nvim
+            telescope-nvim
+          ];
+        }
+
       ];
     in
     ui ++ userTyping ++ byCommand;

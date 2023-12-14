@@ -480,6 +480,7 @@
         "sops": "sops",
         "ts-rescript": "ts-rescript",
         "utils": "utils_2",
+        "vimPlugins_chatgpt-nvim": "vimPlugins_chatgpt-nvim",
         "vimPlugins_codeium": "vimPlugins_codeium",
         "vimPlugins_git-conflict-nvim": "vimPlugins_git-conflict-nvim",
         "vimPlugins_lazy-nvim": "vimPlugins_lazy-nvim",
@@ -586,6 +587,22 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "vimPlugins_chatgpt-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1699967900,
+        "narHash": "sha256-euCrIrviKcVUu14pVZ4VRxDy1wEiIiabUu0xBkP+tvY=",
+        "owner": "jackMort",
+        "repo": "ChatGPT.nvim",
+        "rev": "b50fdaf7836c18e0de2f1def0c1f39d56ef8bced",
+        "type": "github"
+      },
+      "original": {
+        "owner": "jackMort",
+        "repo": "ChatGPT.nvim",
         "type": "github"
       }
     },

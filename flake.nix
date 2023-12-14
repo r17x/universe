@@ -48,6 +48,7 @@
     # vimPlugins_codeium-vim = { url = "github:Exafunction/codeium.vim"; flake = false; };
     vimPlugins_codeium = { url = "github:jcdickinson/codeium.nvim"; flake = false; };
     vimPlugins_git-conflict-nvim = { url = "github:akinsho/git-conflict.nvim"; flake = false; };
+    vimPlugins_chatgpt-nvim = { url = "github:jackMort/ChatGPT.nvim"; flake = false; };
 
     # others 
     nvim-treesitter = { url = "github:r17x/nvim-treesitter"; flake = false; };

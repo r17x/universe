@@ -174,8 +174,13 @@ return {
 		schemas = extend(schemas, {
 			{
 				description = "ReScript compiler schema",
-				fileMatch = { "bsconfig.json" },
+				fileMatch = { "bsconfig.json", "rescript.json" },
 				url = "https://raw.githubusercontent.com/rescript-lang/rescript-compiler/87d78697d7a1eed75c9de55bbdc476540d6f77bb/docs/docson/build-schema.json",
+			},
+			{
+				description = "ReScript v11 compiler schema ",
+				fileMatch = { "rescript.json" },
+				url = "https://raw.githubusercontent.com/rescript-lang/rescript-compiler/master/docs/docson/build-schema.json",
 			},
 		}),
 	},

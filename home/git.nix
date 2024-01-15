@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 let
   work = {
@@ -102,4 +102,6 @@ in
     co = "pr checkout";
     pv = "pr view";
   };
+
+  home.packages = [ pkgs.git-filter-repo ];
 }

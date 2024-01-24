@@ -13,7 +13,8 @@ in
   config = mkIf cfg.enable {
     programs.password-store.enable = true;
     programs.password-store.package = pkgs.pass.withExtensions (p: [ p.pass-otp ]);
-
+    programs.browserpass.enable = true;
+    programs.browserpass.browsers = [ "firefox" ];
   };
 }
 

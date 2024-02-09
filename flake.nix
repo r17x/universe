@@ -292,6 +292,20 @@
               ];
               homebrew.enable = true;
             }
+
+            home-manager.darwinModules.home-manager
+            ({ config, pkgs, ... }: {
+              home-manager.users.${config.users.primaryUser.username} = {
+                imports = singleton sops.homeManagerModule;
+                home.packages = [ pkgs.sops ];
+                sops.gnupg.home = "~/.gnupg";
+                sops.gnupg.sshKeyPaths = [ ];
+                sops.defaultSopsFile = ./secrets/secret.yaml;
+                # git diff integrations
+                programs.git.extraConfig.diff.sopsdiffer.textconv = "sops -d";
+              };
+            })
+
           ];
         };
 

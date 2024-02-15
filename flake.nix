@@ -296,11 +296,17 @@
             home-manager.darwinModules.home-manager
             ({ config, pkgs, ... }: {
               home-manager.users.${config.users.primaryUser.username} = {
-                imports = singleton sops.homeManagerModule;
                 home.packages = [ pkgs.sops ];
                 sops.gnupg.home = "~/.gnupg";
                 sops.gnupg.sshKeyPaths = [ ];
                 sops.defaultSopsFile = ./secrets/secret.yaml;
+                sops.secrets.openai_api_key.path = "~/.config/openai/OPENAI_API_KEY";
+                imports = [
+                  sops.homeManagerModule
+                  ({ config, ... }: {
+                    home.sessionVariables.OPENAI_API_KEY = "$(cat ${config.sops.secrets.openai_api_key.path})";
+                  })
+                ];
                 # git diff integrations
                 programs.git.extraConfig.diff.sopsdiffer.textconv = "sops -d";
               };

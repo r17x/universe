@@ -74,4 +74,8 @@
 
     nativeBuildInputs = with pkgs; [ rustc cargo gcc rustfmt clippy ];
   };
+
+  bun = pkgs.mkShell {
+    buildInputs = [ pkgs.bun ];
+  };
 }

@@ -129,6 +129,9 @@ in
   '';
 
   programs = {
+    atuin.enable = true;
+    atuin.enableFishIntegration = true;
+    atuin.enableBashIntegration = true;
     # jump like `z` or `fasd` 
     zoxide.enable = true;
     dircolors.enable = true;

@@ -13,7 +13,6 @@
     terminal-notifier
     darwin.cf-private
     darwin.apple_sdk.frameworks.CoreServices
-    dnscrypt-proxy2
   ];
 
   # something wrong

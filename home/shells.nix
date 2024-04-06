@@ -82,6 +82,8 @@ let
       du = "${du-dust}/bin/dust";
       git = "${git}/bin/git";
       pullhead = "git pull origin (git rev-parse --abbrev-ref HEAD)";
+      beda = "gd";
+      ingfo = "git status";
       tarek = "pullhead";
       pushhead = "git push origin (git rev-parse --abbrev-ref HEAD)";
       gas = "pushhead";

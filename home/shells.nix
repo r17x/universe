@@ -27,6 +27,8 @@ let
         "nix store optimise"
         "nix-store --verify --repair --check-contents"
       ];
+      da = "direnv allow";
+      dr = "direnv reload";
       drb = "darwin-rebuild build --flake ${nixConfigDirectory}";
       drs = "darwin-rebuild switch --flake ${nixConfigDirectory}";
       psc0 = "nix build ${nixConfigDirectory}#darwinConfigurations.RG.system --json | jq -r '.[].outputs | to_entries[].value' | cachix push r17";

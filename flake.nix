@@ -8,6 +8,8 @@
     ];
 
     imports = [
+      inputs.precommit.flakeModule
+      ./devShells.nix
       ./overlays
       ./modules/parts
       ./hosts
@@ -47,6 +49,10 @@
     sops.url = "github:Mic92/sops-nix";
     sops.inputs.nixpkgs.follows = "nixpkgs";
     sops.inputs.nixpkgs-stable.follows = "stable";
+
+    # utilities
+    precommit.url = "github:cachix/pre-commit-hooks.nix";
+    precommit.inputs.nixpkgs.follows = "nixpkgs";
 
     # vimPlugins from flake inputs
     # prefix "vimPlugins_"

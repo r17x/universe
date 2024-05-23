@@ -1,50 +1,38 @@
-inputs: nixpkgsConfig:
-let
-  inherit (inputs.nixpkgs-unstable.lib) optionalAttrs attrsets;
-in
+{ inputs, ... }:
+
 {
-  # Overlays to add different versions `nixpkgs` into package set
-  pkgs-master = _final: prev: {
-    pkgs-master = import inputs.nixpkgs-master {
-      inherit (prev.stdenv) system;
-      inherit (nixpkgsConfig) config;
+  flake.overlays.default = final: prev: {
+    luajitPackages = prev.luajitPackages // {
+      luafun = prev.luajitPackages.buildLuarocksPackage {
+        pname = "fun";
+        version = "scm-1";
+
+        src = inputs.luafun;
+
+        disabled = (prev.luajitPackages.luaOlder "5.1") || (prev.luajitPackages.luaAtLeast "5.4");
+        propagatedBuildInputs = [ prev.lua ];
+
+        meta = {
+          homepage = "https://luafun.github.io/";
+          description = "High-performance functional programming library for Lua";
+          license.fullName = "MIT/X11";
+        };
+      };
     };
-  };
-
-  pkgs-stable = _final: prev: {
-    pkgs-stable = import inputs.nixpkgs-stable {
-      inherit (prev.stdenv) system;
-      inherit (nixpkgsConfig) config;
+    tree-sitter-grammars = prev.tree-sitter-grammars // {
+      tree-sitter-rescript =
+        prev.tree-sitter.buildGrammar {
+          version = inputs.ts-rescript.lastModifiedDate;
+          language = "rescript";
+          generate = true;
+          src = inputs.ts-rescript;
+        };
     };
-  };
-
-  pkgs-unstable = _final: prev: {
-    pkgs-unstable = import inputs.nixpkgs-unstable {
-      inherit (prev.stdenv) system;
-      inherit (nixpkgsConfig) config;
-    };
-  };
-
-  # comma = final: prev: {
-  #   comma = import inputs.comma { inherit (prev) pkgs; };
-  # };
-
-  # Overlay useful on Macs with Apple Silicon
-  apple-silicon = _final: prev: optionalAttrs (prev.stdenv.system == "aarch64-darwin") {
-    # Add access to x86 packages system is running Apple Silicon
-    pkgs-x86 = import inputs.nixpkgs-unstable {
-      system = "x86_64-darwin";
-      inherit (nixpkgsConfig) config;
-    };
-  };
-
-  mac-pkgs = _final: prev:
-    import ./macpkgs { pkgs = prev; inherit attrsets; };
-
-  luaRelateds = (final: prev: (import ./luaPackages { pkgs = prev; }) final prev);
-
-  # nodePackages = final: prev: {
-  #   nodePackages = prev.nodePackages // import ./pkgs/node-packages { pkgs = prev; };
-  # };
-
+    vimPlugins = prev.vimPlugins.extend (_: _: { } //
+      (import ./mkFlake2VimPlugin.nix inputs { pkgs = prev; })
+    );
+  }
+  // (import ./mac-pkgs final prev)
+  // (inputs.dvt.overlay final prev)
+  ;
 }

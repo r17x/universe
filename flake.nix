@@ -9,9 +9,9 @@
 
     imports = [
       inputs.precommit.flakeModule
-      ./devShells.nix
-      ./overlays
+      ./modules/overlays
       ./modules/parts
+      ./modules/devShells.nix
       ./hosts
     ];
   };

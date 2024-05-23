@@ -1,0 +1,27 @@
+name: "CI"
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/flake-checker-action@v5
+      - uses: cachix/install-nix-action@v26
+        with:
+          github_access_token: ${{ secrets.GH_TOKEN }}
+      - uses: cachix/cachix-action@v14
+        with:
+          name: r17
+          # If you chose signing key for write access
+          # signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+          # If you chose API tokens for write access OR if you have a private cache
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+          extraPullNames: pre-commit-hooks,nix-community
+          skipPush: ${{ !(github.ref == 'refs/heads/main' && github.event_name == 'push' && matrix.os == 'macos-14') }}
+      - run:  echo "TODO nix build here"

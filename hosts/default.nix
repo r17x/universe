@@ -1,7 +1,7 @@
 { self, withSystem, inputs, ... }:
 
 let
-  inherit (inputs.nixpkgs.lib) attrValues;
+  inherit (builtins) attrValues removeAttrs;
 
   mkDarwin = name: { system ? "aarch64-darwin", user ? self.users.default, stateVersion ? 4, homeManagerStateVersion ? "23.05", modules ? [ ] }: withSystem system (ctx:
     inputs.darwin.lib.darwinSystem {
@@ -16,7 +16,7 @@ let
         ({ pkgs, ... }: {
           inherit (ctx) nix;
           _module.args = ctx.extraModuleArgs;
-          nixpkgs = builtins.removeAttrs ctx.nixpkgs [ "hostPlatform" ] // { inherit system; };
+          nixpkgs = removeAttrs ctx.nixpkgs [ "hostPlatform" ];
           system.stateVersion = stateVersion;
           users.primaryUser = user;
           networking.hostName = name;

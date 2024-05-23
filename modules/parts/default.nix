@@ -60,7 +60,6 @@
           vim
           curl
           fd
-          man-pages-posix
           wget
           git;
 

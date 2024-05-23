@@ -110,7 +110,7 @@ in
 {
   home = with pkgs;{
     sessionVariables = {
-      OPENAI_API_KEY = "$(cat ${config.sops.secrets.openai_api_key.path})";
+      # OPENAI_API_KEY = "$(cat ${config.sops.secrets.openai_api_key.path})";
     };
 
     inherit shellAliases;

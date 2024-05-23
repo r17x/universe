@@ -1,10 +1,7 @@
 { self, inputs, ... }:
 
 {
-  imports = [
-    ./home.nix
-    ./darwin.nix
-  ];
+  imports = [ ];
 
   perSystem = { lib, pkgs, system, inputs', ... }: {
     formatter = inputs.nixpkgs-fmt.defaultPackage.${system};
@@ -29,9 +26,7 @@
 
         hostPlatform = system;
 
-        overlays = lib.mkForce [
-          self.overlays.default
-        ];
+        overlays = lib.mkForce [ self.overlays.default ];
       };
 
       # Extra arguments passed to the module system for nix-darwin, NixOS, and home-manager

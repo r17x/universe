@@ -13,7 +13,6 @@
       ./overlays
       ./modules/parts
       ./hosts
-      ./users
     ];
   };
 
@@ -53,6 +52,9 @@
     # utilities
     precommit.url = "github:cachix/pre-commit-hooks.nix";
     precommit.inputs.nixpkgs.follows = "nixpkgs";
+    # dvt
+    dvt.url = "github:efishery/dvt";
+    dvt.inputs.nixpkgs.follows = "nixpkgs";
 
     # vimPlugins from flake inputs
     # prefix "vimPlugins_"

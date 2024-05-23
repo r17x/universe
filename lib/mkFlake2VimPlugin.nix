@@ -5,7 +5,7 @@ inputs:
 }:
 
 let
-  builder = src: pkgs.vimUtils.buildVimPluginFrom2Nix rec {
+  builder = src: pkgs.vimUtils.buildVimPlugin rec {
     inherit src;
     pname = src.name;
     version = src.lastModifiedDate;

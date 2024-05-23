@@ -4,7 +4,7 @@
 { self, ... }:
 
 {
-  perSystem = { pkgs, ... }:
+  perSystem = { pkgs, config, ... }:
     {
       pre-commit.check.enable = true;
       pre-commit.devShell = self.devShells.default;
@@ -23,7 +23,11 @@
 
 
       devShells = {
-        default = pkgs.mkShell { };
+        default = pkgs.mkShell {
+          shellHook = ''
+            ${config.pre-commit.installationScript}
+          '';
+        };
         #
         #
         #    $ nix develop github:r17x/nixpkgs#node18

@@ -5,9 +5,8 @@ let
 
   mkDarwin = name: { system ? "aarch64-darwin", user ? self.users.default, stateVersion ? 4, homeManagerStateVersion ? "23.05", modules ? [ ] }: withSystem system (ctx:
     inputs.darwin.lib.darwinSystem {
-      inherit inputs;
       inherit (ctx) system;
-
+      specialArgs = { inherit inputs; };
       modules = attrValues self.commonModules
         ++ attrValues self.darwinModules
         ++ [

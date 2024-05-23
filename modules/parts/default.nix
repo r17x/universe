@@ -3,7 +3,7 @@
 {
   imports = [ ];
 
-  perSystem = { lib, pkgs, system, inputs', ... }: {
+  perSystem = { lib, system, inputs', ... }: {
     formatter = inputs.nixpkgs-fmt.defaultPackage.${system};
 
     _module.args = rec {
@@ -11,6 +11,12 @@
       nix = import ./nix.nix {
         inherit lib inputs inputs';
         inherit (pkgs) stdenv;
+      };
+
+      pkgs = import inputs.nixpkgs {
+        inherit (nixpkgs) config;
+        inherit system;
+        overlays = [ self.overlays.default ];
       };
 
       # nixpkgs (channel) configuration (not the flake input)
@@ -49,7 +55,6 @@
           in
           {
             master = pkgsFrom inputs.master system;
-            unstable = pkgsFrom inputs.unstable system;
             stable = pkgsFrom inputs.stable system;
           };
       };

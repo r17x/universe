@@ -24,5 +24,7 @@ jobs:
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
           extraPullNames: pre-commit-hooks,nix-community
           skipPush: ${{ !(github.ref == 'refs/heads/main' && github.event_name == 'push' && matrix.os == 'macos-14') }}
-      - run: |
-          nix flake show .
+      - run: nix flake show .
+      - run: nix build ".#darwinConfigurations.$HOSTNAME.system"
+        env: 
+          HOSTNAME: "eR17" 

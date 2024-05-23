@@ -25,6 +25,7 @@ jobs:
           extraPullNames: pre-commit-hooks,nix-community
           skipPush: ${{ !(github.ref == 'refs/heads/main' && github.event_name == 'push' && matrix.os == 'macos-14') }}
       - run: nix flake show .
-      - run: nix build ".#darwinConfigurations.$HOSTNAME.system"
+      - run: nix build ".#darwinConfigurations.$HOSTNAME.system" --impure
         env: 
           HOSTNAME: "eR17" 
+          NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM: 1

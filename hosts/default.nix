@@ -16,7 +16,7 @@ let
         ({ pkgs, ... }: {
           inherit (ctx) nix;
           _module.args = ctx.extraModuleArgs;
-          nixpkgs = removeAttrs ctx.nixpkgs [ "hostPlatform" ];
+          nixpkgs = ctx.nixpkgs // { inherit system; };
           system.stateVersion = stateVersion;
           users.primaryUser = user;
           networking.hostName = name;

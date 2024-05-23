@@ -30,13 +30,19 @@ let
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.${user.username} = {
-            imports = attrValues self.homeManagerModules ++ [ inputs.sops.homeManagerModule ];
+            imports = attrValues self.homeManagerModules ++ [
+              inputs.sops.homeManagerModule
+              ({ config, ... }: {
+                home.sessionVariables.OPENAI_API_KEY = "$(cat ${config.sops.secrets.openai_api_key.path})";
+              })
+            ];
             home.stateVersion = homeManagerStateVersion;
             home.user-info = user;
             home.packages = [ pkgs.sops ];
             sops.gnupg.home = "~/.gnupg";
             sops.gnupg.sshKeyPaths = [ ];
             sops.defaultSopsFile = ../secrets/secret.yaml;
+            sops.secrets.openai_api_key.path = "~/.config/openai/OPENAI_API_KEY";
             # git diff integrations
             programs.git.extraConfig.diff.sopsdiffer.textconv = "sops -d";
           };

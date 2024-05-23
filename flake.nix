@@ -32,7 +32,7 @@
     master.url = "github:NixOS/nixpkgs/master";
     stable.url = "github:NixOS/nixpkgs/release-22.11";
     unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs.follows = "master";
+    nixpkgs.follows = "unstable";
 
     ## -- Platform
 

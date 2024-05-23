@@ -382,7 +382,7 @@
         "nix": "nix",
         "nix-index-database": "nix-index-database",
         "nixpkgs": [
-          "master"
+          "unstable"
         ],
         "nixpkgs-fmt": "nixpkgs-fmt",
         "nvim-treesitter": "nvim-treesitter",

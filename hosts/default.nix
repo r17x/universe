@@ -37,7 +37,10 @@ let
             ];
             home.stateVersion = homeManagerStateVersion;
             home.user-info = user;
-            home.packages = [ pkgs.sops ];
+            home.packages = [
+              pkgs.sops
+              self.packages.${system}.nvim
+            ];
             sops.gnupg.home = "~/.gnupg";
             sops.gnupg.sshKeyPaths = [ ];
             sops.defaultSopsFile = ../secrets/secret.yaml;
@@ -61,7 +64,7 @@ in
       email = "hi@rin.rocks";
       nixConfigDirectory = "/Users/${username}/.config/nixpkgs";
       within = {
-        neovim.enable = true;
+        neovim.enable = false;
         gpg.enable = true;
         pass.enable = true;
       };

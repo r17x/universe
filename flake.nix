@@ -13,6 +13,7 @@
       ./modules/parts
       ./modules/devShells.nix
       ./hosts
+      ./nvim.nix
     ];
   };
 
@@ -25,14 +26,14 @@
 
     # utilities for Flake
     parts.url = "github:hercules-ci/flake-parts";
+
     nixpkgs-fmt.url = "github:nix-community/nixpkgs-fmt";
     nixpkgs-fmt.inputs.nixpkgs.follows = "nixpkgs";
 
     ## -- nixpkgs 
     master.url = "github:NixOS/nixpkgs/master";
     stable.url = "github:NixOS/nixpkgs/release-22.11";
-    unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs.follows = "unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     ## -- Platform
 
@@ -44,6 +45,14 @@
     home.url = "github:nix-community/home-manager/master";
     home.inputs.nixpkgs.follows = "nixpkgs";
 
+    #### ---- nixvim
+    nixvim.url = "github:nix-community/nixvim";
+    nixvim.inputs.nixpkgs.follows = "nixpkgs";
+    nixvim.inputs.flake-parts.follows = "parts";
+    nixvim.inputs.home-manager.follows = "home";
+    nixvim.inputs.nix-darwin.follows = "darwin";
+    nixvim.inputs.pre-commit-hooks.follows = "precommit";
+
     # secret management 
     sops.url = "github:Mic92/sops-nix";
     sops.inputs.nixpkgs.follows = "nixpkgs";
@@ -52,6 +61,7 @@
     # utilities
     precommit.url = "github:cachix/pre-commit-hooks.nix";
     precommit.inputs.nixpkgs.follows = "nixpkgs";
+
     # dvt
     dvt.url = "github:efishery/dvt";
     dvt.inputs.nixpkgs.follows = "nixpkgs";

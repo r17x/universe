@@ -41,7 +41,7 @@
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     #### ---- Home
-    home.url = "github:nix-community/home-manager/release-23.05";
+    home.url = "github:nix-community/home-manager/master";
     home.inputs.nixpkgs.follows = "nixpkgs";
 
     # secret management 

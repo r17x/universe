@@ -14,8 +14,8 @@
       };
 
       pkgs = import inputs.nixpkgs {
-        inherit (nixpkgs) config;
         inherit system;
+        inherit (nixpkgs) config;
         overlays = [ self.overlays.default ];
       };
 
@@ -56,6 +56,7 @@
           {
             master = pkgsFrom inputs.master system;
             stable = pkgsFrom inputs.stable system;
+            unstable = pkgsFrom inputs.unstable system;
           };
       };
 

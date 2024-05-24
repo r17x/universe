@@ -1,4 +1,4 @@
-{ helpers, ... }:
+{ pkgs, helpers, ... }:
 
 let
   inherit (helpers) mkRaw;
@@ -13,6 +13,8 @@ let
 in
 
 {
+  extraPlugins = with pkgs.vimPlugins; [ git-conflict-nvim ];
+
   plugins.which-key.registrations = {
     "mg" = [ "<cmd>Neogit<CR>" "Open Neogit" ];
     "<leader>gss" = [ gs.toggle_signs "Toggle Sign Column" ];

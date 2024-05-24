@@ -33,7 +33,8 @@
     ## -- nixpkgs 
     master.url = "github:NixOS/nixpkgs/master";
     stable.url = "github:NixOS/nixpkgs/release-22.11";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.follows = "unstable";
 
     ## -- Platform
 
@@ -47,7 +48,7 @@
 
     #### ---- nixvim
     nixvim.url = "github:nix-community/nixvim";
-    nixvim.inputs.nixpkgs.follows = "nixpkgs";
+    nixvim.inputs.nixpkgs.follows = "unstable";
     nixvim.inputs.flake-parts.follows = "parts";
     nixvim.inputs.home-manager.follows = "home";
     nixvim.inputs.nix-darwin.follows = "darwin";
@@ -62,24 +63,14 @@
     precommit.url = "github:cachix/pre-commit-hooks.nix";
     precommit.inputs.nixpkgs.follows = "nixpkgs";
 
-    # dvt
-    dvt.url = "github:efishery/dvt";
-    dvt.inputs.nixpkgs.follows = "nixpkgs";
-
     # vimPlugins from flake inputs
     # prefix "vimPlugins_"
     # e.g: rescript-nvim to be vimPlugins_rescript-nvim
     # e.g usage: programs.neovim.plugins = p: [p.rescript-nvim] or [pkgs.vimPlugins.rescript-nvim];
     vimPlugins_vim-rescript = { url = "github:rescript-lang/vim-rescript"; flake = false; };
     vimPlugins_nvim-treesitter-rescript = { url = "github:nkrkv/nvim-treesitter-rescript"; flake = false; };
-    vimPlugins_lazy-nvim = { url = "github:folke/lazy.nvim"; flake = false; };
-    # vimPlugins_codeium-vim = { url = "github:Exafunction/codeium.vim"; flake = false; };
-    vimPlugins_codeium = { url = "github:jcdickinson/codeium.nvim"; flake = false; };
-    vimPlugins_git-conflict-nvim = { url = "github:akinsho/git-conflict.nvim"; flake = false; };
-    vimPlugins_chatgpt-nvim = { url = "github:jackMort/ChatGPT.nvim"; flake = false; };
 
     # others 
-    nvim-treesitter = { url = "github:r17x/nvim-treesitter"; flake = false; };
     ts-rescript = { url = "github:nkrkv/tree-sitter-rescript"; flake = false; };
     luafun = { url = "github:luafun/luafun"; flake = false; };
   };

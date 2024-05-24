@@ -1,19 +1,21 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
-  extraPlugins = with pkgs.vimPlugins; [ ChatGPT-nvim ];
+  # extraPlugins = with pkgs.vimPlugins; [ 
+  # ChatGPT-nvim 
+  # ];
 
-  extraConfigLuaPost = ''
-    require('chatgpt').setup({
-      actions_paths = {"~/.config/openai/actions.json"},
-      open_ai_params = {
-        model = "gpt-4",
-      },
-      openai_edit_params = {
-        model = "gpt-4",
-      },
-    })
-  '';
+  # extraConfigLuaPost = ''
+  #   require('chatgpt').setup({
+  #     actions_paths = {"~/.config/openai/actions.json"},
+  #     open_ai_params = {
+  #       model = "gpt-4",
+  #     },
+  #     openai_edit_params = {
+  #       model = "gpt-4",
+  #     },
+  #   })
+  # '';
 
   plugins.which-key.registrations = {
     "<leader>cc" = [ [ "<cmd>ChatGPT<cr>" "Open ChatGPT Prompt" { mode = [ "n" "v" ]; } ] ];

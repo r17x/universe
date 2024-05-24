@@ -12,7 +12,7 @@ let
         ++ [
         # Composed home-manager configuration.
         inputs.home.darwinModules.home-manager
-        ({ pkgs, ... }: {
+        ({ pkgs, config, ... }: {
           inherit (ctx) nix;
           _module.args = ctx.extraModuleArgs;
           nixpkgs = removeAttrs ctx.nixpkgs [ "hostPlatform" ];
@@ -40,6 +40,7 @@ let
             home.packages = [
               pkgs.sops
               self.packages.${system}.nvim
+              config.nix.package
             ];
             sops.gnupg.home = "~/.gnupg";
             sops.gnupg.sshKeyPaths = [ ];

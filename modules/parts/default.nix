@@ -8,9 +8,12 @@
 
     _module.args = rec {
       # the nix package manager configurations and settings.
-      nix = import ./nix.nix {
-        inherit lib inputs inputs';
-        inherit (pkgs) stdenv;
+      nix = import ./nix.nix
+        {
+          inherit lib inputs inputs';
+          inherit (pkgs) stdenv;
+        } // {
+        package = pkgs.nix;
       };
 
       pkgs = import inputs.nixpkgs {

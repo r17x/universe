@@ -1,4 +1,4 @@
-{ lib, stdenv, inputs, inputs' }:
+{ lib, stdenv, inputs, ... }:
 
 {
   configureBuildUsers = true;

@@ -11,7 +11,7 @@
     pkgs.nixpkgs-fmt
   ];
 
-  extraPlugins = with pkgs.vimPlugins; [ telescope-github-nvim ];
+  extraPlugins = with pkgs.vimPlugins; [ telescope-github-nvim vim-rescript ];
 
   # make custom command
   extraConfigLuaPre = ''
@@ -222,9 +222,9 @@
         { name = "path"; }
         { name = "buffer"; }
         { name = "cmdline"; }
-        { name = "spell"; }
-        { name = "dictionary"; }
-        { name = "treesitter"; }
+        # { name = "spell"; }
+        # { name = "dictionary"; }
+        # { name = "treesitter"; }
       ];
 
     };
@@ -236,9 +236,9 @@
   plugins.cmp-path.enable = true;
   plugins.cmp-buffer.enable = true;
   plugins.cmp-cmdline.enable = true;
-  plugins.cmp-spell.enable = true;
-  plugins.cmp-dictionary.enable = true;
-  plugins.cmp-treesitter.enable = true;
+  plugins.cmp-spell.enable = false;
+  plugins.cmp-dictionary.enable = false;
+  plugins.cmp-treesitter.enable = false;
   plugins.cmp-fish.enable = false;
   plugins.cmp-tmux.enable = false;
 }

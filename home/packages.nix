@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ pkgs, ... }:
 
 let
   inherit (pkgs.stdenv) isDarwin;
@@ -110,7 +110,6 @@ in
       nix-prefetch-git
       # nodePackages.node2nix # use with comma 
       # yarn2nix
-      dvt
     ] ++ lib.optionals isDarwin [
       mas
       # orbstack # UNSTABLE, may be install in System (NEED Root)

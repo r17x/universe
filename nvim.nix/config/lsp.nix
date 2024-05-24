@@ -36,7 +36,7 @@
     })
 
     -- make sync formatter when write and quit
-    vim.cmd [[ cabbrev wq execute "Format sync" <bar> wq ]]
+    -- vim.cmd [[ cabbrev wq execute "Format sync" <bar> wq ]]
 
     -- ft:rust didn't respect my tabstop=2 - I love you but not me
     vim.g.rust_recommended_style = false

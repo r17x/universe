@@ -8,7 +8,7 @@
     ];
 
     imports = [
-      inputs.precommit.flakeModule
+      inputs.pre-commit-hooks.flakeModule
       ./modules/overlays
       ./modules/parts
       ./modules/devShells.nix
@@ -31,37 +31,33 @@
     nixpkgs-fmt.inputs.nixpkgs.follows = "nixpkgs";
 
     ## -- nixpkgs 
-    master.url = "github:NixOS/nixpkgs/master";
-    stable.url = "github:NixOS/nixpkgs/release-22.11";
-    unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs.follows = "unstable";
+    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/release-22.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.follows = "nixpkgs-unstable";
 
     ## -- Platform
 
     #### ---- MacOS
-    darwin.url = "github:LnL7/nix-darwin";
-    darwin.inputs.nixpkgs.follows = "nixpkgs";
+    nix-darwin.url = "github:LnL7/nix-darwin";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     #### ---- Home
-    home.url = "github:nix-community/home-manager/master";
-    home.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.url = "github:nix-community/home-manager/master";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     #### ---- nixvim
     nixvim.url = "github:nix-community/nixvim";
-    nixvim.inputs.nixpkgs.follows = "unstable";
-    nixvim.inputs.flake-parts.follows = "parts";
-    nixvim.inputs.home-manager.follows = "home";
-    nixvim.inputs.nix-darwin.follows = "darwin";
-    nixvim.inputs.pre-commit-hooks.follows = "precommit";
+    nixvim.inputs.nixpkgs.follows = "nixpkgs";
 
     # secret management 
     sops.url = "github:Mic92/sops-nix";
     sops.inputs.nixpkgs.follows = "nixpkgs";
-    sops.inputs.nixpkgs-stable.follows = "stable";
+    sops.inputs.nixpkgs-stable.follows = "nixpkgs-stable";
 
     # utilities
-    precommit.url = "github:cachix/pre-commit-hooks.nix";
-    precommit.inputs.nixpkgs.follows = "nixpkgs";
+    pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
+    pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
 
     # vimPlugins from flake inputs
     # prefix "vimPlugins_"

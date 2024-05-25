@@ -57,9 +57,9 @@
             };
           in
           {
-            master = pkgsFrom inputs.master system;
-            stable = pkgsFrom inputs.stable system;
-            unstable = pkgsFrom inputs.unstable system;
+            master = pkgsFrom inputs.nixpkgs-master system;
+            stable = pkgsFrom inputs.nixpkgs-stable system;
+            unstable = pkgsFrom inputs.nixpkgs-unstable system;
           };
       };
 
@@ -72,7 +72,7 @@
           wget
           git;
 
-        home-manager = inputs'.home.packages.home-manager.override { path = "${inputs.home}"; };
+        home-manager = inputs'.home-manager.packages.home-manager.override { path = "${inputs.home-manager}"; };
       };
     };
   };

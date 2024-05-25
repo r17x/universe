@@ -3,15 +3,15 @@
 let
   inherit (builtins) attrValues removeAttrs;
 
-  mkDarwin = name: { system ? "aarch64-darwin", user ? self.users.default, stateVersion ? 4, homeManagerStateVersion ? "23.05", modules ? [ ] }: withSystem system (ctx:
-    inputs.darwin.lib.darwinSystem {
+  mkDarwin = name: { system ? "aarch64-darwin", user ? self.users.default, stateVersion ? 4, homeManagerStateVersion ? "24.05", modules ? [ ] }: withSystem system (ctx:
+    inputs.nix-darwin.lib.darwinSystem {
       inherit (ctx) system;
       specialArgs = { inherit inputs; };
       modules = attrValues self.commonModules
         ++ attrValues self.darwinModules
         ++ [
         # Composed home-manager configuration.
-        inputs.home.darwinModules.home-manager
+        inputs.home-manager.darwinModules.home-manager
         ({ pkgs, config, ... }: {
           inherit (ctx) nix;
           _module.args = ctx.extraModuleArgs;

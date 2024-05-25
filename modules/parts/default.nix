@@ -6,74 +6,75 @@
   perSystem = { lib, system, inputs', ... }: {
     formatter = inputs.nixpkgs-fmt.defaultPackage.${system};
 
-    _module.args = rec {
-      # the nix package manager configurations and settings.
-      nix = import ./nix.nix
-        {
-          inherit lib inputs inputs';
-          inherit (pkgs) stdenv;
-        } // {
-        package = pkgs.nix;
-      };
-
-      pkgs = import inputs.nixpkgs {
-        inherit system;
-        inherit (nixpkgs) config;
-        overlays = [ self.overlays.default ];
-      };
-
-      # nixpkgs (channel) configuration (not the flake input)
-      nixpkgs = {
-        config = lib.mkForce {
-          allowBroken = true;
-          allowUnfree = true;
-          tarball-ttl = 0;
-
-          # Experimental options, disable if you don't know what you are doing!
-          contentAddressedByDefault = false;
+    _module.args = let overlays = [ inputs.neorg-overlay.overlays.default self.overlays.default ]; in
+      rec {
+        # the nix package manager configurations and settings.
+        nix = import ./nix.nix
+          {
+            inherit lib inputs inputs';
+            inherit (pkgs) stdenv;
+          } // {
+          package = pkgs.nix;
         };
 
-        hostPlatform = system;
+        pkgs = import inputs.nixpkgs {
+          inherit system;
+          inherit (nixpkgs) config;
+          inherit overlays;
+        };
 
-        overlays = lib.mkForce [ self.overlays.default ];
-      };
+        # nixpkgs (channel) configuration (not the flake input)
+        nixpkgs = {
+          config = lib.mkForce {
+            allowBroken = true;
+            allowUnfree = true;
+            tarball-ttl = 0;
 
-      # Extra arguments passed to the module system for nix-darwin, NixOS, and home-manager
-      extraModuleArgs = {
-        inherit inputs' system;
-        inputs = lib.mkForce inputs;
+            # Experimental options, disable if you don't know what you are doing!
+            contentAddressedByDefault = false;
+          };
 
-        /*
+          hostPlatform = system;
+
+          overlays = lib.mkForce overlays;
+        };
+
+        # Extra arguments passed to the module system for nix-darwin, NixOS, and home-manager
+        extraModuleArgs = {
+          inherit inputs' system;
+          inputs = lib.mkForce inputs;
+
+          /*
           One can access these nixpkgs branches like so:
 
           `branches.stable.mpd'
           `branches.master.linuxPackages_xanmod'
-        */
-        branches =
-          let
-            pkgsFrom = branch: system: import branch {
-              inherit system;
-              inherit (nixpkgs) config overlays;
+          */
+          branches =
+            let
+              pkgsFrom = branch: system: import branch {
+                inherit system;
+                inherit (nixpkgs) config overlays;
+              };
+            in
+            {
+              master = pkgsFrom inputs.nixpkgs-master system;
+              stable = pkgsFrom inputs.nixpkgs-stable system;
+              unstable = pkgsFrom inputs.nixpkgs-unstable system;
             };
-          in
-          {
-            master = pkgsFrom inputs.nixpkgs-master system;
-            stable = pkgsFrom inputs.nixpkgs-stable system;
-            unstable = pkgsFrom inputs.nixpkgs-unstable system;
-          };
-      };
+        };
 
-      # NixOS and nix-darwin base environment.systemPackages
-      basePackagesFor = pkgs: builtins.attrValues {
-        inherit (pkgs)
-          vim
-          curl
-          fd
-          wget
-          git;
+        # NixOS and nix-darwin base environment.systemPackages
+        basePackagesFor = pkgs: builtins.attrValues {
+          inherit (pkgs)
+            vim
+            curl
+            fd
+            wget
+            git;
 
-        home-manager = inputs'.home-manager.packages.home-manager.override { path = "${inputs.home-manager}"; };
+          home-manager = inputs'.home-manager.packages.home-manager.override { path = "${inputs.home-manager}"; };
+        };
       };
-    };
   };
 }

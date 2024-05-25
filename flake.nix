@@ -49,6 +49,8 @@
     #### ---- nixvim
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
+    neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
+    neorg-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
     # secret management 
     sops.url = "github:Mic92/sops-nix";

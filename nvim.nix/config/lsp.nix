@@ -196,7 +196,9 @@
   };
 
   plugins.trouble.enable = true;
+  # TODO: move plugin configuration when needed secrets
   plugins.codeium-nvim.enable = true;
+  plugins.codeium-nvim.configPath.__raw = "vim.env.HOME .. '/.config/sops-nix/secrets/codeium'";
   plugins.wtf.enable = true;
   plugins.nvim-autopairs.enable = true;
 

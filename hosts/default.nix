@@ -31,12 +31,14 @@ let
           home-manager.users.${user.username} = {
             imports = attrValues self.homeManagerModules ++ [
               inputs.sops.homeManagerModules.sops
-              ({ config, ... }: {
-                home.sessionVariables.OPENAI_API_KEY = "$(cat ${config.sops.secrets.openai_api_key.path})";
+              ({ ... }: {
+                home.sessionVariables.EDITOR = "nvim";
+                home.sessionVariables.OPENAI_API_KEY = "$(cat ~/.config/sops-nix/secrets/openai_api_key)";
               })
             ];
             home.stateVersion = homeManagerStateVersion;
             home.user-info = user;
+            home.username = user.username;
             home.packages = [
               pkgs.sops
               self.packages.${system}.nvim
@@ -45,16 +47,17 @@ let
             sops.gnupg.home = "~/.gnupg";
             sops.gnupg.sshKeyPaths = [ ];
             sops.defaultSopsFile = ../secrets/secret.yaml;
-            sops.secrets.openai_api_key.path = "~/.config/sops-nix/secrets/openai_api_key";
+            sops.secrets.openai_api_key.path = "%r/openai_api_key";
+            sops.secrets.codeium.path = "%r/codeium";
             # git diff integrations
-            programs.git.extraConfig.diff.sopsdiffer.textconv = "sops -d";
+            programs.git.extraConfig.diff.sopsdiffer.textconv = "sops -d --config /dev/null";
           };
         })
       ] ++ modules;
     }
   );
 
-  mkDarwinConfigurations = configurations: builtins.mapAttrs (name: opt: mkDarwin name opt) configurations;
+  mkDarwinConfigurations = configurations: builtins.mapAttrs mkDarwin configurations;
 in
 
 {

@@ -21,5 +21,6 @@ in
     compatible = false;
     foldexpr = "nvim_treesitter#foldexpr()";
     foldmethod = "expr";
+    conceallevel = 3;
   };
 }

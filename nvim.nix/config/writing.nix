@@ -43,7 +43,7 @@
     "core.defaults" = { __empty = null; };
     "core.integrations.treesitter" = { };
     "core.integrations.telescope" = { };
-    "core.concealer" = { config = { }; };
+    "core.concealer" = { config = { folds = true; icon_preset = "diamond"; init_open_folds = "auto"; }; };
     "core.completion" = {
       config = {
         engine = "nvim-cmp";

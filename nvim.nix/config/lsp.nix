@@ -224,6 +224,7 @@
         { name = "path"; }
         { name = "buffer"; }
         { name = "cmdline"; }
+        { name = "neorg"; }
         # { name = "spell"; }
         # { name = "dictionary"; }
         # { name = "treesitter"; }

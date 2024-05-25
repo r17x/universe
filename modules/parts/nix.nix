@@ -8,6 +8,9 @@
   registry = {
     system.flake = inputs.self;
     default.flake = inputs.nixpkgs;
+    nixpkgs.flake = inputs.nixpkgs;
+    nix.flake = inputs.nix;
+    nix-darwin.flake = inputs.darwin;
     home-manager.flake = inputs.home;
   };
 

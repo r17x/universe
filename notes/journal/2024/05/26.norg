@@ -1,0 +1,30 @@
+@document.meta
+title: Merge nvim.nix with nixpkgs
+description: 
+authors: r17x
+categories: 
+created: 2024-05-26T00:35:26+0700
+updated: 2024-05-26T01:27:14+0700
+version: 1.1.1
+@end
+
+* It's about flake-parts
+
+  *flake-parts* is /Core of a distributed framework for writing Nix Flakes/ {https://flake.parts/} - I think for make flake.nix more maintainable.
+
+  @code nix
+  outputs = inputs: inputs.parts.lib.mkFlake { inherit inputs; } {
+    systems = [
+      "aarch64-darwin"
+      "x86_64-linux"
+    ];
+
+    imports = [
+    ];
+  };
+  @end
+
+** Refactoring is art and wasting time
+   
+   after adopt the *flake-parts* in my dotfiles *r17x/nixpkgs*, *nvim.nix* it's time to refactor it and merge it with *nixpkgs*.
+

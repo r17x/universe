@@ -10,6 +10,11 @@
     "fhi" = [ "<cmd>Telescope highlights<cr>" "Find Highlight Groups" ];
   };
 
+  plugins.image.enable = true;
+  plugins.image.integrations.neorg.enabled = true;
+  plugins.image.editorOnlyRenderWhenFocused = true;
+  plugins.image.tmuxShowOnlyInActiveWindow = true;
+
   plugins.presence-nvim.enable = true;
   plugins.presence-nvim.enableLineNumber = true;
   plugins.presence-nvim.autoUpdate = true;

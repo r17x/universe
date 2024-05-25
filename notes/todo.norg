@@ -1,0 +1,24 @@
+@document.meta
+title: Todo
+description: make things get fucking done
+authors: r17
+categories: 
+created: 2024-05-26T02:31:16+0700
+updated: 2024-05-26T03:45:15+0700
+version: 1.1.1
+@end
+
+* Tasks
+** Blog - Rin.rocks
+   - ( ) Fully OCaml/ReasonML with {https://melange.re}[melange.re]
+
+** Dotfiles
+  - ( ) move {https://github.com/r17x/rin.rocks}[rin.rocks] to {https://github.com/r17x/nixpkgs}[nixpkgs]
+  - (x) use *flake-parts* in {https://github.com/r17x/nixpkgs}[nixpkgs]
+  - (x) move {https://github.com/r17x/nvim.nix}[nvim.nix] to {https://github.com/r17x/nixpkgs}[nixpkgs]
+  - (x) use {https://github.com/3rd/image.nvim}[image.nvim] in `nvim.nix` with {https://nix-community.github.io/nixvim/plugins/image/index.html}[plugins.image] - see implementation in {/ ../nvim.nix/config/ui.nix:13}[config/ui.nix] and updated configuration of {/ ../home/tmux.nix:25}[home/tmux.nix]
+
+** Neovim
+   - ( ) Find why image cannot render correctly in `iTerm`
+   - (+) Revisit `cmp` in current nixvim
+

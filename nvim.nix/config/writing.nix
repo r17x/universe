@@ -1,6 +1,14 @@
 { pkgs, ... }:
 
 {
+  autoCmd = [
+    {
+      event = [ "BufEnter" ];
+      pattern = [ "*.norg" ];
+      command = "setlocal wrap";
+    }
+  ];
+
   extraPlugins = with pkgs.vimPlugins; [ neorg-telescope venn-nvim ];
 
   extraConfigLuaPre = ''
@@ -38,7 +46,7 @@
   plugins.which-key.registrations."<leader>zm" = [ "<cmd>ZenMode<cr>" "Focus like a Japanese Philosopher 🧘" ];
 
   plugins.neorg.enable = true;
-  plugins.neorg.lazyLoading = false;
+  plugins.neorg.lazyLoading = true;
   plugins.neorg.modules = {
     "core.defaults" = { __empty = null; };
     "core.integrations.treesitter" = { };

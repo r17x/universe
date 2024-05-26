@@ -66,7 +66,6 @@
     # e.g: rescript-nvim to be vimPlugins_rescript-nvim
     # e.g usage: programs.neovim.plugins = p: [p.rescript-nvim] or [pkgs.vimPlugins.rescript-nvim];
     vimPlugins_vim-rescript = { url = "github:rescript-lang/vim-rescript"; flake = false; };
-    vimPlugins_nvim-treesitter-rescript = { url = "github:nkrkv/nvim-treesitter-rescript"; flake = false; };
 
     # others 
     ts-rescript = { url = "github:nkrkv/tree-sitter-rescript"; flake = false; };

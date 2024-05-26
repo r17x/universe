@@ -886,7 +886,6 @@
         "pre-commit-hooks": "pre-commit-hooks_3",
         "sops": "sops",
         "ts-rescript": "ts-rescript",
-        "vimPlugins_nvim-treesitter-rescript": "vimPlugins_nvim-treesitter-rescript",
         "vimPlugins_vim-rescript": "vimPlugins_vim-rescript"
       }
     },
@@ -994,22 +993,6 @@
       "original": {
         "owner": "nkrkv",
         "repo": "tree-sitter-rescript",
-        "type": "github"
-      }
-    },
-    "vimPlugins_nvim-treesitter-rescript": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1678031872,
-        "narHash": "sha256-o1hTk2ko4K3n1QuAFWa92XFWUxPlHfGaUW1plxRi9K8=",
-        "owner": "nkrkv",
-        "repo": "nvim-treesitter-rescript",
-        "rev": "21ce711396b1d836a75781d65f34241f14161f94",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nkrkv",
-        "repo": "nvim-treesitter-rescript",
         "type": "github"
       }
     },

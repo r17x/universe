@@ -26,7 +26,9 @@
   extraConfigLuaPost = ''
     require('telescope').load_extension('gh')
 
-    require'lspconfig'.ocamllsp.setup({
+    local lspconfig = require('lspconfig')
+    lspconfig.rescriptls.setup{}
+    lspconfig.ocamllsp.setup({
       settings = {
         codelens = {enable = false },
         extendedHover = { enable = true },

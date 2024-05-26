@@ -4,11 +4,23 @@ description: make things get fucking done
 authors: r17
 categories: 
 created: 2024-05-26T02:31:16+0700
-updated: 2024-05-26T03:45:15+0700
+updated: 2024-05-26T15:01:14+0700
 version: 1.1.1
 @end
 
 * Tasks
+  How to write a task in norg
+  @code norg
+  - (x) done 
+  - ( ) undone
+  - (-) pending
+  - (=) on hold
+  - (_) cancelled
+  - (!) important
+  - (+) recurring
+  - (?) uncertain
+  @end
+
 ** Blog - Rin.rocks
    - ( ) Fully OCaml/ReasonML with {https://melange.re}[melange.re]
 
@@ -20,5 +32,6 @@ version: 1.1.1
 
 ** Neovim
    - ( ) Find why image cannot render correctly in `iTerm`
-   - (+) Revisit `cmp` in current nixvim
-
+   - (+) Revisit `cmp` in current nixvim. revisit `autoEnabledSources`.
+   - (x) Add `tree-sitter-rescript` for syntax highlighting with {/ ../modules/overlays/default.nix:6}[modules/overlays/default.nix] and integration {/ ../nvim.nix/config/ui.nix:419}[nixvim]
+   - (x) lsp {/ ../nvim.nix/config/lsp.nix:30}[rescriptls] integration

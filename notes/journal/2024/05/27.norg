@@ -1,0 +1,12 @@
+@document.meta
+title: 27
+description: 
+authors: r17
+categories: 
+created: 2024-05-27T02:55:39+0700
+updated: 2024-05-27T04:49:13+0700
+version: 1.1.1
+@end
+
+* Talk with @faultables in Discord
+  This is just personal chit-chat at Discord. We talk about Deployment process with ansible and nix. As for nix, I'm still learning and I'm still experimenting. After these talk, I'm show-off about image.nvim to him and we going to make Pull Request in {/ https://github.com/3rd/image.nvim/pull/173}[PR#173:image.nvim].

@@ -77,10 +77,22 @@
 
         #
         #
+        #    $ nix develop github:r17x/nixpkgs#go
+        #
+        #
+        go = pkgs.mkShell {
+          description = "Go Development Environment";
+          nativeBuildInputs = [ pkgs.go ];
+        };
+
+
+        #
+        #
         #    $ nix develop github:r17x/nixpkgs#rust-wasm
         #
         #
         rust-wasm = pkgs.mkShell {
+          description = "Rust  Development Environment";
           # declared ENV variables when starting shell
           RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
 

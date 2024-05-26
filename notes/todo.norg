@@ -4,7 +4,7 @@ description: make things get fucking done
 authors: r17
 categories: 
 created: 2024-05-26T02:31:16+0700
-updated: 2024-05-26T15:11:21+0700
+updated: 2024-05-26T16:36:09+0700
 version: 1.1.1
 @end
 
@@ -23,6 +23,8 @@ version: 1.1.1
 
 ** Blog - Rin.rocks
    - ( ) Fully OCaml/ReasonML with {https://melange.re}[melange.re]
+   - (?) Transform from *.norg* to *React Component*
+   - (?) tree-sitter in *React*
 
 ** Dotfiles
   - ( ) move {https://github.com/r17x/rin.rocks}[rin.rocks] to {https://github.com/r17x/nixpkgs}[nixpkgs]

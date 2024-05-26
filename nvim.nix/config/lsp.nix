@@ -187,6 +187,9 @@
   };
 
   plugins.lsp-format.enable = true;
+  plugins.lsp-format.setup.ts.order = [ "tsserver" "eslint" ];
+  plugins.lsp-format.setup.js.order = [ "tsserver" "eslint" ];
+
   plugins.lspkind.enable = true;
   plugins.lspkind.cmp.enable = true;
   plugins.lspsaga = {

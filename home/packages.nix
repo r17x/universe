@@ -110,21 +110,15 @@ in
       nix-prefetch-git
       # nodePackages.node2nix # use with comma 
       # yarn2nix
+      telegram-desktop
     ] ++ lib.optionals isDarwin [
       mas
       # orbstack # UNSTABLE, may be install in System (NEED Root)
       xbar
-      (rectangle.overrideAttrs (_: rec {
-        version = "0.73";
-        src = fetchurl {
-          url = "https://github.com/rxhanson/Rectangle/releases/download/v${version}/Rectangle${version}.dmg";
-          hash = "sha256-D+heCrJVo2xsKY9XtEuhrG/59yFIJTGhKJIfN9Vhc+M=";
-        };
-      }))
+      rectangle
       cocoapods
       m-cli # useful macOS CLI commands
       xcode-install
-      telegram
       # iriun-webcam
       clipy
       # googlechrome

@@ -83,6 +83,10 @@
         go = pkgs.mkShell {
           description = "Go Development Environment";
           nativeBuildInputs = [ pkgs.go ];
+          shellHook = ''
+            export GOPATH="$(${pkgs.go}/bin/go env GOPATH)"
+            export PATH="$PATH:$GOPATH/bin"
+          '';
         };
 
 

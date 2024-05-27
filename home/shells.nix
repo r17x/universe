@@ -102,6 +102,7 @@ let
     rm = "rm -i";
 
     todo = "nvim ${nixConfigDirectory}/notes/todo.norg";
+    todox = "nvim ${nixConfigDirectory}/secrets/todo.norg";
 
     # Development
     # docker = "${pkgs.podman}/bin/podman";

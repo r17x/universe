@@ -4,7 +4,7 @@ description: make things get fucking done
 authors: r17
 categories: 
 created: 2024-05-26T02:31:16+0700
-updated: 2024-05-28T01:57:12+0700
+updated: 2024-05-28T02:01:41+0700
 version: 1.1.1
 @end
 
@@ -34,10 +34,14 @@ version: 1.1.1
    - ( ) Rename this repository to `universe`
    - (x) Move all modules to {/ ../nix/}[nix/] directory
 
-
 ** Neovim
    - ( ) Find why image cannot render correctly in `iTerm`
    - (+) Revisit `cmp` in current nixvim. revisit `autoEnabledSources`.
    - (x) Add `tree-sitter-rescript` for syntax highlighting with {/ ../modules/overlays/default.nix:6}[modules/overlays/default.nix] and integration {/ ../nvim.nix/config/ui.nix:419}[nixvim]
    - (x) lsp {/ ../nvim.nix/config/lsp.nix:30}[rescriptls] integration
    - ( ) Neorg integration with Telescope
+
+** Uncertain
+   - ( ) Created ISO (image) for Raspiberry phi 4 based on {https://github.com/nix-community/nixos-generators}[nixos-generators]. Device used for {https://cache.komunix.org}[komunix.org]
+   -- {https://mtlynch.io/nixos-pi4/}[Installing NixOS on Raspberry Pi 4]
+   -- {https://pablo.tools/blog/computers/nixos-generate-raspberry-images/}[GENERATING RASPBERRY PI IMAGES WITH NIXOS]

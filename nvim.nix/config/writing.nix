@@ -11,6 +11,10 @@
 
   extraPlugins = with pkgs.vimPlugins; [ neorg-telescope venn-nvim ];
 
+  extraConfigLuaPost = ''
+    require("telescope").load_extension "neorg"
+  '';
+
   extraConfigLuaPre = ''
     -- venn.nvim: enable or disable keymappings
     function _G.Toggle_venn()

@@ -1,7 +1,13 @@
 { self, inputs, ... }:
 
 {
-  imports = [ ];
+  imports = [
+    ./nixosModules
+    ./hosts
+    ./home
+    ./devShells.nix
+    ./overlays
+  ];
 
   perSystem = { lib, system, inputs', ... }: {
     formatter = inputs.nixpkgs-fmt.defaultPackage.${system};

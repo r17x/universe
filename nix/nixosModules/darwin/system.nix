@@ -18,8 +18,8 @@
   # trackpad
   system.defaults.trackpad.Clicking = true;
   system.defaults.trackpad.TrackpadThreeFingerDrag = false;
-    # Keyboard
-    system.keyboard.enableKeyMapping = true;
-    system.keyboard.remapCapsLockToEscape = true;
+  # Keyboard
+  system.keyboard.enableKeyMapping = true;
+  system.keyboard.remapCapsLockToEscape = true;
 
 }

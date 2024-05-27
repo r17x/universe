@@ -9,10 +9,7 @@
 
     imports = [
       inputs.pre-commit-hooks.flakeModule
-      ./modules/overlays
-      ./modules/parts
-      ./modules/devShells.nix
-      ./hosts
+      ./nix
       ./nvim.nix
     ];
   };

@@ -46,7 +46,7 @@ let
             ];
             sops.gnupg.home = "~/.gnupg";
             sops.gnupg.sshKeyPaths = [ ];
-            sops.defaultSopsFile = ../secrets/secret.yaml;
+            sops.defaultSopsFile = ../../secrets/secret.yaml;
             sops.secrets.openai_api_key.path = "%r/openai_api_key";
             sops.secrets.codeium.path = "%r/codeium";
             # git diff integrations
@@ -72,35 +72,6 @@ in
         gpg.enable = true;
         pass.enable = true;
       };
-    };
-  };
-  flake.commonModules = {
-    system-shells = import ../shared/shells.nix;
-    users-primaryUser = import ../shared/user.nix;
-    programs-nix-index = import ../shared/nix-index.nix;
-  };
-  flake.darwinModules = {
-    system-darwin = import ../shared/darwin/system.nix;
-    system-darwin-packages = import ../shared/darwin/packages.nix;
-    system-darwin-gpg = import ../shared/darwin/gpg.nix;
-    system-darwin-window-manager = import ../shared/darwin/mouseless.nix;
-    system-darwin-homebrew = import ../shared/darwin/homebrew.nix;
-    system-darwin-network = import ../shared/darwin/network.nix;
-  };
-  # `home-manager` modules
-  flake.homeManagerModules = {
-    r17-alacritty = import ../home/alacritty.nix;
-    r17-activation = import ../home/activation.nix;
-    r17-packages = import ../home/packages.nix;
-    r17-shell = import ../home/shells.nix;
-    r17-git = import ../home/git.nix;
-    r17-tmux = import ../home/tmux.nix;
-    r17-neovim = import ../home/neovim.nix;
-    gpg = import ../home/gpg.nix;
-    pass = import ../home/pass.nix;
-    home-user-info = { lib, ... }: {
-      options.home.user-info =
-        (self.commonModules.users-primaryUser { inherit lib; }).options.users.primaryUser;
     };
   };
   # nix-darwin configurations

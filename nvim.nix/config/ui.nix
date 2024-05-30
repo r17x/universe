@@ -1,5 +1,6 @@
 { pkgs, ... }:
 {
+  highlight."@neorg.tags.ranged_verbatim.code_block".link = "Fg";
   extraPlugins = with pkgs.vimPlugins; [ edge unicode-vim lualine-lsp-progress vim-wakatime ];
 
   plugins.which-key.registrations = {
@@ -62,11 +63,19 @@
   extraConfigLuaPre = ''
         vim.cmd [[ 
           if has('termguicolors') 
-    	set guicursor+=n:hor20-Cursor/lCursor
+    	      set guicursor+=n:hor20-Cursor/lCursor
             set termguicolors 
           endif 
         ]]
-        vim.g.edge_style = 'neon'
+
+        vim.g.edge_style = "neon"
+        vim.g.edge_diagnostic_text_highlight = 1
+        vim.g.edge_diagnostic_line_highlight = 1
+        vim.g.edge_diagnostic_virtual_text = "grey"
+        vim.g.edge_dim_foreground = 1
+        vim.g.edge_dim_inactive_windows = 1
+        vim.g.edge_float_style = "bright"
+
         -- TODO: fix directory creation in Nix befor enable edge_better_performance
         -- let g:edge_better_performance = 1
   '';

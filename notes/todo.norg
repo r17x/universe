@@ -4,7 +4,7 @@ description: make things get fucking done
 authors: r17
 categories: 
 created: 2024-05-26T02:31:16+0700
-updated: 2024-05-28T02:25:07+0700
+updated: 2024-05-31T00:28:28+0700
 version: 1.1.1
 @end
 
@@ -39,6 +39,9 @@ version: 1.1.1
    - (+) Revisit `cmp` in current nixvim. revisit `autoEnabledSources`.
    - (x) Add `tree-sitter-rescript` for syntax highlighting with {/ ../modules/overlays/default.nix:6}[modules/overlays/default.nix] and integration {/ ../nvim.nix/config/ui.nix:419}[nixvim]
    - (x) lsp {/ ../nvim.nix/config/lsp.nix:30}[rescriptls] integration
+   - (x) reconfigure coloscheme in {/ ../nvim.nix/config/ui.nix:72}[edge]
+   -- {/ ../nvim.nix/config/ui.nix:3}[link highlight] to `@neorg.tags.ranged_verbatim.code_block` to `fg`
+   -- ( ) Keymap and Toggle function for colorscheme:edge `edge_*`
    - (x) Neorg {/ ../nvim.nix/config/writing.nix:15}[integration] with Telescope
    -- ( ) Keymap for Neorg x Telescope
 

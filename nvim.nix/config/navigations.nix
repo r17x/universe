@@ -9,10 +9,11 @@ let
   tb.findBuffers = mkRaw "require'telescope.builtin'.buffers";
   tb.findHelpTags = mkRaw "require'telescope.builtin'.help_tags";
 
-  resize.up = mkRaw "function() vim.cmd[[ resize +1 ]] end";
+  resize.up = mkRaw "function() vim.cmd [[ resize +1 ]] end";
   resize.down = mkRaw "function() vim.cmd [[ resize -1 ]] end";
   resize.left = mkRaw "function() vim.cmd [[ vertical resize -1 ]] end";
   resize.right = mkRaw "function() vim.cmd [[ vertical resize +1 ]] end";
+
 in
 
 {
@@ -40,10 +41,14 @@ in
     "fb" = [ tb.findBuffers "Find by current buffers" ];
     "fh" = [ tb.findHelpTags "Find by help tags" ];
     "fg" = [ tb.liveGrep "Find by words" ];
+    "fw" = [ "<cmd>HopWord<cr>" "Find by Word" ];
+    "fhh" = [ "<cmd>HopPattern<cr>" "Find by Patterns" ];
 
     "<up>" = [ resize.up "resize window up" ];
     "<down>" = [ resize.down "resize window down" ];
     "<left>" = [ resize.left "resize window right" ];
     "<right>" = [ resize.right "resize window left" ];
   };
+
+  plugins.hop.enable = true;
 }

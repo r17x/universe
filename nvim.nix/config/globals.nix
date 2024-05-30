@@ -22,5 +22,6 @@ in
     foldexpr = "nvim_treesitter#foldexpr()";
     foldmethod = "expr";
     conceallevel = 3;
+    concealcursor = "n";
   };
 }

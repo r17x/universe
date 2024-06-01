@@ -1,0 +1,17 @@
+{ ... }:
+{
+  flake.commonModules = {
+    system-shells = import ./shells.nix;
+    users-primaryUser = import ./user.nix;
+    programs-nix-index = import ./nix-index.nix;
+  };
+
+  flake.darwinModules = {
+    system-darwin = import ./darwin/system.nix;
+    system-darwin-packages = import ./darwin/packages.nix;
+    system-darwin-gpg = import ./darwin/gpg.nix;
+    system-darwin-window-manager = import ./darwin/mouseless.nix;
+    system-darwin-homebrew = import ./darwin/homebrew.nix;
+    system-darwin-network = import ./darwin/network.nix;
+  };
+}

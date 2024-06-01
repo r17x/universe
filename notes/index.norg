@@ -1,0 +1,15 @@
+@document.meta
+title: Taking All notes 
+description: 
+authors: r17
+categories: 
+created: 2024-05-26T02:36:39+0700
+updated: 2024-05-28T01:53:05+0700
+version: 1.1.1
+@end
+
+* {:todo:}[Todo]
+* Journal
+** {:journal/2024/05/26:}[2024/05/26]
+** {:journal/2024/05/27:}[2024/05/27]
+** {:journal/2024/05/28:}[2024/05/28]

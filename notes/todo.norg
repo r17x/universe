@@ -1,0 +1,54 @@
+@document.meta
+title: Todo
+description: make things get fucking done
+authors: r17
+categories: 
+created: 2024-05-26T02:31:16+0700
+updated: 2024-05-31T03:09:35+0700
+version: 1.1.1
+@end
+
+* Tasks
+  How to write a task in norg
+  @code norg
+  - (x) done 
+  - ( ) undone
+  - (-) pending
+  - (=) on hold
+  - (_) cancelled
+  - (!) important
+  - (+) recurring
+  - (?) uncertain
+  @end
+
+** Blog - Rin.rocks
+   - ( ) Fully OCaml/ReasonML with {https://melange.re}[melange.re]
+   - (?) Transform from *.norg* to *React Component*
+   - (?) tree-sitter in *React*
+
+** Dotfiles
+   - ( ) integration with {https://github.com/Misterio77/nix-colors}[nix-colors]
+   - ( ) move {https://github.com/r17x/rin.rocks}[rin.rocks] to {https://github.com/r17x/nixpkgs}[nixpkgs]
+   - (x) use *flake-parts* in {https://github.com/r17x/nixpkgs}[nixpkgs]
+   - (x) move {https://github.com/r17x/nvim.nix}[nvim.nix] to {https://github.com/r17x/nixpkgs}[nixpkgs]
+   - (x) use {https://github.com/3rd/image.nvim}[image.nvim] in `nvim.nix` with {https://nix-community.github.io/nixvim/plugins/image/index.html}[plugins.image] - see implementation in {/ ../nvim.nix/config/ui.nix:13}[config/ui.nix] and updated configuration of {/ ../home/tmux.nix:25}[home/tmux.nix]
+   - ( ) Rename this repository to `universe`
+   - (x) Move all modules to {/ ../nix/}[nix/] directory
+   - (x) Integration with `tmux-thumbs`  
+
+** Neovim
+   - ( ) Find why image cannot render correctly in `iTerm`
+   - (+) Revisit `cmp` in current nixvim. revisit `autoEnabledSources`.
+   - (x) Add `tree-sitter-rescript` for syntax highlighting with {/ ../modules/overlays/default.nix:6}[modules/overlays/default.nix] and integration {/ ../nvim.nix/config/ui.nix:419}[nixvim]
+   - (x) lsp {/ ../nvim.nix/config/lsp.nix:30}[rescriptls] integration
+   - (x) reconfigure coloscheme in {/ ../nvim.nix/config/ui.nix:72}[edge]
+   -- {/ ../nvim.nix/config/ui.nix:3}[link highlight] to `@neorg.tags.ranged_verbatim.code_block` to `fg`
+   -- ( ) Keymap and Toggle function for colorscheme:edge `edge_*`
+   - (x) Neorg {/ ../nvim.nix/config/writing.nix:15}[integration] with Telescope
+   -- ( ) Keymap for Neorg x Telescope
+   - (x) integration with {/ ../nvim.nix/config/navigations.nix:50}[hop.nvim]
+
+** Uncertain
+   - ( ) Created ISO (image) for Raspiberry phi 4 based on {https://github.com/nix-community/nixos-generators}[nixos-generators]. Device used for {https://cache.komunix.org}[komunix.org]
+   -- {https://mtlynch.io/nixos-pi4/}[Installing NixOS on Raspberry Pi 4]
+   -- {https://pablo.tools/blog/computers/nixos-generate-raspberry-images/}[GENERATING RASPBERRY PI IMAGES WITH NIXOS]

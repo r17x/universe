@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/flake-checker-action@v7
-      - uses: cachix/install-nix-action@v26
+      - uses: cachix/install-nix-action@V27
         with:
           github_access_token: ${{ secrets.GH_TOKEN }}
       - uses: cachix/cachix-action@v15

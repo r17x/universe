@@ -1,9 +1,12 @@
 { lib, stdenv, inputs, ... }:
 
-{
-  configureBuildUsers = true;
-
+let
   nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+in
+{
+  inherit nixPath;
+
+  configureBuildUsers = true;
 
   registry = {
     system.flake = inputs.self;
@@ -15,6 +18,7 @@
   };
 
   settings = {
+    nix-path = nixPath;
     max-jobs = "auto";
     auto-optimise-store = true;
     accept-flake-config = true;

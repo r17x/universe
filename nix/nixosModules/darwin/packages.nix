@@ -19,11 +19,10 @@
   # programs.tmux.iTerm2 = config.programs.tmux.enable;
 
   # Fonts
-  # ENABLED when fontrestore issue in monterey is solved
   fonts.fontDir.enable = true;
-  fonts.fonts = with pkgs; [
-    recursive
-    (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" "Hack" ]; })
+  fonts.fonts = [
+    # name of nerdfonts see {https://github.com/NixOS/nixpkgs/blob/nixos-24.05/pkgs/data/fonts/nerdfonts/shas.nix}
+    (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" "Hack" "NerdFontsSymbolsOnly" ]; })
   ];
 
 }

@@ -14,6 +14,7 @@ let
         inputs.home-manager.darwinModules.home-manager
         ({ pkgs, config, ... }: {
           inherit (ctx) nix;
+          mouseless.enable = true;
           _module.args = ctx.extraModuleArgs;
           nixpkgs = removeAttrs ctx.nixpkgs [ "hostPlatform" ];
           system.stateVersion = stateVersion;

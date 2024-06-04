@@ -4,7 +4,7 @@ description: make things get fucking done
 authors: r17
 categories: 
 created: 2024-05-26T02:31:16+0700
-updated: 2024-05-31T03:09:35+0700
+updated: 2024-06-04T15:21:17+0700
 version: 1.1.1
 @end
 
@@ -32,9 +32,13 @@ version: 1.1.1
    - (x) use *flake-parts* in {https://github.com/r17x/nixpkgs}[nixpkgs]
    - (x) move {https://github.com/r17x/nvim.nix}[nvim.nix] to {https://github.com/r17x/nixpkgs}[nixpkgs]
    - (x) use {https://github.com/3rd/image.nvim}[image.nvim] in `nvim.nix` with {https://nix-community.github.io/nixvim/plugins/image/index.html}[plugins.image] - see implementation in {/ ../nvim.nix/config/ui.nix:13}[config/ui.nix] and updated configuration of {/ ../home/tmux.nix:25}[home/tmux.nix]
-   - ( ) Rename this repository to `universe`
+   - (x) Rename this repository from {https://github.com/r17x/nixpkgs}[nixpkgs] to {https://github.com/r17x/universe}[`universe`]
    - (x) Move all modules to {/ ../nix/}[nix/] directory
    - (x) Integration with `tmux-thumbs`  
+   - (x) reborn `mouseless.enable = true;` in {/ ../nix/nixosModules/darwin/mouseless.nix}[mouseless.nix]
+   -- {/ ../nix/nixosModules/darwin/mouseless.nix:66}[skhd]
+   -- {/ ../nix/nixosModules/darwin/mouseless.nix:15}[yabai]
+   -- {/ ../nix/nixosModules/darwin/sketchybarrc.nix}[sketchybar]
 
 ** Neovim
    - ( ) Find why image cannot render correctly in `iTerm`

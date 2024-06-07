@@ -49,29 +49,30 @@
   plugins.which-key.registrations."<leader>oh" = [ "<cmd>Neorg workspace home<cr>" "Open Neorg Home" ];
   plugins.which-key.registrations."<leader>zm" = [ "<cmd>ZenMode<cr>" "Focus like a Japanese Philosopher 🧘" ];
 
-  plugins.neorg.enable = true;
-  plugins.neorg.lazyLoading = true;
-  plugins.neorg.modules = {
-    "core.defaults" = { __empty = null; };
-    "core.integrations.treesitter" = { };
-    "core.integrations.telescope" = { };
-    "core.concealer" = { config = { folds = true; icon_preset = "diamond"; init_open_folds = "auto"; }; };
-    "core.completion" = {
-      config = {
-        engine = "nvim-cmp";
-      };
-    };
-    "core.dirman" = {
-      config = {
-        workspaces = {
-          home = "~/.config/nixpkgs/notes";
+  plugins.zen-mode.enable = true;
+  plugins.neorg = {
+    enable = true;
+    lazyLoading = true;
+    modules = {
+      "core.dirman" = {
+        config = {
+          default_workspace = "home";
+          index = "index.norg";
+          open_last_workspace = true;
+          workspaces = {
+            home = "~/.config/nixpkgs/notes";
+          };
+
         };
       };
-    };
-    "core.esupports.metagen" = {
-      config = {
-        type = "auto";
-      };
+      "core.defaults" = { __empty = null; };
+      "core.keybinds" = { config.neorg_leader = "<Leader>"; };
+      "core.integrations.treesitter" = { };
+      "core.integrations.telescope" = { };
+      "core.concealer" = { config = { folds = true; icon_preset = "diamond"; init_open_folds = "auto"; }; };
+      "core.completion" = { config = { engine = "nvim-cmp"; }; };
+      "core.esupports.metagen" = { config = { type = "auto"; }; };
+      "core.presenter" = { config = { zen_mode = "zen-mode"; }; };
     };
   };
 
@@ -81,7 +82,4 @@
     settings.port = "8686";
   };
 
-  plugins.zen-mode = {
-    enable = true;
-  };
 }

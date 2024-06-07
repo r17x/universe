@@ -4,7 +4,28 @@ description:
 authors: r17
 categories: 
 created: 2024-06-07T12:54:25+0700
-updated: 2024-06-07T12:54:30+0700
+updated: 2024-06-08T00:05:42+0700
 version: 1.1.1
 @end
 
+* Server Driven UI
+  Membangun server driven UI tentunya akan lebih banyak berjalan dan diproses pada `server`. Kita akan membuat UI pada server, dan membuat ataupun menggunakan API (_Rest API_). Hal - hal yang penting:
+
+  - Kenapa?
+  -- Ketika kita mampu merancang sebuah aplikasi lebih _humanis_, harusnya seorang perancang *Product* mampu merealisikan dengan cepat tanpa perlu waktu yang lama sampai *delivery*, diuji, dan juga digunakan oleh Pengguna.
+  -- Minimalisme *Sumber Daya*, Mengurangi sumber daya (mis: jumlah pekerja) untuk mengerjakan *Product* tersebut sampai *delivery*-pun tidak perlu banyak (secukupnya saja).
+
+  - Struktur Data
+  -- Bagaimana mengatur UI? data struktur `Block UI` 
+  -- Bagaimana mengatur Event? 🤔 
+  -- Bagaimana mengatur flow?
+  --- misalnya:
+  ---- a. Pengguna mengakses halaman utama, klik salah satu produk
+  ---- b. Ketika produk diklik, akan muncul halaman detail produk
+  ---- c. Ketika dihalaman produk, bagaimana melanjutkan proses pembayaran sampai selesai?
+
+  - Penyimpanan Data -> `Database` atau apapun.
+
+  - Editor -> Merancang UI ataupun Flow dari Aplikasi itu sendiri.
+  -- {https://demo.puckeditor.com/edit}[Pluck] 
+  -- {https://openchakra.app/}[OpenChakra]

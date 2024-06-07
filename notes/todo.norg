@@ -4,7 +4,7 @@ description: make things get fucking done
 authors: r17
 categories: 
 created: 2024-05-26T02:31:16+0700
-updated: 2024-06-04T15:21:17+0700
+updated: 2024-06-07T23:34:46+0700
 version: 1.1.1
 @end
 
@@ -36,9 +36,10 @@ version: 1.1.1
    - (x) Move all modules to {/ ../nix/}[nix/] directory
    - (x) Integration with `tmux-thumbs`  
    - (x) reborn `mouseless.enable = true;` in {/ ../nix/nixosModules/darwin/mouseless.nix}[mouseless.nix]
-   -- {/ ../nix/nixosModules/darwin/mouseless.nix:66}[skhd]
-   -- {/ ../nix/nixosModules/darwin/mouseless.nix:15}[yabai]
-   -- {/ ../nix/nixosModules/darwin/sketchybarrc.nix}[sketchybar]
+   -- (x) {/ ../nix/nixosModules/darwin/mouseless.nix:66}[skhd]
+   -- (x) {/ ../nix/nixosModules/darwin/mouseless.nix:15}[yabai]
+   -- (x) {/ ../nix/nixosModules/darwin/sketchybarrc.nix}[sketchybar]
+   -- (-) sketchybar custom 
 
 ** Neovim
    - ( ) Find why image cannot render correctly in `iTerm`

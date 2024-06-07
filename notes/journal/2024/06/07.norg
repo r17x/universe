@@ -4,9 +4,16 @@ description:
 authors: r17
 categories: 
 created: 2024-06-07T12:54:25+0700
-updated: 2024-06-08T00:05:42+0700
+updated: 2024-06-08T02:11:05+0700
 version: 1.1.1
 @end
+
+- React APIs
+-- {https://react.dev/blog/2024/04/25/react-19-rc}[`react-19-rc`]
+-- {https://github.com/reasonml/reason-react}[`reason-react`]
+-- I Opened Pull Requests:
+---- (-) {https://github.com/reasonml/reason-react/pull/837}[React.isValidElement] 
+---- (-) {https://github.com/reasonml/reason-react/pull/838}[React.startTransition]
 
 * Server Driven UI
   Membangun server driven UI tentunya akan lebih banyak berjalan dan diproses pada `server`. Kita akan membuat UI pada server, dan membuat ataupun menggunakan API (_Rest API_). Hal - hal yang penting:

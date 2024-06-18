@@ -1,5 +1,5 @@
 return {
-	text = "Liga SFMono Nerd Font", -- Used for text
+	text = "SF Pro", -- Used for text
 	numbers = "Liga SFMono Nerd Font", -- Used for numbers
 
 	-- Unified font style map

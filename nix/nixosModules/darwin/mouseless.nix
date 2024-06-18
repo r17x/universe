@@ -73,6 +73,17 @@ in
         yabai -m rule --add label="Select file to save to" app="^Inkscape$" title="Select file to save to" manage=off
 
         yabai -m config layout bsp
+
+        options=(
+          style=round
+          width=6.0
+          hidpi=off
+          active_color=0xc0e2e2e3
+          inactive_color=0xc02c2e34
+          background_color=0x302c2e34
+        )
+
+        borders "''${options[@]}"
       '';
     };
 

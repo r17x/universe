@@ -68,6 +68,9 @@
             dune_3
             findlib
             ocaml-lsp
+            ocamlformat
+            reason
+            merlin
             pkgs.ocamlPackages.melange
           ];
           buildInputs = [ pkgs.ocamlPackages.melange ];

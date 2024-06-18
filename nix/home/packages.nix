@@ -70,18 +70,14 @@ in
       ################################## 
       # podman
       # podman-compose
-      colima
       docker
       qemu
       babelfish
       paperkey
       # yarn # currently defined in devShell.nix
-      tokei
       # google-cloud-sdk
       # nodejs-16_x
       # gitlab-runner
-      comby
-      mob
       # openvpn # currently not used
 
       ################################## 
@@ -109,7 +105,6 @@ in
       comma # run without install
       # nodePackages.node2nix # use with comma 
       # rnix-lsp # use in neovim and install with nvim-lsp-install
-      nix-prefetch-git
       # nodePackages.node2nix # use with comma 
       # yarn2nix
       telegram-desktop

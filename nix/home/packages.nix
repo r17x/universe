@@ -117,7 +117,6 @@ in
       mas
       # orbstack # UNSTABLE, may be install in System (NEED Root)
       xbar
-      rectangle
       cocoapods
       m-cli # useful macOS CLI commands
       xcode-install

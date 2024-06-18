@@ -12,7 +12,14 @@
   perSystem = { lib, system, inputs', ... }: {
     formatter = inputs.nixpkgs-fmt.defaultPackage.${system};
 
-    _module.args = let overlays = [ inputs.neorg-overlay.overlays.default self.overlays.default ]; in
+    _module.args =
+      let
+        overlays = [
+          inputs.ocaml-overlay.overlays.default
+          inputs.neorg-overlay.overlays.default
+          self.overlays.default
+        ];
+      in
       rec {
         # the nix package manager configurations and settings.
         nix = import ./nix.nix

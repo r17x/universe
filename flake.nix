@@ -33,6 +33,10 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs.follows = "nixpkgs-unstable";
 
+    ## -- Languages
+    ocaml-overlay.url = "github:nix-ocaml/nix-overlays";
+    ocaml-overlay.inputs.nixpkgs.follows = "nixpkgs";
+
     ## -- Platform
 
     #### ---- MacOS

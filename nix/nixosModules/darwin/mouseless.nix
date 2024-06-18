@@ -6,7 +6,14 @@ let
 
   inherit (lib) mdDoc mkEnableOption mkIf;
 
-  sketchybarConfig = pkgs.callPackage ./sketchybarrc.nix { };
+  sbarLua = pkgs.callPackage ./sketchybar/helpers/sbar.nix { };
+  sketchybarConfigLua = pkgs.callPackage ./sketchybar { };
+
+  lua = pkgs.lua54Packages.lua.withPackages (ps: [ ps.lua sbarLua sketchybarConfigLua ]);
+
+  sbar_menus = pkgs.callPackage ./sketchybar/helpers/menus { };
+  sbar_events = pkgs.callPackage ./sketchybar/helpers/event_providers { };
+
 in
 {
   options.mouseless.enable = mkEnableOption (mdDoc "Enable Mouseless with yabai skhd and sketchybar");
@@ -14,8 +21,16 @@ in
   config = mkIf (cfg.enable) {
     services.sketchybar = {
       inherit (cfg) enable;
-      config = toString sketchybarConfig;
-      extraPackages = [ pkgs.jankyborders ];
+      extraPackages = [
+        pkgs.jankyborders
+        sbar_menus
+        sbar_events
+      ];
+
+      config = ''#!${lua}/bin/lua
+        package.cpath = package.cpath .. ";${lua}/lib/?.so"
+        require("init")
+      '';
     };
 
     services.yabai = {
@@ -23,7 +38,7 @@ in
       package = pkgs.yabai;
       enableScriptingAddition = false; # true when SIP Disabled
       config = {
-        external_bar = "all:30:0";
+        external_bar = "all:40:0";
         mouse_follows_focus = "off";
         focus_follows_mouse = "off";
         window_zoom_persist = "off";
@@ -61,7 +76,7 @@ in
       '';
     };
 
-    environment.systemPackages = with pkgs; [ jq jankyborders skhd yabai ];
+    environment.systemPackages = with pkgs; [ jq jankyborders skhd yabai sbar_menus sbar_events ];
 
     services.skhd = {
       enable = cfg.enable;
@@ -133,6 +148,13 @@ in
           ## move desktop
           ${leader} - 1 : ${moveByIndex "1"}
           ${leader} - 2 : ${moveByIndex "2"}
+          ${leader} - 3 : ${moveByIndex "3"}
+          ${leader} - 4 : ${moveByIndex "4"}
+          ${leader} - 5 : ${moveByIndex "5"}
+          ${leader} - 6 : ${moveByIndex "6"}
+          ${leader} - 7 : ${moveByIndex "7"}
+          ${leader} - 8 : ${moveByIndex "8"}
+          ${leader} - 9 : ${moveByIndex "9"}
 
           ## move window and focus desktop
           shift + ${leader} - 1 : yabai -m window --space 1; yabai -m space --focus 1

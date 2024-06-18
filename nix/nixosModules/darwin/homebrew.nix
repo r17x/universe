@@ -2,7 +2,6 @@
 
 let
   inherit (lib) mkIf;
-  # mkIfCaskPresent = cask: mkIf (lib.any (x: x.name == cask) config.homebrew.casks);
   brewEnabled = config.homebrew.enable;
 in
 {
@@ -16,7 +15,6 @@ in
     fi
   '';
 
-
   homebrew.enable = true;
   homebrew.onActivation.cleanup = "zap";
   homebrew.global.brewfile = true;
@@ -24,13 +22,13 @@ in
   homebrew.masApps = {
     Vimari = 1480933944;
     WhatsApp = 1147396723;
-    "SpeakerAmp:Booster & Equalizer" = 1496955576;
   };
 
   homebrew.casks = [
     "firefox"
     "google-chrome"
     "raycast"
+    "sf-symbols"
   ];
 
 }

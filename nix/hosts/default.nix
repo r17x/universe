@@ -15,6 +15,7 @@ let
         ({ pkgs, config, ... }: {
           inherit (ctx) nix;
           mouseless.enable = true;
+          homebrew.enable = true;
           _module.args = ctx.extraModuleArgs;
           nixpkgs = removeAttrs ctx.nixpkgs [ "hostPlatform" ];
           system.stateVersion = stateVersion;

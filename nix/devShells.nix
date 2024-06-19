@@ -71,9 +71,13 @@
             ocamlformat
             reason
             merlin
-            pkgs.ocamlPackages.melange
+            melange
           ];
-          buildInputs = [ pkgs.ocamlPackages.melange ];
+          buildInputs = with pkgs.ocamlPackages; [
+            melange
+            reason-react
+            reason-react-ppx
+          ];
         };
 
         #

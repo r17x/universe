@@ -77,6 +77,8 @@
             melange
             reason-react
             reason-react-ppx
+            pkgs.nodejs_20
+            (nodeCorepackShims pkgs.nodejs_20)
           ];
         };
 

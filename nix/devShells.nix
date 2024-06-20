@@ -74,9 +74,12 @@
             melange
           ];
           buildInputs = with pkgs.ocamlPackages; [
+            dream
+            lwt_ppx
             melange
             reason-react
             reason-react-ppx
+            server-reason-react
             pkgs.nodejs_20
             (nodeCorepackShims pkgs.nodejs_20)
           ];

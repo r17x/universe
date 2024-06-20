@@ -905,6 +905,24 @@
         "type": "github"
       }
     },
+    "quickjs-ml": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1712754554,
+        "narHash": "sha256-+XW31KOcANL7irogZTno9bWKmCTnJf7cgEvT0JfoNsQ=",
+        "ref": "refs/heads/main",
+        "rev": "86aad3d9d8b2485b50b7dd1046aaf7e7628cbf45",
+        "revCount": 64,
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/ml-in-barcelona/quickjs.ml"
+      },
+      "original": {
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/ml-in-barcelona/quickjs.ml"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
@@ -924,6 +942,8 @@
         "ocaml-overlay": "ocaml-overlay",
         "parts": "parts",
         "pre-commit-hooks": "pre-commit-hooks_3",
+        "quickjs-ml": "quickjs-ml",
+        "server-reason-react": "server-reason-react",
         "sops": "sops",
         "ts-rescript": "ts-rescript",
         "vimPlugins_vim-rescript": "vimPlugins_vim-rescript"
@@ -943,6 +963,22 @@
         "owner": "rust-analyzer",
         "ref": "nightly",
         "repo": "rust-analyzer",
+        "type": "github"
+      }
+    },
+    "server-reason-react": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1718805260,
+        "narHash": "sha256-pay8xthDB5KO5sXn5ASQIaOHkNV/TXtL7/kwdGBhEHA=",
+        "owner": "ml-in-barcelona",
+        "repo": "server-reason-react",
+        "rev": "8b900ef34efa04c8e73c90682b8d4dc5731f2c05",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ml-in-barcelona",
+        "repo": "server-reason-react",
         "type": "github"
       }
     },

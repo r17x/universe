@@ -36,6 +36,8 @@
     ## -- Languages
     ocaml-overlay.url = "github:nix-ocaml/nix-overlays";
     ocaml-overlay.inputs.nixpkgs.follows = "nixpkgs";
+    server-reason-react = { url = "github:ml-in-barcelona/server-reason-react"; flake = false; };
+    quickjs-ml = { url = "git+https://github.com/ml-in-barcelona/quickjs.ml?submodules=1"; flake = false; };
 
     ## -- Platform
 

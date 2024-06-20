@@ -1,0 +1,12 @@
+@document.meta
+title: 18
+description: 
+authors: r17
+categories: 
+created: 2024-06-18T23:54:16+0700
+updated: 2024-06-19T10:37:43+0700
+version: 1.1.1
+@end
+
+* Melange
+  I Have been setup melange with nix in {/ ../../../../nix/devShells.nix:64}[devShells.nix] with minimal setup. Basic development `nix develop .#melange` or using direnv `use flake .#melange`. For build and compile run command `dune build @melange`.

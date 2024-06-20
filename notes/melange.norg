@@ -1,0 +1,32 @@
+@document.meta
+title: melange
+description: 
+authors: r17
+categories: [
+  melange
+  reasonml
+]
+created: 2024-06-19T16:16:51+0700
+updated: 2024-06-19T18:05:04+0700
+version: 1.1.1
+@end
+
+* Melange
+  Melange is the toolchain for ReasonML, use as Compiler for both Native and produce high performance JS code.
+
+* Use Melange with Nix
+
+** add `ocaml-overlay` in inputs of your `flake.nix`
+
+   @code nix
+   inputs = {
+     ocaml-overlay.url = "github:nix-ocaml/nix-overlays";
+     ocaml-overlay.inputs.nixpkgs.follows = "nixpkgs";
+   };
+   @end
+
+* Add `ocaml-overlay` to flake.overlays
+
+  @code nix
+  overlays = [ inputs.ocaml-overlay ];
+  @end

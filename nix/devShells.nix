@@ -14,6 +14,8 @@
       luacheck.enable = false;
       deadnix.enable = true;
       nixpkgs-fmt.enable = true;
+      dune-fmt.enable = true;
+      dune-fmt.settings.extraRuntimeInputs = [ pkgs.ocamlPackages.ocamlformat ];
     };
 
 

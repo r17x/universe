@@ -24,10 +24,10 @@
     lspconfig.rescriptls.setup{}
     lspconfig.ocamllsp.setup({
       settings = {
-        codelens = {enable = false },
+        codelens = { enable = false },
         extendedHover = { enable = true },
         duneDiagnostics = {enable = false },
-        inlayHints = {enable = true},
+        inlayHints = { enable = true },
       }
     })
 
@@ -38,7 +38,7 @@
     vim.g.rust_recommended_style = false
   '';
 
-  filetype.extension = { "re" = "ocaml"; "rei" = "ocaml"; };
+  filetype.extension = { "re" = "reason"; "rei" = "reason"; };
 
   plugins.which-key.registrations = {
     "//" = [ "<cmd>nohlsearch<cr>" "Clear search highlight" ];

@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   highlight."@neorg.tags.ranged_verbatim.code_block".link = "Fg";
-  extraPlugins = with pkgs.vimPlugins; [ edge unicode-vim lualine-lsp-progress vim-wakatime ];
+  extraPlugins = with pkgs.vimPlugins; [ edge unicode-vim lualine-lsp-progress ];
 
   plugins.which-key.registrations = {
     "<c-n>" = [ "<cmd>NvimTreeToggle<CR>" "Open Tree in left side" ];
@@ -10,6 +10,8 @@
     "<leader>tc" = [ "<cmd>ColorizerToggle<cr>" "Toggle Colorizer" ];
     "fhi" = [ "<cmd>Telescope highlights<cr>" "Find Highlight Groups" ];
   };
+
+  plugins.wakatime.enable = true;
 
   plugins.image.enable = true;
   plugins.image.integrations.neorg.enabled = true;

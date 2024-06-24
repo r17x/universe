@@ -946,6 +946,7 @@
         "server-reason-react": "server-reason-react",
         "sops": "sops",
         "ts-rescript": "ts-rescript",
+        "vimPlugins_supermaven-nvim": "vimPlugins_supermaven-nvim",
         "vimPlugins_vim-rescript": "vimPlugins_vim-rescript"
       }
     },
@@ -1084,6 +1085,22 @@
       "original": {
         "owner": "nkrkv",
         "repo": "tree-sitter-rescript",
+        "type": "github"
+      }
+    },
+    "vimPlugins_supermaven-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1718585015,
+        "narHash": "sha256-of3dqknyQl1H+bpCsRgpJ4yx3t4/gt1f3ACKYNLUEwo=",
+        "owner": "supermaven-inc",
+        "repo": "supermaven-nvim",
+        "rev": "ec7ae4c8190c96002aa466b1eb4a23aa51e24812",
+        "type": "github"
+      },
+      "original": {
+        "owner": "supermaven-inc",
+        "repo": "supermaven-nvim",
         "type": "github"
       }
     },

@@ -5,7 +5,7 @@
 
   extraPackages = [ pkgs.nixpkgs-fmt ];
 
-  extraPlugins = with pkgs.vimPlugins; [ telescope-github-nvim vim-rescript ];
+  extraPlugins = with pkgs.vimPlugins; [ telescope-github-nvim vim-rescript supermaven-nvim ];
 
   # make custom command
   extraConfigLuaPre = ''
@@ -186,6 +186,13 @@
 
   plugins.lspkind.enable = true;
   plugins.lspkind.cmp.enable = true;
+  plugins.lspkind.symbolMap = {
+    Codeium = "󰘦 ";
+    Copilot = " ";
+    Suggestion = " ";
+    TabNine = "󰏚 ";
+    Supermaven = "";
+  };
   plugins.lspsaga = {
     enable = true;
     lightbulb.sign = false;
@@ -219,14 +226,12 @@
         { name = "nvim_lsp_signature_help"; }
         { name = "nvim_lsp_document_symbol"; }
         { name = "codeium"; }
+        { name = "supermaven"; }
         { name = "luasnip"; } #For luasnip users.
         { name = "path"; }
         { name = "buffer"; }
         { name = "cmdline"; }
         { name = "neorg"; }
-        # { name = "spell"; }
-        # { name = "dictionary"; }
-        # { name = "treesitter"; }
       ];
 
     };

@@ -1,6 +1,5 @@
-{ src }:
-
-{ buildDunePackage
+{ src
+, buildDunePackage
 , ppxlib
 , melange
 , reason

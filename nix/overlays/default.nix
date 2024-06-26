@@ -4,8 +4,9 @@
   flake.overlays.default = final: prev: {
 
     ocamlPackages = prev.ocaml-ng.ocamlPackages_5_2.overrideScope (ofinal: oprev: {
-      quickjs = prev.callPackage ./quickjs.nix { src = inputs.quickjs-ml; } oprev;
-      server-reason-react = prev.callPackage ./server-reason-react.nix { src = inputs.server-reason-react; } ofinal;
+      quickjs = prev.callPackage ./quickjs.nix (oprev // { src = inputs.quickjs-ml; });
+      server-reason-react = prev.callPackage ./server-reason-react.nix (ofinal // { src = inputs.server-reason-react; });
+      styled-ppx = prev.callPackage ./styled-ppx.nix (ofinal // { src = inputs.styled-ppx; });
     });
 
     tree-sitter-grammars = prev.tree-sitter-grammars // {

@@ -38,6 +38,7 @@ let
                 home.sessionVariables.OPENAI_API_KEY = "$(cat ~/.config/sops-nix/secrets/openai_api_key)";
               })
             ];
+            home.enableNixpkgsReleaseCheck = false;
             home.stateVersion = homeManagerStateVersion;
             home.user-info = user;
             home.username = user.username;

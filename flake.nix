@@ -1,7 +1,7 @@
 {
   description = "ri7's nix darwin system";
 
-  outputs = inputs: inputs.parts.lib.mkFlake { inherit inputs; } {
+  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } {
     systems = [
       "aarch64-darwin"
       "x86_64-linux"
@@ -22,7 +22,7 @@
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
     # utilities for Flake
-    parts.url = "github:hercules-ci/flake-parts";
+    flake-parts.url = "github:hercules-ci/flake-parts";
 
     nixpkgs-fmt.url = "github:nix-community/nixpkgs-fmt";
     nixpkgs-fmt.inputs.nixpkgs.follows = "nixpkgs";
@@ -38,6 +38,7 @@
     ocaml-overlay.inputs.nixpkgs.follows = "nixpkgs";
     server-reason-react = { url = "github:ml-in-barcelona/server-reason-react"; flake = false; };
     quickjs-ml = { url = "git+https://github.com/ml-in-barcelona/quickjs.ml?submodules=1"; flake = false; };
+    styled-ppx = { url = "github:davesnx/styled-ppx?rev=2b69b67ab10244aed612005bd127031f16289cc7"; flake = false; };
 
     ## -- Platform
 
@@ -52,6 +53,10 @@
     #### ---- nixvim
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
+    nixvim.inputs.nix-darwin.follows = "nix-darwin";
+    nixvim.inputs.home-manager.follows = "home-manager";
+    nixvim.inputs.flake-parts.follows = "flake-parts";
+
     neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
     neorg-overlay.inputs.nixpkgs.follows = "nixpkgs";
 

@@ -5,7 +5,7 @@
 
   extraPackages = [ pkgs.nixpkgs-fmt ];
 
-  extraPlugins = with pkgs.vimPlugins; [ telescope-github-nvim vim-rescript supermaven-nvim ];
+  extraPlugins = with pkgs.vimPlugins; [ telescope-github-nvim vim-rescript supermaven-nvim nlsp-settings-nvim ];
 
   # make custom command
   extraConfigLuaPre = ''
@@ -32,10 +32,25 @@
     })
 
     -- make sync formatter when write and quit
-    -- vim.cmd [[ cabbrev wq execute "Format sync" <bar> wq ]]
+    vim.cmd [[ cabbrev wq execute "Format sync" <bar> wq ]]
 
     -- ft:rust didn't respect my tabstop=2 - I love you but not me
     vim.g.rust_recommended_style = false
+
+    -- supermaven
+    require("supermaven-nvim").setup({
+      disable_keymaps = true
+    })
+
+    -- nlsp-settings
+    local nlspsettings = require("nlspsettings")
+    nlspsettings.setup({
+      config_home = vim.fn.stdpath('config') .. '/nlsp-settings',
+      local_settings_dir = ".nlsp-settings",
+      local_settings_root_markers_fallback = { '.git' },
+      append_default_schemas = true,
+      loader = 'json'
+    })
   '';
 
   filetype.extension = { "re" = "reason"; "rei" = "reason"; };
@@ -144,8 +159,8 @@
       lua-ls.enable = true;
       lua-ls.autostart = true;
 
-      nil_ls.enable = true;
-      nil_ls.autostart = true;
+      nil-ls.enable = true;
+      nil-ls.autostart = true;
 
       rust-analyzer.enable = true;
       rust-analyzer.autostart = true;

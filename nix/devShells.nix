@@ -16,6 +16,7 @@
       nixpkgs-fmt.enable = true;
       dune-fmt.enable = true;
       dune-fmt.settings.extraRuntimeInputs = [ pkgs.ocamlPackages.ocamlformat ];
+      dune-fmt.files = "apps/rin.rocks";
     };
 
 
@@ -79,9 +80,12 @@
             dream
             lwt_ppx
             melange
+            melange-webapi
             reason-react
             reason-react-ppx
             server-reason-react
+            # TODO: styled-ppx fix build
+            # styled-ppx
             pkgs.nodejs_20
             (nodeCorepackShims pkgs.nodejs_20)
           ];

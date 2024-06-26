@@ -1,0 +1,16 @@
+{
+  "formatting": {
+    "command": [
+      "nixpkgs-fmt"
+    ]
+  },
+  "nixpkgs": {
+    "expr": "import <nixpkgs> { }"
+  },
+  "options": {
+    "enable": true,
+    "nixos": {
+      "expr": "(builtins.getFlake (toString ./.)).darwinConfigurations.eR17x.options"
+    }
+  }
+}

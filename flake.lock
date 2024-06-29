@@ -398,22 +398,6 @@
         "type": "github"
       }
     },
-    "luafun": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1693409738,
-        "narHash": "sha256-vW5mliayrxMFOjxopFo5ixg1lCYlNVHblqOlKwgj4oA=",
-        "owner": "luafun",
-        "repo": "luafun",
-        "rev": "02c39fa7430689b89a799e3bf95797aac2067210",
-        "type": "github"
-      },
-      "original": {
-        "owner": "luafun",
-        "repo": "luafun",
-        "type": "github"
-      }
-    },
     "neorg": {
       "flake": false,
       "locked": {
@@ -854,7 +838,6 @@
       "inputs": {
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
-        "luafun": "luafun",
         "neorg-overlay": "neorg-overlay",
         "nix": "nix",
         "nix-darwin": "nix-darwin",

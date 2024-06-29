@@ -5,7 +5,7 @@ let
   callPackage = prev.newScope { };
   packages = [
     "xbar"
-    "obs-studio"
+    # "obs-studio"
     "orbstack"
     "telegram"
     "iriun-webcam"

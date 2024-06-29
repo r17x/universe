@@ -1,0 +1,43 @@
+name: "Schedule for weekly builds"
+
+on:
+  workflow_dispatch: 
+  schedule:
+    - cron: '0 0 * * 0' # runs weekly on Sunday at 00:00
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/flake-checker-action@v8
+      - uses: cachix/install-nix-action@V27
+        with:
+          github_access_token: ${{ secrets.GH_TOKEN }}
+      - uses: cachix/cachix-action@v15
+        with:
+          name: r17
+          # If you chose signing key for write access
+          # signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+          # If you chose API tokens for write access OR if you have a private cache
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+          extraPullNames: pre-commit-hooks,nix-community
+          skipPush: ${{ !(github.ref == 'refs/heads/main' && github.event_name == 'push' && matrix.os == 'macos-latest') }}
+      - uses: DeterminateSystems/update-flake-lock@v23
+        name: Update flake.lock
+        if: ${{ github.event_name != 'pull_request' }}
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          inputs: nixpkgs-unstable nixvim nixpkgs-fmt neorg-overlay home-manager nix-darwin
+          git-author-name: 'anakmangang'
+          git-author-email: 'contact@evilfactorylabs.org'
+          git-committer-name: 'anakmangang'
+          git-committer-email: 'contact@evilfactorylabs.org'
+      - run: nix flake show .
+      - run: nix build .#nvim
+      - run: nix build ".#darwinConfigurations.$HOSTNAME.system"
+        env: 
+          HOSTNAME: "eR17"

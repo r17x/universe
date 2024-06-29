@@ -78,6 +78,5 @@
 
     # others 
     ts-rescript = { url = "github:nkrkv/tree-sitter-rescript"; flake = false; };
-    luafun = { url = "github:luafun/luafun"; flake = false; };
   };
 }

@@ -67,6 +67,7 @@
         #
         melange = pkgs.mkShell {
           description = "Melange Development Environment with OCaml 5_2";
+          shellHook = config.pre-commit.installationScript;
           nativeBuildInputs = with pkgs.ocamlPackages; [
             ocaml
             dune_3

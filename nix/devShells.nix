@@ -80,12 +80,18 @@
           ];
           buildInputs = with pkgs.ocamlPackages; [
             dream
-            lwt_ppx
             melange
             melange-webapi
             reason-react
             reason-react-ppx
             server-reason-react
+            atdgen
+            atdgen-runtime
+            yojson
+            lwt
+            lwt_ppx
+            cohttp
+            cohttp-lwt-unix
             # TODO: styled-ppx fix build
             # styled-ppx
             pkgs.nodejs_20

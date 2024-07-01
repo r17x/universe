@@ -4,7 +4,7 @@ description: make things get fucking done
 authors: r17
 categories: 
 created: 2024-05-26T02:31:16+0700
-updated: 2024-06-18T23:59:57+0700
+updated: 2024-06-30T22:12:11+0700
 version: 1.1.1
 @end
 
@@ -44,7 +44,7 @@ version: 1.1.1
 ** Neovim
    - ( ) Find why image cannot render correctly in `iTerm`
    - (+) Revisit `cmp` in current nixvim. revisit `autoEnabledSources`.
-   - (x) Add `tree-sitter-rescript` for syntax highlighting with {/ ../modules/overlays/default.nix:6}[modules/overlays/default.nix] and integration {/ ../nvim.nix/config/ui.nix:419}[nixvim]
+   - (x) Add `tree-sitter-rescript` for syntax highlighting with {/ ../nix/overlays/default.nix:6}[modules/overlays/default.nix] and integration {/ ../nvim.nix/config/ui.nix:419}[nixvim]
    - (x) lsp {/ ../nvim.nix/config/lsp.nix:30}[rescriptls] integration
    - (x) reconfigure coloscheme in {/ ../nvim.nix/config/ui.nix:72}[edge]
    -- {/ ../nvim.nix/config/ui.nix:3}[link highlight] to `@neorg.tags.ranged_verbatim.code_block` to `fg`

@@ -30,7 +30,7 @@ jobs:
           skipPush: ${{ !(github.ref == 'refs/heads/main' && github.event_name == 'push' && matrix.os == 'macos-latest') }}
       - uses: DeterminateSystems/update-flake-lock@v23
         name: Update flake.lock
-        if: ${{ github.event_name != 'pull_request' }}
+        if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
         with:
           token: ${{ secrets.GH_TOKEN }}
           inputs: nixpkgs-unstable nixvim nixpkgs-fmt neorg-overlay home-manager nix-darwin

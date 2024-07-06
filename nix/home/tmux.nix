@@ -11,7 +11,6 @@
   programs.tmux.resizeAmount = 10;
   programs.tmux.terminal = "screen-256color";
   programs.tmux.keyMode = "vi";
-  programs.tmux.baseIndex = 1;
   programs.tmux.extraConfig = ''
 
     set -g status off

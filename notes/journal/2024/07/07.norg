@@ -4,7 +4,7 @@ description:
 authors: r17
 categories: 
 created: 2024-07-07T18:41:18+0700
-updated: 2024-07-07T19:49:11+0700
+updated: 2024-07-07T21:08:38+0700
 version: 1.1.1
 @end
 
@@ -27,3 +27,53 @@ version: 1.1.1
 
     While *technical fundamentals* are crucial, they are not sufficient alone. Understanding what technical knowledge is essential and continuously building upon it requires the application of these principles. A senior developer who embodies *problem-solving, creativity, curiosity, passion, humility, and empathy* will be well-equipped to achieve the best version of themselves and lead their team to *success*.
 
+** Luthfi Sukma - {https://twitter.com/}[@unknown]
+*** Background
+    
+*** Different between `nx` and `turborepo` ?
+    - `turborepo` aka {https://turbo.build/}[turbo.build] - Turbo is an incremental bundler and build system optimized for JavaScript and TypeScript, written in Rust.
+
+    - {https://nx.dev/}[nx.dev] - Nx is a build system with built-in tooling and advanced CI capabilities . It helps you maintain and scale monorepos, both locally and on CI.
+
+    - `package manager` and `monorepo tooling` are two different things.
+      @code
+      .nx 
+      |-package.json
+      |-- nx.json
+      |-- apps/
+      |   |-- app1/
+              |-- project.json
+      |   |-- app2/
+              |-- project.json
+
+      .turborepo
+      |-- package.json
+      |-- turbo.json
+      |-- apps/
+      |   |-- app1/
+            |-- package.json
+      |   |-- app2/
+            |-- package.json
+      @end
+
+*** Advantages and Disadvantages of nx and turborepo? What are nx and turborepo intended for?
+    - Nx
+      - Advantages
+      - Disadvantages
+        - Learning curve
+
+    - Turborepo
+      - Advantages
+        - Flexibility
+      - Disadvantages
+
+*** If `monorepo`, is it possible if we do deployment in different instances for each application?
+*** Can I share UI components if I use `CRA` for the admin panel and `Next.js` for the front page?
+*** What should we consider for scaling when using a monorepo codebase?
+    - Documentation: Maintain good documentation to help navigate the large codebase. - Documentation
+    - Dependency Management: Ensure clear and strict dependencies between modules. - Workspaces
+    - Modularization: Break the code into smaller, reusable modules. - Libraries & Applications (Libraries are reusable, Applications are not)
+    - Build Optimization: Use tools like `Turborepo` or `Nx` to manage and optimize builds. - Build and Tasks Management (CI Related)
+    - CI/CD Pipelines: Set up efficient continuous integration and deployment pipelines.
+    - Code Ownership: Define clear ownership and maintainers for different parts of the codebase. - Organization Management
+    - Testing: Implement comprehensive testing strategies to catch issues early. - Testing

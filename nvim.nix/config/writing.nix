@@ -49,6 +49,7 @@
   plugins.which-key.registrations."<leader>oh" = [ "<cmd>Neorg workspace home<cr>" "Open Neorg Home" ];
   plugins.which-key.registrations."<leader>zm" = [ "<cmd>ZenMode<cr>" "Focus like a Japanese Philosopher 🧘" ];
 
+  plugins.comment.enable = true;
   plugins.zen-mode.enable = true;
   plugins.neorg = {
     enable = true;

@@ -166,23 +166,7 @@
 
       tsserver.enable = true;
       tsserver.autostart = true;
-
-      tsserver.extraOptions.settings =
-        let
-          inlayHints = {
-            includeInlayParameterNameHints = "all";
-            includeInlayParameterNameHintsWhenArgumentMatchesName = false;
-            includeInlayEnumMemberValueHints = true;
-            includeInlayFunctionLikeReturnTypeHints = false;
-            includeInlayFunctionParameterTypeHints = true;
-            includeInlayPropertyDeclarationTypeHints = true;
-            includeInlayVariableTypeHints = true;
-          };
-        in
-        {
-          javascript = { inherit inlayHints; };
-          typescript = { inherit inlayHints; };
-        };
+      tsserver.rootDir = "require('lspconfig.util').root_pattern('.git')";
 
       nixd.enable = true;
       nixd.autostart = true;

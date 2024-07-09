@@ -23,16 +23,64 @@
 
     devShells =
       let
-        nodeCorepackShims = nodejs: pkgs.stdenv.mkDerivation {
+        inherit (pkgs) lib;
+        mutFirstChar =
+          f: s:
+          let
+            firstChar = f (lib.substring 0 1 s);
+            rest = lib.substring 1 (-1) s;
+
+          in
+          # matched = builtins.match "(.)(.*)" s;
+            # firstChar = f (lib.elemAt matched 0);
+            # rest = lib.elemAt matched 1;
+          firstChar + rest;
+
+        toCamelCase_ = sep: s:
+          mutFirstChar lib.toLower (
+            lib.concatMapStrings (mutFirstChar lib.toUpper) (
+              lib.splitString sep s
+            )
+          );
+
+        toCamelCase = s: builtins.foldl' (s: sep: toCamelCase_ sep s) s [ "-" "_" "." ];
+
+        nodeCorepackShims = pkgs.stdenv.mkDerivation {
           name = "corepack-shims";
-          buildInputs = [ nodejs ];
+          buildInputs = [ pkgs.nodejs ];
           phases = [ "installPhase" ];
           installPhase = ''
             mkdir -p $out/bin
             corepack enable --install-directory=$out/bin
           '';
         };
+
+        mkNodeShell = name:
+          let
+            node = pkgs.${name};
+            corepackShim = nodeCorepackShims.overrideAttrs (_: { buildInputs = [ node ]; });
+          in
+          pkgs.mkShell {
+            description = "${name} Development Environment";
+            buildInputs = [ node corepackShim ];
+          };
+
+        allNodeShells = builtins.foldl'
+          (acc: name:
+            acc // { "${toCamelCase name}" = mkNodeShell name; })
+          { }
+          (builtins.filter (lib.strings.hasPrefix "nodejs_") (builtins.attrNames pkgs));
+
       in
+      ####################################################################################################
+        #    see nodejs_* definitions in {https://search.nixos.org/packages?query=nodejs_}
+        #
+        #    versions: 14, 18, 20, 22, Latest
+        #
+        #    $ nix develop github:r17x/nixpkgs#<nodejsVERSION>
+        #
+        #
+      allNodeShells //
       {
         default = pkgs.mkShell {
           shellHook = ''
@@ -95,49 +143,9 @@
             # TODO: styled-ppx fix build
             # styled-ppx
             pkgs.nodejs_20
-            (nodeCorepackShims pkgs.nodejs_20)
+            (nodeCorepackShims.overrideAttrs (_: { buildInputs = [ pkgs.nodejs_20 ]; }))
           ];
         };
-
-        #
-        #
-        #    $ nix develop github:r17x/nixpkgs#node18
-        #
-        #
-        node18 = pkgs.mkShell {
-          description = "Node.js 18 Development Environment";
-          buildInputs = [
-            pkgs.nodejs_18
-            (nodeCorepackShims pkgs.nodejs_18)
-          ];
-        };
-
-        #
-        #
-        #    $ nix develop github:r17x/nixpkgs#node20
-        #
-        #
-        node20 = pkgs.mkShell {
-          description = "Node.js 20 Development Environment";
-          buildInputs = [
-            pkgs.nodejs_20
-            (nodeCorepackShims pkgs.nodejs_20)
-          ];
-        };
-
-        #
-        #
-        #    $ nix develop github:r17x/nixpkgs#node21
-        #
-        #
-        node21 = pkgs.mkShell {
-          description = "Node.js 21 Development Environment";
-          buildInputs = [
-            pkgs.nodejs_21
-            (nodeCorepackShims pkgs.nodejs_21)
-          ];
-        };
-
 
         #
         #

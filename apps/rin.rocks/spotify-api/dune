@@ -1,0 +1,38 @@
+(library
+ (name spotify_api)
+ (wrapped false)
+ (libraries yojson atdgen-runtime jsonschema2atd.runtime uri cohttp-lwt-unix))
+
+; TODO: convert the yaml to json
+; download the spotify api json schema
+; need convert from yaml to json after download from the release page of sonallux/spotify-web-api
+; (rule
+;  (targets openapi.json)
+;  (action
+;   (run %{bin:curl} -o %{targets} -L https://github.com/sonallux/spotify-web-api/releases/download/v2024.6.16/fixed-spotify-open-api.yml)))
+
+; Generate atd files from the json schema file
+
+(rule
+ (target spotify_api.atd)
+ ; store the output in the source tree
+ (mode promote)
+ (deps openapi.json)
+ (action
+  (with-stdout-to
+   %{target}
+   (run %{bin:jsonschema2atd} -f openapi %{deps}))))
+
+; Generate type definitions and json encoders/decoders from the atd files
+
+(rule
+ (targets
+  spotify_api_t.mli
+  spotify_api_t.ml
+  spotify_api_j.mli
+  spotify_api_j.ml)
+ (deps spotify_api.atd)
+ (action
+  (progn
+   (run %{bin:atdgen} -j -j-std -j-defaults %{deps})
+   (run %{bin:atdgen} -t %{deps}))))

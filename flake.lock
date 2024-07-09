@@ -382,6 +382,23 @@
         "type": "github"
       }
     },
+    "jsonschema2atd": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1719391529,
+        "narHash": "sha256-zEqivYCHgKzXyTyNX3j7dspYJXPKTRIuPqJj0uEJcgo=",
+        "owner": "ahrefs",
+        "repo": "jsonschema2atd",
+        "rev": "f8b7e9df07144e7314f786b8c39bc9e516c862c4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ahrefs",
+        "repo": "jsonschema2atd",
+        "rev": "f8b7e9df07144e7314f786b8c39bc9e516c862c4",
+        "type": "github"
+      }
+    },
     "libgit2": {
       "flake": false,
       "locked": {
@@ -838,6 +855,7 @@
       "inputs": {
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
+        "jsonschema2atd": "jsonschema2atd",
         "neorg-overlay": "neorg-overlay",
         "nix": "nix",
         "nix-darwin": "nix-darwin",

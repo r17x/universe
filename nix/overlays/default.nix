@@ -7,6 +7,29 @@
       quickjs = prev.callPackage ./quickjs.nix (oprev // { src = inputs.quickjs-ml; });
       server-reason-react = prev.callPackage ./server-reason-react.nix (ofinal // { src = inputs.server-reason-react; });
       styled-ppx = prev.callPackage ./styled-ppx.nix (ofinal // { src = inputs.styled-ppx; });
+      jsonschema2atd = prev.callPackage
+        ({ buildDunePackage
+         , atdgen
+         , atdgen-runtime
+         , cmdliner
+         , dune-build-info
+         , yojson
+         , ...
+         }: buildDunePackage {
+          name = "jsonschema2atd";
+          pname = "jsonschema2atd";
+          version = "0.0.3";
+          src = inputs.jsonschema2atd;
+          nativeBuildInputs = [ atdgen ];
+          propagatedBuildInputs = [
+            atdgen
+            atdgen-runtime
+            cmdliner
+            dune-build-info
+            yojson
+          ];
+        })
+        oprev;
     });
 
     tree-sitter-grammars = prev.tree-sitter-grammars // {

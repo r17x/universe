@@ -39,6 +39,7 @@
     server-reason-react = { url = "github:ml-in-barcelona/server-reason-react"; flake = false; };
     quickjs-ml = { url = "git+https://github.com/ml-in-barcelona/quickjs.ml?submodules=1"; flake = false; };
     styled-ppx = { url = "github:davesnx/styled-ppx?rev=2b69b67ab10244aed612005bd127031f16289cc7"; flake = false; };
+    jsonschema2atd = { url = "github:ahrefs/jsonschema2atd?rev=f8b7e9df07144e7314f786b8c39bc9e516c862c4"; flake = false; };
 
     ## -- Platform
 

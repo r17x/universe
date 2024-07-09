@@ -1,6 +1,7 @@
 (executable
  (name server)
  (libraries
+  spotify_api
   dream
   shared_native
   server-reason-react.react

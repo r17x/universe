@@ -65,11 +65,28 @@
             buildInputs = [ node corepackShim ];
           };
 
-        allNodeShells = builtins.foldl'
-          (acc: name:
-            acc // { "${toCamelCase name}" = mkNodeShell name; })
-          { }
-          (builtins.filter (lib.strings.hasPrefix "nodejs_") (builtins.attrNames pkgs));
+        mkGoShell = name:
+          let go = pkgs.${name}; in pkgs.mkShell {
+            description = "${name} Development Environment";
+            buildInputs = [ go ];
+            shellHook = ''
+              export GOPATH="$(${go}/bin/go env GOPATH)"
+              export PATH="$PATH:$GOPATH/bin"
+            '';
+          };
+
+        mkShell = pkgName: name:
+          if lib.strings.hasPrefix "nodejs_" pkgName then mkNodeShell name else
+          if lib.strings.hasPrefix "go_" pkgName then mkGoShell name else
+          builtins.throw "Unknown package ${pkgName} for making shell environment";
+
+        mkShells = pkgName:
+          let mkShell_ = mkShell pkgName; in
+          builtins.foldl'
+            (acc: name:
+              acc // { "${toCamelCase name}" = mkShell_ name; })
+            { }
+            (builtins.filter (lib.strings.hasPrefix pkgName) (builtins.attrNames pkgs));
 
       in
       ####################################################################################################
@@ -80,7 +97,8 @@
         #    $ nix develop github:r17x/nixpkgs#<nodejsVERSION>
         #
         #
-      allNodeShells //
+      mkShells "nodejs_" //
+      mkShells "go_" //
       {
         default = pkgs.mkShell {
           shellHook = ''

@@ -1,9 +1,0 @@
-{
-  "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
-  "completion.enable": true,
-  "format.enable": true,
-  "completion.autoRequire": true,
-  "diagnostics.globals": [
-    "vim"
-  ]
-}

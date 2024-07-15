@@ -21,7 +21,13 @@
     vimPlugins = prev.vimPlugins.extend (_: _: { } //
       (import ./mkFlake2VimPlugin.nix inputs { pkgs = prev; })
     );
+
+    fishPlugins = prev.fishPlugins // {
+      nix-env = {
+        name = "nix-env";
+        src = inputs.nix-env;
+      };
+    };
   }
-  // (import ./mac-pkgs final prev)
-  ;
+  // (import ./mac-pkgs final prev);
 }

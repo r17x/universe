@@ -78,5 +78,6 @@
 
     # others 
     ts-rescript = { url = "github:nkrkv/tree-sitter-rescript"; flake = false; };
+    nix-env = { url = "github:lilyball/nix-env.fish"; flake = false; };
   };
 }

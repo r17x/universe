@@ -146,11 +146,9 @@ in
 {
   home = {
     inherit shellAliases;
-    sessionPath = [
-      "$HOME/.yarn/bin"
-    ];
+    sessionPath = [ "$HOME/.yarn/bin" ];
     packages = [
-      pkgs.thefuck
+      pkgs.fishPlugins.colored-man-pages
       # https://github.com/franciscolourenco/done
       pkgs.fishPlugins.done
       # use babelfish than foreign-env
@@ -159,6 +157,8 @@ in
       pkgs.fishPlugins.forgit
       # Paired symbols in the command line
       pkgs.fishPlugins.pisces
+      pkgs.fishPlugins.puffer
+      pkgs.fishPlugins.fifc
     ];
   };
 
@@ -169,41 +169,34 @@ in
   '';
 
   programs = {
+    # Shell history replacement
+    # in MacOS type `Ctrl+R` to search history
     atuin.enable = true;
-    atuin.enableFishIntegration = true;
+    atuin.enableFishIntegration = config.programs.fish.enable;
     atuin.enableBashIntegration = true;
+
     # jump like `z` or `fasd` 
     zoxide.enable = true;
+    zoxide.enableFishIntegration = config.programs.fish.enable;
+
     dircolors.enable = true;
+    dircolors.enableFishIntegration = config.programs.fish.enable;
+
+    thefuck.enable = true;
+    thefuck.enableInstantMode = true;
+    thefuck.enableFishIntegration = config.programs.fish.enable;
+    thefuck.enableBashIntegration = true;
+
     # Fish Shell (Default shell)
     # https://rycee.gitlab.io/home-manager/options.html#opt-programs.fish.enable
     fish = {
       enable = true;
+
       # Fish plugins 
       # See: 
       # https://github.com/NixOS/nixpkgs/tree/90e20fc4559d57d33c302a6a1dce545b5b2a2a22/pkgs/shells/fish/plugins 
       # for list available plugins built-in nixpkgs
-      plugins = [
-        {
-          name = "nix-env";
-          src = pkgs.fetchFromGitHub {
-            owner = "lilyball";
-            repo = "nix-env.fish";
-            rev = "7b65bd228429e852c8fdfa07601159130a818cfa";
-            sha256 = "069ybzdj29s320wzdyxqjhmpm9ir5815yx6n522adav0z2nz8vs4";
-          };
-        }
-        {
-          name = "thefuck";
-          src = pkgs.fetchFromGitHub
-            {
-              owner = "oh-my-fish";
-              repo = "plugin-thefuck";
-              rev = "6c9a926d045dc404a11854a645917b368f78fc4d";
-              sha256 = "1n6ibqcgsq1p8lblj334ym2qpdxwiyaahyybvpz93c8c9g4f9ipl";
-            };
-        }
-      ];
+      plugins = with pkgs.fishPlugins; [ nix-env ];
 
       functions = {
         ghds = ''
@@ -211,24 +204,14 @@ in
             gh repo delete $r --yes
           end
         '';
-
         gitignore = "curl -sL https://www.gitignore.io/api/$argv";
-        # FIXME
-        # use-nix = ''
-        #   ${pkgs.babelfish} < $HOME/.config/direnv/lib/use_nix-env.sh | source
-        #   use_nix-env $argv
-        # '';
-        nd = ''
-          nix develop ${nixConfigDirectory}#$argv[1] -c $SHELL
-        '';
+        nd = "nix develop ${nixConfigDirectory}#$argv[1] -c $SHELL";
         rpkgjson = ''
           ${pkgs.nodejs}/bin/node -e "console.log(Object.entries(require('./package.json').$argv[1]).map(([k,v]) => k.concat(\"@\").concat(v)).join(\"\n\") )"
         '';
       };
 
       interactiveShellInit = ''
-        ${pkgs.thefuck}/bin/thefuck --alias | source
-
         # Fish color
         set -U fish_color_command 6CB6EB --bold
         set -U fish_color_redirection DEB974
@@ -241,31 +224,29 @@ in
     };
 
     # Fish prompt and style
-    starship = {
-      enable = true;
-      settings = {
-        add_newline = true;
-        command_timeout = 1000;
-        cmd_duration = {
-          format = " [$duration]($style) ";
-          style = "bold #EC7279";
-          show_notifications = true;
-        };
-        nix_shell = {
-          format = " [$symbol$state]($style) ";
-        };
-        battery = {
-          full_symbol = "🔋 ";
-          charging_symbol = "⚡️ ";
-          discharging_symbol = "💀 ";
-        };
-        git_branch = {
-          format = "[$symbol$branch]($style) ";
-        };
-        gcloud = {
-          format = "[$symbol$active]($style) ";
-        };
+    starship.enable = true;
+    starship.enableFishIntegration = config.programs.fish.enable;
+    starship.enableTransience = config.programs.fish.enable;
+    starship.settings = {
+      add_newline = true;
+      command_timeout = 1000;
+
+      cmd_duration = {
+        format = lib.concatStrings [ "$line_break" "[$duration]($style)" "$line_break" ];
+        style = "bold #EC7279";
+        show_notifications = true;
       };
+
+      battery = {
+        full_symbol = "🔋 ";
+        charging_symbol = "⚡️ ";
+        discharging_symbol = "💀 ";
+      };
+
+      nix_shell.format = lib.concatStrings [ "$line_break" "[$symbol$state]($style)" "$line_break" ];
+      git_branch.format = lib.concatStrings [ "[$symbol$branch]($style)" "$line_break" ];
+      gcloud.format = lib.concatStrings [ "[$symbol$active]($style)" "$line_break" ];
+
     };
   };
 }

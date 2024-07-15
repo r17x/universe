@@ -23,9 +23,9 @@ in
   programs.direnv.nix-direnv.enable = true;
 
   # Htop
-  # https://rycee.gitlab.io/home-manager/options.html#opt-programs.htop.enable
-  programs.htop.enable = true;
-  programs.htop.settings.show_program_path = true;
+  # https://rycee.gitlab.io/home-manager/options.html#opt-programs.btop.enable
+  programs.btop.enable = true;
+  programs.btop.settings = { vim_keys = true; show_battery = false; };
 
   home.packages = with pkgs;
     [
@@ -57,7 +57,6 @@ in
       ################################## 
       fzf # finder
       fzy
-      neofetch # fancy fetch information
       du-dust # fancy du
       fd # fancy find
       jq # JSON in shell
@@ -68,17 +67,9 @@ in
       ################################## 
       # Development
       ################################## 
-      # podman
-      # podman-compose
       docker
-      qemu
       babelfish
       paperkey
-      # yarn # currently defined in devShell.nix
-      # google-cloud-sdk
-      # nodejs-16_x
-      # gitlab-runner
-      # openvpn # currently not used
 
       ################################## 
       # Shell Integrations
@@ -97,25 +88,18 @@ in
       discord-ptb
       slack
       zoom-us
+
       ################################## 
       # Useful Nix related tools
       ################################## 
       cachix
       comma # run without install
-      # nodePackages.node2nix # use with comma 
-      # rnix-lsp # use in neovim and install with nvim-lsp-install
-      # nodePackages.node2nix # use with comma 
-      # yarn2nix
       telegram-desktop
     ] ++ lib.optionals isDarwin [
       mas
-      # orbstack # UNSTABLE, may be install in System (NEED Root)
-      xbar
       cocoapods
       m-cli # useful macOS CLI commands
       xcode-install
-      # iriun-webcam
       clipy
-      # googlechrome
     ];
 }

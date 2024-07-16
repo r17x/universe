@@ -159,6 +159,8 @@ in
       pkgs.fishPlugins.pisces
       pkgs.fishPlugins.puffer
       pkgs.fishPlugins.fifc
+      pkgs.fishPlugins.transient-fish
+      pkgs.fishPlugins.bass
     ];
   };
 

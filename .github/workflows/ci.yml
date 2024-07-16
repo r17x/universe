@@ -5,7 +5,8 @@ on:
     branches: [main]
   workflow_dispatch: 
   schedule:
-    - cron: '0 0 * * 0' # runs weekly on Sunday at 00:00
+    - cron: '0 0 * * 0'  # runs weekly on Sunday at 00:00
+    - cron: '0 0 25 * *' # runs on day-of-month 25 at 00:00
 
 jobs:
   build:
@@ -22,23 +23,45 @@ jobs:
       - uses: cachix/cachix-action@v15
         with:
           name: r17
-          # If you chose signing key for write access
-          # signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
-          # If you chose API tokens for write access OR if you have a private cache
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
           extraPullNames: pre-commit-hooks,nix-community
           skipPush: ${{ !(github.ref == 'refs/heads/main' && github.event_name == 'push' && matrix.os == 'macos-latest') }}
+
       - uses: DeterminateSystems/update-flake-lock@v23
         name: Update flake.lock
-        if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+        if: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.event.schedule == '0 0 25 * *' }}
         with:
           token: ${{ secrets.GH_TOKEN }}
-          inputs: nixpkgs-unstable nixvim nixpkgs-fmt neorg-overlay home-manager nix-darwin
+          branch: monthly-lock
           git-author-name: 'anakmangang'
           git-author-email: 'contact@evilfactorylabs.org'
           git-committer-name: 'anakmangang'
           git-committer-email: 'contact@evilfactorylabs.org'
           commit-msg: 'chore(lockfile): update flake.lock'
+          pr-title: 'chore(lockfile): update flake.lock'
+          pr-labels: |
+            dependencies
+            automated
+            monthly
+
+      - uses: DeterminateSystems/update-flake-lock@v23
+        name: Update flake.lock
+        if: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.event.schedule == '0 0 * * 0' }}
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          inputs: nixvim nixpkgs-fmt neorg-overlay home-manager nix-env ts-rescript vimPlugins_vim-rescript vimPlugins_supermaven-nvim
+          branch: weekly-lock
+          git-author-name: 'anakmangang'
+          git-author-email: 'contact@evilfactorylabs.org'
+          git-committer-name: 'anakmangang'
+          git-committer-email: 'contact@evilfactorylabs.org'
+          commit-msg: 'chore(lockfile): update flake.lock'
+          pr-title: 'chore(lockfile): update flake.lock'
+          pr-labels: |
+            dependencies
+            automated
+            weekly
+
       - run: nix flake show .
       - run: nix build .#nvim
       - run: nix build ".#darwinConfigurations.$HOSTNAME.system"

@@ -21,7 +21,7 @@ in
 
   homebrew.masApps = {
     Vimari = 1480933944;
-    WhatsApp = 1147396723;
+    WhatsApp = 310633997;
   };
 
   homebrew.casks = [

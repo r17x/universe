@@ -229,26 +229,43 @@ in
     starship.enable = true;
     starship.enableFishIntegration = config.programs.fish.enable;
     starship.enableTransience = config.programs.fish.enable;
-    starship.settings = {
-      add_newline = true;
-      command_timeout = 1000;
+    starship.settings =
+      let
+        withStartLineBreak = s: " ${s}";
+        withEndLineBreak = s: "${s} ";
+        defaultProgramFormat = withEndLineBreak "[$symbol($version)]($style)";
+      in
+      {
+        add_newline = true;
+        command_timeout = 1000;
 
-      cmd_duration = {
-        format = lib.concatStrings [ "$line_break" "[$duration]($style)" "$line_break" ];
-        style = "bold #EC7279";
-        show_notifications = true;
+        cmd_duration = {
+          format = withStartLineBreak "[$duration]($style)";
+          style = "bold #EC7279";
+          show_notifications = true;
+        };
+
+        battery = {
+          full_symbol = "🔋 ";
+          charging_symbol = "⚡️ ";
+          discharging_symbol = "💀 ";
+        };
+
+        bun.format = defaultProgramFormat;
+        git_branch.format = withEndLineBreak "[$symbol$branch]($style)";
+        git_status.format = withEndLineBreak "([$all_status$ahead_behind]($style))";
+        gcloud.format = withEndLineBreak "[$symbol$active]($style)";
+        golang.format = defaultProgramFormat;
+        nix_shell.symbol = "❄️";
+        nix_shell.format = withEndLineBreak "[$symbol$state]($style)";
+        nix_shell.impure_msg = "󰊰";
+        nix_shell.pure_msg = "󱨧";
+        nodejs.format = defaultProgramFormat;
+        ocaml.format = withEndLineBreak "[$symbol($version)(\($switch_indicator$switch_name\))]($style)";
+        package.format = withEndLineBreak "[$symbol$version]($style)";
+        rust.format = defaultProgramFormat;
+        zig.format = defaultProgramFormat;
+
       };
-
-      battery = {
-        full_symbol = "🔋 ";
-        charging_symbol = "⚡️ ";
-        discharging_symbol = "💀 ";
-      };
-
-      nix_shell.format = lib.concatStrings [ "$line_break" "[$symbol$state]($style)" "$line_break" ];
-      git_branch.format = lib.concatStrings [ "[$symbol$branch]($style)" "$line_break" ];
-      gcloud.format = lib.concatStrings [ "[$symbol$active]($style)" "$line_break" ];
-
-    };
   };
 }

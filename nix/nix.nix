@@ -19,9 +19,13 @@ in
 
   settings = {
     nix-path = nixPath;
-    max-jobs = "auto";
     auto-optimise-store = true;
     accept-flake-config = true;
+    builders-use-substitutes = false;
+    download-attempts = 3;
+    fallback = true;
+    http-connections = 0;
+    max-jobs = "auto";
 
     experimental-features = [
       "auto-allocate-uids"
@@ -62,7 +66,5 @@ in
     keep-outputs = true
     keep-derivations = true
     auto-allocate-uids = false
-    builders-use-substitutes = true
-    http-connections = 0
   '';
 } 

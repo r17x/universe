@@ -2,6 +2,7 @@
 
 {
   flake.overlays.default = final: prev: {
+    iamb = inputs.iamb.packages.${prev.stdenv.hostPlatform.system}.default;
 
     ocamlPackages = prev.ocaml-ng.ocamlPackages_5_2.overrideScope (ofinal: oprev: {
       quickjs = prev.callPackage ./quickjs.nix (oprev // { src = inputs.quickjs-ml; });

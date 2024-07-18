@@ -88,6 +88,7 @@ in
       discord-ptb
       slack
       zoom-us
+      iamb
 
       ################################## 
       # Useful Nix related tools

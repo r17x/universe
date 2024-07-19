@@ -1,0 +1,35 @@
+{
+  still = "";
+  camera = "";
+  nix = "";
+  function = "";
+  code = "󰘦 ";
+  wand = " ";
+  robotFace = " ";
+  git = " ";
+  gearSM = "⛭";
+  checkmark = "✔";
+  chevronRight = "";
+  chevronDown = "";
+  chevronLeft = "";
+  chevronUp = "";
+  folder = "";
+  folderOpen = "";
+  package = "";
+  telescope = "";
+  freeBSD = "";
+  linux = "";
+  archlinux = "";
+  resource = "";
+  terminal = "";
+  cloud = "";
+  database = "";
+  server = "";
+  settings = "";
+  gear = "";
+  rocket = "";
+  bug = "";
+  face = "󰏚 ";
+  lightbulb = "";
+  star = "";
+}

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ icons, pkgs, ... }:
 
 {
   highlightOverride.LspInlayHint.link = "InclineNormalNc";
@@ -183,18 +183,18 @@
   plugins.lspkind.enable = true;
   plugins.lspkind.cmp.enable = true;
   plugins.lspkind.symbolMap = {
-    Codeium = "󰘦 ";
-    Copilot = " ";
-    Suggestion = " ";
-    TabNine = "󰏚 ";
-    Supermaven = "";
+    Codeium = icons.code;
+    Copilot = icons.robotFace;
+    Suggestion = icons.wand;
+    TabNine = icons.face;
+    Supermaven = icons.star;
   };
   plugins.lspsaga = {
     enable = true;
     lightbulb.sign = false;
     lightbulb.virtualText = true;
     lightbulb.debounce = 40;
-    ui.codeAction = "⛭";
+    ui.codeAction = icons.gearSM;
   };
 
   plugins.trouble.enable = true;

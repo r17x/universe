@@ -217,26 +217,27 @@
         "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
       };
 
-      sources = [
+      sources = let keywordLength = 3; in [
         { name = "nvim_lsp"; }
         { name = "nvim_lsp_signature_help"; }
         { name = "nvim_lsp_document_symbol"; }
         { name = "codeium"; }
         { name = "supermaven"; }
         { name = "luasnip"; } #For luasnip users.
-        { name = "path"; }
-        { name = "buffer"; }
-        { name = "cmdline"; }
         { name = "neorg"; }
+        { inherit keywordLength; name = "emoji"; }
+        { inherit keywordLength; name = "async_path"; }
+        { inherit keywordLength; name = "buffer"; }
+        { inherit keywordLength; name = "cmdline"; }
       ];
-
     };
   };
-  plugins.cmp-nvim-lsp.enable = true;
+
+  plugins.cmp-nvim-lsp. enable = true;
   plugins.cmp-nvim-lsp-document-symbol.enable = true;
   plugins.cmp-nvim-lsp-signature-help.enable = true;
   plugins.cmp_luasnip.enable = true;
-  plugins.cmp-path.enable = true;
+  plugins.cmp-async-path.enable = true;
   plugins.cmp-buffer.enable = true;
   plugins.cmp-cmdline.enable = true;
   plugins.cmp-spell.enable = false;
@@ -244,4 +245,5 @@
   plugins.cmp-treesitter.enable = false;
   plugins.cmp-fish.enable = false;
   plugins.cmp-tmux.enable = false;
+  plugins.cmp-emoji.enable = true;
 }

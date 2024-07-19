@@ -4,7 +4,7 @@ description: make things get fucking done
 authors: r17
 categories: 
 created: 2024-05-26T02:31:16+0700
-updated: 2024-06-30T22:12:11+0700
+updated: 2024-07-20T02:00:46+0700
 version: 1.1.1
 @end
 
@@ -53,6 +53,11 @@ version: 1.1.1
    -- ( ) Keymap for Neorg x Telescope
    - (x) integration with {/ ../nvim.nix/config/navigations.nix:50}[hop.nvim]
 
+** Homelab Evilfactory
+   - ( ) Network
+   -- ( ) Buy RJ45 cable ~20 meters
+   -- ( ) Build Rack for all devices stand 
+  
 ** Uncertain
    - ( ) Created ISO (image) for Raspiberry phi 4 based on {https://github.com/nix-community/nixos-generators}[nixos-generators]. Device used for {https://cache.komunix.org}[komunix.org]
    -- {https://mtlynch.io/nixos-pi4/}[Installing NixOS on Raspberry Pi 4]

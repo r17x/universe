@@ -1,4 +1,38 @@
 {
+  circleLeft = "";
+  circleLeft1 = "";
+  circleRight = "";
+  circleRight1 = "";
+  info = "ℹ";
+  info1 = "";
+  info2 = "";
+  warning = "";
+  warning1 = "";
+  warning2 = "";
+  warning3 = "";
+  cross = "";
+  cross1 = "";
+  cross2 = "";
+  cross3 = "";
+  cross4 = "";
+  plus = "";
+  plus1 = "";
+  plus2 = "洛";
+  plus3 = "";
+  plus4 = "⊕";
+  minus = "";
+  minus1 = "";
+  minus2 = "";
+  minus3 = "";
+  refresh = "";
+  file = "";
+  reload = "";
+  bookmark = "";
+  word = "";
+  recent = "";
+  notes = "";
+  lightning = "";
+  org = "";
   still = "";
   camera = "";
   nix = "";
@@ -33,3 +67,4 @@
   lightbulb = "";
   star = "";
 }
+

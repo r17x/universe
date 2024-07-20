@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ icons, pkgs, ... }:
 {
   highlight."@neorg.tags.ranged_verbatim.code_block".link = "Fg";
   extraPlugins = with pkgs.vimPlugins; [ edge unicode-vim lualine-lsp-progress ];
@@ -89,12 +89,12 @@
   plugins.lualine.theme = "edge";
   plugins.lualine.componentSeparators.left = "";
   plugins.lualine.componentSeparators.right = "";
-  plugins.lualine.sectionSeparators.left = "";
-  plugins.lualine.sectionSeparators.right = "";
+  plugins.lualine.sectionSeparators.left = icons.circleRight;
+  plugins.lualine.sectionSeparators.right = icons.circleLeft;
   plugins.lualine.sections.lualine_a = [
     {
       name = "mode";
-      separator.right = "";
+      separator.right = icons.circleRight;
       extraConfig.padding.left = 1;
     }
   ];
@@ -128,8 +128,6 @@
       extraConfig.displayComponents = [
         "spinner"
         "lsp_client_name"
-        # [ "title" "percentage" "message" ]
-        # asdfadf
       ];
       extraConfig.timer.progressEnddelay = 500;
       extraConfig.timer.spinner = 1000;
@@ -141,7 +139,7 @@
   plugins.lualine.sections.lualine_z = [
     {
       name = "location";
-      separator.left = "";
+      separator.left = icons.circleLeft;
       extraConfig.padding.right = 1;
     }
   ];

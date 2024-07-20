@@ -1,4 +1,4 @@
-{ helpers, ... }:
+{ icons, helpers, ... }:
 
 let
   inherit (helpers) mkRaw;
@@ -48,13 +48,13 @@ in
     # settings.signs.add.hl = "GitSignsAdd";
     # settings.signs.add.numhl = "GitSignsAddNr";
     # settings.signs.add.linehl = "GitSignsAddLn";
-    settings.signs.add.text = "┃";
+    settings.signs.add.text = icons.plus2;
     # settings.signs.change.hl = "GitSignsChange";
     # settings.signs.change.numhl = "GitSignsChangeNr";
     # settings.signs.change.linehl = "GitSignsChangeLn";
     settings.signs.change.text = "┃";
     # settings.signs.delete.hl = "GitSignsDelete";
-    settings.signs.delete.text = "";
+    settings.signs.delete.text = icons.minus2;
     # settings.signs.delete.numhl = "GitSignsDeleteNr";
     # settings.signs.delete.linehl = "GitSignsDeleteLn";
     # settings.signs.topdelete.hl = "GitSignsDelete";

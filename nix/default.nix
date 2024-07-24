@@ -18,6 +18,8 @@
           inputs.ocaml-overlay.overlays.default
           inputs.neorg-overlay.overlays.default
           self.overlays.default
+          self.overlays.ocamlPackages
+          self.overlays.nodePackages
         ];
       in
       rec {

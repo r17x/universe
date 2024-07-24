@@ -946,6 +946,7 @@
         "pre-commit-hooks": "pre-commit-hooks_2",
         "quickjs-ml": "quickjs-ml",
         "server-reason-react": "server-reason-react",
+        "sketchybar-app-font": "sketchybar-app-font",
         "sops": "sops",
         "styled-ppx": "styled-ppx",
         "ts-rescript": "ts-rescript",
@@ -1002,6 +1003,22 @@
       "original": {
         "owner": "ml-in-barcelona",
         "repo": "server-reason-react",
+        "type": "github"
+      }
+    },
+    "sketchybar-app-font": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1721378979,
+        "narHash": "sha256-vWOVPllygKFeJe3aDOnXKdfIq9foL2V/sr1kj4VBhbc=",
+        "owner": "kvndrsslr",
+        "repo": "sketchybar-app-font",
+        "rev": "9f439deafe953bc2d2788d725f65195b652e709a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kvndrsslr",
+        "repo": "sketchybar-app-font",
         "type": "github"
       }
     },

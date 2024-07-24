@@ -1,14 +1,27 @@
 { inputs, ... }:
 
 {
-  flake.overlays.default = final: prev: {
-    iamb = inputs.iamb.packages.${prev.stdenv.hostPlatform.system}.default;
+  imports = [
+    ./ocamlPackages
+    ./nodePackages
+  ];
 
-    ocamlPackages = prev.ocaml-ng.ocamlPackages_5_2.overrideScope (ofinal: oprev: {
-      quickjs = prev.callPackage ./quickjs.nix (oprev // { src = inputs.quickjs-ml; });
-      server-reason-react = prev.callPackage ./server-reason-react.nix (ofinal // { src = inputs.server-reason-react; });
-      styled-ppx = prev.callPackage ./styled-ppx.nix (ofinal // { src = inputs.styled-ppx; });
-    });
+  flake.overlays.default = final: prev: {
+    sketchybar-app-font = prev.stdenv.mkDerivation {
+      name = "sketchybar-app-font";
+      src = inputs.sketchybar-app-font;
+      buildInputs = [ final.nodejs final.nodePackages.svgtofont ];
+      buildPhase = ''
+        ln -s ${final.nodePackages.svgtofont}/lib/node_modules ./node_modules
+        node ./build.js
+      '';
+      installPhase = ''
+        mkdir -p $out/share/fonts
+        cp -r dist/*.ttf $out/share/fonts
+      '';
+    };
+
+    iamb = inputs.iamb.packages.${prev.stdenv.hostPlatform.system}.default;
 
     tree-sitter-grammars = prev.tree-sitter-grammars // {
       tree-sitter-rescript = prev.tree-sitter.buildGrammar {

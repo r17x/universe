@@ -176,6 +176,10 @@ in
     atuin.enableFishIntegration = config.programs.fish.enable;
     atuin.enableBashIntegration = true;
 
+    # command-not-found integration
+    nix-index.enableFishIntegration = config.programs.nix-index.enable;
+    nix-index.enableBashIntegration = config.programs.nix-index.enable;
+
     # jump like `z` or `fasd` 
     zoxide.enable = true;
     zoxide.enableFishIntegration = config.programs.fish.enable;

@@ -7,6 +7,8 @@ in
   # Packages with configuration --------------------------------------------------------------- {{{
   programs.home-manager.enable = true;
 
+  programs.nix-index.enable = true;
+
   # Bat, a substitute for cat.
   # https://github.com/sharkdp/bat
   # https://rycee.gitlab.io/home-manager/options.html#opt-programs.bat.enable

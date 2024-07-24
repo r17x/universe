@@ -68,7 +68,6 @@ for i = 1, 10, 1 do
 
 	space:subscribe("space_change", function(env)
 		local selected = env.SELECTED == "true"
-		local color = selected and colors.grey or colors.bg2
 		space:set({
 			icon = { highlight = selected },
 			label = { highlight = selected },
@@ -124,7 +123,7 @@ local spaces_indicator = sbar.add("item", {
 space_window_observer:subscribe("space_windows_change", function(env)
 	local icon_line = ""
 	local no_app = true
-	for app, count in pairs(env.INFO.apps) do
+	for app, _ in pairs(env.INFO.apps) do
 		no_app = false
 		local lookup = app_icons[app]
 		local icon = ((lookup == nil) and app_icons["default"] or lookup)

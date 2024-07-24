@@ -1,6 +1,5 @@
 local colors = require("colors")
 local icons = require("icons")
-local settings = require("settings")
 
 -- Padding item required because of bracket
 sbar.add("item", { width = 5 })

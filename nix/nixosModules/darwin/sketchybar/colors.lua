@@ -1,4 +1,4 @@
-return {
+local colors = {
 	black = 0xff181819,
 	white = 0xffe2e2e3,
 	red = 0xfffc5d7c,
@@ -14,12 +14,15 @@ return {
 		bg = 0xf02c2e34,
 		border = 0xff2c2e34,
 	},
+
 	popup = {
 		bg = 0xc02c2e34,
 		border = 0xff7f8490,
 	},
+
 	bg1 = 0xff363944,
 	bg2 = 0xff414550,
+	bg3 = 0xff4c4f5a,
 
 	with_alpha = function(color, alpha)
 		if alpha > 1.0 or alpha < 0.0 then
@@ -28,3 +31,7 @@ return {
 		return (color & 0x00ffffff) | (math.floor(alpha * 255.0) << 24)
 	end,
 }
+
+colors.bg0 = colors.transparent
+
+return colors

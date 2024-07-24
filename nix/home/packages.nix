@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 let
   inherit (pkgs.stdenv) isDarwin;
@@ -22,7 +22,10 @@ in
   # https://direnv.net
   # https://rycee.gitlab.io/home-manager/options.html#opt-programs.direnv.enable
   programs.direnv.enable = true;
-  programs.direnv.nix-direnv.enable = true;
+  programs.direnv.silent = true;
+  programs.direnv.nix-direnv.enable = config.programs.direnv.enable;
+  programs.direnv.enableFishIntegration = config.programs.fish.enable;
+  programs.direnv.enableBashIntegration = config.programs.bash.enable;
 
   # Htop
   # https://rycee.gitlab.io/home-manager/options.html#opt-programs.btop.enable

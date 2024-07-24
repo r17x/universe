@@ -1,8 +1,7 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, ... }:
 
 let
   inherit (config.home.user-info) nixConfigDirectory;
-  inherit (lib) mkAfter;
   # usefull when want to write bin bash
   # n = pkgs.writers.writeBash "n" ''
   #     while getopts p flag
@@ -162,12 +161,6 @@ in
       pkgs.fishPlugins.bass
     ];
   };
-
-  xdg.configFile."fish/conf.d/plugin-git-now.fish".text = mkAfter ''
-    for f in $plugin_dir/*.fish
-      source $f
-    end
-  '';
 
   programs = {
     # Shell history replacement

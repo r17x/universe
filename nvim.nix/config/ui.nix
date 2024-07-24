@@ -22,7 +22,17 @@
   plugins.presence-nvim.enableLineNumber = true;
   plugins.presence-nvim.autoUpdate = true;
 
-  plugins.nvim-colorizer.enable = true;
+  plugins.nvim-colorizer = {
+    enable = true;
+    userDefaultOptions = {
+      mode = "virtualtext";
+      virtualtext = " ■";
+      RRGGBBAA = true;
+      RRGGBB = true;
+      AARRGGBB = true;
+    };
+  };
+
   plugins.cursorline.enable = true;
 
   # based on {https://github.com/r17x/nixpkgs/blob/main/configs/nvim/lua/config/nvim-tree.lua}

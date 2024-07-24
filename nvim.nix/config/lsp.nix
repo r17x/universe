@@ -47,7 +47,7 @@
     -- nlsp-settings
     local nlspsettings = require("nlspsettings")
     nlspsettings.setup({
-      config_home = vim.fn.stdpath('config') .. '/nlsp-settings',
+      config_home = vim.fn.expand('$HOME/.nlsp-settings'),
       local_settings_dir = ".nlsp-settings",
       local_settings_root_markers_fallback = { '.git' },
       append_default_schemas = true,
@@ -222,7 +222,10 @@
         schemas = [
           {
             description = "nixd schema";
-            fileMatch = [ ".nixd.json" ];
+            fileMatch = [
+              ".nixd.json"
+              "nixd.json"
+            ];
             url = "https://raw.githubusercontent.com/nix-community/nixd/main/nixd/docs/nixd-schema.json";
           }
           {
@@ -271,6 +274,8 @@
 
       nixd.enable = true;
       nixd.autostart = true;
+      nixd.rootDir = "require('lspconfig.util').root_pattern('.git', '.nixd.json')";
+      nixd.settings.formatting.command = [ "nixfmt" ];
 
       yamlls.enable = true;
       yamlls.autostart = true;

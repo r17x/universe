@@ -167,11 +167,11 @@ in
     # in MacOS type `Ctrl+R` to search history
     atuin.enable = true;
     atuin.enableFishIntegration = config.programs.fish.enable;
-    atuin.enableBashIntegration = config.programs.atuin.enable;
+    atuin.enableBashIntegration = config.programs.bash.enable;
 
     # command-not-found integration
     nix-index.enableFishIntegration = config.programs.fish.enable;
-    nix-index.enableBashIntegration = config.programs.nix-index.enable;
+    nix-index.enableBashIntegration = config.programs.bash.enable;
 
     # jump like `z` or `fasd` 
     zoxide.enable = true;
@@ -183,7 +183,12 @@ in
     thefuck.enable = true;
     thefuck.enableInstantMode = true;
     thefuck.enableFishIntegration = config.programs.fish.enable;
-    thefuck.enableBashIntegration = config.programs.thefuck.enable;
+    thefuck.enableBashIntegration = config.programs.bash.enable;
+
+    bash = {
+      enable = true;
+      enableCompletion = true;
+    };
 
     # Fish Shell (Default shell)
     # https://rycee.gitlab.io/home-manager/options.html#opt-programs.fish.enable
@@ -221,48 +226,49 @@ in
       '';
     };
 
-    # Fish prompt and style
-    starship.enable = true;
-    starship.enableFishIntegration = config.programs.fish.enable;
-    starship.enableBashIntegration = config.programs.starship.enable;
-    starship.enableTransience = config.programs.fish.enable;
-    starship.settings =
-      let
-        withStartLineBreak = s: " ${s}";
-        withEndLineBreak = s: "${s} ";
-        defaultProgramFormat = withEndLineBreak "[$symbol($version)]($style)";
-      in
-      {
-        add_newline = true;
-        command_timeout = 1000;
+    # Shell prompt and style
+    starship = {
+      enable = true;
+      enableFishIntegration = config.programs.fish.enable;
+      enableBashIntegration = config.programs.bash.enable;
+      enableTransience = config.programs.fish.enable;
+      settings =
+        let
+          withStartLineBreak = s: " ${s}";
+          withEndLineBreak = s: "${s} ";
+          defaultProgramFormat = withEndLineBreak "[$symbol($version)]($style)";
+        in
+        {
+          add_newline = true;
+          command_timeout = 1000;
 
-        cmd_duration = {
-          format = withStartLineBreak "[$duration]($style)";
-          style = "bold #EC7279";
-          show_notifications = true;
+          cmd_duration = {
+            format = withStartLineBreak "[$duration]($style)";
+            style = "bold #EC7279";
+            show_notifications = true;
+          };
+
+          battery = {
+            full_symbol = "🔋 ";
+            charging_symbol = "⚡️ ";
+            discharging_symbol = "💀 ";
+          };
+
+          bun.format = defaultProgramFormat;
+          git_branch.format = withEndLineBreak "[$symbol$branch]($style)";
+          git_status.format = withEndLineBreak "([$all_status$ahead_behind]($style))";
+          gcloud.format = withEndLineBreak "[$symbol$active]($style)";
+          golang.format = defaultProgramFormat;
+          nix_shell.symbol = "❄️";
+          nix_shell.format = withEndLineBreak "[$symbol$state]($style)";
+          nix_shell.impure_msg = "󰊰";
+          nix_shell.pure_msg = "󱨧";
+          nodejs.format = defaultProgramFormat;
+          ocaml.format = withEndLineBreak "[$symbol($version)(\($switch_indicator$switch_name\))]($style)";
+          package.format = withEndLineBreak "[$symbol$version]($style)";
+          rust.format = defaultProgramFormat;
+          zig.format = defaultProgramFormat;
         };
-
-        battery = {
-          full_symbol = "🔋 ";
-          charging_symbol = "⚡️ ";
-          discharging_symbol = "💀 ";
-        };
-
-        bun.format = defaultProgramFormat;
-        git_branch.format = withEndLineBreak "[$symbol$branch]($style)";
-        git_status.format = withEndLineBreak "([$all_status$ahead_behind]($style))";
-        gcloud.format = withEndLineBreak "[$symbol$active]($style)";
-        golang.format = defaultProgramFormat;
-        nix_shell.symbol = "❄️";
-        nix_shell.format = withEndLineBreak "[$symbol$state]($style)";
-        nix_shell.impure_msg = "󰊰";
-        nix_shell.pure_msg = "󱨧";
-        nodejs.format = defaultProgramFormat;
-        ocaml.format = withEndLineBreak "[$symbol($version)(\($switch_indicator$switch_name\))]($style)";
-        package.format = withEndLineBreak "[$symbol$version]($style)";
-        rust.format = defaultProgramFormat;
-        zig.format = defaultProgramFormat;
-
-      };
+    };
   };
 }

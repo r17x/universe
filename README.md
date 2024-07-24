@@ -162,6 +162,11 @@ nix build github:r17x/universe#darwinConfigurations.$HOSTNAME.system -o /tmp/res
 * `lenv` - list of build version `<VERSION>`, that's usefull for switch aka rollback environment.
 * `senv <VERSION>` - switch spesific version (number).
 
+## Resources 
+
+### Options
+* [home-manager-options](https://home-manager-options.extranix.com/?query=&release=master)
+
 ## Acknowledgement
 
 * [**malob/nixpkgs**](https://github.com/malob/nixpkgs) ~ [malob](https://github.com/malob) Nix System configs!.

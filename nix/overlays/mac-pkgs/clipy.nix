@@ -1,8 +1,8 @@
-{ lib
-, stdenv
-, fetchurl
-, undmg
-,
+{
+  lib,
+  stdenv,
+  fetchurl,
+  undmg,
 }:
 
 let
@@ -11,18 +11,23 @@ let
 
   pname = "clipy";
 
-  version = rec {
-    aarch64-darwin = "1.2.1";
-    x86_64-darwin = aarch64-darwin;
-  }.${system} or throwSystem;
+  version =
+    rec {
+      aarch64-darwin = "1.2.1";
+      x86_64-darwin = aarch64-darwin;
+    }
+    .${system} or throwSystem;
 
-  sha256 = rec {
-    aarch64-darwin = "sha256-37tmzjE1+6otZOruqZpj5jSF4yLJdGBFoQmLFpah7NU=";
-    x86_64-darwin = aarch64-darwin;
-  }.${system} or throwSystem;
+  sha256 =
+    rec {
+      aarch64-darwin = "sha256-37tmzjE1+6otZOruqZpj5jSF4yLJdGBFoQmLFpah7NU=";
+      x86_64-darwin = aarch64-darwin;
+    }
+    .${system} or throwSystem;
 
   srcs =
-    let base = "https://github.com/Clipy/Clipy/releases/download/";
+    let
+      base = "https://github.com/Clipy/Clipy/releases/download/";
     in
     rec {
       aarch64-darwin = {
@@ -38,11 +43,19 @@ let
     description = "Clipboard app extensions for macOS";
     homepage = "https://clipy-app.com/";
     license = licenses.mit;
-    platforms = [ "x86_64-darwin" "aarch64-darwin" ];
+    platforms = [
+      "x86_64-darwin"
+      "aarch64-darwin"
+    ];
   };
 
   darwin = stdenv.mkDerivation {
-    inherit pname version src meta;
+    inherit
+      pname
+      version
+      src
+      meta
+      ;
 
     nativeBuildInputs = [ undmg ];
 
@@ -57,4 +70,3 @@ let
   };
 in
 darwin
-

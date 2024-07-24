@@ -93,7 +93,6 @@ in
     }
   ];
 
-
   ### git tools
   ## github cli
   programs.gh.enable = true;

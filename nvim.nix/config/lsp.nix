@@ -3,9 +3,14 @@
 {
   highlightOverride.LspInlayHint.link = "InclineNormalNc";
 
-  extraPackages = [ pkgs.nixpkgs-fmt ];
+  extraPackages = [ pkgs.nixfmt ];
 
-  extraPlugins = with pkgs.vimPlugins; [ telescope-github-nvim vim-rescript supermaven-nvim nlsp-settings-nvim ];
+  extraPlugins = with pkgs.vimPlugins; [
+    telescope-github-nvim
+    vim-rescript
+    supermaven-nvim
+    nlsp-settings-nvim
+  ];
 
   # make custom command
   extraConfigLuaPre = ''
@@ -50,39 +55,129 @@
     })
   '';
 
-  filetype.extension = { "re" = "reason"; "rei" = "reason"; };
+  filetype.extension = {
+    "re" = "reason";
+    "rei" = "reason";
+  };
 
   plugins.which-key.registrations = {
-    "//" = [ "<cmd>nohlsearch<cr>" "Clear search highlight" ];
-    "<leader><space>" = [ "<cmd>Lspsaga term_toggle<cr>" "Open Terminal" ];
-    "ge" = [ "<cmd>Trouble<cr>" "Show diagnostics [Trouble]" ];
-    "[e" = [ "<cmd>Lspsaga diagnostic_jump_next<cr>" "Next Diagnostic" ];
-    "]e" = [ "<cmd>Lspsaga diagnostic_jump_prev<cr>" "Previous Diagnostic" ];
-    "K" = [ "<cmd>Lspsaga hover_doc<cr>" "Code Hover" ];
-    "F" = [ "<cmd>lua vim.lsp.buf.format({ async = true }) <cr>" "Format the current buffer" ];
-    "gl" = [ "<cmd>LspInfo<cr>" "Show LSP Info" ];
-    "gt" = [ "<cmd>Lspsaga outline<cr>" "Code Action" ];
-    "ga" = [ "<cmd>Lspsaga code_action<cr>" "Code Action" ];
-    "gi" = [ "<cmd>Lspsaga incoming_calls<cr>" "Incoming Calls" ];
-    "go" = [ "<cmd>Lspsaga outgoing_calls<cr>" "Outgoing Calls" ];
-    "gD" = [ "<cmd>Lspsaga goto_definition<cr>" "Go to Definition" ];
-    "gd" = [ "<cmd>Lspsaga peek_definition<cr>" "Peek Definition" ];
-    "gr" = [ "<cmd>Lspsaga rename<cr>" "Code Rename" ];
-    "gs" = [ ''<cmd>lua require("wtf").search() <cr>'' "Search diagnostic with Google" ];
-    "gcf" = [ "<cmd>Lspsaga finder<cr>" "Code Finder" ];
+    "//" = [
+      "<cmd>nohlsearch<cr>"
+      "Clear search highlight"
+    ];
+    "<leader><space>" = [
+      "<cmd>Lspsaga term_toggle<cr>"
+      "Open Terminal"
+    ];
+    "ge" = [
+      "<cmd>Trouble<cr>"
+      "Show diagnostics [Trouble]"
+    ];
+    "[e" = [
+      "<cmd>Lspsaga diagnostic_jump_next<cr>"
+      "Next Diagnostic"
+    ];
+    "]e" = [
+      "<cmd>Lspsaga diagnostic_jump_prev<cr>"
+      "Previous Diagnostic"
+    ];
+    "K" = [
+      "<cmd>Lspsaga hover_doc<cr>"
+      "Code Hover"
+    ];
+    "F" = [
+      "<cmd>lua vim.lsp.buf.format({ async = true }) <cr>"
+      "Format the current buffer"
+    ];
+    "gl" = [
+      "<cmd>LspInfo<cr>"
+      "Show LSP Info"
+    ];
+    "gt" = [
+      "<cmd>Lspsaga outline<cr>"
+      "Code Action"
+    ];
+    "ga" = [
+      "<cmd>Lspsaga code_action<cr>"
+      "Code Action"
+    ];
+    "gi" = [
+      "<cmd>Lspsaga incoming_calls<cr>"
+      "Incoming Calls"
+    ];
+    "go" = [
+      "<cmd>Lspsaga outgoing_calls<cr>"
+      "Outgoing Calls"
+    ];
+    "gD" = [
+      "<cmd>Lspsaga goto_definition<cr>"
+      "Go to Definition"
+    ];
+    "gd" = [
+      "<cmd>Lspsaga peek_definition<cr>"
+      "Peek Definition"
+    ];
+    "gr" = [
+      "<cmd>Lspsaga rename<cr>"
+      "Code Rename"
+    ];
+    "gs" = [
+      ''<cmd>lua require("wtf").search() <cr>''
+      "Search diagnostic with Google"
+    ];
+    "gcf" = [
+      "<cmd>Lspsaga finder<cr>"
+      "Code Finder"
+    ];
     # telescope with lsp
-    "<leader>tih" = [ "<cmd>LspInlay<cr>" "Toggle Inlay Hints" ];
-    "fnix" = [ "<cmd>Telescope manix<cr>" "Find nix with man|nix" ];
-    "flr" = [ "<cmd>lua require'telescope.builtin'.lsp_references()<cr>" "[Lsp] Find References" ];
-    "fic" = [ "<cmd>lua require'telescope.builtin'.lsp_incoming_calls()<cr>" "[Lsp] Find Incoming Calls" ];
-    "foc" = [ "<cmd>lua require'telescope.builtin'.lsp_outgoing_calls()<cr>" "[Lsp] Find Outgoing Calls" ];
-    "fds" = [ "<cmd>lua require'telescope.builtin'.lsp_document_symbols()<cr>" "[Lsp] Find Document Symbols" ];
-    "fws" = [ "<cmd>lua require'telescope.builtin'.lsp_workspace_symbols()<cr>" "[Lsp] Find Workspace Symbols" ];
-    "fdws" = [ "<cmd>lua require'telescope.builtin'.lsp_dynamic_workspace_symbols()<cr>" "[Lsp] Find Dynamic Workspace Symbols" ];
-    "fld" = [ "<cmd>lua require'telescope.builtin'.diagnostics()<cr>" "[Lsp] Find Diagnostics" ];
-    "fli" = [ "<cmd>lua require'telescope.builtin'.lsp_implementations()<cr>" "[Lsp] Find Implementations" ];
-    "flD" = [ "<cmd>lua require'telescope.builtin'.lsp_definitions()<cr>" "[Lsp] Find Definitions" ];
-    "flt" = [ "<cmd>lua require'telescope.builtin'.lsp_type_definitions()<cr>" "[Lsp] Find Type Definitions" ];
+    "<leader>tih" = [
+      "<cmd>LspInlay<cr>"
+      "Toggle Inlay Hints"
+    ];
+    "fnix" = [
+      "<cmd>Telescope manix<cr>"
+      "Find nix with man|nix"
+    ];
+    "flr" = [
+      "<cmd>lua require'telescope.builtin'.lsp_references()<cr>"
+      "[Lsp] Find References"
+    ];
+    "fic" = [
+      "<cmd>lua require'telescope.builtin'.lsp_incoming_calls()<cr>"
+      "[Lsp] Find Incoming Calls"
+    ];
+    "foc" = [
+      "<cmd>lua require'telescope.builtin'.lsp_outgoing_calls()<cr>"
+      "[Lsp] Find Outgoing Calls"
+    ];
+    "fds" = [
+      "<cmd>lua require'telescope.builtin'.lsp_document_symbols()<cr>"
+      "[Lsp] Find Document Symbols"
+    ];
+    "fws" = [
+      "<cmd>lua require'telescope.builtin'.lsp_workspace_symbols()<cr>"
+      "[Lsp] Find Workspace Symbols"
+    ];
+    "fdws" = [
+      "<cmd>lua require'telescope.builtin'.lsp_dynamic_workspace_symbols()<cr>"
+      "[Lsp] Find Dynamic Workspace Symbols"
+    ];
+    "fld" = [
+      "<cmd>lua require'telescope.builtin'.diagnostics()<cr>"
+      "[Lsp] Find Diagnostics"
+    ];
+    "fli" = [
+      "<cmd>lua require'telescope.builtin'.lsp_implementations()<cr>"
+      "[Lsp] Find Implementations"
+    ];
+    "flD" = [
+      "<cmd>lua require'telescope.builtin'.lsp_definitions()<cr>"
+      "[Lsp] Find Definitions"
+    ];
+    "flt" = [
+      "<cmd>lua require'telescope.builtin'.lsp_type_definitions()<cr>"
+      "[Lsp] Find Type Definitions"
+    ];
   };
 
   plugins.lsp = {
@@ -137,12 +232,18 @@
           }
           {
             description = "TypeScript compiler configuration file";
-            fileMatch = [ "tsconfig.json" "tsconfig.*.json" ];
+            fileMatch = [
+              "tsconfig.json"
+              "tsconfig.*.json"
+            ];
             url = "https://json.schemastore.org/tsconfig.json";
           }
           {
             description = "ReScript compiler schema";
-            fileMatch = [ "bsconfig.json" "rescript.json" ];
+            fileMatch = [
+              "bsconfig.json"
+              "rescript.json"
+            ];
             url = "https://raw.githubusercontent.com/rescript-lang/rescript-compiler/87d78697d7a1eed75c9de55bbdc476540d6f77bb/docs/docson/build-schema.json";
           }
           {
@@ -177,8 +278,14 @@
   };
 
   plugins.lsp-format.enable = true;
-  plugins.lsp-format.setup.ts.order = [ "tsserver" "eslint" ];
-  plugins.lsp-format.setup.js.order = [ "tsserver" "eslint" ];
+  plugins.lsp-format.setup.ts.order = [
+    "tsserver"
+    "eslint"
+  ];
+  plugins.lsp-format.setup.js.order = [
+    "tsserver"
+    "eslint"
+  ];
 
   plugins.lspkind.enable = true;
   plugins.lspkind.cmp.enable = true;
@@ -217,23 +324,39 @@
         "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
       };
 
-      sources = let keywordLength = 3; in [
-        { name = "nvim_lsp"; }
-        { name = "nvim_lsp_signature_help"; }
-        { name = "nvim_lsp_document_symbol"; }
-        { name = "codeium"; }
-        { name = "supermaven"; }
-        { name = "luasnip"; } #For luasnip users.
-        { name = "neorg"; }
-        { inherit keywordLength; name = "emoji"; }
-        { inherit keywordLength; name = "async_path"; }
-        { inherit keywordLength; name = "buffer"; }
-        { inherit keywordLength; name = "cmdline"; }
-      ];
+      sources =
+        let
+          keywordLength = 3;
+        in
+        [
+          { name = "nvim_lsp"; }
+          { name = "nvim_lsp_signature_help"; }
+          { name = "nvim_lsp_document_symbol"; }
+          { name = "codeium"; }
+          { name = "supermaven"; }
+          { name = "luasnip"; } # For luasnip users.
+          { name = "neorg"; }
+          {
+            inherit keywordLength;
+            name = "emoji";
+          }
+          {
+            inherit keywordLength;
+            name = "async_path";
+          }
+          {
+            inherit keywordLength;
+            name = "buffer";
+          }
+          {
+            inherit keywordLength;
+            name = "cmdline";
+          }
+        ];
     };
   };
 
-  plugins.cmp-nvim-lsp. enable = true;
+  plugins.cmp-nvim-lsp.enable = true;
   plugins.cmp-nvim-lsp-document-symbol.enable = true;
   plugins.cmp-nvim-lsp-signature-help.enable = true;
   plugins.cmp_luasnip.enable = true;

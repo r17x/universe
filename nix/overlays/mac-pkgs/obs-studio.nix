@@ -1,9 +1,9 @@
-{ lib
-, stdenv
-, fetchurl
-, undmg
-, unzip
-,
+{
+  lib,
+  stdenv,
+  fetchurl,
+  undmg,
+  unzip,
 }:
 
 let
@@ -12,15 +12,19 @@ let
 
   pname = "obs-studio";
 
-  version = rec {
-    aarch64-darwin = "29.0.2";
-    x86_64-darwin = aarch64-darwin;
-  }.${system} or throwSystem;
+  version =
+    rec {
+      aarch64-darwin = "29.0.2";
+      x86_64-darwin = aarch64-darwin;
+    }
+    .${system} or throwSystem;
 
-  sha256 = rec {
-    aarch64-darwin = "sha256-gJLdKUURT8AXwS0mcNl+elGKq0L0BfutJrwuInwaFWw=";
-    x86_64-darwin = aarch64-darwin;
-  }.${system} or throwSystem;
+  sha256 =
+    rec {
+      aarch64-darwin = "sha256-gJLdKUURT8AXwS0mcNl+elGKq0L0BfutJrwuInwaFWw=";
+      x86_64-darwin = aarch64-darwin;
+    }
+    .${system} or throwSystem;
 
   srcs =
     let
@@ -42,13 +46,21 @@ let
     description = "Open Broadcaster Software";
     homepage = "https://obsproject.com/";
     license = licenses.mit;
-    platforms = [ "x86_64-darwin" "aarch64-darwin" ];
+    platforms = [
+      "x86_64-darwin"
+      "aarch64-darwin"
+    ];
   };
 
   appname = "OBS";
 
   darwin = stdenv.mkDerivation {
-    inherit pname version src meta;
+    inherit
+      pname
+      version
+      src
+      meta
+      ;
 
     nativeBuildInputs = [ undmg ];
     buildInputs = [ unzip ];
@@ -75,7 +87,10 @@ let
       DEST="$PWD"
       (cd "$mnt"; cp -a !(Applications) "$DEST/")
     '';
-    phases = [ "unpackPhase" "installPhase" ];
+    phases = [
+      "unpackPhase"
+      "installPhase"
+    ];
 
     sourceRoot = "${appname}.app";
 

@@ -1,8 +1,9 @@
-{ src
-, buildDunePackage
-, ctypes
-, integers
-, ...
+{
+  src,
+  buildDunePackage,
+  ctypes,
+  integers,
+  ...
 }:
 
 buildDunePackage {
@@ -10,6 +11,8 @@ buildDunePackage {
   pname = "quickjs";
   version = "0.1.1";
   inherit src;
-  propagatedBuildInputs = [ integers ctypes ];
+  propagatedBuildInputs = [
+    integers
+    ctypes
+  ];
 }
-

@@ -1,7 +1,12 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 {
-  environment.systemPackages = with pkgs;[
+  environment.systemPackages = with pkgs; [
     yggdrasil
     dnscrypt-proxy2
   ];
@@ -35,49 +40,51 @@
     serviceConfig.ProgramArguments = [
       "${pkgs.yggdrasil}/bin/yggdrasil"
       "-useconffile"
-      (toString (pkgs.writeText "yggdrasil.conf" ''
-        {
-          Peers: [
-            tls://cgk01.edgy.direct.id:54321
-          ]
+      (toString (
+        pkgs.writeText "yggdrasil.conf" ''
+          {
+            Peers: [
+              tls://cgk01.edgy.direct.id:54321
+            ]
 
-          InterfacePeers: {}
+            InterfacePeers: {}
 
-          Listen: [ ]
+            Listen: [ ]
 
-          AdminListen: none
+            AdminListen: none
 
-          MulticastInterfaces:
-          [
-            {
-              Regex: en.*
-              Beacon: true
-              Listen: true
-              Port: 0
-            }
-            {
-              Regex: bridge.*
-              Beacon: true
-              Listen: true
-              Port: 0
-            }
-          ]
+            MulticastInterfaces:
+            [
+              {
+                Regex: en.*
+                Beacon: true
+                Listen: true
+                Port: 0
+              }
+              {
+                Regex: bridge.*
+                Beacon: true
+                Listen: true
+                Port: 0
+              }
+            ]
 
-          AllowedPublicKeys: []
+            AllowedPublicKeys: []
 
-          PublicKey: 22e1d2156e4984696caba8d95fa110e54efc09d1dee0e816d1011dd2d4dd5038
+            PublicKey: 22e1d2156e4984696caba8d95fa110e54efc09d1dee0e816d1011dd2d4dd5038
 
-          PrivateKey: ff95a9e5095e6324bd90632550b0b19b34629b4eecdb4b66646214f4ffe05eca22e1d2156e4984696caba8d95fa110e54efc09d1dee0e816d1011dd2d4dd5038
+            PrivateKey: ff95a9e5095e6324bd90632550b0b19b34629b4eecdb4b66646214f4ffe05eca22e1d2156e4984696caba8d95fa110e54efc09d1dee0e816d1011dd2d4dd5038
 
-          IfName: auto
+            IfName: auto
 
-          IfMTU: 65535
+            IfMTU: 65535
 
-          NodeInfoPrivacy: false
+            NodeInfoPrivacy: false
 
-          NodeInfo: {}
-        }
-      ''))
+            NodeInfo: {}
+          }
+        ''
+      ))
     ];
   };
 

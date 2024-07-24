@@ -1,5 +1,9 @@
-{ lib, config, pkgs, ... }:
-
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.mouseless;
@@ -9,7 +13,11 @@ let
   sbarLua = pkgs.callPackage ./sketchybar/helpers/sbar.nix { };
   sketchybarConfigLua = pkgs.callPackage ./sketchybar { };
 
-  lua = pkgs.lua54Packages.lua.withPackages (ps: [ ps.lua sbarLua sketchybarConfigLua ]);
+  lua = pkgs.lua54Packages.lua.withPackages (ps: [
+    ps.lua
+    sbarLua
+    sketchybarConfigLua
+  ]);
 
   sbar_menus = pkgs.callPackage ./sketchybar/helpers/menus { };
   sbar_events = pkgs.callPackage ./sketchybar/helpers/event_providers { };
@@ -26,9 +34,10 @@ in
         sbar_events
       ];
 
-      config = ''#!${lua}/bin/lua
-        package.cpath = package.cpath .. ";${lua}/lib/?.so"
-        require("init")
+      config = ''
+        #!${lua}/bin/lua
+                package.cpath = package.cpath .. ";${lua}/lib/?.so"
+                require("init")
       '';
     };
 
@@ -86,7 +95,14 @@ in
       '';
     };
 
-    environment.systemPackages = with pkgs; [ jq jankyborders skhd yabai sbar_menus sbar_events ];
+    environment.systemPackages = with pkgs; [
+      jq
+      jankyborders
+      skhd
+      yabai
+      sbar_menus
+      sbar_events
+    ];
 
     services.skhd = {
       enable = cfg.enable;
@@ -94,7 +110,9 @@ in
       skhdConfig =
         let
           leader = "lalt";
-          moveByIndex = index: ''eval "$(yabai -m query --spaces | jq --argjson index "${index}" -r '(.[] | select(.index == ${index}).windows[0]) as $wid | if $wid then "yabai -m window --focus \"" + ($wid | tostring) + "\"" else "skhd --key \"ctrl - " + (map(select(."is-native-fullscreen" == false)) | index(map(select(.index == ${index}))) + 1 % 10 | tostring) + "\"" end')"'';
+          moveByIndex =
+            index:
+            ''eval "$(yabai -m query --spaces | jq --argjson index "${index}" -r '(.[] | select(.index == ${index}).windows[0]) as $wid | if $wid then "yabai -m window --focus \"" + ($wid | tostring) + "\"" else "skhd --key \"ctrl - " + (map(select(."is-native-fullscreen" == false)) | index(map(select(.index == ${index}))) + 1 % 10 | tostring) + "\"" end')"'';
         in
         ''
           # Toggle
@@ -148,7 +166,7 @@ in
           ${leader} - j : yabai -m window --focus south
           ${leader} - k : yabai -m window --focus north
           ${leader} - l : yabai -m window --focus east
-        
+
           ## move managed window
           ctrl + ${leader} - h : yabai -m window --warp west
           ctrl + ${leader} - j : yabai -m window --warp south

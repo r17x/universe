@@ -19,7 +19,14 @@
     pkgs.sketchybar-app-font
 
     # name of nerdfonts see {https://github.com/NixOS/nixpkgs/blob/nixos-24.05/pkgs/data/fonts/nerdfonts/shas.nix}
-    (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" "Hack" "NerdFontsSymbolsOnly" ]; })
+    (pkgs.nerdfonts.override {
+      fonts = [
+        "JetBrainsMono"
+        "FiraCode"
+        "Hack"
+        "NerdFontsSymbolsOnly"
+      ];
+    })
 
     (pkgs.stdenvNoCC.mkDerivation rec {
       pname = "sf-mono-liga-bin";

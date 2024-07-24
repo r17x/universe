@@ -1,14 +1,33 @@
 { icons, pkgs, ... }:
 {
   highlight."@neorg.tags.ranged_verbatim.code_block".link = "Fg";
-  extraPlugins = with pkgs.vimPlugins; [ edge unicode-vim lualine-lsp-progress ];
+  extraPlugins = with pkgs.vimPlugins; [
+    edge
+    unicode-vim
+    lualine-lsp-progress
+  ];
 
   plugins.which-key.registrations = {
-    "<c-n>" = [ "<cmd>NvimTreeToggle<CR>" "Open Tree in left side" ];
-    "<leader>tl" = [ "<cmd>lua vim.g.unhide_lualine = not vim.g.unhide_lualine; require('lualine').hide({ unhide = vim.g.unhide_lualine })<cr>" "Toggle Status Line" ];
-    "<leader>tib" = [ "<cmd>IBLToggle<cr>" "Toggle Indent Blankline" ];
-    "<leader>tc" = [ "<cmd>ColorizerToggle<cr>" "Toggle Colorizer" ];
-    "fhi" = [ "<cmd>Telescope highlights<cr>" "Find Highlight Groups" ];
+    "<c-n>" = [
+      "<cmd>NvimTreeToggle<CR>"
+      "Open Tree in left side"
+    ];
+    "<leader>tl" = [
+      "<cmd>lua vim.g.unhide_lualine = not vim.g.unhide_lualine; require('lualine').hide({ unhide = vim.g.unhide_lualine })<cr>"
+      "Toggle Status Line"
+    ];
+    "<leader>tib" = [
+      "<cmd>IBLToggle<cr>"
+      "Toggle Indent Blankline"
+    ];
+    "<leader>tc" = [
+      "<cmd>ColorizerToggle<cr>"
+      "Toggle Colorizer"
+    ];
+    "fhi" = [
+      "<cmd>Telescope highlights<cr>"
+      "Find Highlight Groups"
+    ];
   };
 
   plugins.wakatime.enable = true;
@@ -49,7 +68,10 @@
 
   plugins.indent-blankline.enable = true;
   plugins.indent-blankline.settings.indent.char = "┊";
-  plugins.indent-blankline.settings.exclude.buftypes = [ "terminal" "neorg" ];
+  plugins.indent-blankline.settings.exclude.buftypes = [
+    "terminal"
+    "neorg"
+  ];
   plugins.indent-blankline.settings.exclude.filetypes = [
     "NvimTree"
     "sagaoutline"
@@ -95,7 +117,11 @@
   # based on {https://github.com/r17x/nixpkgs/blob/main/configs/nvim/lua/config/lualine.lua}
 
   plugins.lualine.enable = true;
-  plugins.lualine.disabledFiletypes.statusline = [ "sagaoutline" "NvimTree" "Trouble" ];
+  plugins.lualine.disabledFiletypes.statusline = [
+    "sagaoutline"
+    "NvimTree"
+    "Trouble"
+  ];
   plugins.lualine.theme = "edge";
   plugins.lualine.componentSeparators.left = "";
   plugins.lualine.componentSeparators.right = "";
@@ -125,7 +151,10 @@
     # }
     # "filesize"
   ];
-  plugins.lualine.sections.lualine_c = [ "diff" "diagnostics" ];
+  plugins.lualine.sections.lualine_c = [
+    "diff"
+    "diagnostics"
+  ];
   plugins.lualine.sections.lualine_x = [
     {
       name = "lsp_progress";
@@ -142,10 +171,24 @@
       extraConfig.timer.progressEnddelay = 500;
       extraConfig.timer.spinner = 1000;
       extraConfig.timer.lspClientNameEnddelay = 1000;
-      extraConfig.spinnerSymbols = [ "⣀" "⣠" "⣴" "⣶" "⣾" "⣿" "⢿" "⡿" ];
+      extraConfig.spinnerSymbols = [
+        "⣀"
+        "⣠"
+        "⣴"
+        "⣶"
+        "⣾"
+        "⣿"
+        "⢿"
+        "⡿"
+      ];
     }
   ];
-  plugins.lualine.sections.lualine_y = [ "searchcount" "selectioncount" "filetype" "progress" ];
+  plugins.lualine.sections.lualine_y = [
+    "searchcount"
+    "selectioncount"
+    "filetype"
+    "progress"
+  ];
   plugins.lualine.sections.lualine_z = [
     {
       name = "location";

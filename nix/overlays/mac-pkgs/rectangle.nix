@@ -1,8 +1,8 @@
-{ lib
-, stdenv
-, fetchurl
-, undmg
-,
+{
+  lib,
+  stdenv,
+  fetchurl,
+  undmg,
 }:
 
 let
@@ -11,15 +11,19 @@ let
 
   pname = "rectangle";
 
-  version = rec {
-    aarch64-darwin = "0.64";
-    x86_64-darwin = aarch64-darwin;
-  }.${system} or throwSystem;
+  version =
+    rec {
+      aarch64-darwin = "0.64";
+      x86_64-darwin = aarch64-darwin;
+    }
+    .${system} or throwSystem;
 
-  sha256 = rec {
-    aarch64-darwin = "z4xji072hGUFnxwCmME3FxW+dZuzNKoMvMQ17oRZocc=";
-    x86_64-darwin = aarch64-darwin;
-  }.${system} or throwSystem;
+  sha256 =
+    rec {
+      aarch64-darwin = "z4xji072hGUFnxwCmME3FxW+dZuzNKoMvMQ17oRZocc=";
+      x86_64-darwin = aarch64-darwin;
+    }
+    .${system} or throwSystem;
 
   srcs =
     let
@@ -39,11 +43,19 @@ let
     description = "Move and resize windows on macOS with keyboard shortcuts and snap areas";
     homepage = "https://rectangleapp.com/";
     license = licenses.mit;
-    platforms = [ "x86_64-darwin" "aarch64-darwin" ];
+    platforms = [
+      "x86_64-darwin"
+      "aarch64-darwin"
+    ];
   };
 
   darwin = stdenv.mkDerivation {
-    inherit pname version src meta;
+    inherit
+      pname
+      version
+      src
+      meta
+      ;
 
     nativeBuildInputs = [ undmg ];
 

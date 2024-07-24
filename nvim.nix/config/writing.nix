@@ -9,7 +9,10 @@
     }
   ];
 
-  extraPlugins = with pkgs.vimPlugins; [ neorg-telescope venn-nvim ];
+  extraPlugins = with pkgs.vimPlugins; [
+    neorg-telescope
+    venn-nvim
+  ];
 
   extraConfigLuaPost = ''
     require("telescope").load_extension "neorg"
@@ -41,13 +44,27 @@
     end
   '';
 
+  plugins.which-key.registrations."mp" = [
+    "<cmd>MarkdownPreview<cr>"
+    "Preview Markdown"
+  ];
+  plugins.which-key.registrations."<leader>tv" = [
+    ":lua Toggle_venn()<CR>"
+    "Toggle Venn"
+  ];
 
-  plugins.which-key.registrations."mp" = [ "<cmd>MarkdownPreview<cr>" "Preview Markdown" ];
-  plugins.which-key.registrations."<leader>tv" = [ ":lua Toggle_venn()<CR>" "Toggle Venn" ];
-
-  plugins.which-key.registrations."<leader>oj" = [ "<cmd>Neorg journal today<cr>" "Journal Today" ];
-  plugins.which-key.registrations."<leader>oh" = [ "<cmd>Neorg workspace home<cr>" "Open Neorg Home" ];
-  plugins.which-key.registrations."<leader>zm" = [ "<cmd>ZenMode<cr>" "Focus like a Japanese Philosopher 🧘" ];
+  plugins.which-key.registrations."<leader>oj" = [
+    "<cmd>Neorg journal today<cr>"
+    "Journal Today"
+  ];
+  plugins.which-key.registrations."<leader>oh" = [
+    "<cmd>Neorg workspace home<cr>"
+    "Open Neorg Home"
+  ];
+  plugins.which-key.registrations."<leader>zm" = [
+    "<cmd>ZenMode<cr>"
+    "Focus like a Japanese Philosopher 🧘"
+  ];
 
   plugins.comment.enable = true;
   plugins.zen-mode.enable = true;
@@ -66,14 +83,36 @@
 
         };
       };
-      "core.defaults" = { __empty = null; };
-      "core.keybinds" = { config.neorg_leader = "<Leader>"; };
+      "core.defaults" = {
+        __empty = null;
+      };
+      "core.keybinds" = {
+        config.neorg_leader = "<Leader>";
+      };
       "core.integrations.treesitter" = { };
       "core.integrations.telescope" = { };
-      "core.concealer" = { config = { folds = true; icon_preset = "diamond"; init_open_folds = "auto"; }; };
-      "core.completion" = { config = { engine = "nvim-cmp"; }; };
-      "core.esupports.metagen" = { config = { type = "auto"; }; };
-      "core.presenter" = { config = { zen_mode = "zen-mode"; }; };
+      "core.concealer" = {
+        config = {
+          folds = true;
+          icon_preset = "diamond";
+          init_open_folds = "auto";
+        };
+      };
+      "core.completion" = {
+        config = {
+          engine = "nvim-cmp";
+        };
+      };
+      "core.esupports.metagen" = {
+        config = {
+          type = "auto";
+        };
+      };
+      "core.presenter" = {
+        config = {
+          zen_mode = "zen-mode";
+        };
+      };
     };
   };
 

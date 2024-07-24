@@ -12,8 +12,9 @@ let
   #       esac
   #   done
   # '';
-  commandFoldl' = builtins.foldl' (a: b: a + b + '' && '') '''';
-  shellAliases = with pkgs;
+  commandFoldl' = builtins.foldl' (a: b: a + b + ''&& '') '''';
+  shellAliases =
+    with pkgs;
     let
       verify = writeScriptBin "verify" ''
         [[ -z "$1" ]] && echo "No argument provided" && exit 0

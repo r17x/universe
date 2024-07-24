@@ -1,8 +1,8 @@
-{ lib
-, stdenv
-, fetchurl
-, undmg
-,
+{
+  lib,
+  stdenv,
+  fetchurl,
+  undmg,
 }:
 
 let
@@ -11,18 +11,23 @@ let
 
   pname = "googlechrome";
 
-  version = rec {
-    aarch64-darwin = "stable";
-    x86_64-darwin = aarch64-darwin;
-  }.${system} or throwSystem;
+  version =
+    rec {
+      aarch64-darwin = "stable";
+      x86_64-darwin = aarch64-darwin;
+    }
+    .${system} or throwSystem;
 
-  sha256 = rec {
-    aarch64-darwin = "sha256-EAq63uwfTB+5bPvnN/u1/9rEVrtFmLhOOgZYxknkMPs=";
-    x86_64-darwin = aarch64-darwin;
-  }.${system} or throwSystem;
+  sha256 =
+    rec {
+      aarch64-darwin = "sha256-EAq63uwfTB+5bPvnN/u1/9rEVrtFmLhOOgZYxknkMPs=";
+      x86_64-darwin = aarch64-darwin;
+    }
+    .${system} or throwSystem;
 
   srcs =
-    let base = "https://dl.google.com/chrome/mac/universal/";
+    let
+      base = "https://dl.google.com/chrome/mac/universal/";
     in
     rec {
       aarch64-darwin = {
@@ -38,11 +43,19 @@ let
     description = "Browse the internet citizen";
     homepage = "https://google.com/";
     license = licenses.mit;
-    platforms = [ "x86_64-darwin" "aarch64-darwin" ];
+    platforms = [
+      "x86_64-darwin"
+      "aarch64-darwin"
+    ];
   };
 
   darwin = stdenv.mkDerivation {
-    inherit pname version src meta;
+    inherit
+      pname
+      version
+      src
+      meta
+      ;
 
     nativeBuildInputs = [ undmg ];
 
@@ -57,5 +70,3 @@ let
   };
 in
 darwin
-
-

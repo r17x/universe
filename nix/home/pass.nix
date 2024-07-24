@@ -1,4 +1,9 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -12,9 +17,13 @@ in
 
   config = mkIf cfg.enable {
     programs.password-store.enable = true;
-    programs.password-store.package = pkgs.pass.withExtensions (p: [ p.pass-otp p.pass-checkup p.pass-audit p.pass-update ]);
+    programs.password-store.package = pkgs.pass.withExtensions (p: [
+      p.pass-otp
+      p.pass-checkup
+      p.pass-audit
+      p.pass-update
+    ]);
     programs.browserpass.enable = true;
     programs.browserpass.browsers = [ "firefox" ];
   };
 }
-

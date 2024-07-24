@@ -30,9 +30,13 @@ in
   # Htop
   # https://rycee.gitlab.io/home-manager/options.html#opt-programs.btop.enable
   programs.btop.enable = true;
-  programs.btop.settings = { vim_keys = true; show_battery = false; };
+  programs.btop.settings = {
+    vim_keys = true;
+    show_battery = false;
+  };
 
-  home.packages = with pkgs;
+  home.packages =
+    with pkgs;
     [
       ################################## 
       # common
@@ -101,7 +105,8 @@ in
       cachix
       comma # run without install
       telegram-desktop
-    ] ++ lib.optionals isDarwin [
+    ]
+    ++ lib.optionals isDarwin [
       mas
       cocoapods
       m-cli # useful macOS CLI commands

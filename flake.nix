@@ -1,18 +1,20 @@
 {
   description = "ri7's nix darwin system";
 
-  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-    systems = [
-      "aarch64-darwin"
-      "x86_64-linux"
-    ];
+  outputs =
+    inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [
+        "aarch64-darwin"
+        "x86_64-linux"
+      ];
 
-    imports = [
-      inputs.pre-commit-hooks.flakeModule
-      ./nix
-      ./nvim.nix
-    ];
-  };
+      imports = [
+        inputs.pre-commit-hooks.flakeModule
+        ./nix
+        ./nvim.nix
+      ];
+    };
 
   inputs = {
     nix.url = "github:nixos/nix";
@@ -20,9 +22,6 @@
 
     # utilities for Flake
     flake-parts.url = "github:hercules-ci/flake-parts";
-
-    nixpkgs-fmt.url = "github:nix-community/nixpkgs-fmt";
-    nixpkgs-fmt.inputs.nixpkgs.follows = "nixpkgs";
 
     ## -- nixpkgs 
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
@@ -33,9 +32,18 @@
     ## -- Languages
     ocaml-overlay.url = "github:nix-ocaml/nix-overlays";
     ocaml-overlay.inputs.nixpkgs.follows = "nixpkgs";
-    server-reason-react = { url = "github:ml-in-barcelona/server-reason-react"; flake = false; };
-    quickjs-ml = { url = "git+https://github.com/ml-in-barcelona/quickjs.ml?submodules=1"; flake = false; };
-    styled-ppx = { url = "github:davesnx/styled-ppx?rev=2b69b67ab10244aed612005bd127031f16289cc7"; flake = false; };
+    server-reason-react = {
+      url = "github:ml-in-barcelona/server-reason-react";
+      flake = false;
+    };
+    quickjs-ml = {
+      url = "git+https://github.com/ml-in-barcelona/quickjs.ml?submodules=1";
+      flake = false;
+    };
+    styled-ppx = {
+      url = "github:davesnx/styled-ppx?rev=2b69b67ab10244aed612005bd127031f16289cc7";
+      flake = false;
+    };
 
     ## -- Platform
 
@@ -73,12 +81,27 @@
     # prefix "vimPlugins_"
     # e.g: rescript-nvim to be vimPlugins_rescript-nvim
     # e.g usage: programs.neovim.plugins = p: [p.rescript-nvim] or [pkgs.vimPlugins.rescript-nvim];
-    vimPlugins_vim-rescript = { url = "github:rescript-lang/vim-rescript"; flake = false; };
-    vimPlugins_supermaven-nvim = { url = "github:supermaven-inc/supermaven-nvim"; flake = false; };
+    vimPlugins_vim-rescript = {
+      url = "github:rescript-lang/vim-rescript";
+      flake = false;
+    };
+    vimPlugins_supermaven-nvim = {
+      url = "github:supermaven-inc/supermaven-nvim";
+      flake = false;
+    };
 
     # others 
-    ts-rescript = { url = "github:nkrkv/tree-sitter-rescript"; flake = false; };
-    nix-env = { url = "github:lilyball/nix-env.fish"; flake = false; };
-    sketchybar-app-font = { url = "github:kvndrsslr/sketchybar-app-font"; flake = false; };
+    ts-rescript = {
+      url = "github:nkrkv/tree-sitter-rescript";
+      flake = false;
+    };
+    nix-env = {
+      url = "github:lilyball/nix-env.fish";
+      flake = false;
+    };
+    sketchybar-app-font = {
+      url = "github:kvndrsslr/sketchybar-app-font";
+      flake = false;
+    };
   };
 }

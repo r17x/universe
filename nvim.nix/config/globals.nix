@@ -9,7 +9,11 @@ in
     mouse = "";
     encoding = "utf8";
     termguicolors = true;
-    backspace = [ "indent" "eol" "start" ];
+    backspace = [
+      "indent"
+      "eol"
+      "start"
+    ];
     cursorline = false;
     wrap = false;
     background = "dark";

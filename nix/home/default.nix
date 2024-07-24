@@ -10,9 +10,11 @@
     r17-tmux = import ./tmux.nix;
     gpg = import ./gpg.nix;
     pass = import ./pass.nix;
-    home-user-info = { lib, ... }: {
-      options.home.user-info =
-        (self.commonModules.users-primaryUser { inherit lib; }).options.users.primaryUser;
-    };
+    home-user-info =
+      { lib, ... }:
+      {
+        options.home.user-info =
+          (self.commonModules.users-primaryUser { inherit lib; }).options.users.primaryUser;
+      };
   };
 }

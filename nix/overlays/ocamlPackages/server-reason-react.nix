@@ -1,15 +1,16 @@
-{ src
-, buildDunePackage
-, ppxlib
-, melange
-, reason
-, reason-native
-, ocaml_pcre
-, lwt
-, lwt_ppx
-, uri
-, quickjs
-, ...
+{
+  src,
+  buildDunePackage,
+  ppxlib,
+  melange,
+  reason,
+  reason-native,
+  ocaml_pcre,
+  lwt,
+  lwt_ppx,
+  uri,
+  quickjs,
+  ...
 }:
 
 buildDunePackage {
@@ -32,4 +33,3 @@ buildDunePackage {
     reason-native.refmterr
   ];
 }
-

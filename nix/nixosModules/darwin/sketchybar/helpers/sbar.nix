@@ -1,6 +1,15 @@
-{ lua54Packages, gcc, darwin, fetchFromGitHub, readline, ... }:
+{
+  lua54Packages,
+  gcc,
+  darwin,
+  fetchFromGitHub,
+  readline,
+  ...
+}:
 
-let inherit (lua54Packages) buildLuaPackage; in
+let
+  inherit (lua54Packages) buildLuaPackage;
+in
 
 buildLuaPackage {
   name = "sbarlua";
@@ -14,7 +23,11 @@ buildLuaPackage {
     sha256 = "sha256-C2tg1mypz/CdUmRJ4vloPckYfZrwHxc4v8hsEow4RZs=";
   };
 
-  buildInputs = [ gcc darwin.apple_sdk.frameworks.CoreFoundation readline ];
+  buildInputs = [
+    gcc
+    darwin.apple_sdk.frameworks.CoreFoundation
+    readline
+  ];
 
   installPhase = ''
     mkdir -p $out/lib

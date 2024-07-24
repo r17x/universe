@@ -1,20 +1,21 @@
-{ src
-, buildDunePackage
-, melange
-, reason
-, reason-react
-, reason-react-ppx
-, reason-native
-, server-reason-react
-, sedlex
-, ppx_deriving
-, menhir
-, ppx_deriving_yojson
-, ppx_yojson_conv_lib
-, ppxlib
-, yojson
-, findlib
-, ...
+{
+  src,
+  buildDunePackage,
+  melange,
+  reason,
+  reason-react,
+  reason-react-ppx,
+  reason-native,
+  server-reason-react,
+  sedlex,
+  ppx_deriving,
+  menhir,
+  ppx_deriving_yojson,
+  ppx_yojson_conv_lib,
+  ppxlib,
+  yojson,
+  findlib,
+  ...
 }:
 
 buildDunePackage {
@@ -51,4 +52,3 @@ buildDunePackage {
     reason-native.refmterr
   ];
 }
-

@@ -1,10 +1,7 @@
 { inputs, ... }:
 {
   perSystem =
-    { pkgs
-    , system
-    , ...
-    }:
+    { pkgs, system, ... }:
     let
       icons = import ../nix/icons.nix;
       nixvimLib = inputs.nixvim.lib.${system};
@@ -31,4 +28,3 @@
       };
     };
 }
-

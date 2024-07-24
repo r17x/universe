@@ -1,11 +1,11 @@
-{ lib
-, stdenv
-, fetchurl
+{
+  lib,
+  stdenv,
+  fetchurl,
   # , undmg
-, makeWrapper
-, xar
-, cpio
-,
+  makeWrapper,
+  xar,
+  cpio,
 }:
 
 let
@@ -14,15 +14,19 @@ let
 
   pname = "iriun-webcam";
 
-  sha256 = rec {
-    aarch64-darwin = "sha256-1tT1sKe1zEQqORW7IcJPYXwGD/wRDG4VVBxkD5D9CNc=";
-    x86_64-darwin = aarch64-darwin;
-  }.${system} or throwSystem;
+  sha256 =
+    rec {
+      aarch64-darwin = "sha256-1tT1sKe1zEQqORW7IcJPYXwGD/wRDG4VVBxkD5D9CNc=";
+      x86_64-darwin = aarch64-darwin;
+    }
+    .${system} or throwSystem;
 
-  version = rec {
-    aarch64-darwin = "2.7.3";
-    x86_64-darwin = aarch64-darwin;
-  }.${system} or throwSystem;
+  version =
+    rec {
+      aarch64-darwin = "2.7.3";
+      x86_64-darwin = aarch64-darwin;
+    }
+    .${system} or throwSystem;
 
   srcs =
     let
@@ -36,20 +40,31 @@ let
       x86_64-darwin = aarch64-darwin;
     };
 
-  src =
-    fetchurl (srcs.${system} or throwSystem);
+  src = fetchurl (srcs.${system} or throwSystem);
 
   meta = with lib; {
     description = "Use your phone's camera as a wireless webcam in your PC or Mac.";
     homepage = "https://iriun.com";
     license = licenses.unfree;
-    platforms = [ "x86_64-darwin" "aarch64-darwin" ];
+    platforms = [
+      "x86_64-darwin"
+      "aarch64-darwin"
+    ];
   };
 
   darwin = stdenv.mkDerivation {
-    inherit pname version src meta;
+    inherit
+      pname
+      version
+      src
+      meta
+      ;
 
-    nativeBuildInputs = [ makeWrapper xar cpio ];
+    nativeBuildInputs = [
+      makeWrapper
+      xar
+      cpio
+    ];
 
     unpackPhase = lib.optionalString stdenv.isDarwin ''
       xar -xf $src

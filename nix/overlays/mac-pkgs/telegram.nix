@@ -1,8 +1,8 @@
-{ lib
-, stdenv
-, fetchurl
-, undmg
-,
+{
+  lib,
+  stdenv,
+  fetchurl,
+  undmg,
 }:
 
 let
@@ -12,15 +12,19 @@ let
   pname = "telegram";
 
   # see version history https://desktop.telegram.org/changelog
-  version = rec {
-    aarch64-darwin = "4.11.6";
-    x86_64-darwin = aarch64-darwin;
-  }.${system} or throwSystem;
+  version =
+    rec {
+      aarch64-darwin = "4.11.6";
+      x86_64-darwin = aarch64-darwin;
+    }
+    .${system} or throwSystem;
 
-  sha256 = rec {
-    aarch64-darwin = "sha256-g6Cm3bMq8nVPf2On94yNYmKdfnCyxaEsnVbsJYBaVZs";
-    x86_64-darwin = aarch64-darwin;
-  }.${system} or throwSystem;
+  sha256 =
+    rec {
+      aarch64-darwin = "sha256-g6Cm3bMq8nVPf2On94yNYmKdfnCyxaEsnVbsJYBaVZs";
+      x86_64-darwin = aarch64-darwin;
+    }
+    .${system} or throwSystem;
 
   srcs =
     let
@@ -40,11 +44,19 @@ let
     description = "Telegram Desktop";
     homepage = "https://tdesktop.com/";
     license = licenses.gpl3Only;
-    platforms = [ "x86_64-darwin" "aarch64-darwin" ];
+    platforms = [
+      "x86_64-darwin"
+      "aarch64-darwin"
+    ];
   };
 
   darwin = stdenv.mkDerivation {
-    inherit pname version src meta;
+    inherit
+      pname
+      version
+      src
+      meta
+      ;
 
     nativeBuildInputs = [ undmg ];
 
@@ -59,4 +71,3 @@ let
   };
 in
 darwin
-

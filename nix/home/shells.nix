@@ -167,10 +167,10 @@ in
     # in MacOS type `Ctrl+R` to search history
     atuin.enable = true;
     atuin.enableFishIntegration = config.programs.fish.enable;
-    atuin.enableBashIntegration = true;
+    atuin.enableBashIntegration = config.programs.atuin.enable;
 
     # command-not-found integration
-    nix-index.enableFishIntegration = config.programs.nix-index.enable;
+    nix-index.enableFishIntegration = config.programs.fish.enable;
     nix-index.enableBashIntegration = config.programs.nix-index.enable;
 
     # jump like `z` or `fasd` 
@@ -183,7 +183,7 @@ in
     thefuck.enable = true;
     thefuck.enableInstantMode = true;
     thefuck.enableFishIntegration = config.programs.fish.enable;
-    thefuck.enableBashIntegration = true;
+    thefuck.enableBashIntegration = config.programs.thefuck.enable;
 
     # Fish Shell (Default shell)
     # https://rycee.gitlab.io/home-manager/options.html#opt-programs.fish.enable
@@ -224,6 +224,7 @@ in
     # Fish prompt and style
     starship.enable = true;
     starship.enableFishIntegration = config.programs.fish.enable;
+    starship.enableBashIntegration = config.programs.starship.enable;
     starship.enableTransience = config.programs.fish.enable;
     starship.settings =
       let

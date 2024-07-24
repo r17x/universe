@@ -18,9 +18,6 @@
     nix.url = "github:nixos/nix";
     nix.inputs.nixpkgs.follows = "nixpkgs";
 
-    nix-index-database.url = "github:Mic92/nix-index-database";
-    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
-
     # utilities for Flake
     flake-parts.url = "github:hercules-ci/flake-parts";
 

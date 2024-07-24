@@ -3,7 +3,6 @@
   flake.commonModules = {
     system-shells = import ./shells.nix;
     users-primaryUser = import ./user.nix;
-    programs-nix-index = import ./nix-index.nix;
   };
 
   flake.darwinModules = {

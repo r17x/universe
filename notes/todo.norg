@@ -4,7 +4,7 @@ description: make things get fucking done
 authors: r17
 categories: 
 created: 2024-05-26T02:31:16+0700
-updated: 2024-07-20T02:00:46+0700
+updated: 2024-07-24T20:01:21+0700
 version: 1.1.1
 @end
 
@@ -31,7 +31,8 @@ version: 1.1.1
    - (-) move {https://github.com/r17x/rin.rocks}[rin.rocks] to {https://github.com/r17x/nixpkgs}[nixpkgs]
    - (x) use *flake-parts* in {https://github.com/r17x/nixpkgs}[nixpkgs]
    - (x) move {https://github.com/r17x/nvim.nix}[nvim.nix] to {https://github.com/r17x/nixpkgs}[nixpkgs]
-   - (x) use {https://github.com/3rd/image.nvim}[image.nvim] in `nvim.nix` with {https://nix-community.github.io/nixvim/plugins/image/index.html}[plugins.image] - see implementation in {/ ../nvim.nix/config/ui.nix:13}[config/ui.nix] and updated configuration of {/ ../home/tmux.nix:25}[home/tmux.nix]
+   - (x) use {https://github.com/3rd/image.nvim}[image.nvim] in `nvim.nix` with {https://nix-community.github.io/nixvim/plugins/image/index.html}[plugins.image] . 
+         see implementation in {/ ../nvim.nix/config/ui.nix:13}[config/ui.nix] and updated configuration of {/ ../home/tmux.nix:25}[home/tmux.nix]
    - (x) Rename this repository from {https://github.com/r17x/nixpkgs}[nixpkgs] to {https://github.com/r17x/universe}[`universe`]
    - (x) Move all modules to {/ ../nix/}[nix/] directory
    - (x) Integration with `tmux-thumbs`  
@@ -42,12 +43,14 @@ version: 1.1.1
    -- (x) sketchybar custom 
 
 ** Neovim
-   - ( ) Find why image cannot render correctly in `iTerm`
-   - (+) Revisit `cmp` in current nixvim. revisit `autoEnabledSources`.
-   - (x) Add `tree-sitter-rescript` for syntax highlighting with {/ ../nix/overlays/default.nix:6}[modules/overlays/default.nix] and integration {/ ../nvim.nix/config/ui.nix:419}[nixvim]
+   - (x) Neovim
+   -- (x) Find why image cannot render correctly in `iTerm`
+   -- (x) Revisit `cmp` in current nixvim. revisit `autoEnabledSources`.
+   -- (x) Add `tree-sitter-rescript` for syntax highlighting.
+          with {/ ../nix/overlays/default.nix:6}[modules/overlays/default.nix] and integration {/ ../nvim.nix/config/ui.nix:419}[nixvim]
    - (x) lsp {/ ../nvim.nix/config/lsp.nix:30}[rescriptls] integration
    - (x) reconfigure coloscheme in {/ ../nvim.nix/config/ui.nix:72}[edge]
-   -- {/ ../nvim.nix/config/ui.nix:3}[link highlight] to `@neorg.tags.ranged_verbatim.code_block` to `fg`
+   -- (x) {/ ../nvim.nix/config/ui.nix:3}[link highlight] to `@neorg.tags.ranged_verbatim.code_block` to `fg`
    -- ( ) Keymap and Toggle function for colorscheme:edge `edge_*`
    - (x) Neorg {/ ../nvim.nix/config/writing.nix:15}[integration] with Telescope
    -- ( ) Keymap for Neorg x Telescope
@@ -59,6 +62,7 @@ version: 1.1.1
    -- ( ) Build Rack for all devices stand 
   
 ** Uncertain
-   - ( ) Created ISO (image) for Raspiberry phi 4 based on {https://github.com/nix-community/nixos-generators}[nixos-generators]. Device used for {https://cache.komunix.org}[komunix.org]
-   -- {https://mtlynch.io/nixos-pi4/}[Installing NixOS on Raspberry Pi 4]
-   -- {https://pablo.tools/blog/computers/nixos-generate-raspberry-images/}[GENERATING RASPBERRY PI IMAGES WITH NIXOS]
+   - ( ) Created ISO (image) for Raspiberry phi 4 based on {https://github.com/nix-community/nixos-generators}[nixos-generators].
+   -- ( ) {https://mtlynch.io/nixos-pi4/}[Installing NixOS on Raspberry Pi 4]
+   -- ( ) {https://pablo.tools/blog/computers/nixos-generate-raspberry-images/}[GENERATING RASPBERRY PI IMAGES WITH NIXOS]
+   -- ( ) Deploy {https://cache.komunix.org}[komunix.org]

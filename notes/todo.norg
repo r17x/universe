@@ -4,7 +4,7 @@ description: make things get fucking done
 authors: r17
 categories: 
 created: 2024-05-26T02:31:16+0700
-updated: 2024-07-24T20:01:21+0700
+updated: 2024-07-25T11:49:58+0700
 version: 1.1.1
 @end
 
@@ -66,3 +66,5 @@ version: 1.1.1
    -- ( ) {https://mtlynch.io/nixos-pi4/}[Installing NixOS on Raspberry Pi 4]
    -- ( ) {https://pablo.tools/blog/computers/nixos-generate-raspberry-images/}[GENERATING RASPBERRY PI IMAGES WITH NIXOS]
    -- ( ) Deploy {https://cache.komunix.org}[komunix.org]
+   -- ( ) {https://discourse.nixos.org/t/introducing-attic-a-self-hostable-nix-binary-cache-server/24343}[Attic: self-hosted Nix Cache]
+   --- Reading {https://www.channable.com/tech/setting-up-a-private-nix-cache-for-fun-and-profit}[Setting up a private Nix Cache for fun and profit]

@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   inherit (config.home.user-info) nixConfigDirectory;
@@ -12,7 +17,7 @@ let
   #       esac
   #   done
   # '';
-  commandFoldl' = builtins.foldl' (a: b: a + b + ''&& '') '''';
+  commandFoldl' = lib.strings.concatMapStrings (x: "${x} &&");
   shellAliases =
     with pkgs;
     let

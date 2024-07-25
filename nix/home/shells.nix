@@ -17,7 +17,7 @@ let
   #       esac
   #   done
   # '';
-  commandFoldl' = lib.strings.concatMapStrings (x: "${x} &&");
+  commandFoldl' = lib.strings.concatMapStrings (x: "${x} && ");
   shellAliases =
     with pkgs;
     let

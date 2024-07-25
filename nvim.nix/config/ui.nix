@@ -1,4 +1,9 @@
-{ icons, pkgs, ... }:
+{
+  config,
+  icons,
+  pkgs,
+  ...
+}:
 {
   highlight."@neorg.tags.ranged_verbatim.code_block".link = "Fg";
   extraPlugins = with pkgs.vimPlugins; [
@@ -204,7 +209,9 @@
   plugins.treesitter.folding = true;
   plugins.treesitter.indent = true;
   plugins.treesitter.nixvimInjections = true;
-  # plugins.treesitter.grammarPackages = pkgs.vimPlugins.nvim-treesitter.passthru.allGrammars ++ [ pkgs.tree-sitter-rescript ];
+  plugins.treesitter.grammarPackages = builtins.map (
+    x: pkgs.vimPlugins.nvim-treesitter.builtGrammars.${x}
+  ) config.plugins.treesitter.ensureInstalled;
   plugins.treesitter.ignoreInstall = [
     # ┌─────────────────────────────────────┐
     # │ move to ensureInstalled for enabled │
@@ -466,7 +473,6 @@
     "mermaid"
     "nix"
     "norg"
-    "norg_meta"
     "ocaml"
     "ocaml_interface"
     "ocamllex"
@@ -478,7 +484,7 @@
     "query"
     "regex"
     "rust"
-    "rescript"
+    # "rescript"
     "sql"
     "ssh_config"
     "templ"

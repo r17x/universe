@@ -81,25 +81,24 @@ in
         yabai -m rule --add label="Select file to save to" app="^Inkscape$" title="Select file to save to" manage=off
 
         yabai -m config layout bsp
-
-        options=(
-          style=round
-          width=6.0
-          hidpi=off
-          active_color=0xfffeeff0
-          inactive_color=0xc02c2e34
-          background_color=0x302c2e34
-        )
-
-        borders "''${options[@]}"
       '';
+    };
+
+    services.jankyborders = {
+      enable = cfg.enable;
+      width = 6.5;
+      hidpi = false;
+      active_color = "0xfffeeff0";
+      inactive_color = "0xc02c2e34";
+      background_color = "0x302c2e34";
+      style = "round";
     };
 
     environment.systemPackages = with pkgs; [
       jq
-      jankyborders
       skhd
       yabai
+      # todo mo to overlays
       sbar_menus
       sbar_events
     ];

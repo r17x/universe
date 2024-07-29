@@ -4,7 +4,7 @@ description: make things get fucking done
 authors: r17
 categories: 
 created: 2024-05-26T02:31:16+0700
-updated: 2024-07-25T11:49:58+0700
+updated: 2024-07-29T20:00:28+0700
 version: 1.1.1
 @end
 
@@ -62,6 +62,10 @@ version: 1.1.1
    -- ( ) Build Rack for all devices stand 
   
 ** Uncertain
+   - ( ) Analytics
+   -- ( ) {https://signoz.io/docs/introduction/}[signoz] for observability
+   -- ( ) {https://posthog.com/}[PostHog] for analytics
+
    - ( ) Created ISO (image) for Raspiberry phi 4 based on {https://github.com/nix-community/nixos-generators}[nixos-generators].
    -- ( ) {https://mtlynch.io/nixos-pi4/}[Installing NixOS on Raspberry Pi 4]
    -- ( ) {https://pablo.tools/blog/computers/nixos-generate-raspberry-images/}[GENERATING RASPBERRY PI IMAGES WITH NIXOS]

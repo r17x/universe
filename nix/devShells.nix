@@ -51,21 +51,11 @@
               "."
             ];
 
-          nodeCorepackShims = pkgs.stdenv.mkDerivation {
-            name = "corepack-shims";
-            buildInputs = [ pkgs.nodejs ];
-            phases = [ "installPhase" ];
-            installPhase = ''
-              mkdir -p $out/bin
-              corepack enable --install-directory=$out/bin
-            '';
-          };
-
           mkNodeShell =
             name:
             let
               node = pkgs.${name};
-              corepackShim = nodeCorepackShims.overrideAttrs (_: {
+              corepackShim = pkgs.nodeCorepackShims.overrideAttrs (_: {
                 buildInputs = [ node ];
               });
             in
@@ -187,7 +177,7 @@
               # TODO: styled-ppx fix build
               # styled-ppx
               pkgs.nodejs_20
-              (nodeCorepackShims.overrideAttrs (_: {
+              (pkgs.nodeCorepackShims.overrideAttrs (_: {
                 buildInputs = [ pkgs.nodejs_20 ];
               }))
             ];

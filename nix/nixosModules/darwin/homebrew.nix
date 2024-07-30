@@ -30,8 +30,6 @@ in
   };
 
   homebrew.casks = [
-    "firefox"
-    "google-chrome"
     "raycast"
     "sf-symbols"
   ];

@@ -82,12 +82,13 @@ let
       gpbt = "gpg --export-ownertrust";
       gprt = "gpg --import-ownertrust";
 
-      # lenv show list generations aka list build version
-      # senv switch generation <number>
-      # denv delete generation <number>
-      # renv rollback to previous version number
-      # param: <GENEREATION_NUMBER> 
-      # run lenv before if you want to see <GENEREATION_NUMBER>
+      # Nix
+      ## lenv show list generations aka list build version
+      ## senv switch generation <number>
+      ## denv delete generation <number>
+      ## renv rollback to previous version number
+      ## param: <GENEREATION_NUMBER> 
+      ## run lenv before if you want to see <GENEREATION_NUMBER>
       lenv = "nix-env --list-generations";
       senv = "nix-env --switch-generation";
       denv = "nix-env --delete-generations";
@@ -113,6 +114,7 @@ let
       c = "z";
       cc = "zi";
       # Others
+      rm = "rm -i";
       p = "ping";
       l = "ls -l";
       la = "ls -a";
@@ -120,7 +122,9 @@ let
       lt = "ls --tree";
       cat = "${pkgs.bat}/bin/bat";
       du = "${pkgs.du-dust}/bin/dust";
-      git = "${pkgs.git}/bin/git";
+
+      # Git
+      g = "git";
       pullhead = "git pull origin (git rev-parse --abbrev-ref HEAD)";
       beda = "gd";
       ingfo = "git status";
@@ -128,9 +132,7 @@ let
       pushhead = "git push origin (git rev-parse --abbrev-ref HEAD)";
       gas = "pushhead";
       gasin = "pushhead --force";
-      gi = "gitignore";
-      g = "git";
-      gtemp = "git commit -m \"temp\" --no-verify";
+      gtmp = "git commit -m \"temp\" --no-verify";
       gf = "git flow";
       gl = "git log --graph --oneline --all";
       gll = "git log --oneline --decorate --all --graph --stat";
@@ -138,14 +140,12 @@ let
       gls = "gl --show-signature";
       gfa = "git fetch --all";
       grc = "git rebase --continue";
-      rm = "rm -i";
+      gri = "git rebase --interactive";
 
+      # Documentation
       todo = "nvim ${nixConfigDirectory}/notes/todo.norg";
       todox = "nvim ${nixConfigDirectory}/secrets/todo.norg";
-
-      # Development
-      # docker = "${pkgs.podman}/bin/podman";
-      # docker-compose = "${pkgs.podman-compose}/bin/podman-compose";
+      diary = "nvim ${nixConfigDirectory}/notes/diary.norg";
     };
 in
 {

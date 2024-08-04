@@ -1,11 +1,53 @@
 {
+  lib,
+  helpers,
   config,
   icons,
   pkgs,
   ...
 }:
+let
+  devicons = {
+    norg = {
+      icon = icons.language.org;
+      color = "#389EDD";
+      cterm_color = "65";
+      name = "Norg";
+    };
+    re = {
+      icon = icons.language.reason;
+      color = "#DE4B39";
+      cterm_color = "65";
+      name = "ReasonML";
+    };
+    dune = {
+      icon = icons.language.reason;
+      color = "#F5DF36";
+      cterm_color = "65";
+      name = "Dune";
+    };
+    "dune-project" = {
+      icon = icons.language.reason;
+      color = "#F5DF36";
+      cterm_color = "65";
+      name = "Dune";
+    };
+  };
+
+  deviconsToLuaString =
+    icons:
+    builtins.foldl'
+      (acc: icon: ''
+        ${acc}
+        devicons.set_icon ${icon}
+      '')
+      "local devicons = require'nvim-web-devicons'"
+      (lib.attrsets.mapAttrsToList (name: value: helpers.toLuaObject { "${name}" = value; }) icons);
+
+in
 {
   highlight."@neorg.tags.ranged_verbatim.code_block".link = "Fg";
+
   extraPlugins = with pkgs.vimPlugins; [
     edge
     unicode-vim
@@ -96,6 +138,9 @@
 
     -- treesitter folding
     vim.cmd [[ set nofoldenable ]]
+
+    -- devicons
+    ${deviconsToLuaString devicons}
   '';
 
   colorscheme = "edge";

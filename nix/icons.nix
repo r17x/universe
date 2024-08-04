@@ -1,4 +1,10 @@
 {
+  # suggest me with devicons from nerdfonts
+  language.vim = "";
+  language.neovim = "";
+  language.org = "";
+  language.reason = "";
+
   circleLeft = "";
   circleLeft1 = "";
   circleRight = "";

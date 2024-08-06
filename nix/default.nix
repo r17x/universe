@@ -24,10 +24,7 @@
           overlays = [
             inputs.ocaml-overlay.overlays.default
             inputs.neorg-overlay.overlays.default
-            self.overlays.default
-            self.overlays.ocamlPackages
-            self.overlays.nodePackages
-          ];
+          ] ++ lib.attrValues self.overlays;
         in
         rec {
           # the nix package manager configurations and settings.

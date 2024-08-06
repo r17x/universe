@@ -10,17 +10,11 @@ let
 
   inherit (lib) mdDoc mkEnableOption mkIf;
 
-  sbarLua = pkgs.callPackage ./sketchybar/helpers/sbar.nix { };
-  sketchybarConfigLua = pkgs.callPackage ./sketchybar { };
-
   lua = pkgs.lua54Packages.lua.withPackages (ps: [
     ps.lua
-    sbarLua
-    sketchybarConfigLua
+    pkgs.sbarLua
+    pkgs.sketchybarConfigLua
   ]);
-
-  sbar_menus = pkgs.callPackage ./sketchybar/helpers/menus { };
-  sbar_events = pkgs.callPackage ./sketchybar/helpers/event_providers { };
 
 in
 {
@@ -29,16 +23,17 @@ in
   config = mkIf (cfg.enable) {
     services.sketchybar = {
       inherit (cfg) enable;
-      extraPackages = [
+      extraPackages = with pkgs; [
         sbar_menus
         sbar_events
       ];
 
-      config = ''
-        #!${lua}/bin/lua
-                package.cpath = package.cpath .. ";${lua}/lib/?.so"
-                require("init")
-      '';
+      config = # lua
+        ''
+          #!${lua}/bin/lua
+          package.cpath = package.cpath .. ";${lua}/lib/?.so"
+          require("init")
+        '';
     };
 
     services.yabai = {
@@ -73,15 +68,16 @@ in
         window_gap = 10;
       };
 
-      extraConfig = ''
-        yabai -m rule --add app="^(LuLu|Calculator|Software Update|Dictionary|VLC|System Preferences|System Settings|zoom.us|Photo Booth|Archive Utility|Python|LibreOffice|App Store|Steam|Alfred|Activity Monitor)$" manage=off
-        yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
-        yabai -m rule --add label="Safari" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
-        yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
-        yabai -m rule --add label="Select file to save to" app="^Inkscape$" title="Select file to save to" manage=off
+      extraConfig = # bash
+        ''
+          yabai -m rule --add app="^(LuLu|Calculator|Software Update|Dictionary|VLC|System Preferences|System Settings|zoom.us|Photo Booth|Archive Utility|Python|LibreOffice|App Store|Steam|Alfred|Activity Monitor)$" manage=off
+          yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
+          yabai -m rule --add label="Safari" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
+          yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
+          yabai -m rule --add label="Select file to save to" app="^Inkscape$" title="Select file to save to" manage=off
 
-        yabai -m config layout bsp
-      '';
+          yabai -m config layout bsp
+        '';
     };
 
     services.jankyborders = {
@@ -110,9 +106,10 @@ in
         let
           leader = "lalt";
           moveByIndex =
-            index:
+            index: # bash
             ''eval "$(yabai -m query --spaces | jq --argjson index "${index}" -r '(.[] | select(.index == ${index}).windows[0]) as $wid | if $wid then "yabai -m window --focus \"" + ($wid | tostring) + "\"" else "skhd --key \"ctrl - " + (map(select(."is-native-fullscreen" == false)) | index(map(select(.index == ${index}))) + 1 % 10 | tostring) + "\"" end')"'';
         in
+        # fish
         ''
           # Toggle
 

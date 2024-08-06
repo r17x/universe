@@ -21,26 +21,30 @@ let
   shellAliases =
     with pkgs;
     let
-      verify = writeScriptBin "verify" ''
-        [[ -z "$1" ]] && echo "No argument provided" && exit 0
+      verify =
+        writeScriptBin "verify" # bash
+          ''
+            [[ -z "$1" ]] && echo "No argument provided" && exit 0
 
-        [[ $1 == ^-?[0-9]+(\.[0-9]+)?$ ]] && echo "The first argument is not a number: $1" && exit 0
-      '';
-      cmd = a: b: x: ''
-        set -e 
-        ${verify}/bin/verify $1 || exit 0
-        ${git}/bin/git for-each-ref --sort=${a} --format '%(refname:short) %(${a}:format:%s)' "${b}" | while read tag tagdate; do
-          threshold_date=$(date -d "$1 days ago" --utc '+%s')
-          if [ -n "$tagdate" ]; then
-            if [ "$tagdate" -lt "$threshold_date" ]; then
-              echo "==> $tag is older than $1 days"
-              echo "==> $tag  will be deleted"
-              TAGS="$TAGS $tag"
+            [[ $1 == ^-?[0-9]+(\.[0-9]+)?$ ]] && echo "The first argument is not a number: $1" && exit 0
+          '';
+      cmd =
+        a: b: x: # bash
+        ''
+          set -e 
+          ${verify}/bin/verify $1 || exit 0
+          ${git}/bin/git for-each-ref --sort=${a} --format '%(refname:short) %(${a}:format:%s)' "${b}" | while read tag tagdate; do
+            threshold_date=$(date -d "$1 days ago" --utc '+%s')
+            if [ -n "$tagdate" ]; then
+              if [ "$tagdate" -lt "$threshold_date" ]; then
+                echo "==> $tag is older than $1 days"
+                echo "==> $tag  will be deleted"
+                TAGS="$TAGS $tag"
+              fi
             fi
-          fi
-        done
-        ${x} $TAGS
-      '';
+          done
+          ${x} $TAGS
+        '';
       scripts = {
         gdb = writeScriptBin "gdb" (cmd "committerdate" "refs/heads" "git branch -D");
         gdbr = writeScriptBin "gdbr" (cmd "committerdate" "origin/refs/heads" "git push origin -d");

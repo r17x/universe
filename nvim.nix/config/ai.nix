@@ -1,11 +1,18 @@
 { ... }:
 
+let
+  mode = [
+    "n"
+    "v"
+  ];
+in
 {
   # extraPlugins = with pkgs.vimPlugins; [ 
   # ChatGPT-nvim 
   # ];
 
-  # extraConfigLuaPost = ''
+  # extraConfigLuaPost =  # lua
+  # ''
   #   require('chatgpt').setup({
   #     actions_paths = {"~/.config/openai/actions.json"},
   #     open_ai_params = {
@@ -22,12 +29,7 @@
       [
         "<cmd>ChatGPT<cr>"
         "Open ChatGPT Prompt"
-        {
-          mode = [
-            "n"
-            "v"
-          ];
-        }
+        { inherit mode; }
       ]
     ];
 
@@ -35,12 +37,7 @@
       [
         "<cmd>ChatGPTEditWithInstruction<cr>"
         "Edit with instruction"
-        {
-          mode = [
-            "n"
-            "v"
-          ];
-        }
+        { inherit mode; }
       ]
     ];
 
@@ -48,12 +45,7 @@
       [
         "<cmd>ChatGPTRun grammar_correction<cr>"
         "Grammar Correction"
-        {
-          mode = [
-            "n"
-            "v"
-          ];
-        }
+        { inherit mode; }
       ]
     ];
 
@@ -61,12 +53,7 @@
       [
         "<cmd>ChatGPTRun translate<cr>"
         "Translate"
-        {
-          mode = [
-            "n"
-            "v"
-          ];
-        }
+        { inherit mode; }
       ]
     ];
 
@@ -74,12 +61,7 @@
       [
         "<cmd>ChatGPTRun keywords<cr>"
         "Keywords"
-        {
-          mode = [
-            "n"
-            "v"
-          ];
-        }
+        { inherit mode; }
       ]
     ];
 
@@ -87,12 +69,7 @@
       [
         "<cmd>ChatGPTRun docstring<cr>"
         "Docstring"
-        {
-          mode = [
-            "n"
-            "v"
-          ];
-        }
+        { inherit mode; }
       ]
     ];
 
@@ -100,12 +77,7 @@
       [
         "<cmd>ChatGPTRun add_tests<cr>"
         "Add Tests"
-        {
-          mode = [
-            "n"
-            "v"
-          ];
-        }
+        { inherit mode; }
       ]
     ];
 
@@ -113,12 +85,7 @@
       [
         "<cmd>ChatGPTRun optimize_code<cr>"
         "Optimize Code"
-        {
-          mode = [
-            "n"
-            "v"
-          ];
-        }
+        { inherit mode; }
       ]
     ];
 
@@ -126,12 +93,7 @@
       [
         "<cmd>ChatGPTRun summarize<cr>"
         "Summarize"
-        {
-          mode = [
-            "n"
-            "v"
-          ];
-        }
+        { inherit mode; }
       ]
     ];
 
@@ -139,12 +101,7 @@
       [
         "<cmd>ChatGPTRun fix_bugs<cr>"
         "Fix Bugs"
-        {
-          mode = [
-            "n"
-            "v"
-          ];
-        }
+        { inherit mode; }
       ]
     ];
 
@@ -152,12 +109,7 @@
       [
         "<cmd>ChatGPTRun explain_code<cr>"
         "Explain Code"
-        {
-          mode = [
-            "n"
-            "v"
-          ];
-        }
+        { inherit mode; }
       ]
     ];
 
@@ -165,12 +117,7 @@
       [
         "<cmd>ChatGPTRun roxygen_edit<cr>"
         "Roxygen Edit"
-        {
-          mode = [
-            "n"
-            "v"
-          ];
-        }
+        { inherit mode; }
       ]
     ];
 
@@ -178,12 +125,7 @@
       [
         "<cmd>ChatGPTRun code_readability_analysis<cr>"
         "Code Readability Analysis"
-        {
-          mode = [
-            "n"
-            "v"
-          ];
-        }
+        { inherit mode; }
       ]
     ];
   };

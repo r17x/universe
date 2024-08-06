@@ -27,9 +27,10 @@ in
     home.file = attrsets.optionalAttrs isDarwin {
       ".gnupg/gpg-agent.conf".source = pkgs.writeTextFile {
         name = "home-gpg-agent.conf";
-        text = ''
-          pinentry-program ${pkgs.pinentry_mac}/Applications/pinentry-mac.app/Contents/MacOS/pinentry-mac
-        '';
+        text = # toml
+          ''
+            pinentry-program ${pkgs.pinentry_mac}/Applications/pinentry-mac.app/Contents/MacOS/pinentry-mac
+          '';
       };
     };
 

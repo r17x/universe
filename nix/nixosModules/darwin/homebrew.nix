@@ -10,15 +10,19 @@ let
   brewEnabled = config.homebrew.enable;
 in
 {
-  environment.shellInit = mkIf brewEnabled ''
-    eval "$(${config.homebrew.brewPrefix}/brew shellenv)"
-  '';
+  environment.shellInit =
+    mkIf brewEnabled # bash
+      ''
+        eval "$(${config.homebrew.brewPrefix}/brew shellenv)"
+      '';
 
-  system.activationScripts.preUserActivation.text = mkIf brewEnabled ''
-    if [ ! -f ${config.homebrew.brewPrefix}/brew ]; then
-      ${pkgs.bash}/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    fi
-  '';
+  system.activationScripts.preUserActivation.text =
+    mkIf brewEnabled # bash
+      ''
+        if [ ! -f ${config.homebrew.brewPrefix}/brew ]; then
+          ${pkgs.bash}/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        fi
+      '';
 
   homebrew.enable = true;
   homebrew.onActivation.cleanup = "zap";

@@ -13,47 +13,49 @@
   ];
 
   # make custom command
-  extraConfigLuaPre = ''
-    vim.api.nvim_create_user_command('LspInlay',function()
-      local buf = vim.api.nvim_get_current_buf()
-      if buf ~= nil or buf ~= 0 then
-        vim.lsp.inlay_hint.enable(buf, not vim.lsp.inlay_hint.is_enabled())
-      end
-    end,{})
-  '';
+  extraConfigLuaPre = # lua
+    ''
+      vim.api.nvim_create_user_command('LspInlay',function()
+        local buf = vim.api.nvim_get_current_buf()
+        if buf ~= nil or buf ~= 0 then
+          vim.lsp.inlay_hint.enable(buf, not vim.lsp.inlay_hint.is_enabled())
+        end
+      end,{})
+    '';
 
-  extraConfigLuaPost = ''
-    require('telescope').load_extension('gh')
+  extraConfigLuaPost = # lua
+    ''
+      require('telescope').load_extension('gh')
 
-    local lspconfig = require('lspconfig')
-    lspconfig.rescriptls.setup{}
-    lspconfig.ocamllsp.setup({
-      settings = {
-        codelens = { enable = false },
-        extendedHover = { enable = true },
-        duneDiagnostics = {enable = false },
-        inlayHints = { enable = true },
-      }
-    })
+      local lspconfig = require('lspconfig')
+      lspconfig.rescriptls.setup{}
+      lspconfig.ocamllsp.setup({
+        settings = {
+          codelens = { enable = false },
+          extendedHover = { enable = true },
+          duneDiagnostics = {enable = false },
+          inlayHints = { enable = true },
+        }
+      })
 
-    -- ft:rust didn't respect my tabstop=2 - I love you but not me
-    vim.g.rust_recommended_style = false
+      -- ft:rust didn't respect my tabstop=2 - I love you but not me
+      vim.g.rust_recommended_style = false
 
-    -- supermaven
-    require("supermaven-nvim").setup({
-      disable_keymaps = true
-    })
+      -- supermaven
+      require("supermaven-nvim").setup({
+        disable_keymaps = true
+      })
 
-    -- nlsp-settings
-    local nlspsettings = require("nlspsettings")
-    nlspsettings.setup({
-      config_home = vim.fn.expand('$HOME/.nlsp-settings'),
-      local_settings_dir = ".nlsp-settings",
-      local_settings_root_markers_fallback = { '.git' },
-      append_default_schemas = true,
-      loader = 'json'
-    })
-  '';
+      -- nlsp-settings
+      local nlspsettings = require("nlspsettings")
+      nlspsettings.setup({
+        config_home = vim.fn.expand('$HOME/.nlsp-settings'),
+        local_settings_dir = ".nlsp-settings",
+        local_settings_root_markers_fallback = { '.git' },
+        append_default_schemas = true,
+        loader = 'json'
+      })
+    '';
 
   filetype.extension = {
     "re" = "reason";

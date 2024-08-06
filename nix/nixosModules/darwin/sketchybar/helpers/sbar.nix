@@ -29,8 +29,9 @@ buildLuaPackage {
     readline
   ];
 
-  installPhase = ''
-    mkdir -p $out/lib
-    cp bin/sketchybar.so $out/lib
-  '';
+  installPhase = # bash
+    ''
+      mkdir -p $out/lib
+      cp bin/sketchybar.so $out/lib
+    '';
 }

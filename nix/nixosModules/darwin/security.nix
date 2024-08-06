@@ -25,6 +25,7 @@ let
     ''
       ${
         if isEnabled then
+          # bash
           ''
             # Enable sudo Touch ID authentication, if not already enabled
             if ! grep 'pam_tid.so' ${file} > /dev/null; then
@@ -34,6 +35,7 @@ let
             fi
           ''
         else
+          # bash
           ''
             # Disable sudo Touch ID authentication, if added by nix-darwin
             if grep '${option}' ${file} > /dev/null; then
@@ -56,10 +58,11 @@ in
   };
 
   config = {
-    system.activationScripts.extraActivation.text = ''
-      # PAM settings
-      echo >&2 "setting up pam..."
-      ${mkSudoTouchIdAuthScript cfg.enableSudoTouchIdAuth}
-    '';
+    system.activationScripts.extraActivation.text = # bash
+      ''
+        # PAM settings
+        echo >&2 "setting up pam..."
+        ${mkSudoTouchIdAuthScript cfg.enableSudoTouchIdAuth}
+      '';
   };
 }

@@ -129,40 +129,42 @@ in
     "TelescopePrompt"
     "TelescopeResults"
   ];
-  extraConfigLua = ''
-    -- enable elite mode
-    vim.g.elite_mode = 1
+  extraConfigLua = # lua
+    ''
+      -- enable elite mode
+      vim.g.elite_mode = 1
 
-    vim.opt.list = true
-    vim.opt.listchars:append("eol:↴")
+      vim.opt.list = true
+      vim.opt.listchars:append("eol:↴")
 
-    -- treesitter folding
-    vim.cmd [[ set nofoldenable ]]
+      -- treesitter folding
+      vim.cmd [[ set nofoldenable ]]
 
-    -- devicons
-    ${deviconsToLuaString devicons}
-  '';
+      -- devicons
+      ${deviconsToLuaString devicons}
+    '';
 
   colorscheme = "edge";
-  extraConfigLuaPre = ''
-        vim.cmd [[ 
-          if has('termguicolors') 
-    	      set guicursor+=n:hor20-Cursor/lCursor
-            set termguicolors 
-          endif 
-        ]]
+  extraConfigLuaPre = # lua
+    ''
+      vim.cmd [[ 
+        if has('termguicolors') 
+          set guicursor+=n:hor20-Cursor/lCursor
+          set termguicolors 
+        endif 
+      ]]
 
-        vim.g.edge_style = "neon"
-        vim.g.edge_diagnostic_text_highlight = 1
-        vim.g.edge_diagnostic_line_highlight = 1
-        vim.g.edge_diagnostic_virtual_text = "grey"
-        vim.g.edge_dim_foreground = 1
-        vim.g.edge_dim_inactive_windows = 1
-        vim.g.edge_float_style = "bright"
+      vim.g.edge_style = "neon"
+      vim.g.edge_diagnostic_text_highlight = 1
+      vim.g.edge_diagnostic_line_highlight = 1
+      vim.g.edge_diagnostic_virtual_text = "grey"
+      vim.g.edge_dim_foreground = 1
+      vim.g.edge_dim_inactive_windows = 1
+      vim.g.edge_float_style = "bright"
 
-        -- TODO: fix directory creation in Nix befor enable edge_better_performance
-        -- let g:edge_better_performance = 1
-  '';
+      -- TODO: fix directory creation in Nix befor enable edge_better_performance
+      -- let g:edge_better_performance = 1
+    '';
 
   # based on {https://github.com/r17x/nixpkgs/blob/main/configs/nvim/lua/config/lualine.lua}
 
@@ -190,16 +192,6 @@ in
       name = "branch";
       color.fg = "BlueSign";
     }
-    # {
-    #   name = "filename";
-    #   extraConfig.symbols = {
-    #     modified = "♼";
-    #     readonly = "⏿";
-    #     unnamed = "⍬";
-    #     newfile = "⊕";
-    #   };
-    # }
-    # "filesize"
   ];
   plugins.lualine.sections.lualine_c = [
     "diff"

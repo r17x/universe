@@ -10,8 +10,9 @@ buildLuaPackage {
   version = "0.0.0";
   src = lib.cleanSource ./.;
   buildPhase = ":";
-  installPhase = ''
-    mkdir -p "$out/share/lua/${lua.luaversion}"
-    cp -r $src/* "$out/share/lua/${lua.luaversion}/"
-  '';
+  installPhase = # bash
+    ''
+      mkdir -p "$out/share/lua/${lua.luaversion}"
+      cp -r $src/* "$out/share/lua/${lua.luaversion}/"
+    '';
 }

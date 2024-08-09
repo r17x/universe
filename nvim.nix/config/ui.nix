@@ -118,6 +118,7 @@ in
   plugins.indent-blankline.settings.exclude.buftypes = [
     "terminal"
     "neorg"
+    "norg"
   ];
   plugins.indent-blankline.settings.exclude.filetypes = [
     "NvimTree"

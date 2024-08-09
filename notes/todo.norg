@@ -4,7 +4,7 @@ description: make things get fucking done
 authors: r17
 categories: 
 created: 2024-05-26T02:31:16+0700
-updated: 2024-08-09T22:49:02+0700
+updated: 2024-08-10T00:50:01+0700
 version: 1.1.1
 @end
 
@@ -24,9 +24,15 @@ version: 1.1.1
 ** Blog - Rin.rocks
 
 *** Todo
-   - ( ) Fully OCaml/ReasonML with {https://melange.re}[melange.re]
-   - (?) Transform from *.norg* to *React Component*
-   - (?) tree-sitter in *React*
+    - ( ) Fully OCaml/ReasonML with {https://melange.re}[melange.re]
+    - (?) Transform from *.norg* to *React Component*
+    - (?) tree-sitter in *React*
+    - ( ) implement norg parser in OCaml see {*** OCaml PPX with Norg}[#ocaml-ppx-with-norg]
+    -- ( ) `Norg.Token.t` to `Norg.AST.t`
+    -- ( ) `Norg.Parser`
+    -- ( ) Codegen for `Norg.AST.t`
+    --- ( ) `Norg.AST.t` to OCaml/ReasonML
+    --- ( ) `Norg.AST.t` to Markdown
 
 *** OCaml PPX with Norg
     I have an idea how to use Norg in OCaml ecosystem, especially with ReasonML and ReasonReact.

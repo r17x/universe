@@ -4,7 +4,7 @@ description: make things get fucking done
 authors: r17
 categories: 
 created: 2024-05-26T02:31:16+0700
-updated: 2024-07-29T20:00:28+0700
+updated: 2024-08-09T22:49:02+0700
 version: 1.1.1
 @end
 
@@ -22,9 +22,57 @@ version: 1.1.1
   @end
 
 ** Blog - Rin.rocks
+
+*** Todo
    - ( ) Fully OCaml/ReasonML with {https://melange.re}[melange.re]
    - (?) Transform from *.norg* to *React Component*
    - (?) tree-sitter in *React*
+
+*** OCaml PPX with Norg
+    I have an idea how to use Norg in OCaml ecosystem, especially with ReasonML and ReasonReact.
+    
+    Imagine you have a norg document 
+    @code norg
+    @document.meta
+    title: hello world ppx, norg, and reason-react
+    description: make things get fucking done
+    authors: r17
+    categories: [blog]
+    created: 2024-05-26T02:31:16+0700
+    updated: 2024-07-29T20:00:28+0700
+    version: 1.1.1
+    @end
+
+    * Hello
+    
+    ** World
+    @end
+
+    and write a ReasonML code like this:
+
+    @code ocaml
+    [@norg.react "notes/hello-world.norg"]
+    @end
+
+    And you will be able to transform the content of `hello-world.norg` to be Reason React Component, like this:
+
+    @code ocaml
+    [@react.component]
+    let make = () => {
+      <html>
+        <head>
+            <title> {React.string("hello world ppx, norg, and reason-react")} </title>
+            <meta name="description" content="make things get fucking done" />
+            <meta name="author" content="r17" />
+            <meta name="category" content="blog" />
+        </head>
+        <body>
+          <h1> {React.string("Hello")} </h1>
+          <h2> {React.string("World")} </h2>
+        </body>
+      </html>
+    }
+    @end
 
 ** Dotfiles
    - ( ) integration with {https://github.com/Misterio77/nix-colors}[nix-colors]

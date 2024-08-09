@@ -114,7 +114,7 @@ in
   plugins.nvim-tree.renderer.indentMarkers.enable = true;
 
   plugins.indent-blankline.enable = true;
-  plugins.indent-blankline.settings.indent.char = "┊";
+  plugins.indent-blankline.settings.indent.char = icons.indent;
   plugins.indent-blankline.settings.exclude.buftypes = [
     "terminal"
     "neorg"

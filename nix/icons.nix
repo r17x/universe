@@ -72,4 +72,5 @@
   face = "󰏚 ";
   lightbulb = "";
   star = "";
+  indent = "▎";
 }

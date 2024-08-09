@@ -272,11 +272,17 @@
 
       tsserver.enable = true;
       tsserver.autostart = true;
-      tsserver.rootDir = "require('lspconfig.util').root_pattern('.git')";
+      tsserver.rootDir = # lua
+        ''
+          require('lspconfig.util').root_pattern('.git')
+        '';
 
       nixd.enable = true;
       nixd.autostart = true;
-      nixd.rootDir = "require('lspconfig.util').root_pattern('.git', '.nixd.json')";
+      nixd.rootDir = # lua
+        ''
+          require('lspconfig.util').root_pattern('.git', '.nixd.json')
+        '';
       nixd.settings.formatting.command = [ "nixfmt" ];
 
       yamlls.enable = true;
@@ -314,7 +320,10 @@
   plugins.trouble.enable = true;
   # TODO: move plugin configuration when needed secrets
   plugins.codeium-nvim.enable = true;
-  plugins.codeium-nvim.configPath.__raw = "vim.env.HOME .. '/.config/sops-nix/secrets/codeium'";
+  plugins.codeium-nvim.configPath.__raw = # lua
+    ''
+      vim.env.HOME .. '/.config/sops-nix/secrets/codeium'
+    '';
   plugins.wtf.enable = true;
   plugins.nvim-autopairs.enable = true;
 

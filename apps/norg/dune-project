@@ -1,0 +1,23 @@
+(lang dune 3.8)
+
+(version 0.0.0)
+
+(name norg)
+
+(generate_opam_files)
+
+(license MIT)
+
+(authors "Rin <hi@rin.rocks>")
+
+(maintainers "Rin <hi@rin.rocks>")
+
+(source (github r17x/universe))
+
+(package
+  (name norg)
+  (synopsis "Norg parser")
+  (description "Norg parser")
+  (depends
+    (ocaml (>= 4.14.0))
+  ))

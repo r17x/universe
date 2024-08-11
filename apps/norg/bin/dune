@@ -1,0 +1,4 @@
+(executable
+ (name main)
+ (public_name norg)
+ (libraries norg dune-build-info))

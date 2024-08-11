@@ -81,6 +81,7 @@
           open_last_workspace = true;
           workspaces = {
             home = "~/.config/nixpkgs/notes";
+            secret = "~/.config/nixpkgs/secrets";
           };
 
         };

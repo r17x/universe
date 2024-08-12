@@ -7,6 +7,7 @@
 {
   # Apps
   environment.systemPackages = with pkgs; [
+    raycast
     iterm2
     terminal-notifier
     darwin.cf-private

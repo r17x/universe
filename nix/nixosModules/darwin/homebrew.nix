@@ -35,7 +35,7 @@ in
 
   homebrew.casks = [
     "raycast"
-    "sf-symbols"
+    # "sf-symbols"
   ];
 
 }

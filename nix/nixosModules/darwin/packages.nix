@@ -17,6 +17,7 @@
   fonts.packages = [
     pkgs.sketchybar-app-font
     pkgs.sf-mono-liga-bin
+    pkgs.sf-symbols
 
     # name of nerdfonts see {https://github.com/NixOS/nixpkgs/blob/nixos-24.05/pkgs/data/fonts/nerdfonts/shas.nix}
     (pkgs.nerdfonts.override {

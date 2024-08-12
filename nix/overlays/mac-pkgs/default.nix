@@ -12,6 +12,7 @@
         "telegram"
         "iriun-webcam"
         "clipy"
+        "sf-symbols"
         # "googlechrome" # see system/darwin/homebrew.nix
       ];
     in

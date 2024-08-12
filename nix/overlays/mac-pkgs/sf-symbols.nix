@@ -17,8 +17,6 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     sha256 = "sha256-7HIOlAYpQHzyoMhW2Jtwq2Tor8ojs4mTHjUjfMKKMM4=";
   };
 
-  outputs = [ "out" ];
-
   nativeBuildInputs = [
     cpio
     xar
@@ -46,7 +44,17 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     runHook preInstall
 
     mkdir -p $out/Applications
-    cp -a SFSymbols.pkg/Applications/* $out/Applications/
+    cp -R SFSymbols.pkg/Applications/* $out/Applications/
+
+    if [ -d "SFSymbols.pkg/Resources" ]; then
+      mkdir -p $out/Resources
+      cp -R SFSymbols.pkg/Resources/* $out/Resources/
+    fi
+
+    if [ -d "SFSymbols.pkg/Library" ]; then
+      mkdir -p $out/Library
+      cp -R SFSymbols.pkg/Library/* $out/Library/
+    fi
 
     mkdir -p $out/share/fonts
     cp -a SFSymbols.pkg/Library/Fonts/* $out/share/fonts/

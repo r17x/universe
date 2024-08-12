@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ icons, pkgs, ... }:
 
 {
   keymaps = [
@@ -78,27 +78,38 @@
           end
       end
     '';
+  plugins.which-key.settings.spec = [
 
-  plugins.which-key.registrations."mp" = [
-    "<cmd>MarkdownPreview<cr>"
-    "Preview Markdown"
-  ];
-  plugins.which-key.registrations."<leader>tv" = [
-    ":lua Toggle_venn()<CR>"
-    "Toggle Venn"
-  ];
+    {
+      __unkeyed-1 = "mp";
+      __unkeyed-2 = "<cmd>MarkdownPreview<cr>";
+      desc = icons.withIcon "git" "Preview Markdown";
+    }
 
-  plugins.which-key.registrations."<leader>oj" = [
-    "<cmd>Neorg journal today<cr>"
-    "Journal Today"
-  ];
-  plugins.which-key.registrations."<leader>oh" = [
-    "<cmd>Neorg workspace home<cr>"
-    "Open Neorg Home"
-  ];
-  plugins.which-key.registrations."<leader>zm" = [
-    "<cmd>ZenMode<cr>"
-    "Focus like a Japanese Philosopher 🧘"
+    {
+      __unkeyed-1 = "<leader>tv";
+      __unkeyed-2 = ":lua Toggle_venn()<CR>";
+      desc = icons.withIcon "git" "Toggle Venn";
+    }
+
+    {
+      __unkeyed-1 = "<leader>oj";
+      __unkeyed-2 = "<cmd>Neorg journal today<cr>";
+      desc = icons.withIcon "git" "Journal Today";
+    }
+
+    {
+      __unkeyed-1 = "<leader>oh";
+      __unkeyed-2 = "<cmd>Neorg workspace home<cr>";
+      desc = icons.withIcon "git" "Open Neorg Home";
+    }
+
+    {
+      __unkeyed-1 = "<leader>zm";
+      __unkeyed-2 = "<cmd>ZenMode<cr>";
+      desc = icons.withIcon "git" "Focus like a Japanese Philosopher 🧘";
+    }
+
   ];
 
   plugins.comment.enable = true;

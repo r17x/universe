@@ -106,9 +106,7 @@ in
     ]
     ++ lib.optionals isDarwin [
       mas
-      cocoapods
       m-cli # useful macOS CLI commands
-      xcode-install
       clipy
     ];
 }

@@ -54,28 +54,34 @@ in
     lualine-lsp-progress
   ];
 
-  plugins.which-key.registrations = {
-    "<c-n>" = [
-      "<cmd>NvimTreeToggle<CR>"
-      "Open Tree in left side"
-    ];
-    "<leader>tl" = [
-      "<cmd>lua vim.g.unhide_lualine = not vim.g.unhide_lualine; require('lualine').hide({ unhide = vim.g.unhide_lualine })<cr>"
-      "Toggle Status Line"
-    ];
-    "<leader>tib" = [
-      "<cmd>IBLToggle<cr>"
-      "Toggle Indent Blankline"
-    ];
-    "<leader>tc" = [
-      "<cmd>ColorizerToggle<cr>"
-      "Toggle Colorizer"
-    ];
-    "fhi" = [
-      "<cmd>Telescope highlights<cr>"
-      "Find Highlight Groups"
-    ];
-  };
+  plugins.which-key.settings.spec = [
+    {
+      __unkeyed-1 = "<c-n>";
+      __unkeyed-2 = "<cmd>NvimTreeToggle<CR>";
+      desc = icons.withIcon "git" "Open Tree in left side";
+    }
+    {
+      __unkeyed-1 = "<leader>tl";
+      __unkeyed-2 = "<cmd>lua vim.g.unhide_lualine = not vim.g.unhide_lualine; require('lualine').hide({ unhide = vim.g.unhide_lualine })<cr>";
+      desc = icons.withIcon "git" "Toggle Status Line";
+    }
+    {
+      __unkeyed-1 = "<leader>tib";
+      __unkeyed-2 = "<cmd>IBLToggle<cr>";
+      desc = icons.withIcon "git" "Toggle Indent Blankline";
+    }
+    {
+      __unkeyed-1 = "<leader>tc";
+      __unkeyed-2 = "<cmd>ColorizerToggle<cr>";
+      desc = icons.withIcon "git" "Toggle Colorizer";
+    }
+    {
+      __unkeyed-1 = "fhi";
+      __unkeyed-2 = "<cmd>Telescope highlights<cr>";
+      desc = icons.withIcon "git" "Find Highlight Groups";
+    }
+
+  ];
 
   plugins.wakatime.enable = true;
 
@@ -113,7 +119,7 @@ in
   plugins.nvim-tree.renderer.highlightGit = true;
   plugins.nvim-tree.renderer.indentMarkers.enable = true;
 
-  plugins.indent-blankline.enable = true;
+  plugins.indent-blankline.settings.indent.enable = true;
   plugins.indent-blankline.settings.indent.char = icons.indent;
   plugins.indent-blankline.settings.exclude.buftypes = [
     "terminal"
@@ -245,12 +251,12 @@ in
 
   plugins.treesitter.enable = true;
   plugins.treesitter.folding = true;
-  plugins.treesitter.indent = true;
+  plugins.treesitter.settings.indent.enable = true;
   plugins.treesitter.nixvimInjections = true;
   plugins.treesitter.grammarPackages = builtins.map (
     x: pkgs.vimPlugins.nvim-treesitter.builtGrammars.${x}
-  ) config.plugins.treesitter.ensureInstalled;
-  plugins.treesitter.ignoreInstall = [
+  ) config.plugins.treesitter.settings.ensure_installed;
+  plugins.treesitter.settings.ignore_install = [
     # ┌─────────────────────────────────────┐
     # │ move to ensureInstalled for enabled │
     # └─────────────────────────────────────┘
@@ -464,7 +470,7 @@ in
     "zathurarc"
     "zig"
   ];
-  plugins.treesitter.ensureInstalled = [
+  plugins.treesitter.settings.ensure_installed = [
     # ┌────────────────────────────────────┐
     # │ move to ignoreInstall for disabled │
     # └────────────────────────────────────┘

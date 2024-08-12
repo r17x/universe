@@ -13,66 +13,91 @@ let
 in
 
 {
-  plugins.which-key.registrations = {
-    "mg" = [
-      "<cmd>Neogit<CR>"
-      "Open Neogit"
-    ];
-    "<leader>gss" = [
-      gs.toggle_signs
-      "Toggle Sign Column"
-    ];
-    "<leader>gsn" = [
-      gs.toggle_numhl
-      "Toggle Num Hightlight"
-    ];
-    "<leader>gsl" = [
-      gs.toggle_linehl
-      "Toggle Line Hightlight"
-    ];
-    "<leader>gsw" = [
-      gs.toggle_word_diff
-      "Toggle Word Diff"
-    ];
-    "<leader>gsd" = [
-      gs.toggle_deleted
-      "Toggle Deleted"
-    ];
-    "<leader>gsb" = [
-      gs.toggle_current_line_blame
-      "Toggle Current line blame"
-    ];
+  plugins.which-key.settings.spec = [
+    {
+      __unkeyed-1 = "mg";
+      __unkeyed-2 = "<cmd>Neogit<CR>";
+      desc = icons.withIcon "git" "Open Neogit";
+    }
+    {
+      __unkeyed-1 = "<leader>gss";
+      __unkeyed-2 = gs.toggle_signs;
+      desc = icons.withIcon "git" "Toggle Sign Column";
+    }
+    {
+      __unkeyed-1 = "<leader>gsn";
+      __unkeyed-2 = gs.toggle_numhl;
+      desc = icons.withIcon "git" "Toggle Num Hightlight";
+    }
+    {
+      __unkeyed-1 = "<leader>gsl";
+      __unkeyed-2 = gs.toggle_linehl;
+      desc = icons.withIcon "git" "Toggle Line Hightlight";
+    }
+    {
+      __unkeyed-1 = "<leader>gsw";
+      __unkeyed-2 = gs.toggle_word_diff;
+      desc = icons.withIcon "git" "Toggle Word Diff";
+    }
+    {
+      __unkeyed-1 = "<leader>gsd";
+      __unkeyed-2 = gs.toggle_deleted;
+      desc = icons.withIcon "git" "Toggle Deleted";
+    }
+    {
+      __unkeyed-1 = "<leader>gsb";
+      __unkeyed-2 = gs.toggle_current_line_blame;
+      desc = icons.withIcon "git" "Toggle Current line blame";
+    }
 
-    "fghi" = [ "<cmd>Telescope gh issues<cr>" ];
-    "fghp" = [ "<cmd>Telescope gh pull_request<cr>" ];
-    "fghg" = [ "<cmd>Telescope gh gist<cr>" ];
-    "fghr" = [ "<cmd>Telescope gh run<cr>" ];
+    {
+      __unkeyed-1 = "fghi";
+      __unkeyed-2 = "<cmd>Telescope gh issues<cr>";
+    }
+    {
+      __unkeyed-1 = "fghp";
+      __unkeyed-2 = "<cmd>Telescope gh pull_request<cr>";
+    }
+    {
+      __unkeyed-1 = "fghg";
+      __unkeyed-2 = "<cmd>Telescope gh gist<cr>";
+    }
+    {
+      __unkeyed-1 = "fghr";
+      __unkeyed-2 = "<cmd>Telescope gh run<cr>";
+    }
 
-    "fgc" = [
-      "<cmd>Telescope git_commits<cr>"
-      "Lists git commits with diff preview, checkout action <cr>, reset mixed <C-r>m, reset soft <C-r>s and reset hard <C-r>h"
-    ];
-    "fgf" = [
-      "<cmd>Telescope git_bcommits<cr>"
-      "Lists buffer's git commits with diff preview and checks them out on <cr>"
-    ];
-    "fgr" = [
-      "<cmd>Telescope git_bcommits_range<cr>"
-      "Lists buffer's git commits in a range of lines. Use options from and to to specify the range. In visual mode, lists commits for the selected lines"
-    ];
-    "fgb" = [
-      "<cmd>Telescope git_branches<cr>"
-      "Lists all branches with log preview, checkout action <cr>, track action <C-t>, rebase action<C-r>, create action <C-a>, switch action <C-s>, delete action <C-d> and merge action <C-y>"
-    ];
-    "fgs" = [
-      "<cmd>Telescope git_status<cr>"
-      "Lists current changes per file with diff preview and add action. (Multi-selection still WIP)"
-    ];
-    "fgw" = [
-      "<cmd>Telescope git_stash<cr>"
-      "Lists stash items in current repository with ability to apply them on <cr>"
-    ];
-  };
+    {
+      __unkeyed-1 = "fgc";
+      __unkeyed-2 = "<cmd>Telescope git_commits<cr>";
+      desc = icons.withIcon "git" "Lists git commits with diff preview, checkout action <cr>, reset mixed <C-r>m, reset soft <C-r>s and reset hard <C-r>h";
+    }
+    {
+      __unkeyed-1 = "fgf";
+      __unkeyed-2 = "<cmd>Telescope git_bcommits<cr>";
+      desc = icons.withIcon "git" "Lists buffer's git commits with diff preview and checks them out on <cr>";
+    }
+    {
+      __unkeyed-1 = "fgr";
+      __unkeyed-2 = "<cmd>Telescope git_bcommits_range<cr>";
+      desc = icons.withIcon "git" "Lists buffer's git commits in a range of lines. Use options from and to to specify the range. In visual mode, lists commits for the selected lines";
+    }
+    {
+      __unkeyed-1 = "fgb";
+      __unkeyed-2 = "<cmd>Telescope git_branches<cr>";
+      desc = icons.withIcon "git" "Lists all branches with log preview, checkout action <cr>, track action <C-t>, rebase action<C-r>, create action <C-a>, switch action <C-s>, delete action <C-d> and merge action <C-y>";
+    }
+    {
+      __unkeyed-1 = "fgs";
+      __unkeyed-2 = "<cmd>Telescope git_status<cr>";
+      desc = icons.withIcon "git" "Lists current changes per file with diff preview and add action. (Multi-selection still WIP)";
+    }
+    {
+      __unkeyed-1 = "fgw";
+      __unkeyed-2 = "<cmd>Telescope git_stash<cr>";
+      desc = icons.withIcon "git" "Lists stash items in current repository with ability to apply them on <cr>";
+    }
+  ];
 
   plugins.neogit.enable = true;
   plugins.git-conflict.enable = true;

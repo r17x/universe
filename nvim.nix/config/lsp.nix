@@ -56,125 +56,155 @@
     "rei" = "reason";
   };
 
-  plugins.which-key.registrations = {
-    "//" = [
-      "<cmd>nohlsearch<cr>"
-      "Clear search highlight"
-    ];
-    "<leader><space>" = [
-      "<cmd>Lspsaga term_toggle<cr>"
-      "Open Terminal"
-    ];
-    "ge" = [
-      "<cmd>Trouble<cr>"
-      "Show diagnostics [Trouble]"
-    ];
-    "[e" = [
-      "<cmd>Lspsaga diagnostic_jump_next<cr>"
-      "Next Diagnostic"
-    ];
-    "]e" = [
-      "<cmd>Lspsaga diagnostic_jump_prev<cr>"
-      "Previous Diagnostic"
-    ];
-    "K" = [
-      "<cmd>Lspsaga hover_doc<cr>"
-      "Code Hover"
-    ];
-    "F" = [
-      "<cmd>lua vim.lsp.buf.format({ async = true }) <cr>"
-      "Format the current buffer"
-    ];
-    "gl" = [
-      "<cmd>LspInfo<cr>"
-      "Show LSP Info"
-    ];
-    "gt" = [
-      "<cmd>Lspsaga outline<cr>"
-      "Code Action"
-    ];
-    "ga" = [
-      "<cmd>Lspsaga code_action<cr>"
-      "Code Action"
-    ];
-    "gi" = [
-      "<cmd>Lspsaga incoming_calls<cr>"
-      "Incoming Calls"
-    ];
-    "go" = [
-      "<cmd>Lspsaga outgoing_calls<cr>"
-      "Outgoing Calls"
-    ];
-    "gD" = [
-      "<cmd>Lspsaga goto_definition<cr>"
-      "Go to Definition"
-    ];
-    "gd" = [
-      "<cmd>Lspsaga peek_definition<cr>"
-      "Peek Definition"
-    ];
-    "gr" = [
-      "<cmd>Lspsaga rename<cr>"
-      "Code Rename"
-    ];
-    "gs" = [
-      ''<cmd>lua require("wtf").search() <cr>''
-      "Search diagnostic with Google"
-    ];
-    "gcf" = [
-      "<cmd>Lspsaga finder<cr>"
-      "Code Finder"
-    ];
+  plugins.which-key.settings.spec = [
+    {
+      __unkeyed-1 = "//";
+      __unkeyed-2 = "<cmd>nohlsearch<cr>";
+      desc = icons.withIcon "git" "Clear search highlight";
+    }
+    {
+      __unkeyed-1 = "<leader><space>";
+      __unkeyed-2 = "<cmd>Lpsaga term_toggle<cr>";
+      desc = icons.withIcon "git" "Open Terminal";
+    }
+    {
+      __unkeyed-1 = "ge";
+      __unkeyed-2 = "<cmd>Trouble<cr>";
+      desc = icons.withIcon "git" "Show diagnostics [Trouble]";
+    }
+    {
+      __unkeyed-1 = "[e";
+      __unkeyed-2 = "<cmd>Lspsaga diagnostic_jump_next<cr>";
+      desc = icons.withIcon "git" "Next Diagnostic";
+    }
+    {
+      __unkeyed-1 = "]e";
+      __unkeyed-2 = "<cmd>Lspsaga diagnostic_jump_prev<cr>";
+      desc = icons.withIcon "git" "Previous Diagnostic";
+    }
+    {
+      __unkeyed-1 = "K";
+      __unkeyed-2 = "<cmd>Lspsaga hover_doc<cr>";
+      desc = icons.withIcon "git" "Code Hover";
+    }
+    {
+      __unkeyed-1 = "F";
+      __unkeyed-2 = "<cmd>lua vim.lsp.buf.format({ async = true }) <cr>";
+      desc = icons.withIcon "git" "Format the current buffer";
+    }
+    {
+      __unkeyed-1 = "gl";
+      __unkeyed-2 = "<cmd>LspInfo<cr>";
+      desc = icons.withIcon "git" "Show LSP Info";
+    }
+    {
+      __unkeyed-1 = "gt";
+      __unkeyed-2 = "<cmd>Lspsaga outline<cr>";
+      desc = icons.withIcon "git" "Code Action";
+    }
+    {
+      __unkeyed-1 = "ga";
+      __unkeyed-2 = "<cmd>Lspsaga code_action<cr>";
+      desc = icons.withIcon "git" "Code Action";
+    }
+    {
+      __unkeyed-1 = "gi";
+      __unkeyed-2 = "<cmd>Lspsaga incoming_calls<cr>";
+      desc = icons.withIcon "git" "Incoming Calls";
+    }
+    {
+      __unkeyed-1 = "go";
+      __unkeyed-2 = "<cmd>Lspsaga outgoing_calls<cr>";
+      desc = icons.withIcon "git" "Outgoing Calls";
+    }
+    {
+      __unkeyed-1 = "gD";
+      __unkeyed-2 = "<cmd>Lspsaga goto_definition<cr>";
+      desc = icons.withIcon "git" "Go to Definition";
+    }
+    {
+      __unkeyed-1 = "gd";
+      __unkeyed-2 = "<cmd>Lspsaga peek_definition<cr>";
+      desc = icons.withIcon "git" "Peek Definition";
+    }
+    {
+      __unkeyed-1 = "gr";
+      __unkeyed-2 = "<cmd>Lspsaga rename<cr>";
+      desc = icons.withIcon "git" "Code Rename";
+    }
+    {
+      __unkeyed-1 = "gs";
+      __unkeyed-2 = ''<cmd>lua require("wtf").search() <cr>'';
+      desc = icons.withIcon "git" "Search diagnostic with Google";
+    }
+    {
+      __unkeyed-1 = "gcf";
+      __unkeyed-2 = "<cmd>Lspsaga finder<cr>";
+      desc = icons.withIcon "git" "Code Finder";
+    }
     # telescope with lsp
-    "<leader>tih" = [
-      "<cmd>LspInlay<cr>"
-      "Toggle Inlay Hints"
-    ];
-    "fnix" = [
-      "<cmd>Telescope manix<cr>"
-      "Find nix with man|nix"
-    ];
-    "flr" = [
-      "<cmd>lua require'telescope.builtin'.lsp_references()<cr>"
-      "[Lsp] Find References"
-    ];
-    "fic" = [
-      "<cmd>lua require'telescope.builtin'.lsp_incoming_calls()<cr>"
-      "[Lsp] Find Incoming Calls"
-    ];
-    "foc" = [
-      "<cmd>lua require'telescope.builtin'.lsp_outgoing_calls()<cr>"
-      "[Lsp] Find Outgoing Calls"
-    ];
-    "fds" = [
-      "<cmd>lua require'telescope.builtin'.lsp_document_symbols()<cr>"
-      "[Lsp] Find Document Symbols"
-    ];
-    "fws" = [
-      "<cmd>lua require'telescope.builtin'.lsp_workspace_symbols()<cr>"
-      "[Lsp] Find Workspace Symbols"
-    ];
-    "fdws" = [
-      "<cmd>lua require'telescope.builtin'.lsp_dynamic_workspace_symbols()<cr>"
-      "[Lsp] Find Dynamic Workspace Symbols"
-    ];
-    "fld" = [
-      "<cmd>lua require'telescope.builtin'.diagnostics()<cr>"
-      "[Lsp] Find Diagnostics"
-    ];
-    "fli" = [
-      "<cmd>lua require'telescope.builtin'.lsp_implementations()<cr>"
-      "[Lsp] Find Implementations"
-    ];
-    "flD" = [
-      "<cmd>lua require'telescope.builtin'.lsp_definitions()<cr>"
-      "[Lsp] Find Definitions"
-    ];
-    "flt" = [
-      "<cmd>lua require'telescope.builtin'.lsp_type_definitions()<cr>"
-      "[Lsp] Find Type Definitions"
-    ];
-  };
+    {
+      __unkeyed-1 = "<leader>tih";
+      __unkeyed-2 = "<cmd>LspInlay<cr>";
+      desc = icons.withIcon "git" "Toggle Inlay Hints";
+    }
+    {
+      __unkeyed-1 = "fnix";
+      __unkeyed-2 = "<cmd>Telescope manix<cr>";
+      desc = icons.withIcon "git" "Find nix with man|nix";
+    }
+    {
+      __unkeyed-1 = "flr";
+      __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_references()<cr>";
+      desc = icons.withIcon "git" "[Lsp] Find References";
+    }
+    {
+      __unkeyed-1 = "fic";
+      __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_incoming_calls()<cr>";
+      desc = icons.withIcon "git" "[Lsp] Find Incoming Calls";
+    }
+    {
+      __unkeyed-1 = "foc";
+      __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_outgoing_calls()<cr>";
+      desc = icons.withIcon "git" "[Lsp] Find Outgoing Calls";
+    }
+    {
+      __unkeyed-1 = "fds";
+      __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_document_symbols()<cr>";
+      desc = icons.withIcon "git" "[Lsp] Find Document Symbols";
+    }
+    {
+      __unkeyed-1 = "fws";
+      __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_workspace_symbols()<cr>";
+      desc = icons.withIcon "git" "[Lsp] Find Workspace Symbols";
+    }
+    {
+      __unkeyed-1 = "fdws";
+      __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_dynamic_workspace_symbols()<cr>";
+      desc = icons.withIcon "git" "[Lsp] Find Dynamic Workspace Symbols";
+    }
+    {
+      __unkeyed-1 = "fld";
+      __unkeyed-2 = "<cmd>lua require'telescope.builtin'.diagnostics()<cr>";
+      desc = icons.withIcon "git" "[Lsp] Find Diagnostics";
+    }
+    {
+      __unkeyed-1 = "fli";
+      __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_implementations()<cr>";
+      desc = icons.withIcon "git" "[Lsp] Find Implementations";
+    }
+    {
+      __unkeyed-1 = "flD";
+      __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_definitions()<cr>";
+      desc = icons.withIcon "git" "[Lsp] Find Definitions";
+    }
+    {
+      __unkeyed-1 = "flt";
+      __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_type_definitions()<cr>";
+      desc = icons.withIcon "git" "[Lsp] Find Type Definitions";
+    }
+
+  ];
 
   plugins.lsp = {
     enable = true;

@@ -1,11 +1,5 @@
-{ pkgs, ... }:
+{ pkgs, icons, ... }:
 
-let
-  mode = [
-    "n"
-    "v"
-  ];
-in
 {
   extraPlugins = with pkgs.vimPlugins; [
     avante-nvim
@@ -24,123 +18,83 @@ in
         },
       })
     '';
+  plugins.which-key.settings.spec = [
+    {
+      __unkeyed-1 = "<leader>cc";
+      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPT<cr>";
+      desc = "Open ChatGPT Prompt";
+    }
 
-  # extraConfigLuaPost =  # lua
-  # ''
-  #   require('chatgpt').setup({
-  #     actions_paths = {"~/.config/openai/actions.json"},
-  #     open_ai_params = {
-  #       model = "gpt-4",
-  #     },
-  #     openai_edit_params = {
-  #       model = "gpt-4",
-  #     },
-  #   })
-  # '';
+    {
+      __unkeyed-1 = "<leader>ce";
+      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTEditWithInstruction<cr>";
+      desc = "Edit with instruction";
+    }
 
-  plugins.which-key.registrations = {
-    "<leader>cc" = [
-      [
-        "<cmd>ChatGPT<cr>"
-        "Open ChatGPT Prompt"
-        { inherit mode; }
-      ]
-    ];
+    {
+      __unkeyed-1 = "<leader>cg";
+      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTRun grammar_correction<cr>";
+      desc = "Grammar Correction";
+    }
 
-    "<leader>ce" = [
-      [
-        "<cmd>ChatGPTEditWithInstruction<cr>"
-        "Edit with instruction"
-        { inherit mode; }
-      ]
-    ];
+    {
+      __unkeyed-1 = "<leader>ct";
+      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTRun translate<cr>";
+      desc = "Translate";
+    }
 
-    "<leader>cg" = [
-      [
-        "<cmd>ChatGPTRun grammar_correction<cr>"
-        "Grammar Correction"
-        { inherit mode; }
-      ]
-    ];
+    {
+      __unkeyed-1 = "<leader>ck";
+      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTRun keywords<cr>";
+      desc = "Keywords";
+    }
 
-    "<leader>ct" = [
-      [
-        "<cmd>ChatGPTRun translate<cr>"
-        "Translate"
-        { inherit mode; }
-      ]
-    ];
+    {
+      __unkeyed-1 = "<leader>cd";
+      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTRun docstring<cr>";
+      desc = "Docstring";
+    }
 
-    "<leader>ck" = [
-      [
-        "<cmd>ChatGPTRun keywords<cr>"
-        "Keywords"
-        { inherit mode; }
-      ]
-    ];
+    {
+      __unkeyed-1 = "<leader>ca";
+      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTRun add_tests<cr>";
+      desc = "Add Tests";
+    }
 
-    "<leader>cd" = [
-      [
-        "<cmd>ChatGPTRun docstring<cr>"
-        "Docstring"
-        { inherit mode; }
-      ]
-    ];
+    {
+      __unkeyed-1 = "<leader>co";
+      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTRun optimize_code<cr>";
+      desc = "Optimize Code";
+    }
 
-    "<leader>ca" = [
-      [
-        "<cmd>ChatGPTRun add_tests<cr>"
-        "Add Tests"
-        { inherit mode; }
-      ]
-    ];
+    {
+      __unkeyed-1 = "<leader>cs";
+      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTRun summarize<cr>";
+      desc = "Summarize";
+    }
 
-    "<leader>co" = [
-      [
-        "<cmd>ChatGPTRun optimize_code<cr>"
-        "Optimize Code"
-        { inherit mode; }
-      ]
-    ];
+    {
+      __unkeyed-1 = "<leader>cf";
+      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTRun fix_bugs<cr>";
+      desc = "Fix Bugs";
+    }
 
-    "<leader>cs" = [
-      [
-        "<cmd>ChatGPTRun summarize<cr>"
-        "Summarize"
-        { inherit mode; }
-      ]
-    ];
+    {
+      __unkeyed-1 = "<leader>cx";
+      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTRun explain_code<cr>";
+      desc = "Explain Code";
+    }
 
-    "<leader>cf" = [
-      [
-        "<cmd>ChatGPTRun fix_bugs<cr>"
-        "Fix Bugs"
-        { inherit mode; }
-      ]
-    ];
+    {
+      __unkeyed-1 = "<leader>cr";
+      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTRun roxygen_edit<cr>";
+      desc = "Roxygen Edit";
+    }
 
-    "<leader>cx" = [
-      [
-        "<cmd>ChatGPTRun explain_code<cr>"
-        "Explain Code"
-        { inherit mode; }
-      ]
-    ];
-
-    "<leader>cr" = [
-      [
-        "<cmd>ChatGPTRun roxygen_edit<cr>"
-        "Roxygen Edit"
-        { inherit mode; }
-      ]
-    ];
-
-    "<leader>cl" = [
-      [
-        "<cmd>ChatGPTRun code_readability_analysis<cr>"
-        "Code Readability Analysis"
-        { inherit mode; }
-      ]
-    ];
-  };
+    {
+      __unkeyed-1 = "<leader>cl";
+      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTRun code_readability_analysis<cr>";
+      desc = "Code Readability Analysis";
+    }
+  ];
 }

@@ -1,0 +1,83 @@
+@document.meta
+title: 12
+description: 
+authors: r17
+categories: [
+  discord, 
+  javascript
+]
+created: 2024-08-12T10:35:29+0700
+updated: 2024-08-12T11:11:14+0700
+version: 1.1.1
+@end
+
+* _*How to Delete Discord Messages:*_
+** *Open Discord in Your Browser*
+   - Launch Discord in your web browser.
+
+** *Navigate to the Channel or Direct Message (DM)*
+   - Go to the channel or DM where the messages you want to delete are located.
+
+** *Open Developer Tools*
+   - Right-click on the page and select "Inspect" or press `Ctrl+Shift+I` (or `Cmd+Option+I` on Mac) to open the developer tools.
+
+** *Delete a Message Manually*
+   - Click the trash icon next to the message you want to delete.
+
+** *Capture the Request Using Developer Tools*
+   - In the developer tools, go to the "Network" tab.
+   - Delete a message manually as mentioned above.
+   - In the "Network" tab, find the network request associated with the delete action.
+   - Right-click on the request and select "Copy as fetch".
+
+** *Define the JavaScript Function to Delete Messages*
+   - Use the copied "fetch" options to create a JavaScript function for deleting messages.
+
+    @code javascript
+    const deleteMsg = ({channelId, id}) => fetch(`https://discord.com/api/v9/channels/${channelId}/messages/${id}`, {
+      // Paste the OPTIONS from your "Copy as fetch" request here
+      method: 'DELETE'
+    })
+    @end
+
+** *Set Up a Function to List Messages*
+   - Create a function to list messages in the channel or DM.
+
+    @code javascript
+    const listMessages = ({channelId}) => fetch(`https://discord.com/api/v9/channels/${channelId}/messages`, {
+      // Paste the OPTIONS from your "Copy as fetch" request here
+      method: 'GET'
+    })
+    @end
+
+** *Filter Messages by Username*
+   - Use a filter function to select only the messages sent by a specific user.
+
+    @code javascript
+    const filterByMe = (username, messages) => messages.filter(message => message.author.username === username)
+    @end
+
+** *Run the Deletion Script*
+   - Use a loop to delete messages in batches. The script will run every 3 seconds, deleting one message at a time, and will stop when no more messages are found.
+
+    @code javascript
+    function run(messages) {
+      setTimeout(function() { 
+        const [firstMessage, ...remainingMessages] = messages;
+        console.log(`Deleting message with ID: ${firstMessage.id}`);
+        deleteMsg({id: firstMessage.id, channelId: "YOUR CHANNEL ID"}); 
+        if (remainingMessages.length > 0) {
+          run(remainingMessages);
+        } else {
+          listMessages({id: firstMessage.id, channelId: "YOUR CHANNEL ID"})
+            .then(response => response.json())
+            .then(allMessages => filterByMe("username", allMessages))
+            .then(run);
+        }
+      }, 3000);
+    }
+    @end
+
+** *Final Notes:*
+   - Make sure you replace `"username"` with your actual Discord username in the `filterByMe` function.
+   - Be cautious when using this script, as it will delete messages permanently.

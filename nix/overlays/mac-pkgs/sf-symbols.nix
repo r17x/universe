@@ -28,36 +28,28 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     xar -xf SF\ Symbols.pkg
     cd SFSymbols.pkg
     zcat Payload | cpio -id
-    cd ..
   '';
 
   sourceRoot = ".";
-
-  postPatch = ''
-    for f in *.pkg/Library/Launch{Agents,Daemons}/*.plist; do
-      substituteInPlace $f \
-        --replace "/Library/" "$out/Library/"
-    done
-  '';
 
   installPhase = ''
     runHook preInstall
 
     mkdir -p $out/Applications
-    cp -R SFSymbols.pkg/Applications/* $out/Applications/
+    cp -R Applications/* $out/Applications/
 
-    if [ -d "SFSymbols.pkg/Resources" ]; then
+    if [ -d "Resources" ]; then
       mkdir -p $out/Resources
-      cp -R SFSymbols.pkg/Resources/* $out/Resources/
+      cp -R Resources/* $out/Resources/
     fi
 
-    if [ -d "SFSymbols.pkg/Library" ]; then
+    if [ -d "Library" ]; then
       mkdir -p $out/Library
-      cp -R SFSymbols.pkg/Library/* $out/Library/
+      cp -R Library/* $out/Library/
     fi
 
     mkdir -p $out/share/fonts
-    cp -a SFSymbols.pkg/Library/Fonts/* $out/share/fonts/
+    cp -a Library/Fonts/* $out/share/fonts/
 
     runHook postInstall
   '';

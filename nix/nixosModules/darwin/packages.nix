@@ -7,21 +7,20 @@
 {
   # Apps
   environment.systemPackages = with pkgs; [
+    sf-symbols
     raycast
     iterm2
     terminal-notifier
-    darwin.cf-private
-    darwin.apple_sdk.frameworks.CoreServices
   ];
 
   # Fonts
-  fonts.packages = [
-    pkgs.sketchybar-app-font
-    pkgs.sf-mono-liga-bin
-    pkgs.sf-symbols
+  fonts.packages = with pkgs; [
+    sketchybar-app-font
+    sf-mono-liga-bin
+    sf-symbols
 
     # name of nerdfonts see {https://github.com/NixOS/nixpkgs/blob/nixos-24.05/pkgs/data/fonts/nerdfonts/shas.nix}
-    (pkgs.nerdfonts.override {
+    (nerdfonts.override {
       fonts = [
         "JetBrainsMono"
         "FiraCode"

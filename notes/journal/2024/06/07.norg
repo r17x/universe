@@ -1,10 +1,16 @@
 @document.meta
 title: 07
 description: 
-authors: r17
-categories: 
+authors: r17x
+categories: [
+  react
+  reason-react
+  ocaml
+  chakra-ui
+  ui
+]
 created: 2024-06-07T12:54:25+0700
-updated: 2024-06-08T02:11:05+0700
+updated: 2024-08-15T01:20:08+0700
 version: 1.1.1
 @end
 

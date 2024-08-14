@@ -1,10 +1,12 @@
 @document.meta
 title: 26
 description: 
-authors: r17
-categories: 
+authors: r17x
+categories: [
+  growth
+]
 created: 2024-06-26T16:45:34+0700
-updated: 2024-06-26T16:52:43+0700
+updated: 2024-08-15T01:20:56+0700
 version: 1.1.1
 @end
 

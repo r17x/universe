@@ -1,10 +1,12 @@
 @document.meta
 title: 27
 description: 
-authors: r17
-categories: 
+authors: r17x
+categories: [
+  evilfactorylabs
+]
 created: 2024-05-27T02:55:39+0700
-updated: 2024-05-27T04:49:13+0700
+updated: 2024-08-15T01:19:02+0700
 version: 1.1.1
 @end
 

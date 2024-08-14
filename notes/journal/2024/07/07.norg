@@ -2,9 +2,15 @@
 title: 07
 description: 
 authors: r17
-categories: 
+categories: [
+  1on1
+  skills
+  monorepo
+  nix
+  javascript
+]
 created: 2024-07-07T18:41:18+0700
-updated: 2024-07-07T21:08:38+0700
+updated: 2024-08-15T01:21:54+0700
 version: 1.1.1
 @end
 

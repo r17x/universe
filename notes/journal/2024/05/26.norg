@@ -2,9 +2,11 @@
 title: Merge nvim.nix with nixpkgs
 description: 
 authors: r17x
-categories: 
+categories: [
+  nix 
+]
 created: 2024-05-26T00:35:26+0700
-updated: 2024-05-26T01:27:14+0700
+updated: 2024-08-15T01:18:34+0700
 version: 1.1.1
 @end
 

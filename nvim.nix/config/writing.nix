@@ -86,19 +86,23 @@
 
         };
       };
+      "core.highlights" = { };
       "core.defaults" = {
         __empty = null;
       };
       "core.keybinds" = {
         config.neorg_leader = "<Leader>";
       };
-      "core.integrations.treesitter" = { };
+      "core.integrations.treesitter" = {
+        config.install_parsers = false;
+      };
       "core.integrations.telescope" = { };
       "core.concealer" = {
         config = {
           folds = true;
           icon_preset = "diamond";
           init_open_folds = "auto";
+          icons.code_block.conceal = true;
         };
       };
       "core.completion" = {
@@ -108,6 +112,7 @@
       };
       "core.esupports.metagen" = {
         config = {
+          author = "r17x";
           type = "auto";
         };
       };
@@ -116,6 +121,11 @@
           zen_mode = "zen-mode";
         };
       };
+      "core.summary" = {
+        config.strategy = "by_path";
+      };
+      "core.ui" = { };
+      "core.ui.calendar" = { };
     };
   };
 

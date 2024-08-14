@@ -48,9 +48,6 @@ stdenvNoCC.mkDerivation (finalAttrs: {
       cp -R Library/* $out/Library/
     fi
 
-    mkdir -p $out/share/fonts
-    cp -a Library/Fonts/* $out/share/fonts/
-
     runHook postInstall
   '';
 

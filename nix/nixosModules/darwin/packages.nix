@@ -7,7 +7,6 @@
 {
   # Apps
   environment.systemPackages = with pkgs; [
-    sf-symbols
     raycast
     iterm2
     terminal-notifier
@@ -17,7 +16,7 @@
   fonts.packages = with pkgs; [
     sketchybar-app-font
     sf-mono-liga-bin
-    sf-symbols
+    sf-symbols-font
 
     # name of nerdfonts see {https://github.com/NixOS/nixpkgs/blob/nixos-24.05/pkgs/data/fonts/nerdfonts/shas.nix}
     (nerdfonts.override {

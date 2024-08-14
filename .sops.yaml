@@ -1,7 +1,7 @@
 keys:
   - &r17x B0B63B776767DFAA669D06715CA1E57AFBF76F90
 creation_rules:
-  - path_regex: secrets/[^/]+\.(yaml|json|env|ini|norg)$
+  - path_regex: secrets/(?:[^/]+/)*[^/]+\.(yaml|json|env|ini|norg)$
     key_groups:
     - pgp:
       - *r17x

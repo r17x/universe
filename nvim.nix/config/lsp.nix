@@ -301,21 +301,29 @@
   ];
 
   plugins.lspkind.enable = true;
+  plugins.lspkind.symbolMap.Codeium = icons.code;
+  plugins.lspkind.symbolMap.Copilot = icons.robotFace;
+  plugins.lspkind.symbolMap.Suggestion = icons.wand;
+  plugins.lspkind.symbolMap.TabNine = icons.face;
+  plugins.lspkind.symbolMap.Supermaven = icons.star;
   plugins.lspkind.cmp.enable = true;
-  plugins.lspkind.symbolMap = {
-    Codeium = icons.code;
-    Copilot = icons.robotFace;
-    Suggestion = icons.wand;
-    TabNine = icons.face;
-    Supermaven = icons.star;
-  };
-  plugins.lspsaga = {
-    enable = true;
-    lightbulb.sign = false;
-    lightbulb.virtualText = true;
-    lightbulb.debounce = 40;
-    ui.codeAction = icons.gearSM;
-  };
+  plugins.lspkind.cmp.maxWidth = 24;
+  plugins.lspkind.cmp.after = # lua
+    ''
+      function(entry, vim_item, kind)
+        local strings = vim.split(kind.kind, "%s", { trimempty = true })
+        kind.kind = " " .. (strings[1] or "") .. " "
+        kind.menu = "   ⌈" .. (strings[2] or "") .. "⌋"
+
+        return kind
+      end
+    '';
+
+  plugins.lspsaga.enable = true;
+  plugins.lspsaga.lightbulb.sign = false;
+  plugins.lspsaga.lightbulb.virtualText = true;
+  plugins.lspsaga.lightbulb.debounce = 40;
+  plugins.lspsaga.ui.codeAction = icons.gearSM;
 
   plugins.trouble.enable = true;
   # TODO: move plugin configuration when needed secrets
@@ -327,50 +335,40 @@
   plugins.wtf.enable = true;
   plugins.nvim-autopairs.enable = true;
 
-  plugins.cmp = {
-    enable = true;
-    settings = {
-      mapping = {
-        "<C-Space>" = "cmp.mapping.complete()";
-        "<C-d>" = "cmp.mapping.scroll_docs(-4)";
-        "<C-e>" = "cmp.mapping.close()";
-        "<C-f>" = "cmp.mapping.scroll_docs(4)";
-        "<CR>" = "cmp.mapping.confirm({ select = true })";
-        "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
-        "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
-      };
+  plugins.cmp.enable = true;
+  plugins.cmp.autoEnableSources = false;
 
-      sources =
-        let
-          keywordLength = 3;
-        in
-        [
-          { name = "nvim_lsp"; }
-          { name = "nvim_lsp_signature_help"; }
-          { name = "nvim_lsp_document_symbol"; }
-          { name = "codeium"; }
-          { name = "supermaven"; }
-          { name = "luasnip"; } # For luasnip users.
-          { name = "neorg"; }
-          {
-            inherit keywordLength;
-            name = "emoji";
-          }
-          {
-            inherit keywordLength;
-            name = "async_path";
-          }
-          {
-            inherit keywordLength;
-            name = "buffer";
-          }
-          {
-            inherit keywordLength;
-            name = "cmdline";
-          }
-        ];
-    };
-  };
+  plugins.cmp.settings.experimental.ghost_text = true;
+
+  plugins.cmp.settings.performance.debounce = 60;
+  plugins.cmp.settings.performance.fetching_timeout = 200;
+  plugins.cmp.settings.performance.max_view_entries = 30;
+
+  plugins.cmp.settings.window.completion.winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None";
+  plugins.cmp.settings.window.completion.border = "rounded";
+  plugins.cmp.settings.window.documentation.border = "rounded";
+  plugins.cmp.settings.window.completion.col_offset = -3;
+  plugins.cmp.settings.window.completion.side_padding = 0;
+
+  plugins.cmp.settings.formatting.expandable_indicator = true;
+  plugins.cmp.settings.formatting.fields = [
+    "kind"
+    "abbr"
+    "menu"
+  ];
+
+  plugins.cmp.settings.mapping."<C-Space>" = "cmp.mapping.complete()";
+  plugins.cmp.settings.mapping."<C-d>" = "cmp.mapping.scroll_docs(-4)";
+  plugins.cmp.settings.mapping."<C-e>" = "cmp.mapping.close()";
+  plugins.cmp.settings.mapping."<C-f>" = "cmp.mapping.scroll_docs(4)";
+  plugins.cmp.settings.mapping."<CR>" = "cmp.mapping.confirm({ select = true })";
+  plugins.cmp.settings.mapping."<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
+  plugins.cmp.settings.mapping."<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
+
+  plugins.cmp.settings.snippet.expand = # lua
+    ''
+      function(args) require('luasnip').lsp_expand(args.body) end
+    '';
 
   plugins.cmp-nvim-lsp.enable = true;
   plugins.cmp-nvim-lsp-document-symbol.enable = true;
@@ -385,4 +383,40 @@
   plugins.cmp-fish.enable = false;
   plugins.cmp-tmux.enable = false;
   plugins.cmp-emoji.enable = true;
+
+  plugins.cmp.settings.sources.__raw = # lua
+    ''
+      cmp.config.sources({
+        { name = 'nvim_lsp' },
+        { name = 'nvim_lsp_signature_help' },
+        { name = 'nvim_lsp_document_symbol' },
+        { name = 'codeium' },
+        { name = 'supermaven' },
+        { name = 'luasnip' }, 
+        { name = 'neorg' },
+        { name = 'emoji' },
+        { name = 'async_path' },
+      }, {
+        { name = 'buffer' },
+        { name = 'cmdline' },
+      })
+
+    '';
+  plugins.cmp.cmdline."/".mapping.__raw = "cmp.mapping.preset.cmdline()";
+  plugins.cmp.cmdline."/".sources = [ { name = "buffer"; } ];
+  plugins.cmp.cmdline."?".mapping.__raw = "cmp.mapping.preset.cmdline()";
+  plugins.cmp.cmdline."?".sources = [ { name = "buffer"; } ];
+  plugins.cmp.cmdline.":".mapping.__raw = "cmp.mapping.preset.cmdline()";
+  plugins.cmp.cmdline.":".sources = [
+    { name = "async_path"; }
+    {
+      name = "cmdline";
+      option = {
+        ignore_cmds = [
+          "Man"
+          "!"
+        ];
+      };
+    }
+  ];
 }

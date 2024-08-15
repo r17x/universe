@@ -30,10 +30,27 @@
     venn-nvim
   ];
 
-  extraConfigLuaPost = # lua
-    ''
-      require("telescope").load_extension "neorg"
-    '';
+  plugins.telescope.enabledExtensions = [ "neorg" ];
+  plugins.telescope.keymaps.fnw.options.desc = "Switch Neorg Workspace";
+  plugins.telescope.keymaps.fnw.action = "neorg switch_workspace";
+  plugins.telescope.keymaps.fni.options.desc = "Insert Neorg Link";
+  plugins.telescope.keymaps.fni.action = "neorg insert_link";
+  plugins.telescope.keymaps."fnI".options.desc = "Insert Neorg File Link";
+  plugins.telescope.keymaps."fnI".action = "neorg insert_file_link";
+  plugins.telescope.keymaps.fns.options.desc = "Find Neorg files";
+  plugins.telescope.keymaps.fns.action = "neorg find_norg_files";
+  plugins.telescope.keymaps.fnh.options.desc = "Find Neorg by Headings";
+  plugins.telescope.keymaps.fnh.action = "neorg search_headings";
+  plugins.telescope.keymaps.fnl.options.desc = "Find Neorg Linkable";
+  plugins.telescope.keymaps.fnl.action = "neorg find_linkable";
+  plugins.telescope.keymaps."fnB".options.desc = "Find Neorg Header Backlinks";
+  plugins.telescope.keymaps."fnB".action = "neorg find_header_backlinks";
+  plugins.telescope.keymaps.fnb.options.desc = "Find Neorg Backlinks";
+  plugins.telescope.keymaps.fnb.action = "neorg find_backlinks";
+  plugins.telescope.keymaps.fnt.options.desc = "Find Neorg Project Tasks";
+  plugins.telescope.keymaps.fnt.action = "neorg find_project_tasks";
+  plugins.telescope.keymaps.fnc.options.desc = "Find Neorg Context Tasks";
+  plugins.telescope.keymaps.fnc.action = "neorg find_context_tasks";
 
   extraConfigLuaPre = # lua
     ''

@@ -4,7 +4,7 @@ description: make things get fucking done
 authors: r17
 categories: 
 created: 2024-05-26T02:31:16+0700
-updated: 2024-08-13T19:21:43+0700
+updated: 2024-08-16T05:29:38+0700
 version: 1.1.1
 @end
 
@@ -107,7 +107,7 @@ version: 1.1.1
    -- (x) {/ ../nvim.nix/config/ui.nix:3}[link highlight] to `@neorg.tags.ranged_verbatim.code_block` to `fg`
    -- ( ) Keymap and Toggle function for colorscheme:edge `edge_*`
    - (x) Neorg {/ ../nvim.nix/config/writing.nix:15}[integration] with Telescope
-   -- ( ) Keymap for Neorg x Telescope
+   -- (x) Keymap for Neorg x Telescope - {/ ../nvim.nix/config/writing.nix:33}[nvim.nix] 
    - (x) integration with {/ ../nvim.nix/config/navigations.nix:50}[hop.nvim]
 
 ** Homelab Evilfactory

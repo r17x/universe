@@ -6,7 +6,6 @@
   extraPackages = [ pkgs.nixfmt ];
 
   extraPlugins = with pkgs.vimPlugins; [
-    telescope-github-nvim
     vim-rescript
     supermaven-nvim
     nlsp-settings-nvim
@@ -25,8 +24,6 @@
 
   extraConfigLuaPost = # lua
     ''
-      require('telescope').load_extension('gh')
-
       local lspconfig = require('lspconfig')
       lspconfig.rescriptls.setup{}
       lspconfig.ocamllsp.setup({

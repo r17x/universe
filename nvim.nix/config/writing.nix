@@ -1,6 +1,22 @@
 { pkgs, ... }:
 
 {
+  keymaps = [
+    # move lines up and down with visual selection
+    # [Visual] K: move up
+    # [Visual] J: move down
+    {
+      key = "K";
+      action = ":m '<-2<CR>gv=gv";
+      mode = [ "v" ];
+    }
+    {
+      key = "J";
+      action = ":m '>+1<CR>gv=gv";
+      mode = [ "v" ];
+    }
+  ];
+
   autoCmd = [
     {
       event = [ "BufEnter" ];

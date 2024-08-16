@@ -4,7 +4,7 @@ description: make things get fucking done
 authors: r17
 categories: 
 created: 2024-05-26T02:31:16+0700
-updated: 2024-08-16T05:29:38+0700
+updated: 2024-08-16T13:45:20+0700
 version: 1.1.1
 @end
 
@@ -109,6 +109,8 @@ version: 1.1.1
    - (x) Neorg {/ ../nvim.nix/config/writing.nix:15}[integration] with Telescope
    -- (x) Keymap for Neorg x Telescope - {/ ../nvim.nix/config/writing.nix:33}[nvim.nix] 
    - (x) integration with {/ ../nvim.nix/config/navigations.nix:50}[hop.nvim]
+   - (-) `Noice.nvim` integration.
+         Should I use `Noice.nvim` or `nvim-notify` for notifications?
 
 ** Homelab Evilfactory
    - ( ) Network

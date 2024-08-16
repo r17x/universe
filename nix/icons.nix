@@ -9,6 +9,7 @@
   circleLeft1 = "";
   circleRight = "";
   circleRight1 = "";
+  hint = "";
   info = "ℹ";
   info1 = "";
   info2 = "";

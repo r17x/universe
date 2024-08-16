@@ -76,7 +76,7 @@
                   branch: system:
                   import branch {
                     inherit system;
-                    inherit (nixpkgs) config overlays;
+                    inherit (nixpkgs) config;
                   };
               in
               {

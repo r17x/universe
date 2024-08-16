@@ -2,11 +2,11 @@
 # and found how to create flake, home-manager, and darwin in nix 
 # Here: https://gist.github.com/jmatsushita/5c50ef14b4b96cb24ae5268dab613050
 
-{ pkgs, ... }:
+{ branches, pkgs, ... }:
 
 {
   # Apps
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = with branches.master; [
     raycast
     iterm2
     terminal-notifier

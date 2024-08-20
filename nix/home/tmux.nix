@@ -1,6 +1,50 @@
-{ pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+
+let
+  tmuxWorkspaces = {
+    me = {
+      session_name = "Me";
+      windows = [
+        {
+          window_name = "Me";
+          layout = "tiled";
+          shell_command_before = [ "cd ~/evl" ];
+          panes = [
+            "nvim"
+            "echo happy working"
+          ];
+        }
+      ];
+    };
+
+    work = {
+      session_name = "Work";
+      windows = [
+        {
+          window_name = "Work";
+          layout = "tiled";
+          shell_command_before = [ "cd ~/w1" ];
+          panes = [
+            "nvim"
+            "echo happy working"
+          ];
+        }
+      ];
+    };
+  };
+in
 
 {
+  home.shellAliases = {
+    tmw = "tmuxp load ${builtins.toFile "tmuxp-work.json" (builtins.toJSON tmuxWorkspaces.work)}";
+    tme = "tmuxp load ${builtins.toFile "tmuxp-me.json" (builtins.toJSON tmuxWorkspaces.me)}";
+  };
+
   programs.tmux.enable = true;
   programs.tmux.mouse = false;
   programs.tmux.newSession = true;
@@ -10,7 +54,7 @@
   programs.tmux.resizeAmount = 10;
   programs.tmux.terminal = "screen-256color";
   programs.tmux.keyMode = "vi";
-  programs.tmux.extraConfig = # bash
+  programs.tmux.extraConfig = # tmux
     ''
       set -g status off
 
@@ -24,20 +68,32 @@
 
       set -g visual-activity off
       set -gq allow-passthrough on
-    '';
+      set -g @continuum-boot on
 
-  # Plugin disable cause in version 3.3a tmux server crashed
+      bind " " choose-tree -Zw
+      bind a new-session
+      bind A kill-session
+      bind w new-window
+      bind W kill-window
+      bind x kill-pane
+
+      bind n previous-window
+      bind N next-window
+
+      bind \, command-prompt "rename-window %%"
+      bind \< command-prompt "rename-session %%"
+
+      bind \? list-keys 
+
+      bind v split-pane -h
+      bind V split-pane -v
+    '';
+  programs.tmux.tmuxp.enable = config.programs.tmux.enable;
+
   programs.tmux.plugins = with pkgs.tmuxPlugins; [
     {
-      plugin = tmux-thumbs;
-      extraConfig = # bash
-        ''
-          set -g @thumbs-command 'echo -n {} | copy'
-        '';
-    }
-    {
       plugin = yank;
-      extraConfig = # bash
+      extraConfig = # tmux
         ''
           bind Enter copy-mode # enter copy mode
 
@@ -58,14 +114,14 @@
           run -b 'tmux bind -T copy-mode-vi L send -X end-of-line 2> /dev/null || true'
         '';
     }
-    {
-      plugin = resurrect;
-      extraConfig = "set -g @resurrect-strategy-nvim 'session'";
-    }
+
+    { plugin = resurrect; }
     {
       plugin = continuum;
-      extraConfig = # bash
+      extraConfig = # tmux
         ''
+          set -g @resurrect-strategy-nvim 'session' 
+          set -g @resurrect-capture-pane-contents 'on'
           set -g @continuum-restore 'on'
           set -g @continuum-save-interval '60' # minutes
         '';
@@ -73,5 +129,4 @@
   ];
 
   home.packages = lib.optionals pkgs.stdenv.isDarwin [ pkgs.reattach-to-user-namespace ];
-
 }

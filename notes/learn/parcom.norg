@@ -1,0 +1,41 @@
+@document.meta
+title: Parser Combinators
+description: Parser Combinators in OCaml based on the paper "Parser Combinators" that was published in 1991 by Graham Hutton. 
+authors: r17x
+categories: [
+  parser
+  OCaml
+  paper
+] 
+created: 2024-08-17T20:55:53+0700
+updated: 2024-08-18T05:02:39+0700
+version: 1.1.1
+@end
+
+* Parser Combinator
+
+  Dalam tulisan kali ini, saya akan membahas tentang `Parser Combinator` karena ingin membuat sebuah alat yang dapat mengurai informasi dari sebuah berkas atau informasi yang saya tulis dengan format atau sintaks /neorg/. Tulisan ini saya tulis sembari mempelajari apa itu `Parser Combinator`.
+
+** Apa lagi ini?
+
+   `Parser Combinator` adalah sebuah teknik yang digunakan untuk mengurai sebuah informasi yang dibaca dari suatu masukan (/input/). Hal utama yang menjadi daya tarik akan hal ini (khususnya saya) karena dengan teknik ini, kita mampu menggabungkan beberapa pengurai (/parser/) yang berbeda dan menggabungkannya secara bersamaan agar dapat menghasilkan sebuah pengurai (/parser/) yang lebih kompleks dari yang sebelumnya.
+
+   > Segala hal yang menjadi masukan akan di urai menjadi bagian yang kecil-kecil. Lalu, bagian kecil-kecil akan dikombinasikan (combined).
+
+** Memulai membuat Parser
+
+   Hal pertama yang saya lakukan untuk memulai aja dulu adalah dengan membuat hal dasar yakni fungsi:
+
+   @code ocaml
+   let parse input = input
+   @end
+
+   Fungsi diatas ini, hanya mengembalikan input yang diberikan. Hal itu sangatlah sederhana dan sangatlah mudah untuk memulai membuatnya dari tahapan yang sangat kecil.
+
+  
+
+
+** Referensi 
+   - https://en.wikipedia.org/wiki/Parser_combinator
+   - https://www.youtube.com/watch?v=Y5IIXUBXvLs
+  

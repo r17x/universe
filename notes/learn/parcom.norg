@@ -1,6 +1,6 @@
 @document.meta
 title: Parser Combinators
-description: Parser Combinators in OCaml based on the paper "Parser Combinators" that was published in 1991 by Graham Hutton. 
+description: Parser Combinators in OCaml based on the paper "Parser Combinator" that was published in 1991 by Graham Hutton. 
 authors: r17x
 categories: [
   parser
@@ -8,7 +8,7 @@ categories: [
   paper
 ] 
 created: 2024-08-17T20:55:53+0700
-updated: 2024-08-18T05:02:39+0700
+updated: 2024-08-21T09:52:08+0700
 version: 1.1.1
 @end
 
@@ -32,10 +32,9 @@ version: 1.1.1
 
    Fungsi diatas ini, hanya mengembalikan input yang diberikan. Hal itu sangatlah sederhana dan sangatlah mudah untuk memulai membuatnya dari tahapan yang sangat kecil.
 
-  
-
 
 ** Referensi 
+   - https://www.cs.nott.ac.uk/~pszgmh/monparsing.pdf
    - https://en.wikipedia.org/wiki/Parser_combinator
    - https://www.youtube.com/watch?v=Y5IIXUBXvLs
   

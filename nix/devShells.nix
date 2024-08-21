@@ -161,6 +161,7 @@
               melange
             ];
             buildInputs = with pkgs.ocamlPackages; [
+              angstrom
               dream
               melange
               melange-webapi

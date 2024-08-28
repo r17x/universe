@@ -24,6 +24,7 @@
           overlays = [
             inputs.ocaml-overlay.overlays.default
             inputs.neorg-overlay.overlays.default
+            inputs.nix.overlays.default
           ] ++ lib.attrValues self.overlays;
         in
         rec {

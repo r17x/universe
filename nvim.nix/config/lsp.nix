@@ -188,8 +188,18 @@
       dockerls.enable = true;
       dockerls.autostart = true;
 
+      biome.enable = true;
+      biome.autostart = true;
+
       eslint.enable = true;
       eslint.autostart = true;
+
+      tsserver.enable = true;
+      tsserver.autostart = true;
+      tsserver.rootDir = # lua
+        ''
+          require('lspconfig.util').root_pattern('.git')
+        '';
 
       gopls.enable = true;
       gopls.autostart = true;
@@ -261,13 +271,6 @@
       rust-analyzer.autostart = true;
       rust-analyzer.installCargo = false;
       rust-analyzer.installRustc = false;
-
-      tsserver.enable = true;
-      tsserver.autostart = true;
-      tsserver.rootDir = # lua
-        ''
-          require('lspconfig.util').root_pattern('.git')
-        '';
 
       nixd.enable = true;
       nixd.autostart = true;

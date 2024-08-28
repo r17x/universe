@@ -15,10 +15,7 @@
   extraConfigLuaPre = # lua
     ''
       vim.api.nvim_create_user_command('LspInlay',function()
-        local buf = vim.api.nvim_get_current_buf()
-        if buf ~= nil or buf ~= 0 then
-          vim.lsp.inlay_hint.enable(buf, not vim.lsp.inlay_hint.is_enabled())
-        end
+        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
       end,{})
     '';
 

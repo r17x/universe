@@ -301,6 +301,10 @@
   plugins.lspkind.symbolMap.Suggestion = icons.wand;
   plugins.lspkind.symbolMap.TabNine = icons.face;
   plugins.lspkind.symbolMap.Supermaven = icons.star;
+  plugins.lspkind.symbolMap.Error = icons.cross4;
+  plugins.lspkind.symbolMap.Hint = icons.hint;
+  plugins.lspkind.symbolMap.Info = icons.info2;
+  plugins.lspkind.symbolMap.Warn = icons.warning2;
   plugins.lspkind.symbolMap.DiagnosticSignError = icons.cross4;
   plugins.lspkind.symbolMap.DiagnosticSignHint = icons.hint;
   plugins.lspkind.symbolMap.DiagnosticSignInfo = icons.info2;

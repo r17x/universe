@@ -85,8 +85,14 @@
       url = "github:rescript-lang/vim-rescript";
       flake = false;
     };
+
     vimPlugins_supermaven-nvim = {
       url = "github:supermaven-inc/supermaven-nvim";
+      flake = false;
+    };
+
+    vimPlugins_avante-nvim = {
+      url = "github:yetone/avante.nvim";
       flake = false;
     };
 

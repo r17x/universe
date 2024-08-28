@@ -871,6 +871,7 @@
         "sops": "sops",
         "styled-ppx": "styled-ppx",
         "ts-rescript": "ts-rescript",
+        "vimPlugins_avante-nvim": "vimPlugins_avante-nvim",
         "vimPlugins_supermaven-nvim": "vimPlugins_supermaven-nvim",
         "vimPlugins_vim-rescript": "vimPlugins_vim-rescript"
       }
@@ -1075,6 +1076,22 @@
       "original": {
         "owner": "nkrkv",
         "repo": "tree-sitter-rescript",
+        "type": "github"
+      }
+    },
+    "vimPlugins_avante-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1724819226,
+        "narHash": "sha256-xxVqRaD2m/FKu+gfD4J4Wuk49iQYKr8nNuV9/6ARQBM=",
+        "owner": "yetone",
+        "repo": "avante.nvim",
+        "rev": "0591955c5e6aacbb5312fdffbd92d1d22d072f17",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yetone",
+        "repo": "avante.nvim",
         "type": "github"
       }
     },

@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 let
   mode = [
@@ -7,9 +7,23 @@ let
   ];
 in
 {
-  # extraPlugins = with pkgs.vimPlugins; [ 
-  # ChatGPT-nvim 
-  # ];
+  extraPlugins = with pkgs.vimPlugins; [
+    avante-nvim
+    # ChatGPT-nvim 
+  ];
+  extraConfigLuaPost = # lua
+    ''
+      require('avante').setup({
+        provider = "claude",
+        claude = {
+          api_key_name = "cmd:pass show r17x/anthropic",
+          endpoint = "https://api.anthropic.com",
+          model = "claude-3-5-sonnet-20240620",
+          temperature = 0,
+          max_tokens = 4096,
+        },
+      })
+    '';
 
   # extraConfigLuaPost =  # lua
   # ''

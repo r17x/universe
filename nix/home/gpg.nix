@@ -5,18 +5,13 @@
   ...
 }:
 
-with lib;
-
 let
-  inherit (config.home.user-info) within;
-  inherit (pkgs.stdenv) isDarwin;
-
-  cfg = within.gpg;
+  cfg = config.home.user-info.within.gpg;
 in
 {
-  options.within.gpg.enable = mkEnableOption "Enables Within's gpg config";
+  options.within.gpg.enable = lib.mkEnableOption "Enables Within's gpg config";
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.gpg = {
       enable = cfg.enable;
       settings = {
@@ -24,7 +19,7 @@ in
       };
     };
 
-    home.file = attrsets.optionalAttrs isDarwin {
+    home.file = lib.attrsets.optionalAttrs pkgs.stdenv.isDarwin {
       ".gnupg/gpg-agent.conf".source = pkgs.writeTextFile {
         name = "home-gpg-agent.conf";
         text = # toml

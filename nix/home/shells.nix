@@ -157,6 +157,7 @@ in
     inherit shellAliases;
     sessionPath = [ "$HOME/.yarn/bin" ];
     packages = [
+      pkgs.babelfish
       pkgs.fishPlugins.colored-man-pages
       # https://github.com/franciscolourenco/done
       pkgs.fishPlugins.done

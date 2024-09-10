@@ -1,8 +1,5 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
-let
-  inherit (pkgs.stdenv) isDarwin;
-in
 {
   # Packages with configuration --------------------------------------------------------------- {{{
   programs.home-manager.enable = true;
@@ -75,8 +72,6 @@ in
       # Development
       ################################## 
       docker
-      babelfish
-      paperkey
 
       ################################## 
       # Shell Integrations
@@ -104,7 +99,7 @@ in
       comma # run without install
       telegram-desktop
     ]
-    ++ lib.optionals isDarwin [
+    ++ lib.optionals stdenv.isDarwin [
       mas
       m-cli # useful macOS CLI commands
       clipy

@@ -1,7 +1,7 @@
 # TODO https://gist.github.com/r17x/20634bff3878f32aab5ee892dea734eb
 { pkgs, ... }:
 {
-  programs.alacritty.enable = true;
+  programs.alacritty.enable = false;
   programs.alacritty.package = pkgs.alacritty;
   programs.alacritty.settings = {
     window = {

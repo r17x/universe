@@ -27,7 +27,7 @@ jobs:
           extraPullNames: pre-commit-hooks,nix-community
           skipPush: ${{ !(github.ref == 'refs/heads/main' && github.event_name == 'push' && matrix.os == 'macos-latest') }}
 
-      - uses: DeterminateSystems/update-flake-lock@v23
+      - uses: DeterminateSystems/update-flake-lock@v24
         name: Update flake.lock
         if: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.event.schedule == '0 0 25 * *' }}
         with:
@@ -44,7 +44,7 @@ jobs:
             automated
             monthly
 
-      - uses: DeterminateSystems/update-flake-lock@v23
+      - uses: DeterminateSystems/update-flake-lock@v24
         name: Update flake.lock
         if: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.event.schedule == '0 0 * * 0' }}
         with:

@@ -194,7 +194,7 @@ in
     thefuck.enable = true;
     thefuck.enableInstantMode = true;
     thefuck.enableFishIntegration = config.programs.fish.enable;
-    thefuck.enableBashIntegration = config.programs.bash.enable;
+    thefuck.enableBashIntegration = false;
 
     bash = {
       enable = true;

@@ -62,9 +62,6 @@
     nixvim.inputs.home-manager.follows = "home-manager";
     nixvim.inputs.flake-parts.follows = "flake-parts";
 
-    neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
-    neorg-overlay.inputs.nixpkgs.follows = "nixpkgs";
-
     iamb.url = "github:ulyssa/iamb";
     iamb.inputs.nixpkgs.follows = "nixpkgs";
 

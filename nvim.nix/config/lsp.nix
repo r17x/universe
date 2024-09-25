@@ -64,12 +64,12 @@
     }
     {
       __unkeyed-1 = "<leader><space>";
-      __unkeyed-2 = "<cmd>Lpsaga term_toggle<cr>";
+      __unkeyed-2 = "<cmd>Lspsaga term_toggle<cr>";
       desc = icons.withIcon "git" "Open Terminal";
     }
     {
       __unkeyed-1 = "ge";
-      __unkeyed-2 = "<cmd>Trouble<cr>";
+      __unkeyed-2 = "<cmd>Trouble diagnostics open<cr>";
       desc = icons.withIcon "git" "Show diagnostics [Trouble]";
     }
     {
@@ -160,32 +160,27 @@
     }
     {
       __unkeyed-1 = "fic";
-      __unkeyed-2 =
-        "<cmd>lua require'telescope.builtin'.lsp_incoming_calls()<cr>";
+      __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_incoming_calls()<cr>";
       desc = icons.withIcon "git" "[Lsp] Find Incoming Calls";
     }
     {
       __unkeyed-1 = "foc";
-      __unkeyed-2 =
-        "<cmd>lua require'telescope.builtin'.lsp_outgoing_calls()<cr>";
+      __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_outgoing_calls()<cr>";
       desc = icons.withIcon "git" "[Lsp] Find Outgoing Calls";
     }
     {
       __unkeyed-1 = "fds";
-      __unkeyed-2 =
-        "<cmd>lua require'telescope.builtin'.lsp_document_symbols()<cr>";
+      __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_document_symbols()<cr>";
       desc = icons.withIcon "git" "[Lsp] Find Document Symbols";
     }
     {
       __unkeyed-1 = "fws";
-      __unkeyed-2 =
-        "<cmd>lua require'telescope.builtin'.lsp_workspace_symbols()<cr>";
+      __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_workspace_symbols()<cr>";
       desc = icons.withIcon "git" "[Lsp] Find Workspace Symbols";
     }
     {
       __unkeyed-1 = "fdws";
-      __unkeyed-2 =
-        "<cmd>lua require'telescope.builtin'.lsp_dynamic_workspace_symbols()<cr>";
+      __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_dynamic_workspace_symbols()<cr>";
       desc = icons.withIcon "git" "[Lsp] Find Dynamic Workspace Symbols";
     }
     {
@@ -195,8 +190,7 @@
     }
     {
       __unkeyed-1 = "fli";
-      __unkeyed-2 =
-        "<cmd>lua require'telescope.builtin'.lsp_implementations()<cr>";
+      __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_implementations()<cr>";
       desc = icons.withIcon "git" "[Lsp] Find Implementations";
     }
     {
@@ -206,8 +200,7 @@
     }
     {
       __unkeyed-1 = "flt";
-      __unkeyed-2 =
-        "<cmd>lua require'telescope.builtin'.lsp_type_definitions()<cr>";
+      __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_type_definitions()<cr>";
       desc = icons.withIcon "git" "[Lsp] Find Type Definitions";
     }
 
@@ -263,9 +256,11 @@
         schemas = [
           {
             description = "nixd schema";
-            fileMatch = [ ".nixd.json" "nixd.json" ];
-            url =
-              "https://raw.githubusercontent.com/nix-community/nixd/main/nixd/docs/nixd-schema.json";
+            fileMatch = [
+              ".nixd.json"
+              "nixd.json"
+            ];
+            url = "https://raw.githubusercontent.com/nix-community/nixd/main/nixd/docs/nixd-schema.json";
           }
           {
             description = "Turbo.build configuration file";
@@ -274,20 +269,24 @@
           }
           {
             description = "TypeScript compiler configuration file";
-            fileMatch = [ "tsconfig.json" "tsconfig.*.json" ];
+            fileMatch = [
+              "tsconfig.json"
+              "tsconfig.*.json"
+            ];
             url = "https://json.schemastore.org/tsconfig.json";
           }
           {
             description = "ReScript compiler schema";
-            fileMatch = [ "bsconfig.json" "rescript.json" ];
-            url =
-              "https://raw.githubusercontent.com/rescript-lang/rescript-compiler/87d78697d7a1eed75c9de55bbdc476540d6f77bb/docs/docson/build-schema.json";
+            fileMatch = [
+              "bsconfig.json"
+              "rescript.json"
+            ];
+            url = "https://raw.githubusercontent.com/rescript-lang/rescript-compiler/87d78697d7a1eed75c9de55bbdc476540d6f77bb/docs/docson/build-schema.json";
           }
           {
             description = "ReScript v11 compiler schema ";
             fileMatch = [ "rescript.json" ];
-            url =
-              "https://raw.githubusercontent.com/rescript-lang/rescript-compiler/master/docs/docson/build-schema.json";
+            url = "https://raw.githubusercontent.com/rescript-lang/rescript-compiler/master/docs/docson/build-schema.json";
           }
         ];
       };
@@ -317,8 +316,14 @@
   };
 
   plugins.lsp-format.enable = true;
-  plugins.lsp-format.setup.ts.order = [ "ts-ls" "eslint" ];
-  plugins.lsp-format.setup.js.order = [ "ts-ls" "eslint" ];
+  plugins.lsp-format.setup.ts.order = [
+    "ts-ls"
+    "eslint"
+  ];
+  plugins.lsp-format.setup.js.order = [
+    "ts-ls"
+    "eslint"
+  ];
 
   plugins.lspkind.enable = true;
   plugins.lspkind.symbolMap.Codeium = icons.code;
@@ -372,26 +377,26 @@
   plugins.cmp.settings.performance.fetching_timeout = 200;
   plugins.cmp.settings.performance.max_view_entries = 30;
 
-  plugins.cmp.settings.window.completion.winhighlight =
-    "Normal:Pmenu,FloatBorder:Pmenu,Search:None";
+  plugins.cmp.settings.window.completion.winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None";
   plugins.cmp.settings.window.completion.border = "rounded";
   plugins.cmp.settings.window.documentation.border = "rounded";
   plugins.cmp.settings.window.completion.col_offset = -3;
   plugins.cmp.settings.window.completion.side_padding = 0;
 
   plugins.cmp.settings.formatting.expandable_indicator = true;
-  plugins.cmp.settings.formatting.fields = [ "kind" "abbr" "menu" ];
+  plugins.cmp.settings.formatting.fields = [
+    "kind"
+    "abbr"
+    "menu"
+  ];
 
   plugins.cmp.settings.mapping."<C-Space>" = "cmp.mapping.complete()";
   plugins.cmp.settings.mapping."<C-d>" = "cmp.mapping.scroll_docs(-4)";
   plugins.cmp.settings.mapping."<C-e>" = "cmp.mapping.close()";
   plugins.cmp.settings.mapping."<C-f>" = "cmp.mapping.scroll_docs(4)";
-  plugins.cmp.settings.mapping."<CR>" =
-    "cmp.mapping.confirm({ select = true })";
-  plugins.cmp.settings.mapping."<S-Tab>" =
-    "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
-  plugins.cmp.settings.mapping."<Tab>" =
-    "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
+  plugins.cmp.settings.mapping."<CR>" = "cmp.mapping.confirm({ select = true })";
+  plugins.cmp.settings.mapping."<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
+  plugins.cmp.settings.mapping."<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
 
   plugins.cmp.settings.snippet.expand = # lua
     ''
@@ -431,15 +436,20 @@
 
     '';
   plugins.cmp.cmdline."/".mapping.__raw = "cmp.mapping.preset.cmdline()";
-  plugins.cmp.cmdline."/".sources = [{ name = "buffer"; }];
+  plugins.cmp.cmdline."/".sources = [ { name = "buffer"; } ];
   plugins.cmp.cmdline."?".mapping.__raw = "cmp.mapping.preset.cmdline()";
-  plugins.cmp.cmdline."?".sources = [{ name = "buffer"; }];
+  plugins.cmp.cmdline."?".sources = [ { name = "buffer"; } ];
   plugins.cmp.cmdline.":".mapping.__raw = "cmp.mapping.preset.cmdline()";
   plugins.cmp.cmdline.":".sources = [
     { name = "async_path"; }
     {
       name = "cmdline";
-      option = { ignore_cmds = [ "Man" "!" ]; };
+      option = {
+        ignore_cmds = [
+          "Man"
+          "!"
+        ];
+      };
     }
   ];
 }

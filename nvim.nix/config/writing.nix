@@ -1,4 +1,9 @@
-{ icons, pkgs, ... }:
+{
+  branches,
+  icons,
+  pkgs,
+  ...
+}:
 
 {
   keymaps = [
@@ -26,8 +31,8 @@
   ];
 
   extraPlugins = with pkgs.vimPlugins; [
-    neorg-telescope
     venn-nvim
+    neorg-telescope
   ];
 
   plugins.telescope.enabledExtensions = [ "neorg" ];
@@ -78,6 +83,7 @@
           end
       end
     '';
+
   plugins.which-key.settings.spec = [
 
     {
@@ -116,6 +122,7 @@
   plugins.zen-mode.enable = true;
   plugins.neorg = {
     enable = true;
+    package = branches.master.vimPlugins.neorg;
     lazyLoading = true;
     modules = {
       "core.dirman" = {

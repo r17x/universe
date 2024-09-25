@@ -1,4 +1,10 @@
-{ lib, helpers, config, icons, pkgs, ... }:
+{
+  lib,
+  helpers,
+  icons,
+  pkgs,
+  ...
+}:
 let
   devicons = {
     norg = {
@@ -27,15 +33,18 @@ let
     };
   };
 
-  deviconsToLuaString = icons:
-    builtins.foldl' (acc: icon: ''
-      ${acc}
-      devicons.set_icon ${icon}
-    '') "local devicons = require'nvim-web-devicons'"
-    (lib.attrsets.mapAttrsToList
-      (name: value: helpers.toLuaObject { "${name}" = value; }) icons);
+  deviconsToLuaString =
+    icons:
+    builtins.foldl'
+      (acc: icon: ''
+        ${acc}
+        devicons.set_icon ${icon}
+      '')
+      "local devicons = require'nvim-web-devicons'"
+      (lib.attrsets.mapAttrsToList (name: value: helpers.toLuaObject { "${name}" = value; }) icons);
 
-in {
+in
+{
   highlight."@neorg.tags.ranged_verbatim.code_block".link = "Fg";
 
   extraPlugins = with pkgs.vimPlugins; [
@@ -52,8 +61,7 @@ in {
     }
     {
       __unkeyed-1 = "<leader>tl";
-      __unkeyed-2 =
-        "<cmd>lua vim.g.unhide_lualine = not vim.g.unhide_lualine; require('lualine').hide({ unhide = vim.g.unhide_lualine })<cr>";
+      __unkeyed-2 = "<cmd>lua vim.g.unhide_lualine = not vim.g.unhide_lualine; require('lualine').hide({ unhide = vim.g.unhide_lualine })<cr>";
       desc = icons.withIcon "git" "Toggle Status Line";
     }
     {
@@ -112,7 +120,10 @@ in {
 
   plugins.indent-blankline.settings.indent.enable = true;
   plugins.indent-blankline.settings.indent.char = icons.indent;
-  plugins.indent-blankline.settings.exclude.buftypes = [ "terminal" "neorg" ];
+  plugins.indent-blankline.settings.exclude.buftypes = [
+    "terminal"
+    "neorg"
+  ];
   plugins.indent-blankline.settings.exclude.filetypes = [
     "norg"
     "NvimTree"
@@ -165,44 +176,74 @@ in {
 
   # based on {https://github.com/r17x/nixpkgs/blob/main/configs/nvim/lua/config/lualine.lua}
   plugins.lualine.enable = true;
-  plugins.lualine.settings.disabled_filetypes.statusline =
-    [ "sagaoutline" "NvimTree" "Trouble" ];
+  plugins.lualine.settings.disabled_filetypes.statusline = [
+    "sagaoutline"
+    "NvimTree"
+    "Trouble"
+  ];
   plugins.lualine.settings.theme = "edge";
   plugins.lualine.settings.components_separatos.left = "";
   plugins.lualine.settings.components_separatos.right = "";
   plugins.lualine.settings.secction_separators.left = icons.circleRight;
   plugins.lualine.settings.secction_separators.right = icons.circleLeft;
-  plugins.lualine.settings.sections.lualine_a = [{
-    __unkeyed-1 = "mode";
-    separator.right = icons.circleRight;
-    padding.left = 1;
-  }];
-  plugins.lualine.settings.sections.lualine_b = [{
-    __unkeyed-1 = "branch";
-    color.fg = "BlueSign";
-  }];
-  plugins.lualine.settings.sections.lualine_c = [ "diff" "diagnostics" ];
-  plugins.lualine.settings.sections.lualine_x = [{
-    __unkeyed-1 = "lsp_progress";
-    colors.title = "Cyan";
-    separators.component = "";
-    separators.percentage.pre = "";
-    separators.percentage.post = "%% ";
-    separators.title.pre = "";
-    separators.title.post = ": ";
-    displayComponents = [ "spinner" "lsp_client_name" ];
-    timer.progressEnddelay = 500;
-    timer.spinner = 1000;
-    timer.lspClientNameEnddelay = 1000;
-    spinnerSymbols = [ "⣀" "⣠" "⣴" "⣶" "⣾" "⣿" "⢿" "⡿" ];
-  }];
-  plugins.lualine.settings.sections.lualine_y =
-    [ "searchcount" "selectioncount" "filetype" "progress" ];
-  plugins.lualine.settings.sections.lualine_z = [{
-    __unkeyed-1 = "location";
-    separator.left = icons.circleLeft;
-    padding.right = 1;
-  }];
+  plugins.lualine.settings.sections.lualine_a = [
+    {
+      __unkeyed-1 = "mode";
+      separator.right = icons.circleRight;
+      padding.left = 1;
+    }
+  ];
+  plugins.lualine.settings.sections.lualine_b = [
+    {
+      __unkeyed-1 = "branch";
+      color.fg = "BlueSign";
+    }
+  ];
+  plugins.lualine.settings.sections.lualine_c = [
+    "diff"
+    "diagnostics"
+  ];
+  plugins.lualine.settings.sections.lualine_x = [
+    {
+      __unkeyed-1 = "lsp_progress";
+      colors.title = "Cyan";
+      separators.component = "";
+      separators.percentage.pre = "";
+      separators.percentage.post = "%% ";
+      separators.title.pre = "";
+      separators.title.post = ": ";
+      displayComponents = [
+        "spinner"
+        "lsp_client_name"
+      ];
+      timer.progressEnddelay = 500;
+      timer.spinner = 1000;
+      timer.lspClientNameEnddelay = 1000;
+      spinnerSymbols = [
+        "⣀"
+        "⣠"
+        "⣴"
+        "⣶"
+        "⣾"
+        "⣿"
+        "⢿"
+        "⡿"
+      ];
+    }
+  ];
+  plugins.lualine.settings.sections.lualine_y = [
+    "searchcount"
+    "selectioncount"
+    "filetype"
+    "progress"
+  ];
+  plugins.lualine.settings.sections.lualine_z = [
+    {
+      __unkeyed-1 = "location";
+      separator.left = icons.circleLeft;
+      padding.right = 1;
+    }
+  ];
   plugins.lualine.settings.winbar = { };
   plugins.lualine.settings.tabline = { };
   plugins.lualine.settings.extensions = [ ];
@@ -210,299 +251,301 @@ in {
   plugins.treesitter.enable = true;
   plugins.treesitter.folding = true;
   plugins.treesitter.settings.indent.enable = true;
-  plugins.treesitter.nixvimInjections = true;
+  plugins.treesitter.settings.highlight.enable = true;
+  #plugins.treesitter.nixvimInjections = true;
+  #plugins.treesitter.nixGrammars = true;
   plugins.treesitter.grammarPackages =
     builtins.map (x: pkgs.vimPlugins.nvim-treesitter.builtGrammars.${x})
-    config.plugins.treesitter.settings.ensure_installed;
-  plugins.treesitter.settings.ignore_install = [
-    # ┌─────────────────────────────────────┐
-    # │ move to ensureInstalled for enabled │
-    # └─────────────────────────────────────┘
-    "ada"
-    "agda"
-    "angular"
-    "apex"
-    "arduino"
-    "astro"
-    "authzed"
-    "awk"
-    "bass"
-    "beancount"
-    "bibtex"
-    "bicep"
-    "bitbake"
-    "blueprint"
-    "c_sharp"
-    "cairo"
-    "capnp"
-    "chatito"
-    "clojure"
-    "commonlisp"
-    "cooklang"
-    "corn"
-    "cpon"
-    "cpp"
-    "csv"
-    "cuda"
-    "cue"
-    "d"
-    "dart"
-    "devicetree"
-    "disassembly"
-    "djot"
-    "doxygen"
-    "dtd"
-    "earthfile"
-    "ebnf"
-    "eds"
-    "eex"
-    "elixir"
-    "elm"
-    "elsa"
-    "elvish"
-    "embedded_template"
-    "erlang"
-    "facility"
-    "faust"
-    "fennel"
-    "fidl"
-    "firrtl"
-    "foam"
-    "forth"
-    "fortran"
-    "fsh"
-    "func"
-    "fusion"
-    "gdscript"
-    "gdshader"
-    "gleam"
-    "glimmer"
-    "glsl"
-    "gn"
-    "gnuplot"
-    "godot_resource"
-    "gowork"
-    "groovy"
-    "gstlaunch"
-    "hack"
-    "hare"
-    "heex"
-    "hjson"
-    "hlsl"
-    "hlsplaylist"
-    "hocon"
-    "hoon"
-    "htmldjango"
-    "hurl"
-    "hyprlang"
-    "idl"
-    "ini"
-    "inko"
-    "ispc"
-    "janet_simple"
-    "java"
-    "json5"
-    "jsonc"
-    "jsonnet"
-    "julia"
-    "just"
-    "kconfig"
-    "kdl"
-    "kotlin"
-    "koto"
-    "kusto"
-    "lalrpop"
-    "ledger"
-    "leo"
-    "linkerscript"
-    "liquid"
-    "liquidsoap"
-    "llvm"
-    "m68k"
-    "matlab"
-    "menhir"
-    "meson"
-    "mlir"
-    "muttrc"
-    "nasm"
-    "nickel"
-    "nim"
-    "nim_format_string"
-    "ninja"
-    "nqc"
-    "objc"
-    "objdump"
-    "odin"
-    "org"
-    "pascal"
-    "pem"
-    "perl"
-    "php"
-    "php_only"
-    "phpdoc"
-    "pioasm"
-    "pod"
-    "poe_filter"
-    "pony"
-    "printf"
-    "prisma"
-    "promql"
-    "properties"
-    "prql"
-    "psv"
-    "pug"
-    "puppet"
-    "purescript"
-    "ql"
-    "qmldir"
-    "qmljs"
-    "r"
-    "racket"
-    "rasi"
-    "rbs"
-    "re2c"
-    "readline"
-    "rego"
-    "requirements"
-    "rnoweb"
-    "robot"
-    "roc"
-    "ron"
-    "rst"
-    "ruby"
-    "scala"
-    "scfg"
-    "scheme"
-    "scss"
-    "slang"
-    "slint"
-    "smali"
-    "smithy"
-    "snakemake"
-    "solidity"
-    "soql"
-    "sosl"
-    "sourcepawn"
-    "sparql"
-    "squirrel"
-    "starlark"
-    "strace"
-    "styled"
-    "supercollider"
-    "surface"
-    "svelte"
-    "swift"
-    "sxhkdrc"
-    "systemtap"
-    "t32"
-    "tablegen"
-    "tact"
-    "tcl"
-    "teal"
-    "thrift"
-    "tiger"
-    "tlaplus"
-    "tsv"
-    "turtle"
-    "twig"
-    "typespec"
-    "typoscript"
-    "typst"
-    "udev"
-    "ungrammar"
-    "unison"
-    "usd"
-    "uxntal"
-    "v"
-    "vala"
-    "vento"
-    "verilog"
-    "vue"
-    "wgsl"
-    "wgsl_bevy"
-    "wing"
-    "wit"
-    "xcompose"
-    "yang"
-    "yuck"
-    "zathurarc"
-    "zig"
-  ];
-  plugins.treesitter.settings.ensure_installed = [
-    # ┌────────────────────────────────────┐
-    # │ move to ignoreInstall for disabled │
-    # └────────────────────────────────────┘
-    "asm"
-    "bash"
-    "c"
-    "cmake"
-    "comment"
-    "css"
-    "dhall"
-    "diff"
-    "dockerfile"
-    "dot"
-    "fish"
-    "git_config"
-    "git_rebase"
-    "gitattributes"
-    "gitcommit"
-    "gitignore"
-    "go"
-    "gomod"
-    "gosum"
-    "gotmpl"
-    "gpg"
-    "graphql"
-    "haskell"
-    "haskell_persistent"
-    "hcl"
-    "helm"
-    "html"
-    "http"
-    "javascript"
-    "jq"
-    "jsdoc"
-    "json"
-    "latex"
-    "lua"
-    "luadoc"
-    "luap"
-    "luau"
-    "make"
-    "markdown"
-    "markdown_inline"
-    "mermaid"
-    "nix"
-    "norg"
-    "ocaml"
-    "ocaml_interface"
-    "ocamllex"
-    "passwd"
-    "po"
-    "proto"
-    "pymanifest"
-    "python"
-    "query"
-    "regex"
-    "rust"
-    # "rescript"
-    "sql"
-    "ssh_config"
-    "templ"
-    "terraform"
-    "textproto"
-    "tmux"
-    "todotxt"
-    "toml"
-    "tsx"
-    "typescript"
-    "vhs"
-    "vim"
-    "vimdoc"
-    "xml"
-    "yaml"
-  ];
+      [
+        # ┌────────────────────────────────────┐
+        # │ move to ignoreInstall for disabled │
+        # └────────────────────────────────────┘
+        "asm"
+        "bash"
+        "c"
+        "cmake"
+        "comment"
+        "css"
+        "dhall"
+        "diff"
+        "dockerfile"
+        "dot"
+        "fish"
+        "git_config"
+        "git_rebase"
+        "gitattributes"
+        "gitcommit"
+        "gitignore"
+        "go"
+        "gomod"
+        "gosum"
+        "gotmpl"
+        "gpg"
+        "graphql"
+        "haskell"
+        "haskell_persistent"
+        "hcl"
+        "helm"
+        "html"
+        "http"
+        "javascript"
+        "jq"
+        "jsdoc"
+        "json"
+        "latex"
+        "lua"
+        "luadoc"
+        "luap"
+        "luau"
+        "make"
+        "markdown"
+        "markdown_inline"
+        "mermaid"
+        "nix"
+        "norg"
+        "ocaml"
+        "ocaml_interface"
+        "ocamllex"
+        "passwd"
+        "po"
+        "proto"
+        "pymanifest"
+        "python"
+        "query"
+        "regex"
+        "rust"
+        # "rescript"
+        "sql"
+        "ssh_config"
+        "templ"
+        "terraform"
+        "textproto"
+        "tmux"
+        "todotxt"
+        "toml"
+        "tsx"
+        "typescript"
+        "vhs"
+        "vim"
+        "vimdoc"
+        "xml"
+        "yaml"
+      ];
+
+  # plugins.treesitter.settings.ignore_install = [
+  #   # ┌─────────────────────────────────────┐
+  #   # │ move to ensureInstalled for enabled │
+  #   # └─────────────────────────────────────┘
+  #   "ada"
+  #   "agda"
+  #   "angular"
+  #   "apex"
+  #   "arduino"
+  #   "astro"
+  #   "authzed"
+  #   "awk"
+  #   "bass"
+  #   "beancount"
+  #   "bibtex"
+  #   "bicep"
+  #   "bitbake"
+  #   "blueprint"
+  #   "c_sharp"
+  #   "cairo"
+  #   "capnp"
+  #   "chatito"
+  #   "clojure"
+  #   "commonlisp"
+  #   "cooklang"
+  #   "corn"
+  #   "cpon"
+  #   "cpp"
+  #   "csv"
+  #   "cuda"
+  #   "cue"
+  #   "d"
+  #   "dart"
+  #   "devicetree"
+  #   "disassembly"
+  #   "djot"
+  #   "doxygen"
+  #   "dtd"
+  #   "earthfile"
+  #   "ebnf"
+  #   "eds"
+  #   "eex"
+  #   "elixir"
+  #   "elm"
+  #   "elsa"
+  #   "elvish"
+  #   "embedded_template"
+  #   "erlang"
+  #   "facility"
+  #   "faust"
+  #   "fennel"
+  #   "fidl"
+  #   "firrtl"
+  #   "foam"
+  #   "forth"
+  #   "fortran"
+  #   "fsh"
+  #   "func"
+  #   "fusion"
+  #   "gdscript"
+  #   "gdshader"
+  #   "gleam"
+  #   "glimmer"
+  #   "glsl"
+  #   "gn"
+  #   "gnuplot"
+  #   "godot_resource"
+  #   "gowork"
+  #   "groovy"
+  #   "gstlaunch"
+  #   "hack"
+  #   "hare"
+  #   "heex"
+  #   "hjson"
+  #   "hlsl"
+  #   "hlsplaylist"
+  #   "hocon"
+  #   "hoon"
+  #   "htmldjango"
+  #   "hurl"
+  #   "hyprlang"
+  #   "idl"
+  #   "ini"
+  #   "inko"
+  #   "ispc"
+  #   "janet_simple"
+  #   "java"
+  #   "json5"
+  #   "jsonc"
+  #   "jsonnet"
+  #   "julia"
+  #   "just"
+  #   "kconfig"
+  #   "kdl"
+  #   "kotlin"
+  #   "koto"
+  #   "kusto"
+  #   "lalrpop"
+  #   "ledger"
+  #   "leo"
+  #   "linkerscript"
+  #   "liquid"
+  #   "liquidsoap"
+  #   "llvm"
+  #   "m68k"
+  #   "matlab"
+  #   "menhir"
+  #   "meson"
+  #   "mlir"
+  #   "muttrc"
+  #   "nasm"
+  #   "nickel"
+  #   "nim"
+  #   "nim_format_string"
+  #   "ninja"
+  #   "nqc"
+  #   "objc"
+  #   "objdump"
+  #   "odin"
+  #   "org"
+  #   "pascal"
+  #   "pem"
+  #   "perl"
+  #   "php"
+  #   "php_only"
+  #   "phpdoc"
+  #   "pioasm"
+  #   "pod"
+  #   "poe_filter"
+  #   "pony"
+  #   "printf"
+  #   "prisma"
+  #   "promql"
+  #   "properties"
+  #   "prql"
+  #   "psv"
+  #   "pug"
+  #   "puppet"
+  #   "purescript"
+  #   "ql"
+  #   "qmldir"
+  #   "qmljs"
+  #   "r"
+  #   "racket"
+  #   "rasi"
+  #   "rbs"
+  #   "re2c"
+  #   "readline"
+  #   "rego"
+  #   "requirements"
+  #   "rnoweb"
+  #   "robot"
+  #   "roc"
+  #   "ron"
+  #   "rst"
+  #   "ruby"
+  #   "scala"
+  #   "scfg"
+  #   "scheme"
+  #   "scss"
+  #   "slang"
+  #   "slint"
+  #   "smali"
+  #   "smithy"
+  #   "snakemake"
+  #   "solidity"
+  #   "soql"
+  #   "sosl"
+  #   "sourcepawn"
+  #   "sparql"
+  #   "squirrel"
+  #   "starlark"
+  #   "strace"
+  #   "styled"
+  #   "supercollider"
+  #   "surface"
+  #   "svelte"
+  #   "swift"
+  #   "sxhkdrc"
+  #   "systemtap"
+  #   "t32"
+  #   "tablegen"
+  #   "tact"
+  #   "tcl"
+  #   "teal"
+  #   "thrift"
+  #   "tiger"
+  #   "tlaplus"
+  #   "tsv"
+  #   "turtle"
+  #   "twig"
+  #   "typespec"
+  #   "typoscript"
+  #   "typst"
+  #   "udev"
+  #   "ungrammar"
+  #   "unison"
+  #   "usd"
+  #   "uxntal"
+  #   "v"
+  #   "vala"
+  #   "vento"
+  #   "verilog"
+  #   "vue"
+  #   "wgsl"
+  #   "wgsl_bevy"
+  #   "wing"
+  #   "wit"
+  #   "xcompose"
+  #   "yang"
+  #   "yuck"
+  #   "zathurarc"
+  #   "zig"
+  # ];
 
   plugins.rainbow-delimiters.enable = true;
   plugins.rainbow-delimiters.highlight = [

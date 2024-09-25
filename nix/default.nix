@@ -23,7 +23,6 @@
         let
           overlays = [
             inputs.ocaml-overlay.overlays.default
-            inputs.neorg-overlay.overlays.default
             inputs.nix.overlays.default
           ] ++ lib.attrValues self.overlays;
         in
@@ -61,6 +60,21 @@
           };
 
           # Extra arguments passed to the module system for nix-darwin, NixOS, and home-manager
+          branches =
+            let
+              pkgsFrom =
+                branch: system:
+                import branch {
+                  inherit system;
+                  inherit (nixpkgs) config;
+                };
+            in
+            {
+              master = pkgsFrom inputs.nixpkgs-master system;
+              stable = pkgsFrom inputs.nixpkgs-stable system;
+              unstable = pkgsFrom inputs.nixpkgs-unstable system;
+            };
+
           extraModuleArgs = {
             inherit inputs' system;
             inputs = lib.mkForce inputs;

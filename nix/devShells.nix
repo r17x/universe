@@ -16,8 +16,7 @@
         luacheck.enable = false;
         deadnix.enable = true;
         deadnix.excludes = [ "nix/overlays/nodePackages/node2nix" ];
-        # nixpkgs-fmt.enable = true;  # see https://x.com/zimbatm/status/1816148339131343058
-        nixfmt.enable = true;
+        nixfmt-rfc-style.enable = true;
         dune-fmt.enable = true;
         dune-fmt.settings.extraRuntimeInputs = [ pkgs.ocamlPackages.ocamlformat ];
         dune-fmt.files = "apps/rin.rocks";

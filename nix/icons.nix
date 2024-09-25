@@ -10,6 +10,7 @@ let
     circleLeft1 = "";
     circleRight = "";
     circleRight1 = "";
+    hint = "";
     info = "ℹ";
     info1 = "";
     info2 = "";
@@ -75,5 +76,4 @@ let
     star = "";
     indent = "▎";
   };
-in
-icons // { withIcon = iconName: s: "${icons.${iconName}} ${s}"; }
+in icons // { withIcon = iconName: s: "${icons.${iconName}} ${s}"; }

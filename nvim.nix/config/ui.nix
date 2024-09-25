@@ -1,11 +1,4 @@
-{
-  lib,
-  helpers,
-  config,
-  icons,
-  pkgs,
-  ...
-}:
+{ lib, helpers, config, icons, pkgs, ... }:
 let
   devicons = {
     norg = {
@@ -34,18 +27,15 @@ let
     };
   };
 
-  deviconsToLuaString =
-    icons:
-    builtins.foldl'
-      (acc: icon: ''
-        ${acc}
-        devicons.set_icon ${icon}
-      '')
-      "local devicons = require'nvim-web-devicons'"
-      (lib.attrsets.mapAttrsToList (name: value: helpers.toLuaObject { "${name}" = value; }) icons);
+  deviconsToLuaString = icons:
+    builtins.foldl' (acc: icon: ''
+      ${acc}
+      devicons.set_icon ${icon}
+    '') "local devicons = require'nvim-web-devicons'"
+    (lib.attrsets.mapAttrsToList
+      (name: value: helpers.toLuaObject { "${name}" = value; }) icons);
 
-in
-{
+in {
   highlight."@neorg.tags.ranged_verbatim.code_block".link = "Fg";
 
   extraPlugins = with pkgs.vimPlugins; [
@@ -62,7 +52,8 @@ in
     }
     {
       __unkeyed-1 = "<leader>tl";
-      __unkeyed-2 = "<cmd>lua vim.g.unhide_lualine = not vim.g.unhide_lualine; require('lualine').hide({ unhide = vim.g.unhide_lualine })<cr>";
+      __unkeyed-2 =
+        "<cmd>lua vim.g.unhide_lualine = not vim.g.unhide_lualine; require('lualine').hide({ unhide = vim.g.unhide_lualine })<cr>";
       desc = icons.withIcon "git" "Toggle Status Line";
     }
     {
@@ -121,10 +112,7 @@ in
 
   plugins.indent-blankline.settings.indent.enable = true;
   plugins.indent-blankline.settings.indent.char = icons.indent;
-  plugins.indent-blankline.settings.exclude.buftypes = [
-    "terminal"
-    "neorg"
-  ];
+  plugins.indent-blankline.settings.exclude.buftypes = [ "terminal" "neorg" ];
   plugins.indent-blankline.settings.exclude.filetypes = [
     "norg"
     "NvimTree"
@@ -173,89 +161,59 @@ in
       -- let g:edge_better_performance = 1
     '';
 
+  plugins.web-devicons.enable = true;
+
   # based on {https://github.com/r17x/nixpkgs/blob/main/configs/nvim/lua/config/lualine.lua}
-
   plugins.lualine.enable = true;
-  plugins.lualine.disabledFiletypes.statusline = [
-    "sagaoutline"
-    "NvimTree"
-    "Trouble"
-  ];
-  plugins.lualine.theme = "edge";
-  plugins.lualine.componentSeparators.left = "";
-  plugins.lualine.componentSeparators.right = "";
-  plugins.lualine.sectionSeparators.left = icons.circleRight;
-  plugins.lualine.sectionSeparators.right = icons.circleLeft;
-  plugins.lualine.sections.lualine_a = [
-    {
-      name = "mode";
-      separator.right = icons.circleRight;
-      extraConfig.padding.left = 1;
-    }
-  ];
-
-  plugins.lualine.sections.lualine_b = [
-    {
-      name = "branch";
-      color.fg = "BlueSign";
-    }
-  ];
-  plugins.lualine.sections.lualine_c = [
-    "diff"
-    "diagnostics"
-  ];
-  plugins.lualine.sections.lualine_x = [
-    {
-      name = "lsp_progress";
-      extraConfig.colors.title = "Cyan";
-      extraConfig.separators.component = "";
-      extraConfig.separators.percentage.pre = "";
-      extraConfig.separators.percentage.post = "%% ";
-      extraConfig.separators.title.pre = "";
-      extraConfig.separators.title.post = ": ";
-      extraConfig.displayComponents = [
-        "spinner"
-        "lsp_client_name"
-      ];
-      extraConfig.timer.progressEnddelay = 500;
-      extraConfig.timer.spinner = 1000;
-      extraConfig.timer.lspClientNameEnddelay = 1000;
-      extraConfig.spinnerSymbols = [
-        "⣀"
-        "⣠"
-        "⣴"
-        "⣶"
-        "⣾"
-        "⣿"
-        "⢿"
-        "⡿"
-      ];
-    }
-  ];
-  plugins.lualine.sections.lualine_y = [
-    "searchcount"
-    "selectioncount"
-    "filetype"
-    "progress"
-  ];
-  plugins.lualine.sections.lualine_z = [
-    {
-      name = "location";
-      separator.left = icons.circleLeft;
-      extraConfig.padding.right = 1;
-    }
-  ];
-  plugins.lualine.winbar = { };
-  plugins.lualine.tabline = { };
-  plugins.lualine.extensions = [ ];
+  plugins.lualine.settings.disabled_filetypes.statusline =
+    [ "sagaoutline" "NvimTree" "Trouble" ];
+  plugins.lualine.settings.theme = "edge";
+  plugins.lualine.settings.components_separatos.left = "";
+  plugins.lualine.settings.components_separatos.right = "";
+  plugins.lualine.settings.secction_separators.left = icons.circleRight;
+  plugins.lualine.settings.secction_separators.right = icons.circleLeft;
+  plugins.lualine.settings.sections.lualine_a = [{
+    __unkeyed-1 = "mode";
+    separator.right = icons.circleRight;
+    padding.left = 1;
+  }];
+  plugins.lualine.settings.sections.lualine_b = [{
+    __unkeyed-1 = "branch";
+    color.fg = "BlueSign";
+  }];
+  plugins.lualine.settings.sections.lualine_c = [ "diff" "diagnostics" ];
+  plugins.lualine.settings.sections.lualine_x = [{
+    __unkeyed-1 = "lsp_progress";
+    colors.title = "Cyan";
+    separators.component = "";
+    separators.percentage.pre = "";
+    separators.percentage.post = "%% ";
+    separators.title.pre = "";
+    separators.title.post = ": ";
+    displayComponents = [ "spinner" "lsp_client_name" ];
+    timer.progressEnddelay = 500;
+    timer.spinner = 1000;
+    timer.lspClientNameEnddelay = 1000;
+    spinnerSymbols = [ "⣀" "⣠" "⣴" "⣶" "⣾" "⣿" "⢿" "⡿" ];
+  }];
+  plugins.lualine.settings.sections.lualine_y =
+    [ "searchcount" "selectioncount" "filetype" "progress" ];
+  plugins.lualine.settings.sections.lualine_z = [{
+    __unkeyed-1 = "location";
+    separator.left = icons.circleLeft;
+    padding.right = 1;
+  }];
+  plugins.lualine.settings.winbar = { };
+  plugins.lualine.settings.tabline = { };
+  plugins.lualine.settings.extensions = [ ];
 
   plugins.treesitter.enable = true;
   plugins.treesitter.folding = true;
   plugins.treesitter.settings.indent.enable = true;
   plugins.treesitter.nixvimInjections = true;
-  plugins.treesitter.grammarPackages = builtins.map (
-    x: pkgs.vimPlugins.nvim-treesitter.builtGrammars.${x}
-  ) config.plugins.treesitter.settings.ensure_installed;
+  plugins.treesitter.grammarPackages =
+    builtins.map (x: pkgs.vimPlugins.nvim-treesitter.builtGrammars.${x})
+    config.plugins.treesitter.settings.ensure_installed;
   plugins.treesitter.settings.ignore_install = [
     # ┌─────────────────────────────────────┐
     # │ move to ensureInstalled for enabled │

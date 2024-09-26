@@ -23,7 +23,6 @@
         let
           overlays = [
             inputs.ocaml-overlay.overlays.default
-            inputs.nix.overlays.default
           ] ++ lib.attrValues self.overlays;
         in
         rec {
@@ -34,7 +33,7 @@
               inherit (pkgs) stdenv;
             }
             // {
-              package = pkgs.nix;
+              package = branches.stable.nix;
             };
 
           pkgs = import inputs.nixpkgs {

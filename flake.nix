@@ -17,9 +17,6 @@
     };
 
   inputs = {
-    nix.url = "github:nixos/nix";
-    nix.inputs.nixpkgs.follows = "nixpkgs";
-
     # utilities for Flake
     flake-parts.url = "github:hercules-ci/flake-parts";
 

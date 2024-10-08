@@ -85,11 +85,6 @@
       flake = false;
     };
 
-    vimPlugins_avante-nvim = {
-      url = "github:yetone/avante.nvim";
-      flake = false;
-    };
-
     # others 
     ts-rescript = {
       url = "github:nkrkv/tree-sitter-rescript";

@@ -216,6 +216,48 @@
             ];
           };
 
+          rust-cap = pkgs.mkShell {
+            description = "Rust  Development Environment";
+            # declared ENV variables when starting shell
+            RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
+
+            shellHook =
+              ''
+                export PATH=$PATH:''${CARGO_HOME:-~/.cargo}/bin
+              ''
+              + lib.optionalString pkgs.stdenv.isDarwin ''
+                export NIX_LDFLAGS="-F${pkgs.darwin.apple_sdk.frameworks.CoreFoundation}/Library/Frameworks -framework CoreFoundation $NIX_LDFLAGS";
+
+              '';
+
+            nativeBuildInputs =
+              with pkgs;
+              [
+                rustup
+                rustc
+                cargo
+                rustfmt
+                clippy
+                ffmpeg
+              ]
+              ++ lib.optionals pkgs.stdenv.isDarwin (
+                with pkgs.darwin.apple_sdk;
+                [
+                  pkgs.libiconv
+                  pkgs.pkg-config
+                  frameworks.Security
+                  frameworks.SystemConfiguration
+                  frameworks.CoreFoundation
+                  frameworks.Cocoa
+                  frameworks.CoreMedia
+                  frameworks.Metal
+                  frameworks.AVFoundation
+                  frameworks.WebKit
+                  pkgs.darwin.apple_sdk_12_3.frameworks.ScreenCaptureKit
+                ]
+              );
+          };
+
           #
           #
           #    $ nix develop github:r17x/nixpkgs#bun

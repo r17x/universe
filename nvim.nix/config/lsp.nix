@@ -224,9 +224,9 @@
       eslint.enable = true;
       eslint.autostart = true;
 
-      ts-ls.enable = true;
-      ts-ls.autostart = true;
-      ts-ls.rootDir = # lua
+      ts_ls.enable = true;
+      ts_ls.autostart = true;
+      ts_ls.rootDir = # lua
         ''
           require('lspconfig.util').root_pattern('.git')
         '';
@@ -291,16 +291,16 @@
         ];
       };
 
-      lua-ls.enable = true;
-      lua-ls.autostart = true;
+      lua_ls.enable = true;
+      lua_ls.autostart = true;
 
-      nil-ls.enable = true;
-      nil-ls.autostart = true;
+      nil_ls.enable = true;
+      nil_ls.autostart = true;
 
-      rust-analyzer.enable = true;
-      rust-analyzer.autostart = true;
-      rust-analyzer.installCargo = false;
-      rust-analyzer.installRustc = false;
+      rust_analyzer.enable = true;
+      rust_analyzer.autostart = true;
+      rust_analyzer.installCargo = false;
+      rust_analyzer.installRustc = false;
 
       nixd.enable = true;
       nixd.autostart = true;
@@ -317,11 +317,11 @@
 
   plugins.lsp-format.enable = true;
   plugins.lsp-format.setup.ts.order = [
-    "ts-ls"
+    "ts_ls"
     "eslint"
   ];
   plugins.lsp-format.setup.js.order = [
-    "ts-ls"
+    "ts_ls"
     "eslint"
   ];
 

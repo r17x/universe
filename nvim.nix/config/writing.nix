@@ -89,31 +89,36 @@
     {
       __unkeyed-1 = "mp";
       __unkeyed-2 = "<cmd>MarkdownPreview<cr>";
-      desc = icons.withIcon "git" "Preview Markdown";
+      icon = icons.space.right "markdown";
+      desc = "Preview Markdown";
     }
 
     {
       __unkeyed-1 = "<leader>tv";
-      __unkeyed-2 = ":lua Toggle_venn()<CR>";
-      desc = icons.withIcon "git" "Toggle Venn";
+      __unkeyed-2 = "<cmd>lua Toggle_venn()<CR>";
+      icon = icons.space.right "wand";
+      desc = "Toggle Venn";
     }
 
     {
       __unkeyed-1 = "<leader>oj";
       __unkeyed-2 = "<cmd>Neorg journal today<cr>";
-      desc = icons.withIcon "git" "Journal Today";
+      icon = icons.space.right "journal";
+      desc = "Journal Today";
     }
 
     {
       __unkeyed-1 = "<leader>oh";
       __unkeyed-2 = "<cmd>Neorg workspace home<cr>";
-      desc = icons.withIcon "git" "Open Neorg Home";
+      icon = icons.space.right "house";
+      desc = "Open Neorg Home";
     }
 
     {
       __unkeyed-1 = "<leader>zm";
       __unkeyed-2 = "<cmd>ZenMode<cr>";
-      desc = icons.withIcon "git" "Focus like a Japanese Philosopher 🧘";
+      icon = icons.space.right "philosopher";
+      desc = "Focus like a Japanese Philosopher";
     }
 
   ];

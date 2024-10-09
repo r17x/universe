@@ -13,85 +13,92 @@
 
     {
       __unkeyed-1 = "<leader>ca";
-      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>AvanteAsk<cr>";
+      __unkeyed-2 = "<cmd>AvanteAsk<cr>";
+      icon = icons.space.right "robotFace";
       desc = "Open AI Ask";
     }
 
     {
       __unkeyed-1 = "<leader>cc";
-      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>AvanteChat<cr>";
+      __unkeyed-2 = "<cmd>AvanteChat<cr>";
+      icon = icons.space.right "robotFace";
       desc = "Open AI Chat";
     }
 
     {
       __unkeyed-1 = "<leader>ce";
-      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>AvanteEdit<cr>";
+      __unkeyed-2 = "<cmd>AvanteEdit<cr>";
+      icon = icons.space.right "robotFace";
       desc = "Edit with instruction";
     }
 
     {
       __unkeyed-1 = "<leader>cg";
-      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTRun grammar_correction<cr>";
+      __unkeyed-2 = "<cmd>ChatGPTRun grammar_correction<cr>";
+      icon = icons.space.right "robotFace";
       desc = "Grammar Correction";
     }
 
     {
       __unkeyed-1 = "<leader>ct";
-      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTRun translate<cr>";
+      __unkeyed-2 = "<cmd>ChatGPTRun translate<cr>";
+      icon = icons.space.right "robotFace";
       desc = "Translate";
     }
 
     {
       __unkeyed-1 = "<leader>ck";
-      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTRun keywords<cr>";
+      __unkeyed-2 = "<cmd>ChatGPTRun keywords<cr>";
+      icon = icons.space.right "robotFace";
       desc = "Keywords";
     }
 
     {
       __unkeyed-1 = "<leader>cd";
-      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTRun docstring<cr>";
+      __unkeyed-2 = "<cmd>ChatGPTRun docstring<cr>";
+      icon = icons.space.right "robotFace";
       desc = "Docstring";
     }
 
     {
-      __unkeyed-1 = "<leader>ca";
-      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTRun add_tests<cr>";
-      desc = "Add Tests";
-    }
-
-    {
       __unkeyed-1 = "<leader>co";
-      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTRun optimize_code<cr>";
+      __unkeyed-2 = "<cmd>ChatGPTRun optimize_code<cr>";
+      icon = icons.space.right "robotFace";
       desc = "Optimize Code";
     }
 
     {
       __unkeyed-1 = "<leader>cs";
-      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTRun summarize<cr>";
+      __unkeyed-2 = "<cmd>ChatGPTRun summarize<cr>";
+      icon = icons.space.right "robotFace";
       desc = "Summarize";
     }
 
     {
       __unkeyed-1 = "<leader>cf";
-      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTRun fix_bugs<cr>";
+      __unkeyed-2 = "<cmd>ChatGPTRun fix_bugs<cr>";
+      icon = icons.space.right "robotFace";
       desc = "Fix Bugs";
     }
 
     {
       __unkeyed-1 = "<leader>cx";
-      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTRun explain_code<cr>";
+      __unkeyed-2 = "<cmd>ChatGPTRun explain_code<cr>";
+      icon = icons.space.right "robotFace";
       desc = "Explain Code";
     }
 
     {
       __unkeyed-1 = "<leader>cr";
-      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTRun roxygen_edit<cr>";
+      __unkeyed-2 = "<cmd>ChatGPTRun roxygen_edit<cr>";
+      icon = icons.space.right "robotFace";
       desc = "Roxygen Edit";
     }
 
     {
       __unkeyed-1 = "<leader>cl";
-      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTRun code_readability_analysis<cr>";
+      __unkeyed-2 = "<cmd>ChatGPTRun code_readability_analysis<cr>";
+      icon = icons.space.right "robotFace";
       desc = "Code Readability Analysis";
     }
   ];

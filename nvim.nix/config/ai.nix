@@ -1,33 +1,31 @@
-{ pkgs, icons, ... }:
+{ icons, ... }:
 
 {
-  extraPlugins = with pkgs.vimPlugins; [
-    avante-nvim
-    # ChatGPT-nvim 
-  ];
-  extraConfigLuaPost = # lua
-    ''
-      require('avante').setup({
-        provider = "claude",
-        claude = {
-          api_key_name = "cmd:pass show r17x/anthropic",
-          endpoint = "https://api.anthropic.com",
-          model = "claude-3-5-sonnet-20240620",
-          temperature = 0,
-          max_tokens = 4096,
-        },
-      })
-    '';
+  plugins.avante.enable = true;
+  plugins.avante.settings.provider = "claude";
+  plugins.avante.settings.claude.api_key_name = "cmd:pass show r17x/anthropic";
+  plugins.avante.settings.claude.endpoint = "https://api.anthropic.com";
+  plugins.avante.settings.claude.model = "claude-3-5-sonnet-20240620";
+  plugins.avante.settings.claude.temperature = 0;
+  plugins.avante.settings.claude.max_tokens = 4096;
+
   plugins.which-key.settings.spec = [
+
+    {
+      __unkeyed-1 = "<leader>ca";
+      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>AvanteAsk<cr>";
+      desc = "Open AI Ask";
+    }
+
     {
       __unkeyed-1 = "<leader>cc";
-      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPT<cr>";
-      desc = "Open ChatGPT Prompt";
+      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>AvanteChat<cr>";
+      desc = "Open AI Chat";
     }
 
     {
       __unkeyed-1 = "<leader>ce";
-      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>ChatGPTEditWithInstruction<cr>";
+      __unkeyed-2 = icons.withIcon "robotFace" "<cmd>AvanteEdit<cr>";
       desc = "Edit with instruction";
     }
 

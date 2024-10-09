@@ -47,9 +47,12 @@ let
     function = "";
     code = "󰘦 ";
     wand = " ";
+    house = "";
     robotFace = " ";
+    journal = "";
     git = " ";
     gearSM = "⛭";
+    markdown = "";
     checkmark = "✔";
     chevronRight = "";
     chevronDown = "";
@@ -57,6 +60,7 @@ let
     chevronUp = "";
     folder = "";
     folderOpen = "";
+    philosopher = "🧘";
     package = "";
     telescope = "";
     freeBSD = "";
@@ -76,4 +80,12 @@ let
     star = "";
     indent = "▎";
   };
-in icons // { withIcon = iconName: s: "${icons.${iconName}} ${s}"; }
+in
+icons
+// {
+  withIcon = iconName: s: "${icons.${iconName}} ${s}";
+  space = {
+    right = i: "${icons.${i}} ";
+    left = i: " ${icons.${i}}";
+  };
+}

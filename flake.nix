@@ -25,6 +25,9 @@
     nixpkgs-stable.url = "github:NixOS/nixpkgs/release-24.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs.follows = "nixpkgs-unstable";
+    ### -- nix related tools
+    nixd.url = "github:nix-community/nixd";
+    nixd.inputs.nixpkgs.follows = "nixpkgs";
 
     ## -- Languages
     ocaml-overlay.url = "github:nix-ocaml/nix-overlays";

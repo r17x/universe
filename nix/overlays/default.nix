@@ -27,6 +27,7 @@
     });
 
     nixfmt = prev.nixfmt-rfc-style;
+
     sketchybar-app-font = prev.stdenv.mkDerivation {
       name = "sketchybar-app-font";
       src = inputs.sketchybar-app-font;

@@ -153,7 +153,7 @@ nix build github:r17x/universe#darwinConfigurations.$HOSTNAME.system -o /tmp/res
 ```
 
 > [!NOTE]
-> `$HOSTNAME` is only available by [hosts definitions](./nix/hosts/default.nix#L82:L83)
+> `$HOSTNAME` is only available by [hosts definitions](./nix/hosts/default.nix#L107:L108)
 
 ## `Alias` Command List
 

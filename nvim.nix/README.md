@@ -1,6 +1,6 @@
 # Neovim over Nix
 
-I manage and write Neovim configurations in Nix using Nixvim
+I manage and write Neovim configurations in Nix using [Nixvim](https://nix-community.github.io/nixvim/)
 
 ## Configuring
 
@@ -13,9 +13,9 @@ If you add a new configuration file, remember to add it to the
 To test your configuration simply run the following command
 
 ```bash
-nix run .
+nix run .#nvim
 
 # OR
 
-nix run github:r17x/nvim.nix
+nix run github:r17x/universe#nvim
 ```

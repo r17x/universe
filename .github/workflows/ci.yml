@@ -20,6 +20,7 @@ jobs:
       - uses: cachix/install-nix-action@v30
         with:
           github_access_token: ${{ secrets.GH_TOKEN }}
+          extra_nix_config: "experimental-features = nix-command flakes pipe-operators" 
       - uses: cachix/cachix-action@v15
         with:
           name: r17

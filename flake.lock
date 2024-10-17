@@ -525,6 +525,7 @@
         "sops": "sops",
         "styled-ppx": "styled-ppx",
         "ts-rescript": "ts-rescript",
+        "vimPlugins_lackluster": "vimPlugins_lackluster",
         "vimPlugins_supermaven-nvim": "vimPlugins_supermaven-nvim",
         "vimPlugins_vim-rescript": "vimPlugins_vim-rescript"
       }
@@ -714,6 +715,22 @@
       "original": {
         "owner": "nkrkv",
         "repo": "tree-sitter-rescript",
+        "type": "github"
+      }
+    },
+    "vimPlugins_lackluster": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1727077280,
+        "narHash": "sha256-OFRM1rfGnaKZtPnRGUFhprVfDPyVQxgicf8XeSy/K2U=",
+        "owner": "slugbyte",
+        "repo": "lackluster.nvim",
+        "rev": "59d03c9e92cb03351af2904a26e16b6627d2d5db",
+        "type": "github"
+      },
+      "original": {
+        "owner": "slugbyte",
+        "repo": "lackluster.nvim",
         "type": "github"
       }
     },

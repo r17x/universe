@@ -85,6 +85,11 @@
       flake = false;
     };
 
+    vimPlugins_lackluster = {
+      url = "github:slugbyte/lackluster.nvim";
+      flake = false;
+    };
+
     # others 
     ts-rescript = {
       url = "github:nkrkv/tree-sitter-rescript";

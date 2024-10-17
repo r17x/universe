@@ -48,7 +48,12 @@ in
   highlight."@neorg.tags.ranged_verbatim.code_block".link = "Fg";
 
   extraPlugins = with pkgs.vimPlugins; [
+    # theme
     edge
+    lackluster
+    midnight-nvim
+
+    # extra
     unicode-vim
     lualine-lsp-progress
   ];

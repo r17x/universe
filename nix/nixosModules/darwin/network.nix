@@ -1,7 +1,6 @@
 {
   pkgs,
   config,
-  lib,
   ...
 }:
 
@@ -21,11 +20,7 @@
     serviceConfig.ProgramArguments = [
       "${pkgs.dnscrypt-proxy2}/bin/dnscrypt-proxy"
       "-config"
-      (lib.trivial.pipe ./dnscrypt-proxy.toml [
-        builtins.readFile
-        (pkgs.writeText "dnscrypt-proxy.toml")
-        toString
-      ])
+      (builtins.readFile ./dnscrypt-proxy.toml |> pkgs.writeText "dnscrypt-proxy.toml" |> toString)
     ];
   };
 

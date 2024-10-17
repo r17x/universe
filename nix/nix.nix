@@ -33,6 +33,7 @@ in
       max-jobs = "auto";
 
       experimental-features = [
+        "pipe-operators"
         "auto-allocate-uids"
         "ca-derivations"
         "flakes"

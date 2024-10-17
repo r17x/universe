@@ -10,13 +10,31 @@
     let
       icons = import ../nix/icons.nix;
       nixvimLib = inputs.nixvim.lib.${system};
+      helpers = nixvimLib.helpers // {
+        mkLuaFunWithName =
+          name: lua:
+          # lua
+          ''
+            function ${name}()
+              ${lua}
+            end
+          '';
+
+        mkLuaFun =
+          lua: # lua
+          ''
+            function()
+              ${lua}
+            end
+          '';
+      };
       nixvim' = inputs.nixvim.legacyPackages.${system};
       nixvimModule = {
         inherit pkgs;
         module = import ./config; # import the module directly
         # You can use `extraSpecialArgs` to pass additional arguments to your module files
         extraSpecialArgs = {
-          inherit icons branches;
+          inherit icons branches helpers;
         };
       };
       nvim = nixvim'.makeNixvimWithModule nixvimModule;

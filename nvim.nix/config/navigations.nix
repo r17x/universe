@@ -2,7 +2,6 @@
 {
   icons,
   helpers,
-  pkgs,
   ...
 }:
 
@@ -16,10 +15,6 @@ in
 {
   clipboard.register = "unnamed";
 
-  extraPackages = [ pkgs.gh ];
-  extraPlugins = [ pkgs.vimPlugins.telescope-github-nvim ];
-
-  plugins.telescope.enabledExtensions = [ "gh" ];
   plugins.telescope.enable = true;
   plugins.telescope.keymaps.ff.options.desc = "Find by files";
   plugins.telescope.keymaps.ff.action = "find_files";
@@ -65,10 +60,6 @@ in
       mode = "n";
     }
 
-    {
-      __unkeyed-1 = "<c->";
-      mode = "n";
-    }
   ];
 
   plugins.which-key.settings.spec = [

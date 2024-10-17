@@ -1,4 +1,4 @@
-{ icons, ... }:
+{ pkgs, icons, ... }:
 
 let
 
@@ -12,6 +12,10 @@ let
 in
 
 {
+  extraPackages = [ pkgs.gh ];
+  extraPlugins = [ pkgs.vimPlugins.telescope-github-nvim ];
+
+  plugins.telescope.enabledExtensions = [ "gh" ];
   plugins.telescope.keymaps.fgc.options.desc = "Lists git commits.";
   plugins.telescope.keymaps.fgc.action = "git_commits";
   plugins.telescope.keymaps.fgf.options.desc = "Lists buffer's git commits.";
@@ -83,17 +87,15 @@ in
   plugins.neogit.enable = true;
   plugins.git-conflict.enable = true;
 
-  plugins.gitsigns = {
-    enable = true;
-    settings.numhl = true;
-    settings.linehl = false;
-    settings.current_line_blame_opts.virt_text = true;
-    settings.current_line_blame_opts.virt_text_pos = "eol";
-    settings.current_line_blame_opts.ignore_whitespace = false;
-    settings.signs.add.text = icons.plus2;
-    settings.signs.change.text = "┃";
-    settings.signs.delete.text = icons.minus2;
-    settings.signs.topdelete.text = "‾";
-    settings.signs.changedelete.text = "~";
-  };
+  plugins.gitsigns.enable = true;
+  plugins.gitsigns.settings.numhl = true;
+  plugins.gitsigns.settings.linehl = false;
+  plugins.gitsigns.settings.current_line_blame_opts.virt_text = true;
+  plugins.gitsigns.settings.current_line_blame_opts.virt_text_pos = "eol";
+  plugins.gitsigns.settings.current_line_blame_opts.ignore_whitespace = false;
+  plugins.gitsigns.settings.signs.add.text = icons.plus2;
+  plugins.gitsigns.settings.signs.change.text = "┃";
+  plugins.gitsigns.settings.signs.delete.text = icons.minus2;
+  plugins.gitsigns.settings.signs.topdelete.text = "‾";
+  plugins.gitsigns.settings.signs.changedelete.text = "~";
 }

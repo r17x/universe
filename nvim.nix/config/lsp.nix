@@ -357,10 +357,6 @@
       lua_ls.enable = true;
       lua_ls.autostart = true;
 
-      nil_ls.enable = true;
-      nil_ls.autostart = true;
-      nil_ls.settings.formatting.command = null;
-
       rust_analyzer.enable = true;
       rust_analyzer.autostart = true;
       rust_analyzer.installCargo = false;

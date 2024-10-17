@@ -6,6 +6,18 @@ let
     language.org = "";
     language.reason = "";
 
+    vertical = "│";
+    horizontal = "─";
+    top = "↑";
+    bottom = "↓";
+    left = "←";
+    right = "→";
+    paste = "";
+    clipboard = "";
+    save = "";
+    toggle = "";
+    eol = "↩";
+    tab = "⦙";
     circleLeft = "";
     circleLeft1 = "";
     circleRight = "";
@@ -79,6 +91,7 @@ let
     lightbulb = "";
     star = "";
     indent = "▎";
+    dot = "•";
   };
 in
 icons

@@ -95,6 +95,7 @@
       ################################## 
       # Useful Nix related tools
       ################################## 
+      manix
       cachix
       comma # run without install
       telegram-desktop

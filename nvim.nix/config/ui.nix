@@ -6,6 +6,16 @@
   ...
 }:
 let
+  indentBlankLineHighlights = [
+    "RainbowLevel1"
+    "RainbowLevel2"
+    "RainbowLevel3"
+    "RainbowLevel4"
+    "RainbowLevel5"
+    "RainbowLevel6"
+    "RainbowLevel7"
+    "RainbowLevel0"
+  ];
   devicons = {
     norg = {
       icon = icons.language.org;
@@ -58,31 +68,45 @@ in
     lualine-lsp-progress
   ];
 
+  userCommands.StatusLine.desc = "Toggle Status Line";
+  userCommands.StatusLine.command.__raw =
+    helpers.mkLuaFun
+      # lua
+      ''
+        local toggle = function()
+          if vim.g.unhide_lualine == nil then
+            vim.g.unhide_lualine = true
+          end  
+          vim.g.unhide_lualine = not vim.g.unhide_lualine
+          return vim.g.unhide_lualine
+        end
+        require('lualine').hide({ unhide = toggle() })
+      '';
+
   plugins.which-key.settings.spec = [
+
     {
       __unkeyed-1 = "<c-n>";
       __unkeyed-2 = "<cmd>NvimTreeToggle<CR>";
-      desc = icons.withIcon "git" "Open Tree in left side";
+      desc = "Open Tree in left side";
     }
+
     {
-      __unkeyed-1 = "<leader>tl";
-      __unkeyed-2 = "<cmd>lua vim.g.unhide_lualine = not vim.g.unhide_lualine; require('lualine').hide({ unhide = vim.g.unhide_lualine })<cr>";
-      desc = icons.withIcon "git" "Toggle Status Line";
+      __unkeyed-1 = "ts";
+      __unkeyed-2 = "<cmd>StatusLine<cr>";
+      desc = "Toggle Status Line";
     }
+
     {
-      __unkeyed-1 = "<leader>tib";
+      __unkeyed-1 = "ti";
       __unkeyed-2 = "<cmd>IBLToggle<cr>";
-      desc = icons.withIcon "git" "Toggle Indent Blankline";
+      desc = "Toggle Indent Blankline";
     }
+
     {
-      __unkeyed-1 = "<leader>tc";
+      __unkeyed-1 = "tc";
       __unkeyed-2 = "<cmd>ColorizerToggle<cr>";
-      desc = icons.withIcon "git" "Toggle Colorizer";
-    }
-    {
-      __unkeyed-1 = "fhi";
-      __unkeyed-2 = "<cmd>Telescope highlights<cr>";
-      desc = icons.withIcon "git" "Find Highlight Groups";
+      desc = "Toggle Colorizer";
     }
 
   ];
@@ -123,9 +147,22 @@ in
   plugins.nvim-tree.renderer.highlightGit = true;
   plugins.nvim-tree.renderer.indentMarkers.enable = true;
 
-  plugins.indent-blankline.settings.indent.enable = true;
-  plugins.indent-blankline.settings.indent.char = icons.indent;
+  plugins.rainbow-delimiters.enable = true;
+  plugins.rainbow-delimiters.highlight = indentBlankLineHighlights;
+
+  plugins.indent-blankline.enable = true;
+  plugins.indent-blankline.settings.indent.char = "";
+  plugins.indent-blankline.luaConfig.post = # lua
+    ''
+      local hooks = require "ibl.hooks"
+      hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
+    '';
+  plugins.indent-blankline.settings.scope.enabled = true;
+  plugins.indent-blankline.settings.scope.char = icons.indent;
+  plugins.indent-blankline.settings.scope.highlight = indentBlankLineHighlights;
+  plugins.indent-blankline.settings.whitespace.highlight = [ "Whitespace" ];
   plugins.indent-blankline.settings.exclude.buftypes = [
+    "nofile"
     "terminal"
     "neorg"
   ];
@@ -146,7 +183,9 @@ in
       vim.g.elite_mode = 1
 
       vim.opt.list = true
-      vim.opt.listchars:append("eol:↴")
+
+      -- listchars=eol:↴,nbsp:+,tab:> ,trail:-
+      vim.opt.listchars = "eol:${icons.eol},nbsp:+,tab:${icons.tab} ,trail:-"
 
       -- treesitter folding
       vim.cmd [[ set nofoldenable ]]
@@ -172,9 +211,6 @@ in
       vim.g.edge_dim_foreground = 1
       vim.g.edge_dim_inactive_windows = 1
       vim.g.edge_float_style = "bright"
-
-      -- TODO: fix directory creation in Nix befor enable edge_better_performance
-      -- let g:edge_better_performance = 1
     '';
 
   plugins.web-devicons.enable = true;
@@ -551,16 +587,4 @@ in
   #   "zathurarc"
   #   "zig"
   # ];
-
-  plugins.rainbow-delimiters.enable = true;
-  plugins.rainbow-delimiters.highlight = [
-    "RainbowLevel1"
-    "RainbowLevel2"
-    "RainbowLevel3"
-    "RainbowLevel4"
-    "RainbowLevel5"
-    "RainbowLevel6"
-    "RainbowLevel7"
-    "RainbowLevel0"
-  ];
 }

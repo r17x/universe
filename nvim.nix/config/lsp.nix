@@ -1,54 +1,36 @@
-{ icons, pkgs, ... }:
+{
+  icons,
+  pkgs,
+  helpers,
+  ...
+}:
 
 {
   highlightOverride.LspInlayHint.link = "InclineNormalNc";
 
-  extraPackages = [ pkgs.nixfmt ];
+  extraPackages = with pkgs; [
+    nixfmt
+    manix
+  ];
 
   extraPlugins = with pkgs.vimPlugins; [
+    telescope-manix
     vim-rescript
-    supermaven-nvim
-    nlsp-settings-nvim
   ];
 
   # make custom command
-  extraConfigLuaPre = # lua
-    ''
-      vim.api.nvim_create_user_command('LspInlay',function()
+  userCommands.LspInlay.desc = "Toggle Inlay Hints";
+  userCommands.LspInlay.command.__raw =
+    helpers.mkLuaFun
+      # lua
+      ''
         vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-      end,{})
-    '';
+      '';
 
   extraConfigLuaPost = # lua
     ''
-      local lspconfig = require('lspconfig')
-      lspconfig.rescriptls.setup{}
-      lspconfig.ocamllsp.setup({
-        settings = {
-          codelens = { enable = false },
-          extendedHover = { enable = true },
-          duneDiagnostics = {enable = false },
-          inlayHints = { enable = true },
-        }
-      })
-
       -- ft:rust didn't respect my tabstop=2 - I love you but not me
       vim.g.rust_recommended_style = false
-
-      -- supermaven
-      require("supermaven-nvim").setup({
-        disable_keymaps = true
-      })
-
-      -- nlsp-settings
-      local nlspsettings = require("nlspsettings")
-      nlspsettings.setup({
-        config_home = vim.fn.expand('$HOME/.nlsp-settings'),
-        local_settings_dir = ".nlsp-settings",
-        local_settings_root_markers_fallback = { '.git' },
-        append_default_schemas = true,
-        loader = 'json'
-      })
     '';
 
   filetype.extension = {
@@ -56,154 +38,235 @@
     "rei" = "reason";
   };
 
+  plugins.telescope.enabledExtensions = [ "manix" ];
+  plugins.telescope.keymaps.fN.options.desc = "Find with manix";
+  plugins.telescope.keymaps.fN.action = "manix";
+
   plugins.which-key.settings.spec = [
     {
       __unkeyed-1 = "//";
       __unkeyed-2 = "<cmd>nohlsearch<cr>";
-      desc = icons.withIcon "git" "Clear search highlight";
+      desc = "Clear search highlight";
+
     }
     {
       __unkeyed-1 = "<leader><space>";
       __unkeyed-2 = "<cmd>Lspsaga term_toggle<cr>";
-      desc = icons.withIcon "git" "Open Terminal";
+      desc = "Open Terminal";
+
     }
     {
       __unkeyed-1 = "ge";
-      __unkeyed-2 = "<cmd>Trouble diagnostics open<cr>";
-      desc = icons.withIcon "git" "Show diagnostics [Trouble]";
+      __unkeyed-2 = "<cmd>Trouble<cr>";
+      desc = "Show diagnostics";
+
     }
     {
       __unkeyed-1 = "[e";
       __unkeyed-2 = "<cmd>Lspsaga diagnostic_jump_next<cr>";
-      desc = icons.withIcon "git" "Next Diagnostic";
+      desc = "Next Diagnostic";
+
     }
     {
       __unkeyed-1 = "]e";
       __unkeyed-2 = "<cmd>Lspsaga diagnostic_jump_prev<cr>";
-      desc = icons.withIcon "git" "Previous Diagnostic";
+      desc = "Previous Diagnostic";
+
     }
     {
       __unkeyed-1 = "K";
       __unkeyed-2 = "<cmd>Lspsaga hover_doc<cr>";
-      desc = icons.withIcon "git" "Code Hover";
+      desc = "Code Hover";
+
     }
     {
       __unkeyed-1 = "F";
-      __unkeyed-2 = "<cmd>lua vim.lsp.buf.format({ async = true }) <cr>";
-      desc = icons.withIcon "git" "Format the current buffer";
+      __unkeyed-2 = "<cmd>Format<cr>";
+      desc = "Format the current buffer";
+
     }
     {
       __unkeyed-1 = "gl";
       __unkeyed-2 = "<cmd>LspInfo<cr>";
-      desc = icons.withIcon "git" "Show LSP Info";
+      desc = "Show LSP Info";
+
     }
     {
       __unkeyed-1 = "gt";
       __unkeyed-2 = "<cmd>Lspsaga outline<cr>";
-      desc = icons.withIcon "git" "Code Action";
+      desc = "Code Outline";
+
     }
     {
       __unkeyed-1 = "ga";
       __unkeyed-2 = "<cmd>Lspsaga code_action<cr>";
-      desc = icons.withIcon "git" "Code Action";
+      desc = "Code Action";
+
     }
     {
       __unkeyed-1 = "gi";
       __unkeyed-2 = "<cmd>Lspsaga incoming_calls<cr>";
-      desc = icons.withIcon "git" "Incoming Calls";
+      desc = "Incoming Calls";
+
     }
     {
       __unkeyed-1 = "go";
       __unkeyed-2 = "<cmd>Lspsaga outgoing_calls<cr>";
-      desc = icons.withIcon "git" "Outgoing Calls";
+      desc = "Outgoing Calls";
+
     }
     {
       __unkeyed-1 = "gD";
       __unkeyed-2 = "<cmd>Lspsaga goto_definition<cr>";
-      desc = icons.withIcon "git" "Go to Definition";
+      desc = "Go to Definition";
+
     }
     {
       __unkeyed-1 = "gd";
       __unkeyed-2 = "<cmd>Lspsaga peek_definition<cr>";
-      desc = icons.withIcon "git" "Peek Definition";
+      desc = "Peek Definition";
+
     }
     {
       __unkeyed-1 = "gr";
       __unkeyed-2 = "<cmd>Lspsaga rename<cr>";
-      desc = icons.withIcon "git" "Code Rename";
+      desc = "Code Rename";
+      icon = icons.gearSM;
+
     }
     {
       __unkeyed-1 = "gs";
       __unkeyed-2 = ''<cmd>lua require("wtf").search() <cr>'';
-      desc = icons.withIcon "git" "Search diagnostic with Google";
+      desc = "Search diagnostic with Google";
+
     }
     {
-      __unkeyed-1 = "gcf";
+      __unkeyed-1 = "gF";
       __unkeyed-2 = "<cmd>Lspsaga finder<cr>";
-      desc = icons.withIcon "git" "Code Finder";
+      desc = "Code Finder";
+
     }
-    # telescope with lsp
     {
-      __unkeyed-1 = "<leader>tih";
+      __unkeyed-1 = "tI";
       __unkeyed-2 = "<cmd>LspInlay<cr>";
-      desc = icons.withIcon "git" "Toggle Inlay Hints";
-    }
-    {
-      __unkeyed-1 = "fnix";
-      __unkeyed-2 = "<cmd>Telescope manix<cr>";
-      desc = icons.withIcon "git" "Find nix with man|nix";
+      desc = "Toggle Inlay Hints";
+
     }
     {
       __unkeyed-1 = "flr";
       __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_references()<cr>";
-      desc = icons.withIcon "git" "[Lsp] Find References";
+      desc = "[Lsp] Find References";
     }
     {
       __unkeyed-1 = "fic";
       __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_incoming_calls()<cr>";
-      desc = icons.withIcon "git" "[Lsp] Find Incoming Calls";
+
     }
     {
       __unkeyed-1 = "foc";
       __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_outgoing_calls()<cr>";
-      desc = icons.withIcon "git" "[Lsp] Find Outgoing Calls";
+      desc = "[Lsp] Find Outgoing Calls";
     }
     {
       __unkeyed-1 = "fds";
       __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_document_symbols()<cr>";
-      desc = icons.withIcon "git" "[Lsp] Find Document Symbols";
+      desc = "[Lsp] Find Document Symbols";
     }
     {
       __unkeyed-1 = "fws";
       __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_workspace_symbols()<cr>";
-      desc = icons.withIcon "git" "[Lsp] Find Workspace Symbols";
+      desc = "[Lsp] Find Workspace Symbols";
     }
     {
       __unkeyed-1 = "fdws";
       __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_dynamic_workspace_symbols()<cr>";
-      desc = icons.withIcon "git" "[Lsp] Find Dynamic Workspace Symbols";
+      desc = "[Lsp] Find Dynamic Workspace Symbols";
     }
     {
       __unkeyed-1 = "fld";
       __unkeyed-2 = "<cmd>lua require'telescope.builtin'.diagnostics()<cr>";
-      desc = icons.withIcon "git" "[Lsp] Find Diagnostics";
+      desc = "[Lsp] Find Diagnostics";
     }
     {
       __unkeyed-1 = "fli";
       __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_implementations()<cr>";
-      desc = icons.withIcon "git" "[Lsp] Find Implementations";
+      desc = "[Lsp] Find Implementations";
     }
     {
       __unkeyed-1 = "flD";
       __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_definitions()<cr>";
-      desc = icons.withIcon "git" "[Lsp] Find Definitions";
+      desc = "[Lsp] Find Definitions";
     }
     {
       __unkeyed-1 = "flt";
       __unkeyed-2 = "<cmd>lua require'telescope.builtin'.lsp_type_definitions()<cr>";
-      desc = icons.withIcon "git" "[Lsp] Find Type Definitions";
+      desc = "[Lsp] Find Type Definitions";
+    }
+  ];
+
+  plugins.typescript-tools.enable = true;
+  plugins.typescript-tools.settings.codeLens = "references_only";
+  plugins.typescript-tools.settings.completeFunctionCalls = true;
+  plugins.typescript-tools.settings.exposeAsCodeAction = "all";
+  plugins.typescript-tools.handlers = {
+    "textDocument/publishDiagnostics" =
+      # lua
+      ''
+        require("typescript-tools.api").filter_diagnostics(
+          -- Ignore 'This may be converted to an async function' diagnostics.
+          { 80006 }
+        )
+      '';
+  };
+
+  autoCmd = [
+    {
+      event = [
+        "BufEnter"
+        "VimEnter"
+      ];
+      pattern = [
+        ".res"
+        ".resi"
+      ];
+      callback.__raw =
+        helpers.mkLuaFun
+          # lua
+          ''
+            require('lspconfig').rescriptls.setup({})
+          '';
     }
 
+    {
+      event = [ "LspAttach" ];
+      callback.__raw = # lua
+        ''
+          function()
+            local bufnr = vim.api.nvim_get_current_buf()
+            local clients = vim.lsp.get_active_clients()
+            local is_biome_active = function()
+              for _, client in ipairs(clients) do
+                if client.name == "biome" and client.attached_buffers[bufnr] then
+                  return true
+                end
+              end
+              return false
+            end
+
+            for _, client in ipairs(clients) do
+              if is_biome_active() then
+                if client.name == "typescript-tools" or client.name == "jsonls" then
+                  client.server_capabilities.documentFormattingProvider = false
+                  client.server_capabilities.documentRangeFormattingProvider = false
+                end
+                if client.name == "eslint" then
+                  client.stop()
+                end
+              end
+            end
+          end
+        '';
+    }
   ];
 
   plugins.lsp = {
@@ -224,8 +287,8 @@
       eslint.enable = true;
       eslint.autostart = true;
 
-      ts_ls.enable = true;
-      ts_ls.autostart = true;
+      ts_ls.enable = false;
+      ts_ls.autostart = false;
       ts_ls.rootDir = # lua
         ''
           require('lspconfig.util').root_pattern('.git')
@@ -296,11 +359,19 @@
 
       nil_ls.enable = true;
       nil_ls.autostart = true;
+      nil_ls.settings.formatting.command = null;
 
       rust_analyzer.enable = true;
       rust_analyzer.autostart = true;
       rust_analyzer.installCargo = false;
       rust_analyzer.installRustc = false;
+
+      ocamllsp.enable = true;
+      ocamllsp.autostart = true;
+      ocamllsp.settings.codelens.enable = false;
+      ocamllsp.settings.extendedHover.enable = true;
+      ocamllsp.settings.duneDiagnostics.enable = false;
+      ocamllsp.settings.inlayHints.enable = true;
 
       nixd.enable = true;
       nixd.autostart = true;
@@ -316,14 +387,6 @@
   };
 
   plugins.lsp-format.enable = true;
-  plugins.lsp-format.setup.ts.order = [
-    "ts_ls"
-    "eslint"
-  ];
-  plugins.lsp-format.setup.js.order = [
-    "ts_ls"
-    "eslint"
-  ];
 
   plugins.lspkind.enable = true;
   plugins.lspkind.symbolMap.Codeium = icons.code;
@@ -347,7 +410,6 @@
         local strings = vim.split(kind.kind, "%s", { trimempty = true })
         kind.kind = " " .. (strings[1] or "") .. " "
         kind.menu = "   ⌈" .. (strings[2] or "") .. "⌋"
-
         return kind
       end
     '';
@@ -359,88 +421,64 @@
   plugins.lspsaga.ui.codeAction = icons.gearSM;
 
   plugins.trouble.enable = true;
-  # TODO: move plugin configuration when needed secrets
-  plugins.codeium-nvim.enable = true;
-  plugins.codeium-nvim.settings.config_path.__raw = # lua
-    ''
-      vim.env.HOME .. '/.config/sops-nix/secrets/codeium'
-    '';
   plugins.wtf.enable = true;
   plugins.nvim-autopairs.enable = true;
 
   plugins.cmp.enable = true;
-  plugins.cmp.autoEnableSources = false;
+  plugins.cmp.autoEnableSources = true;
+  plugins.cmp.settings.sources = [
+    { name = "nvim_lsp"; }
+    { name = "nvim_lsp_signature_help"; }
+    { name = "nvim_lsp_document_symbol"; }
+    { name = "luasnip"; }
+    { name = "calc"; }
+
+    {
+      name = "npm";
+      keyword_length = 4;
+    }
+    {
+      name = "emoji";
+      trigger_characters = [ ":" ];
+    }
+    { name = "async_path"; }
+  ];
 
   plugins.cmp.settings.experimental.ghost_text = true;
-
   plugins.cmp.settings.performance.debounce = 60;
   plugins.cmp.settings.performance.fetching_timeout = 200;
   plugins.cmp.settings.performance.max_view_entries = 30;
-
   plugins.cmp.settings.window.completion.winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None";
   plugins.cmp.settings.window.completion.border = "rounded";
   plugins.cmp.settings.window.documentation.border = "rounded";
   plugins.cmp.settings.window.completion.col_offset = -3;
   plugins.cmp.settings.window.completion.side_padding = 0;
-
   plugins.cmp.settings.formatting.expandable_indicator = true;
   plugins.cmp.settings.formatting.fields = [
     "kind"
     "abbr"
     "menu"
   ];
-
-  plugins.cmp.settings.mapping."<C-Space>" = "cmp.mapping.complete()";
-  plugins.cmp.settings.mapping."<C-d>" = "cmp.mapping.scroll_docs(-4)";
-  plugins.cmp.settings.mapping."<C-e>" = "cmp.mapping.close()";
-  plugins.cmp.settings.mapping."<C-f>" = "cmp.mapping.scroll_docs(4)";
-  plugins.cmp.settings.mapping."<CR>" = "cmp.mapping.confirm({ select = true })";
-  plugins.cmp.settings.mapping."<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
-  plugins.cmp.settings.mapping."<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
-
   plugins.cmp.settings.snippet.expand = # lua
     ''
       function(args) require('luasnip').lsp_expand(args.body) end
     '';
 
-  plugins.cmp-nvim-lsp.enable = true;
-  plugins.cmp-nvim-lsp-document-symbol.enable = true;
-  plugins.cmp-nvim-lsp-signature-help.enable = true;
-  plugins.cmp_luasnip.enable = true;
-  plugins.cmp-async-path.enable = true;
-  plugins.cmp-buffer.enable = true;
-  plugins.cmp-cmdline.enable = true;
-  plugins.cmp-spell.enable = false;
-  plugins.cmp-dictionary.enable = false;
-  plugins.cmp-treesitter.enable = false;
-  plugins.cmp-fish.enable = false;
-  plugins.cmp-tmux.enable = false;
-  plugins.cmp-emoji.enable = true;
+  plugins.cmp.settings.mapping."<C-e>" = "cmp.mapping.complete()";
+  plugins.cmp.settings.mapping."<S-e>" = "cmp.mapping.close()";
+  plugins.cmp.settings.mapping."<C-f>" = "cmp.mapping.scroll_docs(4)";
+  plugins.cmp.settings.mapping."<S-f>" = "cmp.mapping.scroll_docs(-4)";
+  plugins.cmp.settings.mapping."<CR>" = "cmp.mapping.confirm({ select = true })";
+  plugins.cmp.settings.mapping."<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
+  plugins.cmp.settings.mapping."<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
 
-  plugins.cmp.settings.sources.__raw = # lua
-    ''
-      cmp.config.sources({
-        { name = 'nvim_lsp' },
-        { name = 'nvim_lsp_signature_help' },
-        { name = 'nvim_lsp_document_symbol' },
-        { name = 'codeium' },
-        { name = 'supermaven' },
-        { name = 'luasnip' }, 
-        { name = 'neorg' },
-        { name = 'emoji' },
-        { name = 'async_path' },
-      }, {
-        { name = 'buffer' },
-        { name = 'cmdline' },
-      })
-
-    '';
   plugins.cmp.cmdline."/".mapping.__raw = "cmp.mapping.preset.cmdline()";
   plugins.cmp.cmdline."/".sources = [ { name = "buffer"; } ];
   plugins.cmp.cmdline."?".mapping.__raw = "cmp.mapping.preset.cmdline()";
   plugins.cmp.cmdline."?".sources = [ { name = "buffer"; } ];
   plugins.cmp.cmdline.":".mapping.__raw = "cmp.mapping.preset.cmdline()";
   plugins.cmp.cmdline.":".sources = [
+    { name = "buffer"; }
     { name = "async_path"; }
     {
       name = "cmdline";

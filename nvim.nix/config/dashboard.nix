@@ -30,7 +30,7 @@
             action = "Telescope oldfiles";
           }
           {
-            key = "<S> f g";
+            key = "<S> f F";
             icon = "${icons.word} ";
             desc = "Find Word ";
             action = "Telescope live_grep";

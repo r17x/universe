@@ -2,6 +2,7 @@
   branches,
   icons,
   pkgs,
+  helpers,
   ...
 }:
 
@@ -24,15 +25,29 @@
 
   autoCmd = [
     {
-      event = [ "BufEnter" ];
+      event = [
+        "BufEnter"
+        "VimEnter"
+      ];
       pattern = [ "*.norg" ];
-      command = "setlocal wrap";
+      callback.__raw =
+        helpers.mkLuaFun
+          # lua
+          ''
+            if _neorg_module_autocommand_triggered == nil then
+              vim.cmd [[ NeorgStart ]]
+            end
+            vim.cmd[[ setlocal wrap ]]
+          '';
     }
   ];
 
   extraPlugins = with pkgs.vimPlugins; [
     venn-nvim
     neorg-telescope
+  ];
+  plugins.cmp.settings.sources = [
+    { name = "neorg"; }
   ];
 
   plugins.telescope.enabledExtensions = [ "neorg" ];
@@ -57,32 +72,32 @@
   plugins.telescope.keymaps.fnc.options.desc = "Find Neorg Context Tasks";
   plugins.telescope.keymaps.fnc.action = "neorg find_context_tasks";
 
-  extraConfigLuaPre = # lua
-    ''
-      -- venn.nvim: enable or disable keymappings
-      function _G.Toggle_venn()
-          local venn_enabled = vim.inspect(vim.b.venn_enabled)
-          if venn_enabled == "nil" then
-              vim.b.venn_enabled = true
-              vim.cmd[[setlocal ve=all]]
-              -- draw a line on HJKL keystokes
-              vim.api.nvim_buf_set_keymap(0, "n", "J", "<C-v>j:VBox<CR>", {noremap = true})
-              vim.api.nvim_buf_set_keymap(0, "n", "K", "<C-v>k:VBox<CR>", {noremap = true})
-              vim.api.nvim_buf_set_keymap(0, "n", "L", "<C-v>l:VBox<CR>", {noremap = true})
-              vim.api.nvim_buf_set_keymap(0, "n", "H", "<C-v>h:VBox<CR>", {noremap = true})
-              -- draw a box by pressing "f" with visual selection
-              vim.api.nvim_buf_set_keymap(0, "v", "f", ":VBox<CR>", {noremap = true})
-          else
-              vim.cmd[[setlocal ve=]]
-              vim.api.nvim_buf_del_keymap(0, "n", "J")
-              vim.api.nvim_buf_del_keymap(0, "n", "K")
-              vim.api.nvim_buf_del_keymap(0, "n", "L")
-              vim.api.nvim_buf_del_keymap(0, "n", "H")
-              vim.api.nvim_buf_del_keymap(0, "v", "f")
-              vim.b.venn_enabled = nil
-          end
-      end
-    '';
+  userCommands.Venn.desc = "Toggle Venn";
+  userCommands.Venn.command.__raw =
+    helpers.mkLuaFun
+      # lua
+      ''
+        local venn_enabled = vim.inspect(vim.b.venn_enabled)
+        if venn_enabled == "nil" then
+            vim.b.venn_enabled = true
+            vim.cmd[[setlocal ve=all]]
+            -- draw a line on HJKL keystokes
+            vim.api.nvim_buf_set_keymap(0, "n", "J", "<C-v>j:VBox<CR>", {noremap = true})
+            vim.api.nvim_buf_set_keymap(0, "n", "K", "<C-v>k:VBox<CR>", {noremap = true})
+            vim.api.nvim_buf_set_keymap(0, "n", "L", "<C-v>l:VBox<CR>", {noremap = true})
+            vim.api.nvim_buf_set_keymap(0, "n", "H", "<C-v>h:VBox<CR>", {noremap = true})
+            -- draw a box by pressing "f" with visual selection
+            vim.api.nvim_buf_set_keymap(0, "v", "f", ":VBox<CR>", {noremap = true})
+        else
+            vim.cmd[[setlocal ve=]]
+            vim.api.nvim_buf_del_keymap(0, "n", "J")
+            vim.api.nvim_buf_del_keymap(0, "n", "K")
+            vim.api.nvim_buf_del_keymap(0, "n", "L")
+            vim.api.nvim_buf_del_keymap(0, "n", "H")
+            vim.api.nvim_buf_del_keymap(0, "v", "f")
+            vim.b.venn_enabled = nil
+        end
+      '';
 
   plugins.which-key.settings.spec = [
 
@@ -94,10 +109,10 @@
     }
 
     {
-      __unkeyed-1 = "<leader>tv";
-      __unkeyed-2 = "<cmd>lua Toggle_venn()<CR>";
+      __unkeyed-1 = "tv";
+      __unkeyed-2 = "<cmd>Venn<CR>";
       icon = icons.space.right "wand";
-      desc = "Toggle Venn";
+      desc = "Toggle Venn [Ascii Draw Diagram]";
     }
 
     {
@@ -139,20 +154,8 @@
             home = "~/.config/nixpkgs/notes";
             secret = "~/.config/nixpkgs/secrets";
           };
-
         };
       };
-      "core.highlights" = { };
-      "core.defaults" = {
-        __empty = null;
-      };
-      "core.keybinds" = {
-        config.neorg_leader = "<Leader>";
-      };
-      "core.integrations.treesitter" = {
-        config.install_parsers = false;
-      };
-      "core.integrations.telescope" = { };
       "core.concealer" = {
         config = {
           folds = true;
@@ -161,25 +164,20 @@
           icons.code_block.conceal = true;
         };
       };
-      "core.completion" = {
-        config = {
-          engine = "nvim-cmp";
-        };
-      };
       "core.esupports.metagen" = {
         config = {
           author = "r17x";
           type = "auto";
         };
       };
-      "core.presenter" = {
-        config = {
-          zen_mode = "zen-mode";
-        };
-      };
-      "core.summary" = {
-        config.strategy = "by_path";
-      };
+      "core.highlights" = { };
+      "core.defaults".__empty = null;
+      "core.keybinds".config.neorg_leader = "<Leader>";
+      "core.integrations.treesitter".config.install_parsers = false;
+      "core.integrations.telescope" = { };
+      "core.completion".config.engine = "nvim-cmp";
+      "core.presenter".config.zen_mode = "zen-mode";
+      "core.summary".config.strategy = "by_path";
       "core.ui" = { };
       "core.ui.calendar" = { };
     };

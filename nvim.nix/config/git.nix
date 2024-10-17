@@ -1,102 +1,83 @@
-{ icons, helpers, ... }:
+{ icons, ... }:
 
 let
-  inherit (helpers) mkRaw;
 
-  gs.toggle_signs = mkRaw "require'gitsigns'.toggle_signs";
-  gs.toggle_numhl = mkRaw "require'gitsigns'.toggle_numhl";
-  gs.toggle_linehl = mkRaw "require'gitsigns'.toggle_linehl";
-  gs.toggle_word_diff = mkRaw "require'gitsigns'.toggle_word_diff";
-  gs.toggle_deleted = mkRaw "require'gitsigns'.toggle_deleted";
-  gs.toggle_current_line_blame = mkRaw "require'gitsigns'.toggle_current_line_blame";
+  gs.toggle_signs = "require'gitsigns'.toggle_signs";
+  gs.toggle_numhl = "require'gitsigns'.toggle_numhl";
+  gs.toggle_linehl = "require'gitsigns'.toggle_linehl";
+  gs.toggle_word_diff = "require'gitsigns'.toggle_word_diff";
+  gs.toggle_deleted = "require'gitsigns'.toggle_deleted";
+  gs.toggle_current_line_blame = "require'gitsigns'.toggle_current_line_blame";
 
 in
 
 {
+  plugins.telescope.keymaps.fgc.options.desc = "Lists git commits.";
+  plugins.telescope.keymaps.fgc.action = "git_commits";
+  plugins.telescope.keymaps.fgf.options.desc = "Lists buffer's git commits.";
+  plugins.telescope.keymaps.fgf.action = "git_bcommits";
+  plugins.telescope.keymaps.fgr.options.desc = "Lists buffer's git commits in a range of lines.";
+  plugins.telescope.keymaps.fgr.action = "git_bcommits_range";
+  plugins.telescope.keymaps.fgb.options.desc = "Lists git branches with log preview.";
+  plugins.telescope.keymaps.fgb.action = "git_branches";
+  plugins.telescope.keymaps.fgs.options.desc = "Lists current changes git per file with diff preview and add action.";
+  plugins.telescope.keymaps.fgs.action = "git_status";
+  plugins.telescope.keymaps.fgw.options.desc = "Lists git stash items";
+  plugins.telescope.keymaps.fgw.action = "git_stash";
+  plugins.telescope.keymaps.fGi.options.desc = "Find by Github Issues";
+  plugins.telescope.keymaps.fGi.action = "gh issues";
+  plugins.telescope.keymaps.fGo.options.desc = "Find by Github Pull Requests";
+  plugins.telescope.keymaps.fGo.action = "gh pull_requests";
+  plugins.telescope.keymaps.fGr.options.desc = "Find by Github Actions (run)";
+  plugins.telescope.keymaps.fGr.action = "gh run";
+  plugins.telescope.keymaps.fGs.options.desc = "Find by Github Gist";
+  plugins.telescope.keymaps.fGs.action = "gh gist";
+
   plugins.which-key.settings.spec = [
+
     {
-      __unkeyed-1 = "mg";
+      __unkeyed-1 = "<leader>g";
       __unkeyed-2 = "<cmd>Neogit<CR>";
-      desc = icons.withIcon "git" "Open Neogit";
-    }
-    {
-      __unkeyed-1 = "<leader>gss";
-      __unkeyed-2 = gs.toggle_signs;
-      desc = icons.withIcon "git" "Toggle Sign Column";
-    }
-    {
-      __unkeyed-1 = "<leader>gsn";
-      __unkeyed-2 = gs.toggle_numhl;
-      desc = icons.withIcon "git" "Toggle Num Hightlight";
-    }
-    {
-      __unkeyed-1 = "<leader>gsl";
-      __unkeyed-2 = gs.toggle_linehl;
-      desc = icons.withIcon "git" "Toggle Line Hightlight";
-    }
-    {
-      __unkeyed-1 = "<leader>gsw";
-      __unkeyed-2 = gs.toggle_word_diff;
-      desc = icons.withIcon "git" "Toggle Word Diff";
-    }
-    {
-      __unkeyed-1 = "<leader>gsd";
-      __unkeyed-2 = gs.toggle_deleted;
-      desc = icons.withIcon "git" "Toggle Deleted";
-    }
-    {
-      __unkeyed-1 = "<leader>gsb";
-      __unkeyed-2 = gs.toggle_current_line_blame;
-      desc = icons.withIcon "git" "Toggle Current line blame";
+      icon = icons.git;
+      desc = "Open Neogit";
     }
 
     {
-      __unkeyed-1 = "fghi";
-      __unkeyed-2 = "<cmd>Telescope gh issues<cr>";
-    }
-    {
-      __unkeyed-1 = "fghp";
-      __unkeyed-2 = "<cmd>Telescope gh pull_request<cr>";
-    }
-    {
-      __unkeyed-1 = "fghg";
-      __unkeyed-2 = "<cmd>Telescope gh gist<cr>";
-    }
-    {
-      __unkeyed-1 = "fghr";
-      __unkeyed-2 = "<cmd>Telescope gh run<cr>";
+      __unkeyed-1 = "tgs";
+      __unkeyed-2.__raw = gs.toggle_signs;
+      desc = "Toggle Sign Column";
     }
 
     {
-      __unkeyed-1 = "fgc";
-      __unkeyed-2 = "<cmd>Telescope git_commits<cr>";
-      desc = icons.withIcon "git" "Lists git commits with diff preview, checkout action <cr>, reset mixed <C-r>m, reset soft <C-r>s and reset hard <C-r>h";
+      __unkeyed-1 = "tgn";
+      __unkeyed-2.__raw = gs.toggle_numhl;
+      desc = "Toggle Num Hightlight";
     }
+
     {
-      __unkeyed-1 = "fgf";
-      __unkeyed-2 = "<cmd>Telescope git_bcommits<cr>";
-      desc = icons.withIcon "git" "Lists buffer's git commits with diff preview and checks them out on <cr>";
+      __unkeyed-1 = "tgl";
+      __unkeyed-2.__raw = gs.toggle_linehl;
+      desc = "Toggle Line Hightlight";
     }
+
     {
-      __unkeyed-1 = "fgr";
-      __unkeyed-2 = "<cmd>Telescope git_bcommits_range<cr>";
-      desc = icons.withIcon "git" "Lists buffer's git commits in a range of lines. Use options from and to to specify the range. In visual mode, lists commits for the selected lines";
+      __unkeyed-1 = "tgw";
+      __unkeyed-2.__raw = gs.toggle_word_diff;
+      desc = "Toggle Word Diff";
     }
+
     {
-      __unkeyed-1 = "fgb";
-      __unkeyed-2 = "<cmd>Telescope git_branches<cr>";
-      desc = icons.withIcon "git" "Lists all branches with log preview, checkout action <cr>, track action <C-t>, rebase action<C-r>, create action <C-a>, switch action <C-s>, delete action <C-d> and merge action <C-y>";
+      __unkeyed-1 = "tgd";
+      __unkeyed-2.__raw = gs.toggle_deleted;
+      desc = "Toggle Deleted";
     }
+
     {
-      __unkeyed-1 = "fgs";
-      __unkeyed-2 = "<cmd>Telescope git_status<cr>";
-      desc = icons.withIcon "git" "Lists current changes per file with diff preview and add action. (Multi-selection still WIP)";
+      __unkeyed-1 = "tgb";
+      __unkeyed-2.__raw = gs.toggle_current_line_blame;
+      desc = "Toggle Current line blame";
     }
-    {
-      __unkeyed-1 = "fgw";
-      __unkeyed-2 = "<cmd>Telescope git_stash<cr>";
-      desc = icons.withIcon "git" "Lists stash items in current repository with ability to apply them on <cr>";
-    }
+
   ];
 
   plugins.neogit.enable = true;

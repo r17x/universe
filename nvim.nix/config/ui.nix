@@ -65,7 +65,7 @@ in
 
     # extra
     unicode-vim
-    lualine-lsp-progress
+    lsp-progress-nvim
   ];
 
   userCommands.StatusLine.desc = "Toggle Status Line";
@@ -197,12 +197,10 @@ in
   colorscheme = "edge";
   extraConfigLuaPre = # lua
     ''
-      vim.cmd [[ 
-        if has('termguicolors') 
-          set guicursor+=n:hor20-Cursor/lCursor
-          set termguicolors 
-        endif 
-      ]]
+      if vim.fn.has('termguicolors') == 1 then
+        vim.opt.guicursor:append('n:hor20-Cursor/lCursor')
+        vim.opt.termguicolors = true
+      end
 
       vim.g.edge_style = "neon"
       vim.g.edge_diagnostic_text_highlight = 1
@@ -211,22 +209,32 @@ in
       vim.g.edge_dim_foreground = 1
       vim.g.edge_dim_inactive_windows = 1
       vim.g.edge_float_style = "bright"
+
+      local lsp_progress = require('lsp-progress')
+      lsp_progress.setup()
+
+      local lualine = require('lualine')
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "LspProgressStatusUpdated",
+        callback = lualine.refresh,
+      })
+
     '';
 
   plugins.web-devicons.enable = true;
 
   # based on {https://github.com/r17x/nixpkgs/blob/main/configs/nvim/lua/config/lualine.lua}
   plugins.lualine.enable = true;
-  plugins.lualine.settings.disabled_filetypes.statusline = [
+  plugins.lualine.settings.theme = "edge";
+  plugins.lualine.settings.options.disabled_filetypes.__unkeyed-1 = "NvimTree";
+  plugins.lualine.settings.options.disabled_filetypes.statusline = [
     "sagaoutline"
-    "NvimTree"
     "Trouble"
   ];
-  plugins.lualine.settings.theme = "edge";
-  plugins.lualine.settings.components_separatos.left = "";
-  plugins.lualine.settings.components_separatos.right = "";
-  plugins.lualine.settings.secction_separators.left = icons.circleRight;
-  plugins.lualine.settings.secction_separators.right = icons.circleLeft;
+  plugins.lualine.settings.options.component_separators.left = "";
+  plugins.lualine.settings.options.component_separators.right = "";
+  plugins.lualine.settings.options.section_separators.left = icons.circleRight;
+  plugins.lualine.settings.options.section_separators.right = icons.circleLeft;
   plugins.lualine.settings.sections.lualine_a = [
     {
       __unkeyed-1 = "mode";
@@ -245,36 +253,33 @@ in
     "diagnostics"
   ];
   plugins.lualine.settings.sections.lualine_x = [
-    {
-      __unkeyed-1 = "lsp_progress";
-      colors.title = "Cyan";
-      separators.component = "";
-      separators.percentage.pre = "";
-      separators.percentage.post = "%% ";
-      separators.title.pre = "";
-      separators.title.post = ": ";
-      displayComponents = [
-        "spinner"
-        "lsp_client_name"
-      ];
-      timer.progressEnddelay = 500;
-      timer.spinner = 1000;
-      timer.lspClientNameEnddelay = 1000;
-      spinnerSymbols = [
-        "⣀"
-        "⣠"
-        "⣴"
-        "⣶"
-        "⣾"
-        "⣿"
-        "⢿"
-        "⡿"
-      ];
-    }
-  ];
-  plugins.lualine.settings.sections.lualine_y = [
     "searchcount"
     "selectioncount"
+  ];
+  plugins.lualine.settings.sections.lualine_y = [
+    {
+      __unkeyed-1.__raw =
+        helpers.mkLuaFun # lua
+          ''
+            return require('lsp-progress').progress({
+              max_size = 80,
+              format = function(messages)
+                  local active_clients =
+                      vim.lsp.get_active_clients()
+                  if #messages > 0 then
+                      return table.concat(messages, " ")
+                  end
+                  local client_names = {}
+                  for _, client in ipairs(active_clients) do
+                      if client and client.name ~= "" then
+                          table.insert(client_names, 1, client.name)
+                      end
+                  end
+                  return table.concat(client_names, "⎹") 
+              end,
+            })
+          '';
+    }
     "filetype"
     "progress"
   ];

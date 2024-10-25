@@ -102,9 +102,34 @@ in
       };
     };
   };
+
   # nix-darwin configurations
   flake.darwinConfigurations = mkDarwinConfigurations {
     eR17 = { };
     eR17x = { };
   };
+
+  flake.nixOnDroidConfigurations.default =
+    let
+      stateVersion = "24.05";
+    in
+    inputs.nix-on-droid.lib.nixOnDroidConfiguration {
+      pkgs = import inputs.nixpkgs { system = "aarch64-linux"; };
+      modules = [
+        {
+          system.stateVersion = stateVersion;
+          nix.extraOptions = ''
+            experimental-features = nix-command flakes
+          '';
+          home-manager.useGlobalPkgs = true;
+          home-manager.config = {
+            home.stateVersion = stateVersion;
+            imports = [
+              self.homeManagerModules.r17-shell
+              self.homeManagerModules.r17-packages
+            ];
+          };
+        }
+      ];
+    };
 }

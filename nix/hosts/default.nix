@@ -114,7 +114,10 @@ in
       stateVersion = "24.05";
     in
     inputs.nix-on-droid.lib.nixOnDroidConfiguration {
-      pkgs = import inputs.nixpkgs { system = "aarch64-linux"; };
+      pkgs = import inputs.nixpkgs {
+        system = "aarch64-linux";
+        overlays = inputs.nixpkgs.lib.attrValues self.overlays;
+      };
       modules = [
         {
           system.stateVersion = stateVersion;
@@ -131,5 +134,7 @@ in
           };
         }
       ];
-    };
+    }
+
+  ;
 }

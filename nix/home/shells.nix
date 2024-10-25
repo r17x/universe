@@ -6,7 +6,7 @@
 }:
 
 let
-  inherit (config.home.user-info) nixConfigDirectory;
+  nixConfigDirectory = "~/.config/nixpkgs";
   # usefull when want to write bin bash
   # n = pkgs.writers.writeBash "n" ''
   #     while getopts p flag

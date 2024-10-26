@@ -247,9 +247,9 @@ in
       __unkeyed-1 = "branch";
       color.fg = "BlueSign";
     }
+    "diff"
   ];
   plugins.lualine.settings.sections.lualine_c = [
-    "diff"
     "diagnostics"
   ];
   plugins.lualine.settings.sections.lualine_x = [

@@ -138,18 +138,24 @@ in
   flake.nixOnDroidConfigurations.default = mkDroidConfiguration rec {
     system = "aarch64-linux";
     modules = [
-      {
-        system.stateVersion = "24.05";
-        home-manager.backupFileExtension = "backup-before-nix";
-        home-manager.useGlobalPkgs = true;
-        home-manager.config = {
-          home.stateVersion = "24.05";
-          home.packages = [ self.packages.${system}.nvim ];
-          imports = [
-            self.homeManagerModules.r17-shell
-          ];
-        };
-      }
+      (
+        { pkgs, ... }:
+        {
+          system.stateVersion = "24.05";
+          home-manager.backupFileExtension = "backup-before-nix";
+          home-manager.useGlobalPkgs = true;
+          home-manager.config = {
+            home.stateVersion = "24.05";
+            home.packages = [
+              pkgs.coreutils
+              self.packages.${system}.nvim
+            ];
+            imports = [
+              self.homeManagerModules.r17-shell
+            ];
+          };
+        }
+      )
     ];
   };
 

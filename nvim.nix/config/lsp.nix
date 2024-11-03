@@ -16,6 +16,7 @@
   extraPlugins = with pkgs.vimPlugins; [
     telescope-manix
     vim-rescript
+    neorepl-nvim
   ];
 
   # make custom command
@@ -44,10 +45,14 @@
 
   plugins.which-key.settings.spec = [
     {
+      __unkeyed-1 = "<leader>r";
+      __unkeyed-2 = "<cmd>Repl<cr>";
+      desc = "Open Repl";
+    }
+    {
       __unkeyed-1 = "//";
       __unkeyed-2 = "<cmd>nohlsearch<cr>";
       desc = "Clear search highlight";
-
     }
     {
       __unkeyed-1 = "<leader><space>";

@@ -93,8 +93,6 @@
               inputs'
               system
               branches
-              nix
-              nixpkgs
               ;
             inputs = lib.mkForce inputs;
           };

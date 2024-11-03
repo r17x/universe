@@ -86,6 +86,32 @@ let
     );
 
   mkDarwinConfigurations = configurations: builtins.mapAttrs mkDarwin configurations;
+
+  mkDroidConfiguration =
+    {
+      system,
+      modules ? [ ],
+    }:
+    withSystem system (
+      ctx:
+      inputs.nix-on-droid.lib.nixOnDroidConfiguration {
+        inherit (ctx) pkgs;
+        modules = [
+          {
+            nix = {
+              inherit (ctx.nix)
+                nixPath
+                registry
+                package
+                ;
+              extraOptions = ''
+                experimental-features = nix-command flakes pipe-operators
+              '';
+            };
+          }
+        ] ++ modules;
+      }
+    );
 in
 
 {
@@ -109,32 +135,22 @@ in
     eR17x = { };
   };
 
-  flake.nixOnDroidConfigurations.default =
-    let
-      stateVersion = "24.05";
-    in
-    inputs.nix-on-droid.lib.nixOnDroidConfiguration {
-      pkgs = import inputs.nixpkgs {
-        system = "aarch64-linux";
-        overlays = inputs.nixpkgs.lib.attrValues self.overlays;
-      };
-      modules = [
-        {
-          system.stateVersion = stateVersion;
-          nix.extraOptions = ''
-            experimental-features = nix-command flakes
-          '';
-          home-manager.useGlobalPkgs = true;
-          home-manager.config = {
-            home.stateVersion = stateVersion;
-            imports = [
-              self.homeManagerModules.r17-shell
-              self.homeManagerModules.r17-packages
-            ];
-          };
-        }
-      ];
-    }
+  flake.nixOnDroidConfigurations.default = mkDroidConfiguration rec {
+    system = "aarch64-linux";
+    modules = [
+      {
+        system.stateVersion = "24.05";
+        home-manager.backupFileExtension = "backup-before-nix";
+        home-manager.useGlobalPkgs = true;
+        home-manager.config = {
+          home.stateVersion = "24.05";
+          home.packages = [ self.packages.${system}.nvim ];
+          imports = [
+            self.homeManagerModules.r17-shell
+          ];
+        };
+      }
+    ];
+  };
 
-  ;
 }

@@ -148,6 +148,8 @@ in
             home.stateVersion = "24.05";
             home.packages = [
               pkgs.coreutils
+              pkgs.gnused
+              pkgs.gawk
               self.packages.${system}.nvim
             ];
             imports = [

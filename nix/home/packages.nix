@@ -39,6 +39,9 @@
       (writeScriptBin "copy" (if stdenv.isDarwin then "pbcopy" else "xsel -ib"))
       (writeScriptBin "paste" (if stdenv.isDarwin then "pbpaste" else "xsel -ob"))
       coreutils
+      gnused
+      gawk
+
       curl
       wget
       tree

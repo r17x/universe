@@ -59,7 +59,12 @@
             overlays = lib.mkForce overlays;
           };
 
-          # Extra arguments passed to the module system for nix-darwin, NixOS, and home-manager
+          /*
+            One can access these nixpkgs branches like so:
+
+            `branches.stable.mpd'
+            `branches.master.linuxPackages_xanmod'
+          */
           branches =
             let
               pkgsFrom =
@@ -75,30 +80,23 @@
               unstable = pkgsFrom inputs.nixpkgs-unstable system;
             };
 
+          /*
+            Extra arguments passed to the module system for:
+
+            `nix-darwin`
+            `NixOS`
+            `home-manager`
+            `nix-on-droid`
+          */
           extraModuleArgs = {
-            inherit inputs' system;
+            inherit
+              inputs'
+              system
+              branches
+              nix
+              nixpkgs
+              ;
             inputs = lib.mkForce inputs;
-
-            /*
-              One can access these nixpkgs branches like so:
-
-              `branches.stable.mpd'
-              `branches.master.linuxPackages_xanmod'
-            */
-            branches =
-              let
-                pkgsFrom =
-                  branch: system:
-                  import branch {
-                    inherit system;
-                    inherit (nixpkgs) config;
-                  };
-              in
-              {
-                master = pkgsFrom inputs.nixpkgs-master system;
-                stable = pkgsFrom inputs.nixpkgs-stable system;
-                unstable = pkgsFrom inputs.nixpkgs-unstable system;
-              };
           };
 
           # NixOS and nix-darwin base environment.systemPackages

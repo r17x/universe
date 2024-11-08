@@ -26,7 +26,6 @@ in
       nix-path = nixPath;
       auto-optimise-store = true;
       accept-flake-config = true;
-      builders-use-substitutes = false;
       download-attempts = 3;
       fallback = true;
       http-connections = 0;

@@ -17,6 +17,7 @@
     telescope-manix
     vim-rescript
     neorepl-nvim
+    luasnip
   ];
 
   # make custom command

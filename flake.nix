@@ -12,6 +12,8 @@
 
       imports = [
         inputs.pre-commit-hooks.flakeModule
+        inputs.process-compose-flake.flakeModule
+
         ./nix
         ./nvim.nix
       ];
@@ -26,25 +28,12 @@
     nixpkgs-stable.url = "github:NixOS/nixpkgs/release-24.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs.follows = "nixpkgs-unstable";
+
     ### -- nix related tools
     nixd.url = "github:nix-community/nixd";
     nixd.inputs.nixpkgs.follows = "nixpkgs";
-
-    ## -- Languages
-    ocaml-overlay.url = "github:nix-ocaml/nix-overlays";
-    ocaml-overlay.inputs.nixpkgs.follows = "nixpkgs";
-    server-reason-react = {
-      url = "github:ml-in-barcelona/server-reason-react";
-      flake = false;
-    };
-    quickjs-ml = {
-      url = "git+https://github.com/ml-in-barcelona/quickjs.ml?submodules=1";
-      flake = false;
-    };
-    styled-ppx = {
-      url = "github:davesnx/styled-ppx?rev=2b69b67ab10244aed612005bd127031f16289cc7";
-      flake = false;
-    };
+    process-compose-flake.url = "github:Platonic-Systems/process-compose-flake";
+    services-flake.url = "github:juspay/services-flake";
 
     ## -- Platform
 
@@ -67,6 +56,22 @@
     nixvim.inputs.nix-darwin.follows = "nix-darwin";
     nixvim.inputs.home-manager.follows = "home-manager";
     nixvim.inputs.flake-parts.follows = "flake-parts";
+
+    ## -- Languages
+    ocaml-overlay.url = "github:nix-ocaml/nix-overlays";
+    ocaml-overlay.inputs.nixpkgs.follows = "nixpkgs";
+    server-reason-react = {
+      url = "github:ml-in-barcelona/server-reason-react";
+      flake = false;
+    };
+    quickjs-ml = {
+      url = "git+https://github.com/ml-in-barcelona/quickjs.ml?submodules=1";
+      flake = false;
+    };
+    styled-ppx = {
+      url = "github:davesnx/styled-ppx?rev=2b69b67ab10244aed612005bd127031f16289cc7";
+      flake = false;
+    };
 
     iamb.url = "github:ulyssa/iamb";
     iamb.inputs.nixpkgs.follows = "nixpkgs";

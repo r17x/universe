@@ -237,3 +237,5 @@ _opam/
 # .pnp.*
 
 **/.tamagui
+
+data/

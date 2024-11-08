@@ -682,6 +682,21 @@
         "type": "github"
       }
     },
+    "process-compose-flake": {
+      "locked": {
+        "lastModified": 1731079499,
+        "narHash": "sha256-ir7WTVpG999N07wkOCs1kwZsQKitOv3CNDqNalCMK3c=",
+        "owner": "Platonic-Systems",
+        "repo": "process-compose-flake",
+        "rev": "018783e68c89f94dbe11ce918d6206e9e4138787",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Platonic-Systems",
+        "repo": "process-compose-flake",
+        "type": "github"
+      }
+    },
     "quickjs-ml": {
       "flake": false,
       "locked": {
@@ -718,8 +733,10 @@
         "nixvim": "nixvim",
         "ocaml-overlay": "ocaml-overlay",
         "pre-commit-hooks": "pre-commit-hooks",
+        "process-compose-flake": "process-compose-flake",
         "quickjs-ml": "quickjs-ml",
         "server-reason-react": "server-reason-react",
+        "services-flake": "services-flake",
         "sketchybar-app-font": "sketchybar-app-font",
         "sops": "sops",
         "styled-ppx": "styled-ppx",
@@ -777,6 +794,21 @@
       "original": {
         "owner": "ml-in-barcelona",
         "repo": "server-reason-react",
+        "type": "github"
+      }
+    },
+    "services-flake": {
+      "locked": {
+        "lastModified": 1730709750,
+        "narHash": "sha256-6moY11QRoTvy6O/YdJhCbruSZpjBk+MHSMFA1xrArHs=",
+        "owner": "juspay",
+        "repo": "services-flake",
+        "rev": "959859889b8bad215834456434a3bbc09ac7c595",
+        "type": "github"
+      },
+      "original": {
+        "owner": "juspay",
+        "repo": "services-flake",
         "type": "github"
       }
     },

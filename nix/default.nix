@@ -27,6 +27,7 @@
           ] ++ lib.attrValues self.overlays;
         in
         rec {
+          icons = import ./icons.nix;
           # the nix package manager configurations and settings.
           nix =
             import ./nix.nix {

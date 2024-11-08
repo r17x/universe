@@ -2,13 +2,13 @@
 {
   perSystem =
     {
+      icons,
       branches,
       pkgs,
       system,
       ...
     }:
     let
-      icons = import ../nix/icons.nix;
       nixvimLib = inputs.nixvim.lib.${system};
       helpers = nixvimLib.helpers // {
         mkLuaFunWithName =

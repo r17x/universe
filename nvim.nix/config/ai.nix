@@ -13,6 +13,39 @@
   plugins.avante.settings.claude.temperature = 0;
   plugins.avante.settings.claude.max_tokens = 4096;
 
+  plugins.avante.settings.vendors.ollama = {
+    local = true;
+    endpoint = "http://localhost:11434/v1";
+    model = "qwen2.5-coder";
+    temperature = 0;
+    max_tokens = 4096;
+    parse_curl_args.__raw = # lua
+      ''
+        function(opts, code_opts)
+            return {
+                url = opts.endpoint .. "/chat/completions",
+                headers = {
+                    ["Accept"] = "application/json",
+                    ["Content-Type"] = "application/json",
+                    ['x-api-key'] = 'ollama',
+                },
+                body = {
+                    model = opts.model,
+                    messages = require("avante.providers").copilot.parse_message(code_opts),
+                    max_tokens = 2048,
+                    stream = true,
+                },
+            }
+        end
+      '';
+    parse_response_data.__raw = # lua
+      ''
+        function(data_stream, event_state, opts)
+          require("avante.providers").openai.parse_response(data_stream, event_state, opts)
+        end
+      '';
+  };
+
   plugins.codeium-nvim.enable = true;
   plugins.codeium-nvim.settings.config_path.__raw = # lua
     ''

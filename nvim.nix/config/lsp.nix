@@ -434,6 +434,7 @@
     { name = "nvim_lsp_document_symbol"; }
     { name = "luasnip"; }
     { name = "calc"; }
+    { name = "yanky"; }
 
     {
       name = "npm";

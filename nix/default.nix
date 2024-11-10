@@ -22,8 +22,10 @@
           inputs.services-flake.processComposeModules.default
         ];
         services.ollama.ollamaX.enable = true;
+        services.ollama.ollamaX.dataDir = "$HOME/.process-compose/ai/data/ollamaX";
         services.ollama.ollamaX.models = [ "qwen2.5-coder" ];
       };
+
       formatter = inputs'.nixpkgs.legacyPackages.nixfmt-rfc-style;
 
       _module.args =

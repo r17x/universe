@@ -17,6 +17,7 @@ in
     system.flake = inputs.self;
     default.flake = inputs.nixpkgs;
     nixpkgs.flake = inputs.nixpkgs;
+    master.flake = inputs.nixpkgs-master;
     nix-darwin.flake = inputs.nix-darwin;
     home-manager.flake = inputs.home-manager;
   };

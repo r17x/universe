@@ -22,10 +22,11 @@ in
     home-manager.flake = inputs.home-manager;
   };
 
+  optimise.automatic = true;
+
   settings =
     {
       nix-path = nixPath;
-      auto-optimise-store = true;
       accept-flake-config = true;
       download-attempts = 3;
       fallback = true;

@@ -470,7 +470,7 @@
     '';
 
   plugins.cmp.settings.mapping."<C-e>" = "cmp.mapping.complete()";
-  plugins.cmp.settings.mapping."<S-e>" = "cmp.mapping.close()";
+  plugins.cmp.settings.mapping."<C-x>" = "cmp.mapping.close()";
   plugins.cmp.settings.mapping."<C-f>" = "cmp.mapping.scroll_docs(4)";
   plugins.cmp.settings.mapping."<S-f>" = "cmp.mapping.scroll_docs(-4)";
   plugins.cmp.settings.mapping."<CR>" = "cmp.mapping.confirm({ select = true })";

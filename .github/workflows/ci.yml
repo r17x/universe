@@ -16,11 +16,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/flake-checker-action@v9
-      - uses: cachix/install-nix-action@v30
+      - uses: DeterminateSystems/nix-installer-action@v16
         with:
-          github_access_token: ${{ secrets.GH_TOKEN }}
-          extra_nix_config: "experimental-features = nix-command flakes pipe-operators" 
+          github-token: ${{ secrets.GH_TOKEN }}
+          extra-conf: "experimental-features = nix-command flakes pipe-operators" 
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: DeterminateSystems/flake-checker-action@v9
       - uses: cachix/cachix-action@v15
         with:
           name: r17

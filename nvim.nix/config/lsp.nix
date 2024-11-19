@@ -211,10 +211,10 @@
   ];
 
   plugins.typescript-tools.enable = true;
-  plugins.typescript-tools.settings.codeLens = "references_only";
-  plugins.typescript-tools.settings.completeFunctionCalls = true;
-  plugins.typescript-tools.settings.exposeAsCodeAction = "all";
-  plugins.typescript-tools.handlers = {
+  plugins.typescript-tools.settings.code_lens = "references_only";
+  plugins.typescript-tools.settings.complete_function_calls = true;
+  plugins.typescript-tools.settings.expose_as_code_action = "all";
+  plugins.typescript-tools.settings.handlers = {
     "textDocument/publishDiagnostics" =
       # lua
       ''
@@ -314,6 +314,7 @@
 
       hls.enable = true;
       hls.autostart = true;
+      hls.installGhc = false;
 
       htmx.enable = !pkgs.stdenv.isDarwin;
       htmx.autostart = true;
@@ -370,6 +371,7 @@
 
       ocamllsp.enable = true;
       ocamllsp.autostart = true;
+      ocamllsp.package = pkgs.ocamlPackages.ocaml-lsp;
       ocamllsp.settings.codelens.enable = false;
       ocamllsp.settings.extendedHover.enable = true;
       ocamllsp.settings.duneDiagnostics.enable = false;

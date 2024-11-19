@@ -325,11 +325,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1731768170,
-        "narHash": "sha256-9Zj2baKY3KaKzs5+nqZgIwr/o/iibhENFxjOnpU+IOU=",
+        "lastModified": 1732016537,
+        "narHash": "sha256-XwXUK+meYnlhdQz2TVE4Wv+tsx1CkdGbDPt1tRzCNH4=",
         "owner": "LnL7",
         "repo": "nix-darwin",
-        "rev": "2bcef10f4319f34ddebadb5f37eaa81ca2510730",
+        "rev": "61cee20168a3ebb71a9efd70a55adebaadfbe4d4",
         "type": "github"
       },
       "original": {
@@ -813,11 +813,11 @@
     "server-reason-react": {
       "flake": false,
       "locked": {
-        "lastModified": 1718805260,
-        "narHash": "sha256-pay8xthDB5KO5sXn5ASQIaOHkNV/TXtL7/kwdGBhEHA=",
+        "lastModified": 1731945542,
+        "narHash": "sha256-vdLz0T0+W78x4qPV0lUyLpPxCJAx581VPcEfSewiPuQ=",
         "owner": "ml-in-barcelona",
         "repo": "server-reason-react",
-        "rev": "8b900ef34efa04c8e73c90682b8d4dc5731f2c05",
+        "rev": "35c95b551e19fac78127e4bfc3e4895e187cf854",
         "type": "github"
       },
       "original": {

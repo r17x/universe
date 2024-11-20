@@ -87,6 +87,11 @@ in
 
       bind v split-pane -h
       bind V split-pane -v
+
+      # TEMPORARY WORKAROUND FOR TMUX SENSIBLE ISSUE
+      set -gu default-command
+      set -g default-shell "$SHELL"
+      # end
     '';
   programs.tmux.tmuxp.enable = config.programs.tmux.enable;
 

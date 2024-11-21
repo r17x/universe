@@ -57,6 +57,12 @@
     nixvim.inputs.home-manager.follows = "home-manager";
     nixvim.inputs.flake-parts.follows = "flake-parts";
 
+    ## -- Ghostty 
+    # UNCOMMENT: when support build for aarch64-darwin or x86_64-darwin
+    # ghostty.url = "git+ssh://git@github.com/ghostty-org/ghostty";
+    # ghostty.inputs.nixpkgs-stable.follows = "nixpkgs";
+    # ghostty.inputs.nixpkgs-unstable.follows = "nixpkgs";
+
     ## -- Languages
     ocaml-overlay.url = "github:nix-ocaml/nix-overlays";
     ocaml-overlay.inputs.nixpkgs.follows = "nixpkgs";

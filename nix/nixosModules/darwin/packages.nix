@@ -2,15 +2,31 @@
 # and found how to create flake, home-manager, and darwin in nix 
 # Here: https://gist.github.com/jmatsushita/5c50ef14b4b96cb24ae5268dab613050
 
-{ branches, pkgs, ... }:
+{
+  lib,
+  branches,
+  pkgs,
+  ...
+}:
 
 {
   # Apps
   environment.systemPackages = with branches.master; [
     raycast
-    iterm2
+    branches.stable.iterm2
     terminal-notifier
   ];
+
+  system.activationScripts.postUserActivation.text =
+    # install ghostty from github release
+    # bash
+    ''
+      cd /tmp && \
+        ${lib.getExe pkgs.gh} release download -R mitchellh/ghostty tip -p 'ghostty-macos-universal.zip' --clobber && \
+        rm -rf ~/Applications/Ghostty.app && \
+        unzip -d ~/Applications ghostty-macos-universal.zip && \
+        rm -f ghostty-macos-universal.zip || exit 0
+    '';
 
   # Fonts
   fonts.packages = with pkgs; [

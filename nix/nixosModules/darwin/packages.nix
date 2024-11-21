@@ -13,7 +13,6 @@
   # Apps
   environment.systemPackages = with branches.master; [
     raycast
-    branches.stable.iterm2
     terminal-notifier
   ];
 

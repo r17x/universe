@@ -66,8 +66,6 @@ in
       set -g pane-active-border-style "fg=$bg_color bg=$bg_color"
       set -sg escape-time 10 
 
-      set -g visual-activity off
-      set -gq allow-passthrough on
       set -g @continuum-boot on
 
       bind " " choose-tree -Zw
@@ -92,6 +90,11 @@ in
       set -gu default-command
       set -g default-shell "$SHELL"
       # end
+
+      # Workaround for image
+      set -gq allow-passthrough on
+      set -g visual-activity off
+      #
     '';
   programs.tmux.tmuxp.enable = config.programs.tmux.enable;
 

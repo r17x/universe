@@ -25,6 +25,9 @@ in
       '';
 
   homebrew.enable = true;
+  homebrew.brews = [
+    "chase/tap/awrit"
+  ];
   homebrew.onActivation.cleanup = "zap";
   homebrew.global.brewfile = true;
 

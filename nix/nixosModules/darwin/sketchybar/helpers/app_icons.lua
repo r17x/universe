@@ -177,6 +177,7 @@ return {
 	["Receipts"] = ":dollar:",
 	["Evernote Legacy"] = ":evernote_legacy:",
 	["OmniFocus"] = ":omni_focus:",
+	["Ghostty"] = ":terminal:",
 	["Terminal"] = ":terminal:",
 	["终端"] = ":terminal:",
 	["Atom"] = ":atom:",

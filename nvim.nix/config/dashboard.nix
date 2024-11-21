@@ -37,7 +37,7 @@
           }
           {
             key = "<S> f n";
-            icon = "${icons.plus2} ";
+            icon = "${icons.plus1} ";
             desc = "New File ";
             action = "new";
           }

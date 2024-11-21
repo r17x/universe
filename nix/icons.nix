@@ -91,6 +91,7 @@ let
     lightbulb = "";
     star = "";
     indent = "▎";
+    pipe = "┃";
     dot = "•";
   };
 in

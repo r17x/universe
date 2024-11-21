@@ -93,8 +93,8 @@ in
   plugins.gitsigns.settings.current_line_blame_opts.virt_text = true;
   plugins.gitsigns.settings.current_line_blame_opts.virt_text_pos = "eol";
   plugins.gitsigns.settings.current_line_blame_opts.ignore_whitespace = false;
-  plugins.gitsigns.settings.signs.add.text = icons.plus2;
-  plugins.gitsigns.settings.signs.change.text = "┃";
+  plugins.gitsigns.settings.signs.add.text = icons.vertical;
+  plugins.gitsigns.settings.signs.change.text = icons.pipe;
   plugins.gitsigns.settings.signs.delete.text = icons.minus2;
   plugins.gitsigns.settings.signs.topdelete.text = "‾";
   plugins.gitsigns.settings.signs.changedelete.text = "~";

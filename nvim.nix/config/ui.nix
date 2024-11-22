@@ -198,7 +198,6 @@ in
   extraConfigLuaPre = # lua
     ''
       if vim.fn.has('termguicolors') == 1 then
-        vim.opt.guicursor:append('n:hor20-Cursor/lCursor')
         vim.opt.termguicolors = true
       end
 

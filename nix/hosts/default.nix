@@ -48,6 +48,7 @@ let
                   home = "/Users/${user.username}";
                   shell = pkgs.fish;
                 };
+                home-manager.backupFileExtension = ".backup-before-nix-home-manager";
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users.${user.username} = {
@@ -77,6 +78,7 @@ let
                   sops.secrets.codeium.path = "%r/codeium";
                   # git diff integrations
                   programs.git.extraConfig.diff.sopsdiffer.textconv = "sops -d --config /dev/null";
+                  programs.terminal.use = "ghostty";
                 };
               }
             )

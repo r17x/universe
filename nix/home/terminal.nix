@@ -51,7 +51,6 @@ in
         window-padding-x = 8;
         window-padding-y = 5;
         window-padding-color = "background";
-        theme = "zenwritten_dark";
         bold-is-bright = true;
         background-opacity = 1;
         background = color.scheme.base00;

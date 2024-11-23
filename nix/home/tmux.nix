@@ -1,4 +1,5 @@
 {
+  color,
   config,
   pkgs,
   lib,
@@ -59,7 +60,7 @@ in
       set -g status off
 
       # COLORS
-      bg_color='#282c34'
+      bg_color='${color.scheme.base00}'
 
       # BORDERS COLOR
       set -g pane-border-style "fg=$bg_color bg=$bg_color"

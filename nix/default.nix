@@ -34,9 +34,12 @@
             inputs.ocaml-overlay.overlays.default
             inputs.nixd.overlays.default
           ] ++ lib.attrValues self.overlays;
+          icons = import ./icons.nix;
+          colors = import ./colors.nix { inherit lib; };
+          color = colors.mkColor colors.lists.edge;
         in
         rec {
-          icons = import ./icons.nix;
+          inherit icons colors color;
           # the nix package manager configurations and settings.
           nix =
             import ./nix.nix {
@@ -103,6 +106,9 @@
               inputs'
               system
               branches
+              colors
+              color
+              icons
               ;
             inputs = lib.mkForce inputs;
           };

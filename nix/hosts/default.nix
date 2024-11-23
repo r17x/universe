@@ -51,6 +51,10 @@ let
                 home-manager.backupFileExtension = ".backup-before-nix-home-manager";
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
+                home-manager.extraSpecialArgs = {
+                  inherit (ctx.extraModuleArgs) colors color icons;
+                };
+
                 home-manager.users.${user.username} = {
                   imports = attrValues self.homeManagerModules ++ [
                     inputs.sops.homeManagerModules.sops

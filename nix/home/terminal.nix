@@ -9,6 +9,7 @@
 */
 
 {
+  color,
   lib,
   config,
   pkgs,
@@ -53,34 +54,15 @@ in
         theme = "zenwritten_dark";
         bold-is-bright = true;
         background-opacity = 1;
-        background = "#2B2D3A";
-        foreground = "#bbbbbb";
-        selection-background = "#404040";
-        selection-foreground = "#bbbbbb";
-        cursor-color = "#5DBBC1";
-        cursor-text = "#FFFFFF";
+        background = color.scheme.base00;
+        foreground = color.scheme.base07;
+        selection-background = color.scheme.base08;
+        selection-foreground = color.scheme.base0F;
+        cursor-color = color.scheme.base06;
+        cursor-text = color.scheme.base07;
         cursor-style = "underline";
         cursor-style-blink = true;
-        palette =
-          [
-            "#191919"
-            "#de6e7c"
-            "#819b69"
-            "#b77e64"
-            "#6099c0"
-            "#b279a7"
-            "#66a5ad"
-            "#bbbbbb"
-            "#3d3839"
-            "#e8838f"
-            "#8bae68"
-            "#d68c67"
-            "#61abda"
-            "#cf86c1"
-            "#65b8c1"
-            "#8e8e8e"
-          ]
-          |> lib.lists.imap0 (a: b: "${toString a}=${b}");
+        palette = color.listKV;
         cursor-click-to-move = false;
         macos-window-shadow = false;
         macos-titlebar-style = "transparent";

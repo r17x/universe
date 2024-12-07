@@ -771,6 +771,7 @@
         "styled-ppx": "styled-ppx",
         "ts-rescript": "ts-rescript",
         "vimPlugins_lackluster": "vimPlugins_lackluster",
+        "vimPlugins_smear-cursor": "vimPlugins_smear-cursor",
         "vimPlugins_supermaven-nvim": "vimPlugins_supermaven-nvim",
         "vimPlugins_vim-rescript": "vimPlugins_vim-rescript"
       }
@@ -1028,6 +1029,22 @@
       "original": {
         "owner": "slugbyte",
         "repo": "lackluster.nvim",
+        "type": "github"
+      }
+    },
+    "vimPlugins_smear-cursor": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1733596088,
+        "narHash": "sha256-C1azBWO7rU5QsCwuBO3xPaT5WZIbIfZeVfSVMGWm9kw=",
+        "owner": "sphamba",
+        "repo": "smear-cursor.nvim",
+        "rev": "a5b840881fc132a88facbfbdee0b1b34df61eaed",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sphamba",
+        "repo": "smear-cursor.nvim",
         "type": "github"
       }
     },

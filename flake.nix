@@ -110,6 +110,11 @@
       flake = false;
     };
 
+    vimPlugins_smear-cursor = {
+      url = "github:sphamba/smear-cursor.nvim";
+      flake = false;
+    };
+
     # others 
     ts-rescript = {
       url = "github:nkrkv/tree-sitter-rescript";

@@ -35,6 +35,7 @@ let
               {
                 inherit (ctx) nix;
                 mouseless.enable = true;
+                mouseless.wm = "aerospace";
                 homebrew.enable = true;
                 _module.args = ctx.extraModuleArgs;
                 nixpkgs = removeAttrs ctx.nixpkgs [ "hostPlatform" ];
@@ -52,7 +53,12 @@ let
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.extraSpecialArgs = {
-                  inherit (ctx.extraModuleArgs) colors color icons;
+                  inherit (ctx.extraModuleArgs)
+                    colors
+                    color
+                    icons
+                    branches
+                    ;
                 };
 
                 home-manager.users.${user.username} = {

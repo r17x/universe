@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ branches, pkgs, ... }:
 
 {
   # Packages with configuration --------------------------------------------------------------- {{{
@@ -38,6 +38,7 @@
       ################################## 
       (writeScriptBin "copy" (if stdenv.isDarwin then "pbcopy" else "xsel -ib"))
       (writeScriptBin "paste" (if stdenv.isDarwin then "pbpaste" else "xsel -ob"))
+
       coreutils
       gnused
       gawk
@@ -45,8 +46,6 @@
       curl
       wget
       tree
-      gnupg # required for pass git
-      # pass # password management
       ack
       fswatch
 
@@ -90,7 +89,7 @@
       ################################## 
       # Communication
       ################################## 
-      discord-ptb
+      branches.stable.discord-ptb
       slack
       zoom-us
       iamb

@@ -137,5 +137,5 @@ in
     }
   ];
 
-  home.packages = lib.optionals pkgs.stdenv.isDarwin [ pkgs.reattach-to-user-namespace ];
+  home.packages = lib.optionals pkgs.stdenv.isDarwin [ ];
 }

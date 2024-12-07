@@ -5,13 +5,17 @@
   ...
 }:
 
+with lib;
+
 let
   cfg = config.home.user-info.within.gpg;
 in
 {
-  options.within.gpg.enable = lib.mkEnableOption "Enables Within's gpg config";
+  options.within.gpg.enable = mkEnableOption "Enables Within's gpg config";
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
+    home.packages = [ pkgs.gnupg ];
+
     programs.gpg = {
       enable = cfg.enable;
       settings = {
@@ -19,7 +23,7 @@ in
       };
     };
 
-    home.file = lib.attrsets.optionalAttrs pkgs.stdenv.isDarwin {
+    home.file = mkIf pkgs.stdenv.isDarwin {
       ".gnupg/gpg-agent.conf".source = pkgs.writeTextFile {
         name = "home-gpg-agent.conf";
         text = # toml

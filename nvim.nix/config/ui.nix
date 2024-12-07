@@ -66,6 +66,7 @@ in
     # extra
     unicode-vim
     lsp-progress-nvim
+    smear-cursor
   ];
 
   userCommands.StatusLine.desc = "Toggle Status Line";
@@ -195,6 +196,31 @@ in
     '';
 
   colorscheme = "edge";
+
+  autoCmd = [
+    {
+      event = [ "User" ];
+      pattern = "LspProgressStatusUpdated";
+      callback.__raw =
+        helpers.mkLuaFun # lua
+          ''
+            require('lualine').refresh()
+          '';
+    }
+    {
+      event = [
+        "BufEnter"
+      ];
+      callback.__raw =
+        helpers.mkLuaFun # lua
+          ''
+            require("smear_cursor").setup()
+          '';
+
+    }
+
+  ];
+
   extraConfigLuaPre = # lua
     ''
       if vim.fn.has('termguicolors') == 1 then
@@ -211,13 +237,6 @@ in
 
       local lsp_progress = require('lsp-progress')
       lsp_progress.setup()
-
-      local lualine = require('lualine')
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "LspProgressStatusUpdated",
-        callback = lualine.refresh,
-      })
-
     '';
 
   plugins.web-devicons.enable = true;

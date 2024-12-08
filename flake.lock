@@ -191,11 +191,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1731363552,
-        "narHash": "sha256-vFta1uHnD29VUY4HJOO/D6p6rxyObnf+InnSMT4jlMU=",
+        "lastModified": 1733318908,
+        "narHash": "sha256-SVQVsbafSM1dJ4fpgyBqLZ+Lft+jcQuMtEL3lQWx2Sk=",
         "owner": "cachix",
         "repo": "git-hooks.nix",
-        "rev": "cd1af27aa85026ac759d5d3fccf650abe7e1bbf0",
+        "rev": "6f4e2a2112050951a314d2733a994fbab94864c6",
         "type": "github"
       },
       "original": {
@@ -254,11 +254,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1732025103,
-        "narHash": "sha256-qjEI64RKvDxRyEarY0jTzrZMa8ebezh2DEZmJJrpVdo=",
+        "lastModified": 1733484277,
+        "narHash": "sha256-i5ay20XsvpW91N4URET/nOc0VQWOAd4c4vbqYtcH8Rc=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "a46e702093a5c46e192243edbd977d5749e7f294",
+        "rev": "d00c6f6d0ad16d598bf7e2956f52c1d9d5de3c3a",
         "type": "github"
       },
       "original": {
@@ -593,11 +593,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1732014462,
-        "narHash": "sha256-6WPABLqswdWdSLd5YSbGlKaMhpSIXODasz3etxuC+K0=",
+        "lastModified": 1733574898,
+        "narHash": "sha256-8Meoqfk61EsMB3x/HQcttkgJqUm45kjtOyQGrtHP/H4=",
         "owner": "nix-community",
         "repo": "nixvim",
-        "rev": "c674f10d189fcbcf961f3c19479ac44d7d2d6e50",
+        "rev": "08be20270d62e31f215f4592867d53576af15001",
         "type": "github"
       },
       "original": {
@@ -654,11 +654,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1731936508,
-        "narHash": "sha256-z0BSSf78LkxIrrFXZYmCoRRAxAmxMUKpK7CyxQRvkZI=",
+        "lastModified": 1733411491,
+        "narHash": "sha256-315rJ7O9cOllPDaFscnJhcMleORHbxon0Kq9LAKJ5p4=",
         "owner": "NuschtOS",
         "repo": "search",
-        "rev": "fe07070f811b717a4626d01fab714a87d422a9e1",
+        "rev": "68e9fad70d95d08156cf10a030bd39487bed8ffe",
         "type": "github"
       },
       "original": {
@@ -987,11 +987,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1731944360,
-        "narHash": "sha256-sJxPh+V0vUkBhlA58ok/y0o96AtfqiEF0O8qsdolI6o=",
+        "lastModified": 1733440889,
+        "narHash": "sha256-qKL3vjO+IXFQ0nTinFDqNq/sbbnnS5bMI1y0xX215fU=",
         "owner": "numtide",
         "repo": "treefmt-nix",
-        "rev": "579b9a2fd0020cd9cd81a4ef4eab2dca4d20c94c",
+        "rev": "50862ba6a8a0255b87377b9d2d4565e96f29b410",
         "type": "github"
       },
       "original": {
@@ -1003,11 +1003,11 @@
     "ts-rescript": {
       "flake": false,
       "locked": {
-        "lastModified": 1711299590,
-        "narHash": "sha256-krzKIZAhlXQkawO3TGy3Oo5L9d50yumfkUfFjfu+Jz8=",
+        "lastModified": 1722219617,
+        "narHash": "sha256-md3fgW+h99va2Rwxzub7nrsEe64fC52g6NPCaXGAaxg=",
         "owner": "nkrkv",
         "repo": "tree-sitter-rescript",
-        "rev": "17b0805c9eef8e9fc451a33cddc7156dcf20a409",
+        "rev": "4606cd81c4c31d1d02390fee530858323410a74c",
         "type": "github"
       },
       "original": {
@@ -1051,11 +1051,11 @@
     "vimPlugins_supermaven-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1718585015,
-        "narHash": "sha256-of3dqknyQl1H+bpCsRgpJ4yx3t4/gt1f3ACKYNLUEwo=",
+        "lastModified": 1728314930,
+        "narHash": "sha256-1z3WKIiikQqoweReUyK5O8MWSRN5y95qcxM6qzlKMME=",
         "owner": "supermaven-inc",
         "repo": "supermaven-nvim",
-        "rev": "ec7ae4c8190c96002aa466b1eb4a23aa51e24812",
+        "rev": "07d20fce48a5629686aefb0a7cd4b25e33947d50",
         "type": "github"
       },
       "original": {
@@ -1067,11 +1067,11 @@
     "vimPlugins_vim-rescript": {
       "flake": false,
       "locked": {
-        "lastModified": 1701197410,
-        "narHash": "sha256-JpEO1Zb+mm9dJISriticFmtPeVwZGpUAFv18wV6/dIg=",
+        "lastModified": 1722209834,
+        "narHash": "sha256-l12sg9O5elqWTFRs9asa9xMnKw5GbV7ZB8HmtjcFVps=",
         "owner": "rescript-lang",
         "repo": "vim-rescript",
-        "rev": "2065f4e1d319ffd4ff7046879f270ebbadda873e",
+        "rev": "aea571554254ab9da4f997b20d2ebca2fd099c52",
         "type": "github"
       },
       "original": {

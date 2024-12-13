@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
 let
   work = {
@@ -18,80 +18,89 @@ let
   };
 in
 {
-  programs.git.enable = true;
-
-  programs.git.aliases = {
-    a = "add";
-    c = "clone";
-    cfd = "clean -fd";
-    ca = "commit --amend";
-    can = "commit --amend --no-edit";
-    r = "rebase";
-    ro = "rebase origin/master";
-    rc = "rebase --continue";
-    ra = "rebase --abort";
-    ri = "rebase -i";
-    # need to install vim-conflicted
-    res = "!nvim +Conflicted";
-    # use for resolve conflicted
-    # accept-ours
-    aco = "!f() { git checkout --ours -- \"\${@:-.}\"; git add -u \"\${@:-.}\"; }; f";
-    # accept-theirs
-    ace = "!f() { git checkout --theirs -- \"\${@:-.}\"; git add -u \"\${@:-.}\"; }; f";
-    branches = "branch --sort=-committerdate --format='%(HEAD)%(color:yellow) %(refname:short) | %(color:bold red)%(committername) | %(color:bold green)%(committerdate:relative) | %(color:blue)%(subject)%(color:reset)' --color=always";
-    bs = "branches";
-    fa = "fetch --all";
-  };
-
-  programs.git.extraConfig = {
-    gpg.program = "gpg";
-    rerere.enable = true;
-    commit.gpgSign = true;
-    pull.ff = "only";
-    diff.tool = "vimdiff";
-    difftool.prompt = false;
-    merge.tool = "vimdiff";
-    url = {
-      "git@gitlab.com:" = {
-        insteadOf = "https://gitlab.com/";
-      };
-      "git@bitbucket.org:" = {
-        insteadOf = "https://bitbucket.org/";
-      };
+  programs.jujutsu = {
+    enable = true;
+    settings = {
+      user = lib.removeAttrs evil [ "signingKey" ];
     };
   };
 
-  programs.git.includes = [
-    {
-      condition = "gitdir:~/w0/";
-      contents.user = work;
-    }
+  programs.git = {
+    enable = true;
 
-    {
-      condition = "gitdir:~/w1/";
-      contents.user = w1;
-    }
+    aliases = {
+      a = "add";
+      c = "clone";
+      cfd = "clean -fd";
+      ca = "commit --amend";
+      can = "commit --amend --no-edit";
+      r = "rebase";
+      ro = "rebase origin/master";
+      rc = "rebase --continue";
+      ra = "rebase --abort";
+      ri = "rebase -i";
+      # need to install vim-conflicted
+      res = "!nvim +Conflicted";
+      # use for resolve conflicted
+      # accept-ours
+      aco = "!f() { git checkout --ours -- \"\${@:-.}\"; git add -u \"\${@:-.}\"; }; f";
+      # accept-theirs
+      ace = "!f() { git checkout --theirs -- \"\${@:-.}\"; git add -u \"\${@:-.}\"; }; f";
+      branches = "branch --sort=-committerdate --format='%(HEAD)%(color:yellow) %(refname:short) | %(color:bold red)%(committername) | %(color:bold green)%(committerdate:relative) | %(color:blue)%(subject)%(color:reset)' --color=always";
+      bs = "branches";
+      fa = "fetch --all";
+    };
 
-    {
-      condition = "gitdir:~/go/";
-      contents.user = w1;
-    }
+    extraConfig = {
+      gpg.program = "gpg";
+      rerere.enable = true;
+      commit.gpgSign = true;
+      pull.ff = "only";
+      diff.tool = "vimdiff";
+      difftool.prompt = false;
+      merge.tool = "vimdiff";
+      url = {
+        "git@gitlab.com:" = {
+          insteadOf = "https://gitlab.com/";
+        };
+        "git@bitbucket.org:" = {
+          insteadOf = "https://bitbucket.org/";
+        };
+      };
+    };
 
-    {
-      condition = "gitdir:~/evl/";
-      contents.user = evil;
-    }
+    includes = [
+      {
+        condition = "gitdir:~/w0/";
+        contents.user = work;
+      }
 
-    {
-      condition = "gitdir:~/.local/share/";
-      contents.user = evil;
-    }
+      {
+        condition = "gitdir:~/w1/";
+        contents.user = w1;
+      }
 
-    {
-      condition = "gitdir:~/.config/nixpkgs/";
-      contents.user = evil;
-    }
-  ];
+      {
+        condition = "gitdir:~/go/";
+        contents.user = w1;
+      }
+
+      {
+        condition = "gitdir:~/evl/";
+        contents.user = evil;
+      }
+
+      {
+        condition = "gitdir:~/.local/share/";
+        contents.user = evil;
+      }
+
+      {
+        condition = "gitdir:~/.config/nixpkgs/";
+        contents.user = evil;
+      }
+    ];
+  };
 
   ### git tools
   ## github cli

@@ -177,6 +177,20 @@ in
     # Shell history replacement
     # in MacOS type `Ctrl+R` to search history
     atuin.enable = true;
+    atuin.package = pkgs.atuin.overrideAttrs (d: rec {
+      version = "18.4.0";
+      src = pkgs.fetchFromGitHub {
+        owner = "atuinsh";
+        repo = "atuin";
+        rev = "v${version}";
+        hash = "sha256-P/q4XYhpXo9kwiltA0F+rQNSlqI+s8TSi5v5lFJWJ/4=";
+      };
+      cargoDeps = d.cargoDeps.overrideAttrs (_: {
+        name = "atuin-${version}-vendor.tar.gz";
+        inherit src;
+        outputHash = "sha256-mrsqaqJHMyNi3yFDIyAXFBS+LY71VWXE8O7mjvgI6lo=";
+      });
+    });
     atuin.enableFishIntegration = config.programs.fish.enable;
     atuin.enableBashIntegration = config.programs.bash.enable;
 

@@ -14,6 +14,7 @@
   ];
 
   extraPlugins = with pkgs.vimPlugins; [
+    codi-vim # repl
     telescope-manix
     vim-rescript
     neorepl-nvim

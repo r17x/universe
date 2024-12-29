@@ -1,4 +1,4 @@
-{ branches, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   # Packages with configuration --------------------------------------------------------------- {{{
@@ -89,7 +89,7 @@
       ################################## 
       # Communication
       ################################## 
-      branches.stable.discord-ptb
+      vencord
       slack
       zoom-us
       iamb

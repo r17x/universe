@@ -89,10 +89,17 @@
       ################################## 
       # Communication
       ################################## 
-      vencord
+      discord-ptb
+      # issue > cp: target 'PTB.app/Contents/Resources/app.asar': No such file or directory 
+      ## (branches.stable.discord-ptb.override {
+      ##   withVencord = true;
+      ##   withOpenASAR = true;
+      ## })
+
       slack
       zoom-us
       iamb
+      telegram-desktop
 
       ################################## 
       # Useful Nix related tools
@@ -100,7 +107,6 @@
       manix
       cachix
       comma # run without install
-      telegram-desktop
     ]
     ++ lib.optionals stdenv.isDarwin [
       mas

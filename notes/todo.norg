@@ -82,15 +82,29 @@ version: 1.1.1
 ** OSS Contributions
 *** NixOS/nixpkgs
 **** `ocamlPackages`
-     - ( ) {https://aantron.github.io/dream/}[dream]
-     -- (-) {https://github.com/NixOS/nixpkgs/pull/366950}[ocamlPackages.httpun-ws-lwt]
-     -- (-) {https://github.com/NixOS/nixpkgs/pull/366942}[ocamlPackages.gluten-mirage]
-     -- (-) {https://github.com/NixOS/nixpkgs/pull/366943}[ocamlPackages.gluten-async]
-     -- (=) ocamlPackages.dream
+     $ raylib
+     - (x) {https://github.com/NixOS/nixpkgs/pull/368926}[ocamlPackages.raylib]
+     - (x) {https://github.com/NixOS/nixpkgs/pull/368926}[ocamlPackages.raygui]
+
+     $ dream
+     - ( ) {https://aantron.github.io/dream/}[ocamlPackages.dream]
+     -- (x) {https://github.com/NixOS/nixpkgs/pull/366950}[ocamlPackages.httpun-ws-lwt]
+     -- (x) {https://github.com/NixOS/nixpkgs/pull/366942}[ocamlPackages.gluten-mirage]
+     -- (x) {https://github.com/NixOS/nixpkgs/pull/366943}[ocamlPackages.gluten-async]
+     -- (-) {https://github.com/r17x/nixpkgs-nixos/tree/add/httpun}[ocamlPackages.httpun] is pending for make PR because `mirage-crypto-rng` still have {https://github.com/mirage/mirage-crypto/issues/216}[issue] for `aarach64-darwin`.
+     --- (-) ocamlPackages.httpun-async
+     --- (-) ocamlPackages.httpun-mirage
+     --- (-) ocamlPackages.httpun-lwt
+     --- (-) ocamlPackages.httpun-lwt-unix
+
+     $ reactor
      - ( ) {https://github.com/andreypopp/reactor}[reactor]
+     -- ( ) ocamlPackages.realm
+     -- ( ) ocamlPackages.remote
      -- (=) ocamlPackages.react_browser
      -- (=) ocamlPackages.react_server
-     -- (=) ocamlPackages.react_dream
+     -- (=) ocamlPackages.react_dream - waiting for {$ dream} to be merged.
+
 **** Others
      - (x) {https://github.com/NixOS/nixpkgs/pull/364886}[rewatch] - Alternative build system for ReScript.
      - (x) {https://github.com/NixOS/nixpkgs/pull/364869}[rops] - SOPs written in Rust.

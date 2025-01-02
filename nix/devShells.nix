@@ -118,6 +118,21 @@
 
           #
           #
+          #    $ nix develop github:r17x/nixpkgs#ocaml
+          #
+          #
+          ocaml = pkgs.mkShell {
+            description = "OCaml development environment";
+            buildInputs = with pkgs.ocamlPackages; [
+              dune
+              ocaml
+              opam
+              merlin
+            ];
+          };
+
+          #
+          #
           #    $ nix develop github:r17x/nixpkgs#ocamlorg
           #
           #

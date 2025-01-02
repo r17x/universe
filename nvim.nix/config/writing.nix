@@ -180,8 +180,11 @@
       "core.summary".config.strategy = "by_path";
       "core.ui" = { };
       "core.ui.calendar" = { };
+      "core.latex.renderer" = { };
     };
   };
+
+  plugins.image.enable = true;
 
   plugins.markdown-preview = {
     enable = true;

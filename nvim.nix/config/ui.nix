@@ -66,7 +66,7 @@ in
     # extra
     unicode-vim
     lsp-progress-nvim
-    smear-cursor
+    smear-cursor-nvim
   ];
 
   userCommands.StatusLine.desc = "Toggle Status Line";

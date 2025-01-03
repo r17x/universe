@@ -49,12 +49,16 @@
     iamb = inputs.iamb.packages.${prev.stdenv.hostPlatform.system}.default;
 
     tree-sitter-grammars = prev.tree-sitter-grammars // {
-      tree-sitter-rescript = prev.tree-sitter.buildGrammar {
-        version = inputs.ts-rescript.lastModifiedDate;
-        language = "rescript";
-        generate = true;
-        src = inputs.ts-rescript;
-      };
+      # Add here any grammars that you want to use but not yet included in NixOS/nixpkgs
+      # example:
+      # ```nix
+      # tree-sitter-rescript = prev.tree-sitter.buildGrammar {
+      #   version = inputs.ts-rescript.lastModifiedDate;
+      #   language = "rescript";
+      #   generate = true;
+      #   src = inputs.ts-rescript;
+      # };
+      # ```
     };
 
     vimPlugins = prev.vimPlugins.extend (

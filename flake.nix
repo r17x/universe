@@ -23,7 +23,7 @@
     # utilities for Flake
     flake-parts.url = "github:hercules-ci/flake-parts";
 
-    ## -- nixpkgs 
+    ## -- nixpkgs
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/release-24.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -32,6 +32,8 @@
     ### -- nix related tools
     nixd.url = "github:nix-community/nixd";
     nixd.inputs.nixpkgs.follows = "nixpkgs";
+    nixd.inputs.flake-parts.follows = "flake-parts";
+
     process-compose-flake.url = "github:Platonic-Systems/process-compose-flake";
     services-flake.url = "github:juspay/services-flake";
 
@@ -57,7 +59,7 @@
     nixvim.inputs.home-manager.follows = "home-manager";
     nixvim.inputs.flake-parts.follows = "flake-parts";
 
-    ## -- Ghostty 
+    ## -- Ghostty
     # UNCOMMENT: when support build for aarch64-darwin or x86_64-darwin
     # ghostty.url = "git+ssh://git@github.com/ghostty-org/ghostty";
     # ghostty.inputs.nixpkgs-stable.follows = "nixpkgs";
@@ -82,7 +84,7 @@
     iamb.url = "github:ulyssa/iamb";
     iamb.inputs.nixpkgs.follows = "nixpkgs";
 
-    # secret management 
+    # secret management
     sops.url = "github:Mic92/sops-nix";
     sops.inputs.nixpkgs.follows = "nixpkgs";
     sops.inputs.nixpkgs-stable.follows = "nixpkgs-stable";
@@ -100,30 +102,17 @@
       flake = false;
     };
 
-    vimPlugins_supermaven-nvim = {
-      url = "github:supermaven-inc/supermaven-nvim";
-      flake = false;
-    };
-
     vimPlugins_lackluster = {
       url = "github:slugbyte/lackluster.nvim";
       flake = false;
     };
 
-    vimPlugins_smear-cursor = {
-      url = "github:sphamba/smear-cursor.nvim";
-      flake = false;
-    };
-
-    # others 
-    ts-rescript = {
-      url = "github:nkrkv/tree-sitter-rescript";
-      flake = false;
-    };
+    # others
     nix-env = {
       url = "github:lilyball/nix-env.fish";
       flake = false;
     };
+
     sketchybar-app-font = {
       url = "github:kvndrsslr/sketchybar-app-font";
       flake = false;

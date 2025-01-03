@@ -8,6 +8,11 @@
   ];
 
   flake.overlays.default = final: prev: {
+    inherit (inputs.nixpkgs-stable.legacyPackages.${prev.stdenv.hostPlatform.system})
+      nixd
+      nixf
+      nixt
+      ;
 
     sf-mono-liga-bin = prev.stdenvNoCC.mkDerivation (finalAttrs: {
       pname = "sf-mono-liga-bin";

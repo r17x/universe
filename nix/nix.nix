@@ -6,7 +6,9 @@
 }:
 
 let
-  nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+  nixPath = [
+    "nixpkgs=${inputs.nixpkgs}"
+  ];
 in
 {
   inherit nixPath;
@@ -18,7 +20,8 @@ in
     default.flake = inputs.nixpkgs;
     nixpkgs.flake = inputs.nixpkgs;
     master.flake = inputs.nixpkgs-master;
-    nix-darwin.flake = inputs.nix-darwin;
+    stable.flake = inputs.nixpkgs-stable;
+    darwin.flake = inputs.nix-darwin;
     home-manager.flake = inputs.home-manager;
   };
 

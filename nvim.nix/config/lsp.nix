@@ -2,6 +2,7 @@
   icons,
   pkgs,
   helpers,
+  system,
   ...
 }:
 
@@ -380,11 +381,13 @@
 
       nixd.enable = true;
       nixd.autostart = true;
-      nixd.rootDir = # lua
-        ''
-          require('lspconfig.util').root_pattern('.git', '.nixd.json')
-        '';
-      nixd.settings.formatting.command = [ "nixfmt" ];
+      nixd.settings = {
+        nixpkgs.expr = "import <nixpkgs> { }";
+        formatting.command = [ "nixfmt" ];
+        options.nix_darwin.expr = ''(builtins.getFlake "${./../..}").darwinConfigurations.eR17x.options'';
+        options.nixvim.expr = ''(builtins.getFlake "${./../..}").packages.${system}.nvim.options'';
+        options.flake_parts.expr = ''let flake = builtins.getFlake ("${./../..}"); in flake.debug.options // flake.currentSystem.options'';
+      };
 
       yamlls.enable = true;
       yamlls.autostart = true;

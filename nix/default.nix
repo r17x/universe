@@ -32,7 +32,6 @@
         let
           overlays = [
             inputs.ocaml-overlay.overlays.default
-            inputs.nixd.overlays.default
           ] ++ lib.attrValues self.overlays;
           icons = import ./icons.nix;
           colors = import ./colors.nix { inherit lib; };

@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ self, inputs, ... }:
 {
   perSystem =
     {
@@ -34,7 +34,13 @@
         module = import ./config; # import the module directly
         # You can use `extraSpecialArgs` to pass additional arguments to your module files
         extraSpecialArgs = {
-          inherit icons branches helpers;
+          inherit
+            icons
+            branches
+            helpers
+            system
+            self
+            ;
         };
       };
       nvim = nixvim'.makeNixvimWithModule nixvimModule;

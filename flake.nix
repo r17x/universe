@@ -30,10 +30,6 @@
     nixpkgs.follows = "nixpkgs-unstable";
 
     ### -- nix related tools
-    nixd.url = "github:nix-community/nixd";
-    nixd.inputs.nixpkgs.follows = "nixpkgs";
-    nixd.inputs.flake-parts.follows = "flake-parts";
-
     process-compose-flake.url = "github:Platonic-Systems/process-compose-flake";
     services-flake.url = "github:juspay/services-flake";
 

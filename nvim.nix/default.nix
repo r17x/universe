@@ -9,8 +9,8 @@
       ...
     }:
     let
-      nixvimLib = inputs.nixvim.lib.${system};
-      helpers = nixvimLib.helpers // {
+      nixvimLib = inputs.nixvim.lib;
+      helpers = nixvimLib.nixvim // {
         mkLuaFunWithName =
           name: lua:
           # lua
@@ -44,11 +44,12 @@
         };
       };
       nvim = nixvim'.makeNixvimWithModule nixvimModule;
+      nvimCheck = nixvimLib.${system}.check.mkTestDerivationFromNixvimModule nixvimModule;
     in
     {
       checks = {
         # Run `nix flake check .` to verify that your config is not broken
-        nvim = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
+        nvim = nvimCheck;
       };
 
       packages = {

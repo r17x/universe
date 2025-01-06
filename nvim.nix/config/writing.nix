@@ -1,5 +1,4 @@
 {
-  branches,
   icons,
   pkgs,
   helpers,
@@ -23,29 +22,10 @@
     }
   ];
 
-  autoCmd = [
-    {
-      event = [
-        "BufEnter"
-        "VimEnter"
-      ];
-      pattern = [ "*.norg" ];
-      callback.__raw =
-        helpers.mkLuaFun
-          # lua
-          ''
-            if _neorg_module_autocommand_triggered == nil then
-              vim.cmd [[ NeorgStart ]]
-            end
-            vim.cmd[[ setlocal wrap ]]
-          '';
-    }
-  ];
-
   extraPlugins = with pkgs.vimPlugins; [
     venn-nvim
-    neorg-telescope
   ];
+
   plugins.cmp.settings.sources = [
     { name = "neorg"; }
   ];
@@ -142,9 +122,9 @@
   plugins.zen-mode.enable = true;
   plugins.neorg = {
     enable = true;
-    package = branches.master.vimPlugins.neorg;
-    lazyLoading = true;
-    modules = {
+    telescopeIntegration.enable = true;
+    settings.lazyLoading = true;
+    settings.load = {
       "core.dirman" = {
         config = {
           default_workspace = "home";

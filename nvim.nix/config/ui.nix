@@ -123,14 +123,16 @@ in
   plugins.presence-nvim.enableLineNumber = true;
   plugins.presence-nvim.autoUpdate = true;
 
-  plugins.nvim-colorizer = {
+  plugins.colorizer = {
     enable = true;
-    userDefaultOptions = {
-      mode = "virtualtext";
-      virtualtext = " ■";
-      RRGGBBAA = true;
-      RRGGBB = true;
-      AARRGGBB = true;
+    settings = {
+      user_default_options = {
+        mode = "virtualtext";
+        virtualtext = " ■";
+        RRGGBBAA = true;
+        RRGGBB = true;
+        AARRGGBB = true;
+      };
     };
   };
 

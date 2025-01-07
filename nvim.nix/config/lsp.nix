@@ -384,9 +384,15 @@
       nixd.settings = {
         nixpkgs.expr = "import <nixpkgs> { }";
         formatting.command = [ "nixfmt" ];
-        options.nix_darwin.expr = ''(builtins.getFlake "${./../..}").darwinConfigurations.eR17x.options'';
-        options.nixvim.expr = ''(builtins.getFlake "${./../..}").packages.${system}.nvim.options'';
-        options.flake_parts.expr = ''let flake = builtins.getFlake ("${./../..}"); in flake.debug.options // flake.currentSystem.options'';
+        options =
+          let
+            flake = ''(builtins.getFlake "${./../..}")'';
+          in
+          rec {
+            nix-darwin.expr = ''${flake}.darwinConfigurations.eR17x.options'';
+            home-manager.expr = ''${nix-darwin.expr}.home-manager.users.type.getSubOptions []'';
+            nixvim.expr = ''${flake}.packages.${system}.nvim.options'';
+          };
       };
 
       yamlls.enable = true;

@@ -1,0 +1,51 @@
+@document.meta
+title: evilfactorylabs
+description: 
+authors: r17x
+categories: 
+created: 2025-01-07T18:18:21+0700
+updated: 2025-01-07T18:18:21+0700
+version: 1.1.1
+@end
+
+* Homelab 
+  hal yang harus dilakukan jika homelab meninggal karena *power outage*
+
+** restart libvirtd
+
+   jalanin `sudo systemctl restart libvirtd` di:
+
+   - `nuc`
+   - `fedora`
+
+** restart container
+
+   container berada di vm `water7`, `wano`, dan `king-slayer`, untuk melihat container apa aja yang perlu di restart, jalankan `docker ps -a` dan cari yang "exited". terus jalanin `docker start <nama_container>` and that's it
+
+   untuk masuk ke VM, silahkan gunakan `sudo virsh console <nama_vm>`. untuk melihat nama VM, jalankan `sudo virsh list --all`. Jalankan `ctrl + ]` untuk keluar dari console. Pakai user `root` dan password yang sudah diketahui
+
+*** water7
+
+    kasus di water7 ini kadang si network interfaces nya ga up, jadi perlu di up manual: `ifup <nama_interface>`. Untuk cari tau nama interface, jalanin `ip a | grep en` terus ambil yang pake prefix `en` kek `ent0t69`
+
+    jika sudah up, make sure udah connect ke jaringan dengan `ping -c3 1.1.1.1`
+
+    klo udah yakin, jalanin `docker start` diatas
+
+*** wano
+
+    kasus wano harusnya cuma perlu restart container "app-forem_rails-1" dan "app-openresty-1"
+
+*** king-slayer
+
+    ini pun cuma perlu restart container. JANGAN JALANKAN `ifup` ataupun hal lain yang buat ngambil IP.
+
+*** heavy-rotation
+
+    tempat peertube berjalan. pertama, mount dulu si NFS: ke user `rizaldy`, `ctrl + r` mount
+
+    setelah mounted (cek di `df -h`) jalankan `sudo systemctl restart peertube`
+
+*** komunix
+
+    ini cuma perlu remount NFS dengan `ctrl + r` cari `mount`

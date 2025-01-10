@@ -1,0 +1,13 @@
+@document.meta
+title: links
+description: 
+authors: r17x
+categories: 
+created: 2025-01-10T20:48:29+0700
+updated: 2025-01-10T20:48:29+0700
+version: 1.1.1
+@end
+
+* Nice to Read!
+  - {https://martingaston.dev/articles/boot-an-ephemeral-linux-vm-in-macos-with-qemu/}[Boot an ephemeral Linux VM in macOS with QEMU]
+

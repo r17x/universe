@@ -279,28 +279,37 @@ in
   plugins.lualine.settings.sections.lualine_y = [
     {
       __unkeyed-1.__raw =
-        helpers.mkLuaFun # lua
-          ''
-            return require('lsp-progress').progress({
-              max_size = 80,
-              format = function(messages)
-                  local active_clients =
-                      vim.lsp.get_active_clients()
-                  if #messages > 0 then
-                      return table.concat(messages, " ")
-                  end
-                  local client_names = {}
-                  for _, client in ipairs(active_clients) do
-                      if client and client.name ~= "" then
-                          table.insert(client_names, 1, client.name)
-                      end
-                  end
-                  return table.concat(client_names, "⎹") 
-              end,
-            })
-          '';
+        # lua
+        ''
+          (function()
+            local ft = require('lualine.components.filetype'):extend()
+            local lsp_progress = require('lsp-progress')
+
+            function ft:update_status()
+              local data = ft.super.update_status(self)
+              return lsp_progress.progress({
+                max_size = 50,
+                format = function(messages)
+                    -- @TODO: add active clients 
+                    -- local active_clients = vim.lsp.buf_get_clients()
+                    -- local client_names = {}
+                    -- for _, client in ipairs(active_clients) do
+                    --     if client and client.name ~= "" then
+                    --         table.insert(client_names, 1, client.name)
+                    --     end
+                    -- end
+                    if #messages > 0 then
+                        return table.concat(messages, " ")
+                    end
+                    return data
+                end,
+              })
+            end
+
+            return ft
+          end)()
+        '';
     }
-    "filetype"
     "progress"
   ];
   plugins.lualine.settings.sections.lualine_z = [

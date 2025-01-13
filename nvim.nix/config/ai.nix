@@ -16,7 +16,10 @@ rec {
   plugins.avante.settings.copilot.model = "claude-3.5-sonnet";
   plugins.avante.settings.copilot.temperature = 0;
   plugins.avante.settings.copilot.max_tokens = 4096;
+
   plugins.copilot-lua.enable = true;
+  plugins.copilot-lua.settings.suggestion.enabled = false;
+  plugins.copilot-lua.settings.panel.enabled = false;
 
   plugins.avante.settings.vendors.ollama = {
     local = true;
@@ -71,9 +74,7 @@ rec {
   ];
 
   plugins.cmp.settings.sources =
-    [
-    ]
-    ++ lib.optionals plugins.codeium-nvim.enable [
+    lib.optionals plugins.codeium-nvim.enable [
       { name = "codeium"; }
     ]
     ++ lib.optionals plugins.copilot-lua.enable [

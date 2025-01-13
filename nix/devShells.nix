@@ -109,7 +109,7 @@
         #
         mkShells "nodejs_"
         // mkShells "go_"
-        // {
+        // rec {
           default = pkgs.mkShell {
             shellHook = ''
               ${config.pre-commit.installationScript}
@@ -232,6 +232,10 @@
               pkg-config
             ];
           };
+
+          rust-opencv = rust-wasm.overrideAttrs (old: {
+            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.opencv4 ];
+          });
 
           rust-cap = pkgs.mkShell {
             description = "Rust  Development Environment";

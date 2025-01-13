@@ -228,6 +228,8 @@
               gcc
               rustfmt
               clippy
+              openssl
+              pkg-config
             ];
           };
 

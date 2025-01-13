@@ -1,10 +1,11 @@
-{ pkgs, icons, ... }:
-
 {
-  extraPlugins = with pkgs.vimPlugins; [
-    supermaven-nvim
-  ];
+  lib,
+  icons,
+  helpers,
+  ...
+}:
 
+rec {
   plugins.avante.enable = true;
   plugins.avante.settings.provider = "claude";
   plugins.avante.settings.claude.api_key_name = "cmd:pass show r17x/anthropic";
@@ -12,6 +13,10 @@
   plugins.avante.settings.claude.model = "claude-3-5-sonnet-20240620";
   plugins.avante.settings.claude.temperature = 0;
   plugins.avante.settings.claude.max_tokens = 4096;
+  plugins.avante.settings.copilot.model = "claude-3.5-sonnet";
+  plugins.avante.settings.copilot.temperature = 0;
+  plugins.avante.settings.copilot.max_tokens = 4096;
+  plugins.copilot-lua.enable = true;
 
   plugins.avante.settings.vendors.ollama = {
     local = true;
@@ -46,16 +51,34 @@
       '';
   };
 
-  plugins.codeium-nvim.enable = true;
+  plugins.codeium-nvim.enable = false;
   plugins.codeium-nvim.settings.config_path.__raw = # lua
     ''
       vim.env.HOME .. '/.config/sops-nix/secrets/codeium'
     '';
 
-  plugins.cmp.settings.sources = [
-    { name = "codeium"; }
-    { name = "supermaven"; }
+  autoCmd = [
+    {
+      # Disable cmp in neorepl
+      event = [ "FileType" ];
+      pattern = "neorepl";
+      callback.__raw =
+        helpers.mkLuaFun # lua
+          ''
+            require("cmp").setup.buffer { enabled = false }
+          '';
+    }
   ];
+
+  plugins.cmp.settings.sources =
+    [
+    ]
+    ++ lib.optionals plugins.codeium-nvim.enable [
+      { name = "codeium"; }
+    ]
+    ++ lib.optionals plugins.copilot-lua.enable [
+      { name = "copilot"; }
+    ];
 
   plugins.which-key.settings.spec = [
 
@@ -150,14 +173,4 @@
       desc = "Code Readability Analysis";
     }
   ];
-
-  extraConfigLuaPost = # lua
-    ''
-      -- supermaven
-      require("supermaven-nvim").setup({
-        disable_keymaps = true
-      })
-
-    '';
-
 }

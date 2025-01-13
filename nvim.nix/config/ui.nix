@@ -211,7 +211,7 @@ in
     }
     {
       event = [
-        "BufEnter"
+        "InsertEnter"
       ];
       callback.__raw =
         helpers.mkLuaFun # lua

@@ -1,5 +1,4 @@
 {
-  lib,
   helpers,
   icons,
   pkgs,
@@ -42,16 +41,6 @@ let
       name = "Dune";
     };
   };
-
-  deviconsToLuaString =
-    icons:
-    builtins.foldl'
-      (acc: icon: ''
-        ${acc}
-        devicons.set_icon ${icon}
-      '')
-      "local devicons = require'nvim-web-devicons'"
-      (lib.attrsets.mapAttrsToList (name: value: helpers.toLuaObject { "${name}" = value; }) icons);
 
 in
 {
@@ -192,9 +181,6 @@ in
 
       -- treesitter folding
       vim.cmd [[ set nofoldenable ]]
-
-      -- devicons
-      ${deviconsToLuaString devicons}
     '';
 
   colorscheme = "edge";
@@ -242,6 +228,7 @@ in
     '';
 
   plugins.web-devicons.enable = true;
+  plugins.web-devicons.customIcons = devicons;
 
   # based on {https://github.com/r17x/nixpkgs/blob/main/configs/nvim/lua/config/lualine.lua}
   plugins.lualine.enable = true;

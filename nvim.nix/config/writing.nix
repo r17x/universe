@@ -122,6 +122,8 @@
   plugins.zen-mode.enable = true;
   plugins.neorg = {
     enable = true;
+    lazyLoad.enable = true;
+    lazyLoad.settings.filetype = "norg";
     telescopeIntegration.enable = true;
     settings.lazyLoading = true;
     settings.load = {

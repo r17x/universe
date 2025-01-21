@@ -21,37 +21,18 @@ rec {
   plugins.copilot-lua.settings.suggestion.enabled = false;
   plugins.copilot-lua.settings.panel.enabled = false;
 
-  plugins.avante.settings.vendors.ollama = {
-    local = true;
-    endpoint = "http://localhost:11434/v1";
-    model = "qwen2.5-coder";
-    temperature = 0;
-    max_tokens = 4096;
-    parse_curl_args.__raw = # lua
-      ''
-        function(opts, code_opts)
-            return {
-                url = opts.endpoint .. "/chat/completions",
-                headers = {
-                    ["Accept"] = "application/json",
-                    ["Content-Type"] = "application/json",
-                    ['x-api-key'] = 'ollama',
-                },
-                body = {
-                    model = opts.model,
-                    messages = require("avante.providers").copilot.parse_message(code_opts),
-                    max_tokens = opts.max_tokens,
-                    stream = true,
-                },
-            }
-        end
-      '';
-    parse_response_data.__raw = # lua
-      ''
-        function(data_stream, event_state, opts)
-          require("avante.providers").openai.parse_response(data_stream, event_state, opts)
-        end
-      '';
+  plugins.avante.settings.vendors = rec {
+    local-deepseek = local-qwen // {
+      model = "deepseek-r1:1.5b";
+    };
+    local-qwen = {
+      api_key_name = "";
+      __inherited_from = "openai";
+      endpoint = "http://localhost:11434/v1";
+      model = "qwen2.5-coder";
+      temperature = 0;
+      max_tokens = 4096;
+    };
   };
 
   plugins.codeium-nvim.enable = false;

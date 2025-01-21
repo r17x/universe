@@ -55,7 +55,6 @@ in
     # extra
     unicode-vim
     lsp-progress-nvim
-    smear-cursor-nvim
   ];
 
   userCommands.StatusLine.desc = "Toggle Status Line";
@@ -195,19 +194,24 @@ in
             require('lualine').refresh()
           '';
     }
-    {
-      event = [
-        "InsertEnter"
-      ];
-      callback.__raw =
-        helpers.mkLuaFun # lua
-          ''
-            require("smear_cursor").setup()
-          '';
-
-    }
-
   ];
+
+  plugins.lz-n.enable = true;
+  plugins.smear-cursor = {
+    enable = true;
+    lazyLoad.enable = true;
+    lazyLoad.settings = {
+      event = "InsertEnter";
+      cmd = "SmearCursorToggle";
+      keys = [
+        {
+          __unkeyed-1 = "<leader>tsc";
+          __unkeyed-2 = "<cmd>SmearCursorToggle<cr>";
+          desc = "Toggle Animation Cursor";
+        }
+      ];
+    };
+  };
 
   extraConfigLuaPre = # lua
     ''

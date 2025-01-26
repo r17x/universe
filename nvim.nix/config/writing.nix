@@ -131,7 +131,7 @@
         config = {
           default_workspace = "home";
           index = "index.norg";
-          open_last_workspace = true;
+          open_last_workspace = false;
           workspaces = {
             home = "~/.config/nixpkgs/notes";
             secret = "~/.config/nixpkgs/secrets";

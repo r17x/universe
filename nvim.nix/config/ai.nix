@@ -22,7 +22,7 @@ rec {
   plugins.copilot-lua.settings.panel.enabled = false;
 
   plugins.avante.settings.vendors = rec {
-    local-deepseek = local-qwen // {
+    local-deepseeg = local-qwen // {
       model = "deepseek-r1:1.5b";
     };
     local-qwen = {

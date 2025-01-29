@@ -152,17 +152,16 @@
           type = "auto";
         };
       };
-      "core.highlights" = { };
-      "core.defaults".__empty = null;
-      "core.keybinds".config.neorg_leader = "<Leader>";
-      "core.integrations.treesitter".config.install_parsers = false;
-      "core.integrations.telescope" = { };
       "core.completion".config.engine = "nvim-cmp";
       "core.presenter".config.zen_mode = "zen-mode";
       "core.summary".config.strategy = "by_path";
+      "core.keybinds".config.neorg_leader = "<Leader>";
       "core.ui" = { };
       "core.ui.calendar" = { };
       "core.latex.renderer" = { };
+      "core.defaults".__empty = null;
+      "core.integrations.treesitter".config.install_parsers = false;
+      "core.integrations.telescope" = { };
     };
   };
 

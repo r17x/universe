@@ -6,14 +6,13 @@
 }:
 let
   indentBlankLineHighlights = [
-    "RainbowLevel1"
-    "RainbowLevel2"
-    "RainbowLevel3"
-    "RainbowLevel4"
-    "RainbowLevel5"
-    "RainbowLevel6"
-    "RainbowLevel7"
-    "RainbowLevel0"
+    "rainbowcol1"
+    "rainbowcol2"
+    "rainbowcol3"
+    "rainbowcol4"
+    "rainbowcol5"
+    "rainbowcol6"
+    "rainbowcol7"
   ];
   devicons = {
     norg = {
@@ -321,7 +320,11 @@ in
   #plugins.treesitter.nixvimInjections = true;
   #plugins.treesitter.nixGrammars = true;
   plugins.treesitter.grammarPackages =
-    builtins.map (x: pkgs.vimPlugins.nvim-treesitter.builtGrammars.${x})
+    builtins.map
+      (
+        x:
+        pkgs.vimPlugins.nvim-treesitter.builtGrammars.${x} or pkgs.tree-sitter-grammars."tree-sitter-${x}"
+      )
       [
         # ┌────────────────────────────────────┐
         # │ move to ignoreInstall for disabled │
@@ -369,6 +372,7 @@ in
         "mermaid"
         "nix"
         "norg"
+        "norg-meta"
         "ocaml"
         "ocaml_interface"
         "ocamllex"
@@ -380,7 +384,7 @@ in
         "query"
         "regex"
         "rust"
-        # "rescript"
+        "rescript"
         "sql"
         "ssh_config"
         "templ"

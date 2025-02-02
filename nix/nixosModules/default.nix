@@ -6,6 +6,7 @@
   };
 
   flake.darwinModules = {
+    dnscrypt-proxy = import ./darwin/dnscrypt-proxy.nix;
     system-darwin = import ./darwin/system.nix;
     system-darwin-packages = import ./darwin/packages.nix;
     system-darwin-gpg = import ./darwin/gpg.nix;

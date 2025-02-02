@@ -1,6 +1,5 @@
 {
   pkgs,
-  config,
   ...
 }:
 
@@ -10,18 +9,9 @@
     dnscrypt-proxy2
   ];
 
-  # dnscrypt-proxy
-  launchd.daemons.dnscrypt-proxy = {
-    path = [ config.environment.systemPath ];
-    serviceConfig.RunAtLoad = true;
-    serviceConfig.KeepAlive = true;
-    serviceConfig.StandardOutPath = "/tmp/launchd-dnscrypt.log";
-    serviceConfig.StandardErrorPath = "/tmp/launchd-dnscrypt.error";
-    serviceConfig.ProgramArguments = [
-      "${pkgs.dnscrypt-proxy2}/bin/dnscrypt-proxy"
-      "-config"
-      (builtins.readFile ./dnscrypt-proxy.toml |> pkgs.writeText "dnscrypt-proxy.toml" |> toString)
-    ];
+  services.dnscrypt-proxy = {
+    enable = true;
+    settings = ./dnscrypt-proxy.toml;
   };
 
   # yggdrasil see https://yggdrasil-network.github.io/

@@ -25,9 +25,7 @@ in
       '';
 
   homebrew.enable = true;
-  homebrew.brews = [
-    "chase/tap/awrit"
-  ];
+  homebrew.brews = [ ];
   homebrew.onActivation.cleanup = "zap";
   homebrew.global.brewfile = true;
 
@@ -36,9 +34,6 @@ in
     WhatsApp = 310633997;
   };
 
-  homebrew.casks = [
-    # "raycast"
-    # "sf-symbols"
-  ];
+  homebrew.casks = [ ];
 
 }

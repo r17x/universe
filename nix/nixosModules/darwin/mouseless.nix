@@ -1,5 +1,4 @@
 {
-  branches,
   lib,
   config,
   pkgs,
@@ -38,7 +37,6 @@ in
   config = mkIf cfg.enable {
     services.sketchybar = {
       inherit (cfg) enable;
-      package = branches.master.sketchybar;
       extraPackages = with pkgs; [
         sbar_menus
         sbar_events
@@ -104,7 +102,6 @@ in
 
     services.yabai = {
       enable = cfg.wm == "yabai";
-      package = branches.master.yabai;
       enableScriptingAddition = false; # true when SIP Disabled
       config = {
         external_bar = "all:40:0";
@@ -147,7 +144,6 @@ in
     };
 
     services.jankyborders = {
-      package = branches.master.jankyborders;
       enable = cfg.enable;
       width = 6.5;
       hidpi = false;
@@ -158,8 +154,8 @@ in
     };
 
     environment.systemPackages = with pkgs; [
-      branches.master.skhd
-      branches.master.yabai
+      skhd
+      yabai
       jq
       # todo mo to overlays
       sbar_menus
@@ -168,7 +164,6 @@ in
 
     services.skhd = {
       enable = cfg.wm == "yabai";
-      package = branches.master.skhd;
       skhdConfig =
         let
           leader = "lalt";

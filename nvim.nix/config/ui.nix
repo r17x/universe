@@ -1,4 +1,5 @@
 {
+  branches,
   helpers,
   icons,
   pkgs,
@@ -54,6 +55,19 @@ in
     # extra
     unicode-vim
     lsp-progress-nvim
+
+    # TODO: removed branches when inputs.nixpkgs-unstable is updated
+    branches.master.vimPlugins.nvzone-typr
+  ];
+
+  plugins.lz-n.plugins = [
+    {
+      __unkeyed-1 = "typr";
+      cmd = [
+        "Typr"
+        "TyprStats"
+      ];
+    }
   ];
 
   userCommands.StatusLine.desc = "Toggle Status Line";

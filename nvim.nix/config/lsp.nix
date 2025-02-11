@@ -1,4 +1,5 @@
 {
+  lib,
   icons,
   pkgs,
   helpers,
@@ -9,10 +10,7 @@
 {
   highlightOverride.LspInlayHint.link = "InclineNormalNc";
 
-  extraPackages = with pkgs; [
-    nixfmt
-    manix
-  ];
+  extraPackages = with pkgs; [ manix ];
 
   extraPlugins = with pkgs.vimPlugins; [
     codi-vim # repl
@@ -383,7 +381,8 @@
       nixd.autostart = true;
       nixd.settings = {
         nixpkgs.expr = "import <nixpkgs> { }";
-        formatting.command = [ "nixfmt" ];
+        formatting.command = [ "${lib.getExe pkgs.nixfmt}" ];
+        diagnostic.suppress = [ "sema-escaping-with" ];
         options =
           let
             flake = ''(builtins.getFlake "${./../..}")'';

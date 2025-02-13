@@ -1,4 +1,5 @@
 {
+  self,
   lib,
   icons,
   pkgs,
@@ -385,11 +386,11 @@
         diagnostic.suppress = [ "sema-escaping-with" ];
         options =
           let
-            flake = ''(builtins.getFlake "${./../..}")'';
+            flake = ''(builtins.getFlake "${self}")'';
           in
-          rec {
+          {
             nix-darwin.expr = ''${flake}.darwinConfigurations.eR17x.options'';
-            home-manager.expr = ''${nix-darwin.expr}.home-manager.users.type.getSubOptions []'';
+            home-manager.expr = ''${flake}.homeConfigurations."r17@eR17x".options'';
             nixvim.expr = ''${flake}.packages.${system}.nvim.options'';
           };
       };

@@ -11,17 +11,15 @@
       ];
 
       imports = [
-        inputs.pre-commit-hooks.flakeModule
-        inputs.process-compose-flake.flakeModule
-
         ./nix
-        ./nvim.nix
       ];
     };
 
   inputs = {
     # utilities for Flake
     flake-parts.url = "github:hercules-ci/flake-parts";
+    ez-configs.url = "github:ehllie/ez-configs";
+    ez-configs.inputs.nixpkgs.follows = "nixpkgs";
 
     ## -- nixpkgs
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";

@@ -1,4 +1,4 @@
-{ branches, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   # Packages with configuration --------------------------------------------------------------- {{{
@@ -89,7 +89,7 @@
       ##################################
       # Communication
       ##################################
-      (branches.master.discord.override {
+      (pkgs.branches.master.discord.override {
         withVencord = true;
         withOpenASAR = true;
       })

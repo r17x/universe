@@ -1,5 +1,4 @@
 {
-  branches,
   helpers,
   icons,
   pkgs,
@@ -57,7 +56,7 @@ in
     lsp-progress-nvim
 
     # TODO: removed branches when inputs.nixpkgs-unstable is updated
-    branches.master.vimPlugins.nvzone-typr
+    pkgs.branches.master.vimPlugins.nvzone-typr
   ];
 
   plugins.lz-n.plugins = [

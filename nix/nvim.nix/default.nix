@@ -3,7 +3,6 @@
   perSystem =
     {
       icons,
-      branches,
       pkgs,
       system,
       ...
@@ -36,7 +35,6 @@
         extraSpecialArgs = {
           inherit
             icons
-            branches
             helpers
             system
             self

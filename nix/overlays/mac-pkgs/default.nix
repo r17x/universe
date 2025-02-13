@@ -1,4 +1,4 @@
-{ ... }:
+{ self, ... }:
 {
   flake.overlays.macos =
     final: prev:
@@ -19,10 +19,10 @@
 
     attrsets.genAttrs packages (name: callPackage ./${name}.nix { })
     // {
-      sbar_menus = prev.callPackage ../../nixosModules/darwin/sketchybar/helpers/menus { };
-      sbar_events = prev.callPackage ../../nixosModules/darwin/sketchybar/helpers/event_providers { };
-      sbarLua = prev.callPackage ../../nixosModules/darwin/sketchybar/helpers/sbar.nix { };
-      sketchybarConfigLua = prev.callPackage ../../nixosModules/darwin/sketchybar { };
+      sbar_menus = prev.callPackage "${self}/nix/packages/sketchybar/helpers/menus" { };
+      sbar_events = prev.callPackage "${self}/nix/packages/sketchybar/helpers/event_providers" { };
+      sbarLua = prev.callPackage "${self}/nix/packages/sketchybar/helpers/sbar.nix" { };
+      sketchybarConfigLua = prev.callPackage "${self}/nix/packages/sketchybar" { };
       sf-symbols-font = final.sf-symbols.overrideAttrs (old: {
         pname = "sf-symbols-font";
         installPhase = ''

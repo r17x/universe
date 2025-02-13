@@ -8,7 +8,7 @@
 with lib;
 
 let
-  cfg = config.home.user-info.within.gpg;
+  cfg = config.within.gpg;
 in
 {
   options.within.gpg.enable = mkEnableOption "Enables Within's gpg config";

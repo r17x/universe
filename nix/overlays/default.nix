@@ -14,6 +14,21 @@
       nixt
       ;
 
+    branches =
+      let
+        pkgsFrom =
+          branch: system:
+          import branch {
+            inherit system;
+            inherit (inputs.self.nixpkgs) config;
+          };
+      in
+      {
+        master = pkgsFrom inputs.nixpkgs-master prev.stdenv.system;
+        stable = pkgsFrom inputs.nixpkgs-stable prev.stdenv.system;
+        unstable = pkgsFrom inputs.nixpkgs-unstable prev.stdenv.system;
+      };
+
     sf-mono-liga-bin = prev.stdenvNoCC.mkDerivation (finalAttrs: {
       pname = "sf-mono-liga-bin";
       version = "7723040ef50633da5094f01f93b96dae5e9b9299";

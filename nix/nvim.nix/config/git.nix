@@ -24,7 +24,8 @@ in
   plugins.telescope.keymaps.fgr.action = "git_bcommits_range";
   plugins.telescope.keymaps.fgb.options.desc = "Lists git branches with log preview.";
   plugins.telescope.keymaps.fgb.action = "git_branches";
-  plugins.telescope.keymaps.fgs.options.desc = "Lists current changes git per file with diff preview and add action.";
+  plugins.telescope.keymaps.fgs.options.desc =
+    "Lists current changes git per file with diff preview and add action.";
   plugins.telescope.keymaps.fgs.action = "git_status";
   plugins.telescope.keymaps.fgw.options.desc = "Lists git stash items";
   plugins.telescope.keymaps.fgw.action = "git_stash";

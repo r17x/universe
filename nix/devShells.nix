@@ -1,9 +1,13 @@
 ##################################################################
 #                       Development shells
 ##################################################################
-{ self, ... }:
+{ inputs, self, ... }:
 
 {
+  imports = [
+    inputs.pre-commit-hooks.flakeModule
+  ];
+
   perSystem =
     { pkgs, config, ... }:
     {

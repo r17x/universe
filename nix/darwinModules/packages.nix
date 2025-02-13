@@ -4,14 +4,13 @@
 
 {
   lib,
-  branches,
   pkgs,
   ...
 }:
 
 {
   # Apps
-  environment.systemPackages = with branches.master; [
+  environment.systemPackages = with pkgs.branches.master; [
     raycast
     terminal-notifier
   ];

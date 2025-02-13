@@ -50,13 +50,28 @@ in
 
   config = mkIf cfg.enable {
     system.activationScripts.preActivation.text = ''
+      networksetup -setdnsservers Wi-Fi empty
+
       echo "checking dnscrypt-proxy configuration..." >&2 
 
       ${lib.getExe cfg.package} -check -config ${configFile}
     '';
 
+    system.activationScripts.postActivation.text = ''
+      echo  >&2 "checking dnscrypt-proxy service is listening on port 53..."
+
+      # TODO: listen address and port soduld be get from configFile
+      # toml read function should be implemented
+      if nc -zv 127.0.0.1 53 2>&1 | grep -q succeeded; then
+        networksetup -setdnsservers Wi-Fi 127.0.0.1
+      fi
+    '';
+
     launchd.daemons.dnscrypt-proxy = {
       path = [ config.environment.systemPath ];
+      serviceConfig.ProcessType = "Interactive";
+      serviceConfig.StandardOutPath = "/tmp/dnscrypt-proxy.out.log";
+      serviceConfig.StandardErrorPath = "/tmp/dnscrypt-proxy.err.log";
       serviceConfig = {
         RunAtLoad = true;
         KeepAlive = true;

@@ -91,7 +91,7 @@ let
       ## senv switch generation <number>
       ## denv delete generation <number>
       ## renv rollback to previous version number
-      ## param: <GENEREATION_NUMBER> 
+      ## param: <GENEREATION_NUMBER>
       ## run lenv before if you want to see <GENEREATION_NUMBER>
       lenv = "nix-env --list-generations";
       senv = "nix-env --switch-generation";
@@ -100,7 +100,7 @@ let
       renv = "nix-env --rollback";
       # is equivalent to: nix build --recreate-lock-file
       flakeup-all = "nix flake update ${nixConfigDirectory}";
-      # example: 
+      # example:
       # $ flakeup home-manager
       flakeup = "nix flake lock ${nixConfigDirectory} --update-input";
       nb = "nix build";
@@ -198,7 +198,7 @@ in
     nix-index.enableFishIntegration = config.programs.fish.enable;
     nix-index.enableBashIntegration = config.programs.bash.enable;
 
-    # jump like `z` or `fasd` 
+    # jump like `z` or `fasd`
     zoxide.enable = true;
     zoxide.enableFishIntegration = config.programs.fish.enable;
 
@@ -220,9 +220,9 @@ in
     fish = {
       enable = true;
 
-      # Fish plugins 
-      # See: 
-      # https://github.com/NixOS/nixpkgs/tree/90e20fc4559d57d33c302a6a1dce545b5b2a2a22/pkgs/shells/fish/plugins 
+      # Fish plugins
+      # See:
+      # https://github.com/NixOS/nixpkgs/tree/90e20fc4559d57d33c302a6a1dce545b5b2a2a22/pkgs/shells/fish/plugins
       # for list available plugins built-in nixpkgs
       plugins = with pkgs.fishPlugins; [ nix-env ];
 

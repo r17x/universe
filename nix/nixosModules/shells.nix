@@ -3,14 +3,7 @@
   # Shells -----------------------------------------------------------------------------------------
 
   # Add shells installed by nix to /etc/shells file
-  environment = with pkgs; {
-    shells = [ fish ];
-
-    variables = {
-      SHELL = "${fish}/bin/fish";
-      CC = "${gcc}/bin/gcc";
-    };
-  };
+  environment.shells = [ pkgs.fish ];
 
   # Make Fish the default shell
   programs = {

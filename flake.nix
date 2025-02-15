@@ -31,6 +31,10 @@
     process-compose-flake.url = "github:Platonic-Systems/process-compose-flake";
     services-flake.url = "github:juspay/services-flake";
 
+    ### -- Nix Infra / DevOps
+    microvm.url = "github:astro/microvm.nix?rev=1e746a8987eb893adc8dd317b84e73d72803b650";
+    microvm.inputs.nixpkgs.follows = "nixpkgs";
+
     ## -- Platform
 
     #### ---- MacOS

@@ -1,87 +1,142 @@
+/**
+  How to use this modules:
+
+  ```nix
+  imports = [
+    inputs.r17x.nixModules.nix
+    {
+      nix-settings.use = "minimal";
+      nix-settings.inputs-to-registry = true;
+    }
+  ];
+  ```
+*/
+
 {
   lib,
+  config,
   pkgs,
   inputs,
   ...
 }:
 
 let
-  nixPath = [
-    "nixpkgs=${inputs.nixpkgs}"
-  ];
+  cfg = config.nix-settings;
+
+  hasFull = cfg.use == "full";
+  isFull = lib.optionals hasFull;
 in
 {
-  nix = {
-    inherit nixPath;
-
-    configureBuildUsers = true;
-
-    registry = {
-      system.flake = inputs.self;
-      default.flake = inputs.nixpkgs;
-      nixpkgs.flake = inputs.nixpkgs;
-      master.flake = inputs.nixpkgs-master;
-      stable.flake = inputs.nixpkgs-stable;
-      darwin.flake = inputs.nix-darwin;
-      home-manager.flake = inputs.home-manager;
+  options.nix-settings = {
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = ''
+        Whether to enable the nix settings.
+      '';
     };
 
-    optimise.automatic = true;
+    use = lib.mkOption {
+      type = lib.types.enum [
+        "minimal"
+        "full"
+      ];
+      default = "minimal";
+      description = ''
+        The nix settings to use.
 
-    settings =
-      {
-        nix-path = nixPath;
-        accept-flake-config = true;
-        download-attempts = 3;
-        fallback = true;
-        http-connections = 0;
-        max-jobs = "auto";
+        Valid values are: "minimal", "full".
+      '';
+    };
+    inputs-to-registry = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = ''
+        Whether to add inputs to the registry.
 
-        experimental-features = [
-          "pipe-operators"
-          "auto-allocate-uids"
-          "ca-derivations"
-          "flakes"
-          "nix-command"
-        ];
+        it will turn inputs.<NAME> to the nix.registry.<NAME>.flake
+      '';
+    };
+  };
 
-        trusted-users = [
-          "r17"
-          "nixos"
-          "root"
-        ];
+  config = lib.mkIf cfg.enable {
+    nix =
+      rec {
+        nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
 
-        trusted-substituters = [
-          "https://cache.komunix.org"
-          "https://nix-community.cachix.org"
-          "https://r17.cachix.org/"
-          "https://efishery.cachix.org"
-        ];
+        registry =
+          {
+            nixpkgs.flake = inputs.nixpkgs;
+          }
+          // lib.optionalAttrs cfg.inputs-to-registry (
+            lib.attrsets.concatMapAttrs (name: flake: {
+              ${name} = { inherit flake; };
+            }) (lib.attrsets.filterAttrs (_: lib.isType "flake") inputs)
+          );
 
-        trusted-public-keys = [
-          "efishery.cachix.org-1:ix7pi358GsGkH7oBTmKGkVj42yBcjxRPi6IQ9AbRc0o="
-          "r17.cachix.org-1:vz0nG6BCbdgTPn7SEiOwe/3QwvjH1sb/VV9WLcBtkAY="
-          "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        ];
+        settings =
+          {
+            nix-path = nixPath;
+            experimental-features =
+              [
+                "flakes"
+                "nix-command"
+              ]
+              ++ isFull [
+                "pipe-operators"
+                "auto-allocate-uids"
+                "ca-derivations"
+              ];
+          }
+          // (
+            lib.optionalAttrs hasFull {
+
+              accept-flake-config = true;
+              download-attempts = 1;
+              fallback = true;
+              http-connections = 0;
+              max-jobs = "auto";
+
+              trusted-users = [
+                "r17"
+                "nixos"
+                "root"
+              ];
+
+              trusted-substituters = [
+                "https://cache.komunix.org"
+                "https://nix-community.cachix.org"
+                "https://r17.cachix.org/"
+                "https://efishery.cachix.org"
+              ];
+
+              trusted-public-keys = [
+                "efishery.cachix.org-1:ix7pi358GsGkH7oBTmKGkVj42yBcjxRPi6IQ9AbRc0o="
+                "r17.cachix.org-1:vz0nG6BCbdgTPn7SEiOwe/3QwvjH1sb/VV9WLcBtkAY="
+                "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+                "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+              ];
+            }
+            // (lib.optionalAttrs (pkgs.stdenv.isDarwin && pkgs.stdenv.isAarch64) {
+              extra-platforms = "x86_64-darwin aarch64-darwin";
+            })
+          );
       }
-      // (lib.optionalAttrs (pkgs.stdenv.isDarwin && pkgs.stdenv.isAarch64) {
-        extra-platforms = "x86_64-darwin aarch64-darwin";
+      // (lib.optionalAttrs hasFull {
+        configureBuildUsers = true;
+        optimise.automatic = true;
+
+        # enable garbage-collection on weekly and delete-older-than 30 day
+        gc = {
+          automatic = true;
+          options = "--delete-older-than 30d";
+        };
+
+        extraOptions = ''
+          keep-outputs = true
+          keep-derivations = true
+          auto-allocate-uids = false
+        '';
       });
-
-    # enable garbage-collection on weekly and delete-older-than 30 day
-    gc = {
-      automatic = true;
-      options = "--delete-older-than 30d";
-    };
-
-    # this is configuration for /etc/nix/nix.conf
-    # so it will generated /etc/nix/nix.conf
-    extraOptions = ''
-      keep-outputs = true
-      keep-derivations = true
-      auto-allocate-uids = false
-    '';
-
   };
 }

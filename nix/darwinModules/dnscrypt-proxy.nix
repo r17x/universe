@@ -68,11 +68,12 @@ in
     '';
 
     launchd.daemons.dnscrypt-proxy = {
-      path = [ config.environment.systemPath ];
-      serviceConfig.ProcessType = "Interactive";
-      serviceConfig.StandardOutPath = "/tmp/dnscrypt-proxy.out.log";
-      serviceConfig.StandardErrorPath = "/tmp/dnscrypt-proxy.err.log";
+      path = [
+        config.environment.systemPath
+        cfg.package
+      ];
       serviceConfig = {
+        ProcessType = "Interactive";
         RunAtLoad = true;
         KeepAlive = true;
         ProgramArguments = [
@@ -80,6 +81,9 @@ in
           "-config"
           configFile
         ];
+        StandardOutPath = "/dev/null";
+        StandardErrorPath = "/dev/null";
+        UserName = "root";
       };
     };
   };

@@ -17,8 +17,18 @@
     shell = pkgs.fish;
   };
 
+  # --- see: nix/nixosModules/nix.nix
+  nix-settings = {
+    enable = true;
+    use = "full";
+    inputs-to-registry = true;
+  };
+
+  # --- see: nix/darwinModules/mouseless.nix
   mouseless.enable = true;
   mouseless.wm = "aerospace";
+
+  # --- nix-darwin
   homebrew.enable = true;
 
   networking.hostName = "eR17";

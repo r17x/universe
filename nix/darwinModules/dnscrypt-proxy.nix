@@ -12,33 +12,26 @@ let
 
   format = pkgs.formats.toml { };
 
-  configFile =
-    if isPath cfg.settings then
-      (cfg.settings |> builtins.readFile |> pkgs.writeText "dnscrypt-proxy.toml" |> toString)
-    else
-      format.generate "dnscrypt-proxy.toml" cfg.settings;
+  configFile = format.generate "dnscrypt-proxy.toml" cfg.settings;
 
 in
 {
-  options = {
-    services.dnscrypt-proxy.enable = mkOption {
+  options.services.dnscrypt-proxy = {
+    enable = mkOption {
       type = types.bool;
       default = false;
       description = "Whether to enable the dnscrypt-proxy service.";
     };
 
-    services.dnscrypt-proxy.package = mkOption {
+    package = mkOption {
       type = types.path;
       default = pkgs.dnscrypt-proxy2;
       defaultText = "pkgs.dnscrypt-proxy2";
       description = "This option specifies the dnscrypt-proxy package to use";
     };
 
-    services.dnscrypt-proxy.settings = mkOption {
-      type = types.oneOf [
-        types.path
-        format.type
-      ];
+    settings = mkOption {
+      type = format.type;
       description = ''
         This option specifies the dnscrypt-proxy settings to use
 
@@ -46,44 +39,29 @@ in
       '';
     };
 
+    overrideLocalDns = mkOption {
+      type = types.bool;
+      default = false;
+      description = ''
+        This options specifies whether to override the local DNS settings with the listen_addresses from the dnscrypt-proxy configuration.
+      '';
+    };
   };
 
   config = mkIf cfg.enable {
-    system.activationScripts.preActivation.text = ''
-      networksetup -setdnsservers Wi-Fi empty
-
-      echo "checking dnscrypt-proxy configuration..." >&2 
-
-      ${lib.getExe cfg.package} -check -config ${configFile}
-    '';
-
-    system.activationScripts.postActivation.text = ''
-      echo  >&2 "checking dnscrypt-proxy service is listening on port 53..."
-
-      # TODO: listen address and port soduld be get from configFile
-      # toml read function should be implemented
-      if nc -zv 127.0.0.1 53 2>&1 | grep -q succeeded; then
-        networksetup -setdnsservers Wi-Fi 127.0.0.1
-      fi
-    '';
+    networking.dns = mkIf cfg.overrideLocalDns (
+      lib.concatMap (lib.strings.match ''^(\[?[0-9a-fA-F:.]+]?):[0-9]+$'') (
+        cfg.settings.listen_addresses or [ ]
+      )
+    );
 
     launchd.daemons.dnscrypt-proxy = {
-      path = [
-        config.environment.systemPath
-        cfg.package
-      ];
+      script = ''
+        ${lib.getExe' cfg.package "dnscrypt-proxy"} -config ${configFile}
+      '';
       serviceConfig = {
-        ProcessType = "Interactive";
         RunAtLoad = true;
         KeepAlive = true;
-        ProgramArguments = [
-          "${lib.getExe cfg.package}"
-          "-config"
-          configFile
-        ];
-        StandardOutPath = "/dev/null";
-        StandardErrorPath = "/dev/null";
-        UserName = "root";
       };
     };
   };

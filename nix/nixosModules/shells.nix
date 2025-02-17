@@ -1,10 +1,6 @@
 { pkgs, config, ... }:
+
 {
-  # Shells -----------------------------------------------------------------------------------------
-
-  # Add shells installed by nix to /etc/shells file
-  environment.shells = [ pkgs.fish ];
-
   # Make Fish the default shell
   programs = {
     fish.enable = true;

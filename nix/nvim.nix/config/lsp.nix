@@ -1,5 +1,4 @@
 {
-  self,
   lib,
   icons,
   pkgs,
@@ -386,7 +385,7 @@
         diagnostic.suppress = [ "sema-escaping-with" ];
         options =
           let
-            flake = ''(builtins.getFlake "${self}")'';
+            flake = ''(builtins.getFlake "github:r17x/universe")'';
           in
           {
             nix-darwin.expr = ''${flake}.darwinConfigurations.eR17x.options'';

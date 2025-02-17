@@ -123,7 +123,6 @@ in
           );
       }
       // (lib.optionalAttrs hasFull {
-        configureBuildUsers = true;
         optimise.automatic = true;
 
         # enable garbage-collection on weekly and delete-older-than 30 day

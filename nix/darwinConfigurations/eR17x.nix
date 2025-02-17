@@ -17,6 +17,15 @@
     shell = pkgs.fish;
   };
 
+  services = {
+    yggdrasil.enable = false;
+    dnscrypt-proxy.enable = true;
+    # when unbound `false` need to change dnscrypt listen address:
+    # dnscrypt-proxy.settings.listen_adresses = [ "127.0.0.1:53" ]
+    unbound.enable = true;
+    tailscale.enable = true;
+  };
+
   # --- see: nix/nixosModules/nix.nix
   nix-settings = {
     enable = true;
@@ -33,23 +42,12 @@
 
   networking.hostName = "eR17x";
   networking.computerName = "eR17x";
+  networking.knownNetworkServices = [ "Wi-Fi" ];
 
-  nix.settings.trusted-users = [ "@admin" ];
-  nix.settings.builders-use-substitutes = true;
-  nix.linux-builder = {
-    enable = true;
-    ephemeral = true;
-    maxJobs = 4;
-    config = {
-      virtualisation = {
-        darwin-builder = {
-          diskSize = 40 * 1024;
-          memorySize = 8 * 1024;
-        };
-        cores = 6;
-      };
-      nix.settings.sandbox = false;
-      users.users.root.openssh.authorizedKeys.keys = inputs.self.users.r17.keys;
-    };
-  };
+  # --- linux-builder
+  nix.linux-builder.enable = true;
+  # set authorized ssh keys
+  nix.linux-builder.config.users.users.root.openssh.authorizedKeys.keys = inputs.self.users.r17.keys;
+
+  documentation.enable = false;
 }

@@ -61,7 +61,7 @@
 
       nixpkgs.hostPlatform = "aarch64-linux";
       system.stateVersion = "24.05";
-      networking.hostName = "microvm-host";
+      networking.hostName = "vm";
       users.users.root.password = "";
       users.users.root.openssh.authorizedKeys.keys = inputs.self.users.r17.keys;
     }

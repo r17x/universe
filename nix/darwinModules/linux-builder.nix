@@ -24,6 +24,7 @@ in
         };
         cores = 6;
       };
+      networking.hostName = "vm";
       nix.settings.sandbox = false;
       nix.settings.experimental-features = [
         "flakes"

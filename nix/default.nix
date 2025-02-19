@@ -14,6 +14,11 @@
     ./overlays
     ./nvim.nix
 
+    ./flakeModules/module-config.nix
+    {
+      modulesGen.flakeModules.dir = ./flakeModules;
+    }
+
     ./flakeModules/rebuild-script.nix
     {
       rebuild-scripts.enable = true;

@@ -13,6 +13,12 @@
     ./devShells.nix
     ./overlays
     ./nvim.nix
+
+    ./flakeModules/rebuild-script.nix
+    {
+      rebuild-scripts.enable = true;
+    }
+
   ];
 
   flake = {

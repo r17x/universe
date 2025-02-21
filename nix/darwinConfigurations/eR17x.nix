@@ -3,11 +3,12 @@
   lib,
   pkgs,
   ezModules,
+  crossModules,
   ...
 }:
 
 {
-  imports = lib.attrValues (ezModules // inputs.self.nixosModules);
+  imports = lib.attrValues (ezModules // crossModules);
 
   system.stateVersion = 4;
   nixpkgs.hostPlatform = "aarch64-darwin";

@@ -17,6 +17,7 @@
     ./flakeModules/module-config.nix
     {
       modulesGen.flakeModules.dir = ./flakeModules;
+      modulesGen.crossModules.dir = ./crossModules;
     }
 
     ./flakeModules/rebuild-script.nix
@@ -62,6 +63,7 @@
         icons
         colors
         color
+        crossModules
         ;
     };
 

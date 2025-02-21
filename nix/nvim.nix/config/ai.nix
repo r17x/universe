@@ -36,6 +36,13 @@ rec {
         copilot.max_tokens = 4096;
 
         vendors = rec {
+          groq = {
+            api_key_name = "cmd:pass show r17x/groq.api.key";
+            __inherited_from = "openai";
+            endpoint = "https://api.groq.com/openai/v1";
+            model = "llama-3.3-70b-versatile";
+            max_tokens = 32768;
+          };
           local-deepseeg = local-qwen // {
             model = "deepseek-r1:1.5b";
           };

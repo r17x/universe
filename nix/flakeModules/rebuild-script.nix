@@ -5,21 +5,22 @@ top@{
 }:
 
 let
-  darwinConfigs = config.flake.darwinConfigurations or { };
-  nixosConfigs = config.flake.nixosConfigurations or { };
-
-  genCommand =
-    system: configs: name:
-    ''${name}) ${
-      lib.getExe' configs.${name}.config.system.build."${system}-rebuild" "${system}-rebuild"
-    } switch --flake ${top.self}#${name} ;;'';
+  genRebuildCommand =
+    system: config:
+    ''${
+      lib.getExe' config.system.build."${system}-rebuild" "${system}-rebuild"
+    } switch --flake ${top.self}#${config.networking.hostName}'';
 
   commands = {
-    Darwin = lib.concatStringsSep "\n" (
-      map (genCommand "darwin" darwinConfigs) (lib.attrNames darwinConfigs)
+    darwin = lib.concatStringsSep "\n" (
+      lib.mapAttrsToList (name: config: "${name}) ${genRebuildCommand "darwin" config.config} ;;") (
+        config.flake.darwinConfigurations or { }
+      )
     );
-    Linux = lib.concatStringsSep "\n" (
-      map (genCommand "nixos" nixosConfigs) (lib.attrNames nixosConfigs)
+    nixos = lib.concatStringsSep "\n" (
+      lib.mapAttrsToList (name: config: "${name}) ${genRebuildCommand "nixos" config.config} ;;") (
+        config.flake.nixosConfigurations or { }
+      )
     );
   };
 
@@ -42,7 +43,7 @@ in
               shift
             done
             case $HOSTNAME in
-              ${if pkgs.stdenv.isLinux then commands.Linux else commands.Darwin}
+              ${if pkgs.stdenv.isLinux then commands.nixos else commands.darwin}
               *) echo "No matching configuration found for $HOSTNAME on Linux" ;;
             esac
           '';

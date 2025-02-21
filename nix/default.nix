@@ -25,6 +25,12 @@
       rebuild-scripts.enable = true;
     }
 
+    ./flakeModules/pkgs-by-name.nix
+    {
+      perSystem.pkgsDirectory = ./packages;
+      perSystem.pkgsNameSeparator = ".";
+    }
+
   ];
 
   flake = {

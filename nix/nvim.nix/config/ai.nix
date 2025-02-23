@@ -36,6 +36,11 @@ rec {
         copilot.max_tokens = 4096;
 
         vendors = rec {
+          grok = groq // {
+            api_key_name = "cmd:pass show r17x/grok.api.key";
+            model = "grok-2-latest";
+            endpoint = "https://api.x.ai/v1";
+          };
           groq = {
             api_key_name = "cmd:pass show r17x/groq.api.key";
             __inherited_from = "openai";

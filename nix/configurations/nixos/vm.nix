@@ -6,7 +6,7 @@
 
 {
   inputs,
-  ezModules,
+  crossModules,
   ...
 }:
 
@@ -54,7 +54,7 @@
     )
 
     # --- my configurations
-    ezModules.nix
+    crossModules.nix
     {
       # --- see: nix/nixosModules/nix.nix
       nix-settings.enable = true;

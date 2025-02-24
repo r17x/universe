@@ -312,8 +312,8 @@
         rangeVariableTypes = true;
       };
 
-      hls.enable = true;
-      hls.autostart = true;
+      hls.enable = false;
+      hls.autostart = false;
       hls.installGhc = false;
 
       htmx.enable = !pkgs.stdenv.isDarwin;

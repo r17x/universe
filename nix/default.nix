@@ -14,18 +14,18 @@
     ./overlays
     ./nvim.nix
 
-    ./flakeModules/module-config.nix
+    ./modules/flake/module-config.nix
     {
-      modulesGen.flakeModules.dir = ./flakeModules;
-      modulesGen.crossModules.dir = ./crossModules;
+      modulesGen.flakeModules.dir = ./modules/flake;
+      modulesGen.crossModules.dir = ./modules/cross;
     }
 
-    ./flakeModules/rebuild-script.nix
+    ./modules/flake/rebuild-script.nix
     {
       rebuild-scripts.enable = true;
     }
 
-    ./flakeModules/pkgs-by-name.nix
+    ./modules/flake/pkgs-by-name.nix
     {
       perSystem.pkgsDirectory = ./packages;
       perSystem.pkgsNameSeparator = ".";
@@ -73,16 +73,16 @@
         ;
     };
 
-    home.modulesDirectory = ./homeModules;
+    home.modulesDirectory = ./modules/home;
     home.configurationsDirectory = ./homeConfigurations;
 
-    darwin.modulesDirectory = ./darwinModules;
+    darwin.modulesDirectory = ./modules/darwin;
     darwin.configurationsDirectory = ./darwinConfigurations;
     darwin.hosts = {
       eR17.userHomeModules = [ "r17" ];
       eR17x.userHomeModules = [ "r17" ];
     };
-    nixos.modulesDirectory = ./nixosModules;
+    nixos.modulesDirectory = ./modules/nixos;
     nixos.configurationsDirectory = ./nixosConfigurations;
   };
 

@@ -74,16 +74,16 @@
     };
 
     home.modulesDirectory = ./modules/home;
-    home.configurationsDirectory = ./homeConfigurations;
+    home.configurationsDirectory = ./configurations/home;
 
     darwin.modulesDirectory = ./modules/darwin;
-    darwin.configurationsDirectory = ./darwinConfigurations;
+    darwin.configurationsDirectory = ./configurations/darwin;
     darwin.hosts = {
       eR17.userHomeModules = [ "r17" ];
       eR17x.userHomeModules = [ "r17" ];
     };
     nixos.modulesDirectory = ./modules/nixos;
-    nixos.configurationsDirectory = ./nixosConfigurations;
+    nixos.configurationsDirectory = ./configurations/nixos;
   };
 
   perSystem =

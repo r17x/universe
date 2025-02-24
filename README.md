@@ -1,6 +1,12 @@
-# Rin's Home 🏚
+# R17{x} Universe ❄️
 
 > This "README" is available in 🇮🇩 [**Bahasa**](./BACALAH.md).
+
+<div align="center">
+    <a href="#motivation">Motivation</a> ⎹
+    <a href="#nix">Nix</a> ⎹
+    <a href="#structures">Structures<a/>
+</div>
 
 ## Motivation
 
@@ -24,22 +30,49 @@ Since nix uses functional concepts like declarative then it should be utilized w
 
 This is my personal configuration with [nix](https://nixos.org/) using [**flakes**](https://nixos.wiki/wiki/Flakes), [**flake.part**](https://flake.parts/), [**home-manager**](https://github.com/nix-community/home-manager), & [**nix-darwin**](https://github.com/LnL7/nix-darwin) for Darwin or MacOS System.
 
-## Structure
+## Structures
 
-```console
-.
-├── app/* (Applications, Packages, etc.)
-├── nix/* (All nix related files)
-├── nix/home (All home-manager related files)
-├── nix/hosts (All hosts or machines related files)
-├── nix/devShells.nix (All development shells - development environment)
-├── nix/nix.nix (Nix CLI configuration)
-├── nvim.nix/* (All nix related files for nvim - using [**Nixvim**](https://github.com/nix-community/nixvim))
-├── notes/* (All notes with [**Neorg**](https://github.com/nvim-neorg/neorg) format)
-├── flake.lock (Flake lock file)
-├── flake.nix (Flake file for manage inputs)
+```mermaid
+graph LR
+    F[Flake] --> N(nixosConfigurations)
+    F --> D(darwinConfigurations)
+    F --> H(homeCofigurations)
 
+    N --aarch64-linux--> VM(VM)
+    D --aarch64-darwin--> d1(eR17)
+    D --aarch64-darwin--> d2(eR17x)
+
+    H --> h1(r17)
+
+    d1 --"r17@eR17"--> h1
+    d2 --"r17@eR17x"--> h1
+    d2 --virtual machine with: aarch64-linux--> LB(linux-builder)
+
+    F --> M
+    M(modules) --> DM(Darwin Modules)
+    DM --> D
+    M --> NM(NixOS Modules)
+    NM --> N
+    M --> HM(Home Modules)
+    HM --> H
+    M --> CM(Cross Modules)
+    CM --> D
+    CM --> N
+    M --> FM(Flake Modules)
+    FM --> F
 ```
+
+* [Flake](./flake.nix)
+    * [configurations](./nix/configurations/)
+        * [home](./nix/configurations/home)
+            * [r17](./nix/configurations/home/r17.nix) - home-manager configurations for user `r17` and use at host [eR17](./nix/configurations/darwin/eR17.nix) and [eR17x](./nix/configurations/darwin/eR17x.nix)
+        * [darwin](./nix/configurations/darwin/)
+            * [eR17](./nix/configurations/darwin/eR17.nix)
+            * [eR17x](./nix/configurations/darwin/eR17x.nix)
+        * [nixos](./nix/configurations/nixos)
+            * [vm](./nix/configurations/nixos/vm.nix) - currently deploy to linux-builder at [eR17x](./nix/configurations/darwin/eR17x.nix)
+    * [modules](./nix/modules/)
+
 ## Usage
 
 ### Prerequisite

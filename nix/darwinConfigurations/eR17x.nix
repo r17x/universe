@@ -1,22 +1,15 @@
 {
   inputs,
-  lib,
-  pkgs,
-  ezModules,
-  crossModules,
   ...
 }:
 
 {
-  imports = lib.attrValues (ezModules // crossModules);
+  imports = [
+    # extends darwinConfigurations/eR17.nix
+    (import ./eR17.nix)
+  ];
 
-  system.stateVersion = 4;
-  nixpkgs.hostPlatform = "aarch64-darwin";
-
-  users.users.r17 = {
-    home = "/Users/r17";
-    shell = pkgs.fish;
-  };
+  documentation.enable = false;
 
   services = {
     yggdrasil.enable = false;
@@ -27,28 +20,15 @@
     tailscale.enable = true;
   };
 
-  # --- see: nix/nixosModules/nix.nix
-  nix-settings = {
-    enable = true;
-    use = "full";
-    inputs-to-registry = true;
+  networking = {
+    hostName = "eR17x";
+    knownNetworkServices = [ "Wi-Fi" ];
   };
 
-  # --- see: nix/darwinModules/mouseless.nix
-  mouseless.enable = true;
-  mouseless.wm = "aerospace";
-
-  # --- nix-darwin
-  homebrew.enable = true;
-
-  networking.hostName = "eR17x";
-  networking.computerName = "eR17x";
-  networking.knownNetworkServices = [ "Wi-Fi" ];
-
   # --- linux-builder
-  nix.linux-builder.enable = true;
-  # set authorized ssh keys
-  nix.linux-builder.config.users.users.root.openssh.authorizedKeys.keys = inputs.self.users.r17.keys;
-
-  documentation.enable = false;
+  nix.linux-builder = {
+    enable = true;
+    # set authorized ssh keys
+    config.users.users.root.openssh.authorizedKeys.keys = inputs.self.users.r17.keys;
+  };
 }

@@ -3,6 +3,7 @@
   pkgs,
   ezModules,
   crossModules,
+  config,
   ...
 }:
 
@@ -31,6 +32,8 @@
   # --- nix-darwin
   homebrew.enable = true;
 
-  networking.hostName = "eR17";
-  networking.computerName = "eR17";
+  networking = {
+    hostName = lib.mkDefault "eR17";
+    computerName = config.networking.hostName;
+  };
 }

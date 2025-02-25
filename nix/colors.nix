@@ -35,7 +35,12 @@ let
     };
   };
 
-  toScheme = xs: xs |> lib.lists.imap0 KV.scheme |> lib.attrsets.listToAttrs;
+  toScheme =
+    xs:
+    lib.pipe xs [
+      (lib.lists.imap0 KV.scheme)
+      lib.attrsets.listToAttrs
+    ];
 
   toKVString = lib.lists.imap0 KV.string;
 

@@ -4,6 +4,7 @@
   pkgs,
   helpers,
   system,
+  inputs,
   ...
 }:
 
@@ -375,7 +376,7 @@
         nixd.enable = true;
         nixd.autostart = true;
         nixd.settings = {
-          nixpkgs.expr = "import <nixpkgs> { }";
+          nixpkgs.expr = ''import "${inputs.nixpkgs.outPath}" { }'';
           formatting.command = [ "${lib.getExe pkgs.nixfmt}" ];
           diagnostic.suppress = [ "sema-escaping-with" ];
           options =

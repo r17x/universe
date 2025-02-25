@@ -38,6 +38,7 @@
             helpers
             system
             self
+            inputs
             ;
         };
       };

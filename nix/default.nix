@@ -18,6 +18,7 @@
     {
       modulesGen.flakeModules.dir = ./modules/flake;
       modulesGen.crossModules.dir = ./modules/cross;
+      modulesGen.nixvimModules.dir = ./nvim.nix/config;
     }
 
     ./modules/flake/rebuild-script.nix
@@ -30,7 +31,6 @@
       perSystem.pkgsDirectory = ./packages;
       perSystem.pkgsNameSeparator = ".";
     }
-
   ];
 
   flake = {

@@ -27,7 +27,7 @@
 
   imports = lib.attrValues ezModules ++ [
     # --- secrets
-    inputs.sops.homeManagerModules.sops
+    inputs.sops-nix.homeManagerModules.sops
     {
       sops.gnupg.home = "~/.gnupg";
       sops.gnupg.sshKeyPaths = [ ];

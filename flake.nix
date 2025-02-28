@@ -36,6 +36,15 @@
     microvm.url = "github:astro/microvm.nix?rev=1e746a8987eb893adc8dd317b84e73d72803b650";
     microvm.inputs.nixpkgs.follows = "nixpkgs";
 
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
+
+    clan-core.url = "github:clan-lol/clan-core";
+    clan-core.inputs.nixpkgs.follows = "nixpkgs";
+    clan-core.inputs.flake-parts.follows = "flake-parts";
+    clan-core.inputs.sops-nix.follows = "sops-nix";
+    clan-core.inputs.disko.follows = "disko";
+
     ## -- Platform
 
     #### ---- MacOS
@@ -61,12 +70,13 @@
     ## -- Languages
     ocaml-overlay.url = "github:nix-ocaml/nix-overlays";
     ocaml-overlay.inputs.nixpkgs.follows = "nixpkgs";
+
     server-reason-react = {
       url = "github:ml-in-barcelona/server-reason-react";
       flake = false;
     };
     quickjs-ml = {
-      url = "git+https://github.com/ml-in-barcelona/quickjs.ml?submodules=1";
+      url = "github:ml-in-barcelona/quickjs.ml?submodules=1";
       flake = false;
     };
     styled-ppx = {
@@ -78,8 +88,8 @@
     iamb.inputs.nixpkgs.follows = "nixpkgs";
 
     # secret management
-    sops.url = "github:Mic92/sops-nix";
-    sops.inputs.nixpkgs.follows = "nixpkgs";
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     # utilities
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";

@@ -1,5 +1,37 @@
 {
   "nodes": {
+    "clan-core": {
+      "inputs": {
+        "disko": [
+          "disko"
+        ],
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixos-facter-modules": "nixos-facter-modules",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "sops-nix": [
+          "sops-nix"
+        ],
+        "systems": "systems",
+        "treefmt-nix": "treefmt-nix"
+      },
+      "locked": {
+        "lastModified": 1740655728,
+        "narHash": "sha256-Vaegn3U4O6VjqyieOVWzbTW5meUCvKKSC097MprG+GY=",
+        "owner": "clan-lol",
+        "repo": "clan-core",
+        "rev": "cfeda1f06d9496541f6938f8db507b001786b4f4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "clan-lol",
+        "repo": "clan-core",
+        "type": "github"
+      }
+    },
     "devshell": {
       "inputs": {
         "nixpkgs": [
@@ -18,6 +50,26 @@
       "original": {
         "owner": "numtide",
         "repo": "devshell",
+        "type": "github"
+      }
+    },
+    "disko": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1740485968,
+        "narHash": "sha256-WK+PZHbfDjLyveXAxpnrfagiFgZWaTJglewBWniTn2Y=",
+        "owner": "nix-community",
+        "repo": "disko",
+        "rev": "19c1140419c4f1cdf88ad4c1cfb6605597628940",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "disko",
         "type": "github"
       }
     },
@@ -94,7 +146,7 @@
     },
     "flake-utils": {
       "inputs": {
-        "systems": "systems"
+        "systems": "systems_2"
       },
       "locked": {
         "lastModified": 1709126324,
@@ -112,7 +164,7 @@
     },
     "flake-utils_2": {
       "inputs": {
-        "systems": "systems_2"
+        "systems": "systems_3"
       },
       "locked": {
         "lastModified": 1705309234,
@@ -130,7 +182,7 @@
     },
     "flake-utils_3": {
       "inputs": {
-        "systems": "systems_3"
+        "systems": "systems_4"
       },
       "locked": {
         "lastModified": 1731533236,
@@ -148,7 +200,7 @@
     },
     "flake-utils_4": {
       "inputs": {
-        "systems": "systems_4"
+        "systems": "systems_5"
       },
       "locked": {
         "lastModified": 1731533236,
@@ -166,7 +218,7 @@
     },
     "flake-utils_5": {
       "inputs": {
-        "systems": "systems_5"
+        "systems": "systems_6"
       },
       "locked": {
         "lastModified": 1731533236,
@@ -434,6 +486,21 @@
         "type": "github"
       }
     },
+    "nixos-facter-modules": {
+      "locked": {
+        "lastModified": 1738752252,
+        "narHash": "sha256-/nA3tDdp/2g0FBy8966ppC2WDoyXtUWaHkZWL+N3ZKc=",
+        "owner": "numtide",
+        "repo": "nixos-facter-modules",
+        "rev": "60f8b8f3f99667de6a493a44375e5506bf0c48b1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "nixos-facter-modules",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1706487304,
@@ -576,7 +643,7 @@
           "nixpkgs"
         ],
         "nuschtosSearch": "nuschtosSearch",
-        "treefmt-nix": "treefmt-nix"
+        "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
         "lastModified": 1736430661,
@@ -715,23 +782,23 @@
     "quickjs-ml": {
       "flake": false,
       "locked": {
-        "lastModified": 1712754554,
-        "narHash": "sha256-+XW31KOcANL7irogZTno9bWKmCTnJf7cgEvT0JfoNsQ=",
-        "ref": "refs/heads/main",
-        "rev": "86aad3d9d8b2485b50b7dd1046aaf7e7628cbf45",
-        "revCount": 64,
-        "submodules": true,
-        "type": "git",
-        "url": "https://github.com/ml-in-barcelona/quickjs.ml"
+        "lastModified": 1721745727,
+        "narHash": "sha256-wyYQYNNTxIsE+Mq6Hwt0Wf1rJgIksDRuCZ8P9gOiSPo=",
+        "owner": "ml-in-barcelona",
+        "repo": "quickjs.ml",
+        "rev": "82044fc532211ac6c7df71fbe879baa2481c9509",
+        "type": "github"
       },
       "original": {
-        "submodules": true,
-        "type": "git",
-        "url": "https://github.com/ml-in-barcelona/quickjs.ml"
+        "owner": "ml-in-barcelona",
+        "repo": "quickjs.ml",
+        "type": "github"
       }
     },
     "root": {
       "inputs": {
+        "clan-core": "clan-core",
+        "disko": "disko",
         "ez-configs": "ez-configs",
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
@@ -754,7 +821,7 @@
         "server-reason-react": "server-reason-react",
         "services-flake": "services-flake",
         "sketchybar-app-font": "sketchybar-app-font",
-        "sops": "sops",
+        "sops-nix": "sops-nix",
         "styled-ppx": "styled-ppx",
         "vimPlugins_lackluster": "vimPlugins_lackluster",
         "vimPlugins_vim-rescript": "vimPlugins_vim-rescript"
@@ -842,7 +909,7 @@
         "type": "github"
       }
     },
-    "sops": {
+    "sops-nix": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
@@ -970,7 +1037,43 @@
         "type": "github"
       }
     },
+    "systems_6": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
     "treefmt-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "clan-core",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1739829690,
+        "narHash": "sha256-mL1szCeIsjh6Khn3nH2cYtwO5YXG6gBiTw1A30iGeDU=",
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "rev": "3d0579f5cc93436052d94b73925b48973a104204",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "treefmt-nix_2": {
       "inputs": {
         "nixpkgs": [
           "nixvim",

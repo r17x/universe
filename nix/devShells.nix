@@ -9,7 +9,12 @@
   ];
 
   perSystem =
-    { pkgs, config, ... }:
+    {
+      pkgs,
+      system,
+      config,
+      ...
+    }:
     {
       pre-commit.check.enable = true;
       pre-commit.devShell = self.devShells.default;
@@ -118,6 +123,7 @@
             shellHook = ''
               ${config.pre-commit.installationScript}
             '';
+            packages = [ inputs.clan-core.packages.${system}.clan-cli ];
           };
 
           #

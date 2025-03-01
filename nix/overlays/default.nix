@@ -82,7 +82,18 @@
     };
 
     vimPlugins = prev.vimPlugins.extend (
-      _: _: { } // (import ./mkFlake2VimPlugin.nix inputs { pkgs = prev; })
+      _: p:
+      {
+        avante-nvim = p.avante-nvim.overrideAttrs (_: {
+          src = prev.fetchFromGitHub {
+            owner = "yetone";
+            repo = "avante.nvim";
+            rev = "d4e58f6a22ae424c9ade2146b29dc808a7e4c538";
+            hash = "sha256-4fI2u3qZOFadyqMYDJOCgiWrT3aRKVTmEgg7FuZJgGo=";
+          };
+        });
+      }
+      // (import ./mkFlake2VimPlugin.nix inputs { pkgs = prev; })
     );
 
     fishPlugins = prev.fishPlugins // {

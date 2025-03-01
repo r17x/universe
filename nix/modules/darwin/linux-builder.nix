@@ -16,6 +16,10 @@ in
   nix.linux-builder = {
     ephemeral = true;
     maxJobs = 4;
+    systems = [
+      "x86_64-linux"
+      "aarch64-linux"
+    ];
     config = {
       virtualisation = {
         darwin-builder = {

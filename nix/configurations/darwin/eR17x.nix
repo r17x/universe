@@ -30,5 +30,6 @@
     enable = true;
     # set authorized ssh keys
     config.users.users.root.openssh.authorizedKeys.keys = inputs.self.users.r17.keys;
+    config.boot.binfmt.emulatedSystems = [ "x86_64-linux" ];
   };
 }

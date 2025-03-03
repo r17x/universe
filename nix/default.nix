@@ -64,6 +64,7 @@
   ezConfigs = {
     root = ./.;
     globalArgs = {
+      inherit (inputs) self;
       inherit inputs;
       inherit (inputs.self)
         icons

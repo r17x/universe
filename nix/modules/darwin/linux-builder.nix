@@ -1,5 +1,7 @@
 {
+  self,
   lib,
+  pkgs,
   config,
   ...
 }:
@@ -21,6 +23,11 @@ in
       "aarch64-linux"
     ];
     config = {
+      users.users.root.openssh.authorizedKeys.keys = self.users.r17.keys;
+      environment.systemPackages = with pkgs; [
+        nixos-rebuild
+      ];
+      boot.binfmt.emulatedSystems = [ "x86_64-linux" ];
       virtualisation = {
         darwin-builder = {
           diskSize = 40 * 1024;

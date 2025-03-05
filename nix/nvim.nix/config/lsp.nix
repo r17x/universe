@@ -15,7 +15,6 @@
     codi-vim # repl
     vim-rescript
     neorepl-nvim
-    luasnip
   ];
 
   # make custom command
@@ -77,17 +76,34 @@
     }
   ];
 
-  extraConfigLuaPost = # ft:rust didn't respect my tabstop=2 - I love you but not me
-    ''
-      vim.g.rust_recommended_style = false
-    '';
+  # ft:rust didn't respect my tabstop=2 - I love you but not me
+  globals.rust_recommended_style = false;
 
   filetype.extension = {
     "re" = "reason";
     "rei" = "reason";
   };
 
-  plugins = {
+  plugins = rec {
+    lz-n.plugins = [
+      {
+        __unkeyed-1 = pkgs.vimPlugins.codi-vim.name;
+        cmd = [
+          "Codi"
+          "CodiNew"
+          "CodiSelect"
+          "CodiUpdate"
+        ];
+      }
+      {
+        __unkeyed-1 = pkgs.vimPlugins.vim-rescript.name;
+        ft = [ "rescript" ];
+      }
+      {
+        __unkeyed-1 = pkgs.vimPlugins.neorepl-nvim.name;
+        cmd = [ "Repl" ];
+      }
+    ];
     which-key.settings.spec = [
       {
         __unkeyed-1 = "<leader>r";
@@ -270,7 +286,12 @@
     };
 
     crates.enable = true;
+    crates.lazyLoad = {
+      enable = true;
+      settings.ft = "rust";
+    };
     rustaceanvim.enable = true;
+    rustaceanvim.lazyLoad = crates.lazyLoad;
 
     lsp = {
       enable = true;
@@ -429,9 +450,15 @@
     lspsaga.lightbulb.debounce = 40;
     lspsaga.ui.codeAction = icons.gearSM;
 
+    luasnip.enable = true;
+    luasnip.lazyLoad.settings.event = "InsertEnter";
+
     trouble.enable = true;
+    trouble.lazyLoad.settings.cmd = "Trouble";
+
     wtf.enable = true;
     nvim-autopairs.enable = true;
+    nvim-autopairs.lazyLoad.settings.event = "InsertEnter";
 
     cmp = {
       enable = true;

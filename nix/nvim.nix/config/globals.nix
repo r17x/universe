@@ -23,8 +23,6 @@ in
     expandtab = true;
     laststatus = 2;
     compatible = false;
-    foldexpr = "nvim_treesitter#foldexpr()";
-    foldmethod = "expr";
     conceallevel = 3;
     concealcursor = "n";
   };

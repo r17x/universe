@@ -22,6 +22,18 @@ rec {
   plugins = {
     avante = {
       enable = true;
+      lazyLoad.enable = true;
+      lazyLoad.settings.cmd = [
+        "AvanteAsk"
+        "AvanteBuild"
+        "AvanteChat"
+        "AvanteEdit"
+        "AvanteFocus"
+        "AvanteRefresh"
+        "AvanteSwitchProvider"
+        "AvanteShowRepoMap"
+        "AvanteToggle"
+      ];
       settings = {
         provider = "claude";
 
@@ -64,6 +76,7 @@ rec {
     };
 
     copilot-lua.enable = true;
+    copilot-lua.lazyLoad.settings.cmd = [ "Copilot" ];
     copilot-lua.settings.suggestion.enabled = false;
     copilot-lua.settings.panel.enabled = false;
 
@@ -173,7 +186,5 @@ rec {
         desc = "Code Readability Analysis";
       }
     ];
-
   };
-
 }

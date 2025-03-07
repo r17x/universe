@@ -89,6 +89,7 @@
 
   perSystem =
     {
+      pkgs,
       system,
       inputs',
       ...
@@ -106,6 +107,28 @@
           "qwen2.5-coder"
           "deepseek-r1:1.5b"
         ];
+      };
+
+      # just for demo - https://x.com/dhh/status/1897982683772317776
+      process-compose."mysql" = {
+        imports = [
+          inputs.services-flake.processComposeModules.default
+        ];
+        services.mysql."m1" = {
+          enable = true;
+          package = pkgs.mariadb_114;
+          settings.mysqld.port = 3307;
+        };
+        services.mysql."m2" = {
+          enable = true;
+          package = pkgs.mariadb_105;
+          settings.mysqld.port = 3308;
+        };
+        services.mysql."m3" = {
+          enable = true;
+          package = pkgs.mariadb_106;
+          settings.mysqld.port = 3309;
+        };
       };
 
       _module.args = {

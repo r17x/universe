@@ -132,7 +132,6 @@
 
     markdown-preview = {
       enable = true;
-      autoLoad = false;
       settings.theme = "dark";
       settings.port = "8686";
     };

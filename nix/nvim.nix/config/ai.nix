@@ -39,13 +39,13 @@ rec {
 
         claude.api_key_name = "cmd:pass show r17x/anthropic";
         claude.endpoint = "https://api.anthropic.com";
-        claude.model = "claude-3-5-sonnet-20240620";
-        claude.temperature = 0;
-        claude.max_tokens = 4096;
+        claude.model = "claude-3-7-sonnet-20250219";
+        claude.temperature = 1;
+        claude.max_tokens = 20000;
 
-        copilot.model = "claude-3.5-sonnet";
-        copilot.temperature = 0;
-        copilot.max_tokens = 4096;
+        copilot.model = "claude-3.7-sonnet-thought";
+        copilot.temperature = 1;
+        copilot.max_tokens = 20000;
 
         vendors = rec {
           grok = groq // {
@@ -76,7 +76,6 @@ rec {
     };
 
     copilot-lua.enable = true;
-    copilot-lua.lazyLoad.settings.cmd = [ "Copilot" ];
     copilot-lua.settings.suggestion.enabled = false;
     copilot-lua.settings.panel.enabled = false;
 
@@ -94,7 +93,12 @@ rec {
       ];
 
     which-key.settings.spec = [
-
+      {
+        __unkeyed-1 = "ta";
+        __unkeyed-2 = "<cmd>AvanteToggle<cr>";
+        icon = icons.robotFace;
+        desc = "Toggle Avante";
+      }
       {
         __unkeyed-1 = "<leader>ca";
         __unkeyed-2 = "<cmd>AvanteAsk<cr>";
@@ -114,76 +118,6 @@ rec {
         __unkeyed-2 = "<cmd>AvanteEdit<cr>";
         icon = icons.robotFace;
         desc = "Edit with instruction";
-      }
-
-      {
-        __unkeyed-1 = "<leader>cg";
-        __unkeyed-2 = "<cmd>ChatGPTRun grammar_correction<cr>";
-        icon = icons.robotFace;
-        desc = "Grammar Correction";
-      }
-
-      {
-        __unkeyed-1 = "<leader>ct";
-        __unkeyed-2 = "<cmd>ChatGPTRun translate<cr>";
-        icon = icons.robotFace;
-        desc = "Translate";
-      }
-
-      {
-        __unkeyed-1 = "<leader>ck";
-        __unkeyed-2 = "<cmd>ChatGPTRun keywords<cr>";
-        icon = icons.robotFace;
-        desc = "Keywords";
-      }
-
-      {
-        __unkeyed-1 = "<leader>cd";
-        __unkeyed-2 = "<cmd>ChatGPTRun docstring<cr>";
-        icon = icons.robotFace;
-        desc = "Docstring";
-      }
-
-      {
-        __unkeyed-1 = "<leader>co";
-        __unkeyed-2 = "<cmd>ChatGPTRun optimize_code<cr>";
-        icon = icons.robotFace;
-        desc = "Optimize Code";
-      }
-
-      {
-        __unkeyed-1 = "<leader>cs";
-        __unkeyed-2 = "<cmd>ChatGPTRun summarize<cr>";
-        icon = icons.robotFace;
-        desc = "Summarize";
-      }
-
-      {
-        __unkeyed-1 = "<leader>cf";
-        __unkeyed-2 = "<cmd>ChatGPTRun fix_bugs<cr>";
-        icon = icons.robotFace;
-        desc = "Fix Bugs";
-      }
-
-      {
-        __unkeyed-1 = "<leader>cx";
-        __unkeyed-2 = "<cmd>ChatGPTRun explain_code<cr>";
-        icon = icons.robotFace;
-        desc = "Explain Code";
-      }
-
-      {
-        __unkeyed-1 = "<leader>cr";
-        __unkeyed-2 = "<cmd>ChatGPTRun roxygen_edit<cr>";
-        icon = icons.robotFace;
-        desc = "Roxygen Edit";
-      }
-
-      {
-        __unkeyed-1 = "<leader>cl";
-        __unkeyed-2 = "<cmd>ChatGPTRun code_readability_analysis<cr>";
-        icon = icons.robotFace;
-        desc = "Code Readability Analysis";
       }
     ];
   };

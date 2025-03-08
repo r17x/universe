@@ -1,4 +1,5 @@
 {
+  lib,
   helpers,
   icons,
   pkgs,
@@ -25,6 +26,10 @@
     edge_dim_foreground = 1;
     edge_dim_inactive_windows = 1;
     edge_float_style = "bright";
+
+    # --- himalaya
+    himalaya_executable = "${lib.getExe pkgs.himalaya}";
+    himalaya_config_path = "~/.config/himalaya/config.toml";
   };
 
   extraConfigLuaPre = # lua
@@ -55,6 +60,7 @@
     # extra
     unicode-vim
     lsp-progress-nvim
+    pkgs.branches.master.vimPlugins.himalaya-vim
 
     # TODO: removed branches when inputs.nixpkgs-unstable is updated
     pkgs.branches.master.vimPlugins.nvzone-typr

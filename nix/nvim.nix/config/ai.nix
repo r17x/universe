@@ -40,14 +40,18 @@ rec {
         claude.api_key_name = "cmd:pass show r17x/anthropic";
         claude.endpoint = "https://api.anthropic.com";
         claude.model = "claude-3-7-sonnet-20250219";
-        claude.temperature = 1;
+        claude.temperature = 0.7;
         claude.max_tokens = 20000;
 
-        copilot.model = "claude-3.7-sonnet-thought";
-        copilot.temperature = 1;
+        copilot.model = "claude-3.5-sonnet";
+        copilot.temperature = 0.3;
         copilot.max_tokens = 20000;
 
         vendors = rec {
+          copilot37 = {
+            model = "claude-3.7-sonnet";
+            __inherited_from = "copilot";
+          };
           grok = groq // {
             api_key_name = "cmd:pass show r17x/grok.api.key";
             model = "grok-2-latest";

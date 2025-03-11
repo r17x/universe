@@ -107,11 +107,9 @@ in
                 "https://cache.komunix.org"
                 "https://nix-community.cachix.org"
                 "https://r17.cachix.org/"
-                "https://efishery.cachix.org"
               ];
 
               trusted-public-keys = [
-                "efishery.cachix.org-1:ix7pi358GsGkH7oBTmKGkVj42yBcjxRPi6IQ9AbRc0o="
                 "r17.cachix.org-1:vz0nG6BCbdgTPn7SEiOwe/3QwvjH1sb/VV9WLcBtkAY="
                 "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
                 "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="

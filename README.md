@@ -1,11 +1,21 @@
-# R17{x} Universe ❄️
-
-> This "README" is available in 🇮🇩 [**Bahasa**](./BACALAH.md).
-
 <div align="center">
-    <a href="#motivation">Motivation</a> ⎹
-    <a href="#nix">Nix</a> ⎹
-    <a href="#structures">Structures<a/>
+    <h1>R17{x} Universe ❄️</h1>
+    <br>
+    <div align="center">
+        <a href="https://github.com/r17x/universe/stargazers">
+            <img src="https://img.shields.io/github/stars/r17x/universe?color=A0C981&labelColor=303446&style=for-the-badge&logo=starship&logoColor=A0C981">
+        </a>
+        <a href="https://github.com/r17x/universe/">
+            <img src="https://img.shields.io/github/repo-size/r17x/universe?color=D48AEA&labelColor=303446&style=for-the-badge&logo=github&logoColor=D48AEA">
+        </a>
+        <a href="https://nixos.org">
+            <img src="https://img.shields.io/badge/NixOS-Unstable-blue?style=for-the-badge&logo=NixOS&logoColor=white&label=Nixpkgs&labelColor=303446&color=6CB6EB">
+        </a>
+        <a href="https://github.com/r17x/universe/blob/main/LICENSE">
+            <img src="https://img.shields.io/static/v1.svg?style=for-the-badge&label=License&message=MIT&colorA=313244&colorB=EF9F76&logo=unlicense&logoColor=EF9F76&"/>
+        </a>
+    </div>
+    <br>
 </div>
 
 ## Motivation
@@ -34,44 +44,44 @@ This is my personal configuration with [nix](https://nixos.org/) using [**flakes
 
 ```mermaid
 graph LR
-    F[Flake] --> N(nixosConfigurations)
-    F --> D(darwinConfigurations)
-    F --> H(homeCofigurations)
+F[Flake] --> N(nixosConfigurations)
+F --> D(darwinConfigurations)
+F --> H(homeCofigurations)
 
-    N --aarch64-linux--> VM(VM)
-    D --aarch64-darwin--> d1(eR17)
-    D --aarch64-darwin--> d2(eR17x)
+N --aarch64-linux--> VM(VM)
+D --aarch64-darwin--> d1(eR17)
+D --aarch64-darwin--> d2(eR17x)
 
-    H --> h1(r17)
+H --> h1(r17)
 
-    d1 --"r17@eR17"--> h1
-    d2 --"r17@eR17x"--> h1
-    d2 --virtual machine with: aarch64-linux--> LB(linux-builder)
+d1 --"r17@eR17"--> h1
+d2 --"r17@eR17x"--> h1
+d2 --virtual machine with: aarch64-linux--> LB(linux-builder)
 
-    F --> M
-    M(modules) --> DM(Darwin Modules)
-    DM --> D
-    M --> NM(NixOS Modules)
-    NM --> N
-    M --> HM(Home Modules)
-    HM --> H
-    M --> CM(Cross Modules)
-    CM --> D
-    CM --> N
-    M --> FM(Flake Modules)
-    FM --> F
+F --> M
+M(modules) --> DM(Darwin Modules)
+DM --> D
+M --> NM(NixOS Modules)
+NM --> N
+M --> HM(Home Modules)
+HM --> H
+M --> CM(Cross Modules)
+CM --> D
+CM --> N
+M --> FM(Flake Modules)
+FM --> F
 ```
 
 * [Flake](./flake.nix)
-    * [configurations](./nix/configurations/)
-        * [home](./nix/configurations/home)
-            * [r17](./nix/configurations/home/r17.nix) - home-manager configurations for user `r17` and use at host [eR17](./nix/configurations/darwin/eR17.nix) and [eR17x](./nix/configurations/darwin/eR17x.nix)
-        * [darwin](./nix/configurations/darwin/)
-            * [eR17](./nix/configurations/darwin/eR17.nix)
-            * [eR17x](./nix/configurations/darwin/eR17x.nix)
-        * [nixos](./nix/configurations/nixos)
-            * [vm](./nix/configurations/nixos/vm.nix) - currently deploy to linux-builder at [eR17x](./nix/configurations/darwin/eR17x.nix)
-    * [modules](./nix/modules/)
+* [configurations](./nix/configurations/)
+* [home](./nix/configurations/home)
+* [r17](./nix/configurations/home/r17.nix) - home-manager configurations for user `r17` and use at host [eR17](./nix/configurations/darwin/eR17.nix) and [eR17x](./nix/configurations/darwin/eR17x.nix)
+* [darwin](./nix/configurations/darwin/)
+* [eR17](./nix/configurations/darwin/eR17.nix)
+* [eR17x](./nix/configurations/darwin/eR17x.nix)
+* [nixos](./nix/configurations/nixos)
+* [vm](./nix/configurations/nixos/vm.nix) - currently deploy to linux-builder at [eR17x](./nix/configurations/darwin/eR17x.nix)
+* [modules](./nix/modules/)
 
 ## Usage
 
@@ -95,41 +105,41 @@ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix 
     <summary>Click to expand</summary>
 
 
-| System                                         | Single User | Multiple User | Command                                                             |
+    | System                                         | Single User | Multiple User | Command                                                             |
 | ---------------------------------------------- | ----------- | ------------- | ------------------------------------------------------------------- |
 | **Linux**                                      | ✅          | ✅            | [Single User](#linux-single-user) • [Multi User](#linux-multi-user) |
 | **Darwin** (MacOS)                             | ❌          | ✅            | [Multi User](#darwin-multi-user)                                    |
 | [**More...**](https://nixos.org/download.html) |             |               |                                                                     |
 
-##### Linux Single User
+    ##### Linux Single User
 
-```console
+    ```console
 sh <(curl -L https://nixos.org/nix/install) --daemon
-```
+    ```
 
-##### Linux Multi User
+    ##### Linux Multi User
 
-```console
+    ```console
 sh <(curl -L https://nixos.org/nix/install) --no-daemon
-```
+    ```
 
-##### Darwin Multi User
+    ##### Darwin Multi User
 
-```console
+    ```console
 sh <(curl -L https://nixos.org/nix/install)
-```
+    ```
 
-#### Enable `experimental-features`
+    #### Enable `experimental-features`
 
 In general installation of nix, the nix configuration is located in `~/.config/nix/nix.conf`.
 You **MUST** be set the `experimental-features` before use [this configuration](https://github.com/r17x/universe).
 
-```cfg
+    ```cfg
 experimental-features = nix-command flakes
 
 // (optional) for distribution cache (DON'T COPY THIS COMMENT LINE)
 substituters = https://cache.nixos.org https://cache.nixos.org/ https://r17.cachix.org
-```
+    ```
 
 </details>
 

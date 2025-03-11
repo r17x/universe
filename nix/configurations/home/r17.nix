@@ -14,6 +14,7 @@
     homeDirectory = osConfig.users.users.${username}.home;
     packages = [
       inputs.self.packages.${pkgs.stdenv.system}.nvim
+      pkgs.branches.master.claude-code
     ];
     sessionVariables.EDITOR = lib.getExe' inputs.self.packages.${pkgs.stdenv.system}.nvim "nvim";
   };

@@ -822,6 +822,7 @@
         "services-flake": "services-flake",
         "sketchybar-app-font": "sketchybar-app-font",
         "sops-nix": "sops-nix",
+        "srvos": "srvos",
         "styled-ppx": "styled-ppx",
         "vimPlugins_lackluster": "vimPlugins_lackluster",
         "vimPlugins_vim-rescript": "vimPlugins_vim-rescript"
@@ -943,6 +944,26 @@
       "original": {
         "type": "git",
         "url": "https://spectrum-os.org/git/spectrum"
+      }
+    },
+    "srvos": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1740963569,
+        "narHash": "sha256-LR4DTYEj4MfkG0++UfHK3JOoKS1ljvBWOf6gHCeLhFA=",
+        "owner": "nix-community",
+        "repo": "srvos",
+        "rev": "168d4bff4d49a431e030056c83592c3a683db44f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "srvos",
+        "type": "github"
       }
     },
     "styled-ppx": {

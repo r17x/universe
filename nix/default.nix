@@ -13,6 +13,7 @@
     ./devShells.nix
     ./overlays
     ./nvim.nix
+    ./clan
 
     ./modules/flake/module-config.nix
     {
@@ -83,8 +84,12 @@
       eR17.userHomeModules = [ "r17" ];
       eR17x.userHomeModules = [ "r17" ];
     };
+
     nixos.modulesDirectory = ./modules/nixos;
     nixos.configurationsDirectory = ./configurations/nixos;
+    nixos.hosts = {
+      ovonel.userHomeModules = [ "r17" ];
+    };
   };
 
   perSystem =

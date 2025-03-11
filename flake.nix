@@ -45,6 +45,9 @@
     clan-core.inputs.sops-nix.follows = "sops-nix";
     clan-core.inputs.disko.follows = "disko";
 
+    srvos.url = "github:nix-community/srvos";
+    srvos.inputs.nixpkgs.follows = "nixpkgs";
+
     ## -- Platform
 
     #### ---- MacOS

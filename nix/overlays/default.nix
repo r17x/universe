@@ -84,12 +84,13 @@
     vimPlugins = prev.vimPlugins.extend (
       _: p:
       {
-        avante-nvim = p.avante-nvim.overrideAttrs (_: {
+        avante-nvim = p.avante-nvim.overrideAttrs (old: {
+          version = "0.0.22";
           src = prev.fetchFromGitHub {
             owner = "yetone";
             repo = "avante.nvim";
-            rev = "d4e58f6a22ae424c9ade2146b29dc808a7e4c538";
-            hash = "sha256-4fI2u3qZOFadyqMYDJOCgiWrT3aRKVTmEgg7FuZJgGo=";
+            tag = "v${old.version}";
+            hash = "sha256-0dkPejvupXhVZY/5qT45f4LZ4MIVcz8uZam+9TmB+Yo=";
           };
         });
       }

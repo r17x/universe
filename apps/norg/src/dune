@@ -1,3 +1,4 @@
 (library
  (name norg)
- (public_name norg))
+ (public_name norg)
+ (libraries angstrom))

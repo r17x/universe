@@ -10,10 +10,10 @@
 
   perSystem =
     {
+      self',
       pkgs,
       system,
       config,
-      self',
       ...
     }:
     {
@@ -115,7 +115,7 @@
         #
         mkShells "nodejs_"
         // mkShells "go_"
-        // rec {
+        // {
           default = pkgs.mkShell {
             shellHook = ''
               ${config.pre-commit.installationScript}
@@ -128,11 +128,6 @@
           #    $ nix develop github:r17x/nixpkgs#ocaml
           #
           #
-          ocaml = pkgs.mkShell {
-            description = "OCaml development environment";
-            packages = [ pkgs.opam ];
-          };
-
           rescript-compiler = pkgs.mkShell {
             description = "OCaml development environment";
             packages = [
@@ -149,6 +144,30 @@
               eval $(opam env --switch=default)
             '';
           };
+
+          ocaml =
+            let
+              ocamlPackages = pkgs.ocaml-ng.ocamlPackages_5_1;
+            in
+            pkgs.mkShell {
+              description = "OCaml development environment";
+              nativeBuildInputs = [
+                ocamlPackages.findlib
+              ];
+              buildInputs = [
+                ocamlPackages.angstrom
+                ocamlPackages.dune_3
+                ocamlPackages.ocaml
+                ocamlPackages.merlin
+                pkgs.pkg-config
+                pkgs.opam
+              ];
+              packages = [
+                pkgs.opam-installer
+                ocamlPackages.opam-state
+                ocamlPackages.ocamlformat
+              ];
+            };
 
           #
           #
@@ -210,7 +229,7 @@
             ];
           };
 
-          rust-opencv = rust-wasm.overrideAttrs (old: {
+          rust-opencv = self'.rust-wasm.overrideAttrs (old: {
             nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.opencv4 ];
           });
 

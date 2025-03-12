@@ -1,138 +1,71 @@
-open Angstrom
+open Norg
 
-module P = struct
-  let is_space =
-    function | ' ' | '\t' -> true | _ -> false 
+(* Command line argument parsing *)
+let output_format = ref "markdown"
+let input_file = ref ""
+let output_file = ref None
 
-  let _not_space = 
-    fun c -> not (is_space c)
-  
-  let _is_eol =
-    function | '\n' -> true | _ -> false
+let set_output_file s = output_file := Some s
 
-end
+let spec_list = [
+  ("--output", Arg.Symbol (["markdown"; "html"; "json"], 
+            (fun s -> output_format := s)), 
+    " Specify output format (markdown, html, or json)");
+  ("--out", Arg.String set_output_file,
+    " Specify output file (defaults to stdout)")
+]
 
-module PM = struct
-  let eq a = 
-    fun b -> a == b
+let usage_msg = "Usage: norg [options] <input_file.norg>"
 
-  let is_special_char = function
-    | '`' | '^' | ',' | '$' | '&' | '%'
-    | '!' | '-' | '_' | '*' | '/' -> true
-    | _ -> false
+let anon_fun filename = input_file := filename
 
-  let not_special_char = 
-    fun c -> not (is_special_char c)
+(* Parse the norg file and create AST *)
+let parse_norg_file filename =
+  try
+    let content = 
+      let ic = open_in filename in
+      let rec read_all acc =
+        try
+          let line = input_line ic in
+          read_all (acc ^ line ^ "\n")
+        with End_of_file ->
+          close_in ic;
+          acc
+      in
+      read_all ""
+    in
+    Norg.parse content
+  with
+  | Sys.error msg -> Printf.eprintf "Error: %s\n" msg; exit 1
+  | Failure msg -> Printf.eprintf "Parsing error: %s\n" msg; exit 1
 
-  let _spaces = 
-    skip_while P.is_space
+(* Convert parsed Norg file to target format *)
+let convert_to_format parsed_content format =
+  match format with
+  | "markdown" -> Norg.to_markdown parsed_content
+  | "html" -> Norg.to_html parsed_content
+  | "json" -> Norg.to_json parsed_content
+  | _ -> failwith ("Unsupported output format: " ^ format)
 
-  let  p = 
-    fun a -> char a *> take_till (eq a) <* char a
+(* Write output to file or stdout *)
+let write_output output out_file =
+  match out_file with
+  | None -> print_endline output
+  | Some filename ->
+      let oc = open_out filename in
+      output_string oc output;
+      close_out oc
 
-  (* 
-    ** Basic Markup
-     Here is how you can do very basic markup. First you see it raw, then rendered:
-     - *bold*
-     - /italic/
-     - _underline_
-     - -strikethrough-
-     - !spoiler!
-     - `inline code`
-     - ^superscript^  (when nested into `subscript`, will highlight as an error)
-     - ,subscript,    (when nested into `superscript`, will highlight as an error)
-     - $f(x) = y$     (see also {# Math})
-     - &variable&     (see also {# Variables})
-     - %inline comment%
-  *)
-  let bold = p '*' 
-  let italic = p '/' 
-  let underline = p '_'
-  let strikethrough = p '-'
-  let spoiler = p '!'
-  let inline_code = p '`'
-  let superscript = p '^'
-  let subscript = p ','
-  let math = p '$'
-  let variable = p '&'
-  let inline_comment = p '%'
-  let text = take_while1 not_special_char 
-end
-
-module T = struct
-  let bold s = `Bold s
-  let italic s = `Italic s
-  let underline s = `Underline s
-  let strikethrough s = `Strikethrough s
-  let spoiler s = `Spoiler s
-  let inline_code s = `InlineCode s
-  let superscript s = `Superscript s
-  let subscript s = `Subscript s
-  let math s = `Math s
-  let variable s = `Variable s
-  let inline_comment s = `InlineComment s
-  let text s = `Text s
-  
-  let to_string = function
-    | `Bold s -> "Bold>*" ^ s ^ "*"
-    | `Italic s -> "Italic>/" ^ s ^ "/"
-    | `Underline s -> "Underline>_" ^ s ^ "_"
-    | `Strikethrough s -> "Strikethrough>-" ^ s ^ "-"
-    | `Spoiler s -> "Spoiler>!" ^ s ^ "!"
-    | `InlineCode s -> "InlineCode>`" ^ s ^ "`" 
-    | `Superscript s -> "Superscript>^" ^ s ^ "^" 
-    | `Subscript s -> "Subscript>," ^ s ^ ","
-    | `Math s -> "Math>$" ^ s ^ "$"
-    | `Variable s -> "Variable>&" ^ s ^ "&"
-    | `InlineComment s -> "InlineComment>%" ^ s ^ "%"
-    | `Text s -> "Text>" ^ s
-end
-
-let block = 
-  choice 
-    [ PM.bold >>| T.bold
-    ; PM.italic >>| T.italic
-    ; PM.underline >>| T.underline
-    ; PM.spoiler >>| T.spoiler
-    ; PM.strikethrough >>| T.strikethrough
-    ; PM.inline_code >>| T.inline_code
-    ; PM.superscript >>| T.superscript
-    ; PM.subscript >>| T.subscript
-    ; PM.math >>| T.math
-    ; PM.variable >>| T.variable
-    ; PM.inline_comment >>| T.inline_comment
-    ; PM.text >>| T.text
-    ]
-
-let document = many (block <* skip_many (char ' '))
-
-let rec print_blocks = function
-  | [] -> ()
-  | x :: xs ->
-    Printf.printf "%s\n" (T.to_string x);
-    print_blocks xs
-
-let parse_neorg input =
-  match parse_string ~consume:All document input with
-  | Ok blocks -> blocks
-  | Error msg -> failwith msg
-
-let neorg_document = {|
-   Here is how you can do very basic markup. First you see it raw, then rendered:
-   - *bold*
-   - /italic/
-   - _underline_
-    -strikethrough-
-   - !spoiler!
-   - `inline code`
-   - ^superscript^  (when nested into `subscript`, will highlight as an error)
-   - ,subscript,    (when nested into `superscript`, will highlight as an error)
-   - $f(x) = y$     (see also {# Math})
-   - &variable&     (see also {# Variables})
-   - %\inline comment%
-  |}
-
+(* Main function *)
 let () =
-  let blocks = parse_neorg neorg_document in
-  Printf.printf "\n";
-  print_blocks blocks
+  Arg.parse spec_list anon_fun usage_msg;
+  
+  if !input_file = "" then begin
+    Printf.eprintf "Error: No input file specified\n";
+    Arg.usage spec_list usage_msg;
+    exit 1
+  end;
+  
+  let parsed_content = parse_norg_file !input_file in
+  let output = convert_to_format parsed_content !output_format in
+  write_output output !output_file

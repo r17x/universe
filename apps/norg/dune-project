@@ -1,6 +1,6 @@
 (lang dune 3.8)
 
-(version 0.0.0)
+(version 0.1.0)
 
 (name norg)
 
@@ -17,7 +17,8 @@
 (package
   (name norg)
   (synopsis "Norg parser")
-  (description "Norg parser")
+  (description "Norg parser for the Neorg 1.0 syntax")
   (depends
     (ocaml (>= 4.14.0))
+    (angstrom (>= 0.15.0))
   ))

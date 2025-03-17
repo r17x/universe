@@ -37,6 +37,11 @@ rec {
       settings = {
         provider = "claude";
 
+        behaviors = {
+          enable_cursor_planning_mode = true;
+          auto_apply_diff_after_generation = true;
+        };
+
         claude.api_key_name = "cmd:pass show r17x/anthropic";
         claude.endpoint = "https://api.anthropic.com";
         claude.model = "claude-3-7-sonnet-20250219";

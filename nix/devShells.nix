@@ -13,6 +13,7 @@
       pkgs,
       system,
       config,
+      self',
       ...
     }:
     {
@@ -133,14 +134,25 @@
           #
           ocaml = pkgs.mkShell {
             description = "OCaml development environment";
-            buildInputs = with pkgs.ocamlPackages; [
-              dune
-              ocaml
-              opam
-              merlin
-            ];
+            packages = [ pkgs.opam ];
           };
 
+          rescript-compiler = pkgs.mkShell {
+            description = "OCaml development environment";
+            packages = [
+              pkgs.opam
+              pkgs.python3
+              (pkgs.nodeCorepackShims.overrideAttrs (_: {
+                buildInputs = [ pkgs.nodejs ];
+              }))
+              pkgs.nodejs
+              pkgs.dune_3
+            ];
+            inputsFrom = [ self'.devShells.rust-wasm ];
+            shellHook = ''
+              eval $(opam env --switch=default)
+            '';
+          };
           #
           #
           #    $ nix develop github:r17x/nixpkgs#ocamlorg

@@ -89,18 +89,17 @@
       ##################################
       # Communication
       ##################################
-      (pkgs.branches.master.discord.override {
+      # (pkgs.branches.master.discord-ptb.override {
+      #   withVencord = true;
+      #   withOpenASAR = true;
+      # })
+      # issue > cp: target 'PTB.app/Contents/Resources/app.asar': No such file or directory
+      (discord.override {
         withVencord = true;
         withOpenASAR = true;
       })
-      # issue > cp: target 'PTB.app/Contents/Resources/app.asar': No such file or directory
-      ## (branches.stable.discord-ptb.override {
-      ##   withVencord = true;
-      ##   withOpenASAR = true;
-      ## })
 
       slack
-      zoom-us
       iamb
       telegram-desktop
 

@@ -41,11 +41,7 @@
             let
               firstChar = f (lib.substring 0 1 s);
               rest = lib.substring 1 (-1) s;
-
             in
-            # matched = builtins.match "(.)(.*)" s;
-            # firstChar = f (lib.elemAt matched 0);
-            # rest = lib.elemAt matched 1;
             firstChar + rest;
 
           toCamelCase_ =
@@ -153,6 +149,7 @@
               eval $(opam env --switch=default)
             '';
           };
+
           #
           #
           #    $ nix develop github:r17x/nixpkgs#ocamlorg
@@ -177,48 +174,6 @@
                 gmp
               ];
             };
-
-          #
-          #
-          #    $ nix develop github:r17x/nixpkgs#melange
-          #
-          #
-          melange = pkgs.mkShell {
-            description = "Melange Development Environment with OCaml 5_2";
-            shellHook = config.pre-commit.installationScript;
-            nativeBuildInputs = with pkgs.ocamlPackages; [
-              ocaml
-              dune_3
-              findlib
-              ocaml-lsp
-              ocamlformat
-              reason
-              merlin
-              melange
-            ];
-            buildInputs = with pkgs.ocamlPackages; [
-              angstrom
-              dream
-              melange
-              melange-webapi
-              reason-react
-              reason-react-ppx
-              server-reason-react
-              atdgen
-              atdgen-runtime
-              yojson
-              lwt
-              lwt_ppx
-              cohttp
-              cohttp-lwt-unix
-              # TODO: styled-ppx fix build
-              # styled-ppx
-              pkgs.nodejs_20
-              (pkgs.nodeCorepackShims.overrideAttrs (_: {
-                buildInputs = [ pkgs.nodejs_20 ];
-              }))
-            ];
-          };
 
           #
           #

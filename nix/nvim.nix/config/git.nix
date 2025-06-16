@@ -96,7 +96,6 @@
     neogit.lazyLoad.settings.cmd = "Neogit";
 
     git-conflict.enable = true;
-    git-conflict.lazyLoad.settings.event = "BufRead";
 
     gitsigns = {
       enable = true;

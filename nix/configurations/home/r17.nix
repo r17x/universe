@@ -10,7 +10,7 @@
 {
   home = rec {
     username = "r17";
-    stateVersion = "24.05";
+    stateVersion = "25.05";
     homeDirectory = osConfig.users.users.${username}.home;
     packages = [
       inputs.self.packages.${pkgs.stdenv.system}.nvim

@@ -10,9 +10,7 @@
         "x86_64-linux"
       ];
 
-      imports = [
-        ./nix
-      ];
+      imports = [ ./nix ];
     };
 
   inputs = {
@@ -63,27 +61,9 @@
     #### ---- nixvim
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
-    nixvim.inputs.nix-darwin.follows = "nix-darwin";
-    nixvim.inputs.home-manager.follows = "home-manager";
     nixvim.inputs.flake-parts.follows = "flake-parts";
 
-    ## -- Languages
-    ocaml-overlay.url = "github:nix-ocaml/nix-overlays";
-    ocaml-overlay.inputs.nixpkgs.follows = "nixpkgs";
-
-    server-reason-react = {
-      url = "github:ml-in-barcelona/server-reason-react";
-      flake = false;
-    };
-    quickjs-ml = {
-      url = "github:ml-in-barcelona/quickjs.ml?submodules=1";
-      flake = false;
-    };
-    styled-ppx = {
-      url = "github:davesnx/styled-ppx?rev=2b69b67ab10244aed612005bd127031f16289cc7";
-      flake = false;
-    };
-
+    #### irc
     iamb.url = "github:ulyssa/iamb";
     iamb.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -101,11 +81,6 @@
     # e.g usage: programs.neovim.plugins = p: [p.rescript-nvim] or [pkgs.vimPlugins.rescript-nvim];
     vimPlugins_vim-rescript = {
       url = "github:rescript-lang/vim-rescript";
-      flake = false;
-    };
-
-    vimPlugins_lackluster = {
-      url = "github:slugbyte/lackluster.nvim";
       flake = false;
     };
 

@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 
@@ -14,14 +13,6 @@ in
     mkIf brewEnabled # bash
       ''
         eval "$(${config.homebrew.brewPrefix}/brew shellenv)"
-      '';
-
-  system.activationScripts.preUserActivation.text =
-    mkIf brewEnabled # bash
-      ''
-        if [ ! -f ${config.homebrew.brewPrefix}/brew ]; then
-          ${pkgs.bash}/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        fi
       '';
 
   homebrew.enable = true;

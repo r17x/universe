@@ -13,6 +13,8 @@
   system.stateVersion = 4;
   nixpkgs.hostPlatform = "aarch64-darwin";
 
+  system.primaryUser = "r17";
+
   users.users.r17 = {
     home = "/Users/r17";
     shell = pkgs.fish;

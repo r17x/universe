@@ -205,7 +205,7 @@ in
     dircolors.enable = true;
     dircolors.enableFishIntegration = config.programs.fish.enable;
 
-    thefuck.enable = true;
+    thefuck.enable = false;
     thefuck.enableInstantMode = true;
     thefuck.enableFishIntegration = config.programs.fish.enable;
     thefuck.enableBashIntegration = false;

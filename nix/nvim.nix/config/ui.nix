@@ -63,7 +63,7 @@
   extraPlugins = with pkgs.vimPlugins; [
     # theme
     edge
-    lackluster
+    lackluster-nvim
     midnight-nvim
 
     # extra
@@ -211,9 +211,11 @@
 
     image = {
       enable = true;
-      integrations.neorg.enabled = true;
-      editorOnlyRenderWhenFocused = true;
-      tmuxShowOnlyInActiveWindow = true;
+      settings = {
+        integrations.neorg.enabled = true;
+        editor_only_render_when_focused = true;
+        tmux_show_only_in_active_window = true;
+      };
     };
 
     presence-nvim = {
@@ -253,7 +255,7 @@
 
     rainbow-delimiters = {
       enable = true;
-      highlight = indent-blankline.settings.scope.highlight;
+      # highlight = indent-blankline.settings.scope.highlight;
     };
 
     indent-blankline = {
@@ -261,15 +263,15 @@
       settings.indent.char = "";
       settings.scope.enabled = true;
       settings.scope.char = icons.indent;
-      settings.scope.highlight = [
-        "rainbowcol1"
-        "rainbowcol2"
-        "rainbowcol3"
-        "rainbowcol4"
-        "rainbowcol5"
-        "rainbowcol6"
-        "rainbowcol7"
-      ];
+      # settings.scope.highlight = [
+      #   "rainbowcol1"
+      #   "rainbowcol2"
+      #   "rainbowcol3"
+      #   "rainbowcol4"
+      #   "rainbowcol5"
+      #   "rainbowcol6"
+      #   "rainbowcol7"
+      # ];
       settings.whitespace.highlight = [ "Whitespace" ];
       settings.exclude.buftypes = [
         "nofile"
@@ -297,7 +299,7 @@
         cmd = "SmearCursorToggle";
         keys = [
           {
-            __unkeyed-1 = "<leader>tsc";
+            __unkeyed-1 = "tsc";
             __unkeyed-2 = "<cmd>SmearCursorToggle<cr>";
             desc = "Toggle Animation Cursor";
           }

@@ -1,6 +1,5 @@
 {
   services.dnscrypt-proxy = {
-    overrideLocalDns = true;
     settings = {
       listen_addresses = [ "127.0.0.1:53000" ];
       doh_servers = true;

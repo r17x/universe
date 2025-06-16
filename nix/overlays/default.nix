@@ -66,8 +66,6 @@
       '';
     };
 
-    iamb = inputs.iamb.packages.${prev.stdenv.hostPlatform.system}.default;
-
     tree-sitter-grammars = prev.tree-sitter-grammars // {
       # Add here any grammars that you want to use but not yet included in NixOS/nixpkgs
       # example:
@@ -82,16 +80,16 @@
     };
 
     vimPlugins = prev.vimPlugins.extend (
-      _: p:
+      _: __:
       {
-        avante-nvim = p.avante-nvim.overrideAttrs (_: {
-          src = prev.fetchFromGitHub {
-            owner = "yetone";
-            repo = "avante.nvim";
-            rev = "d4e58f6a22ae424c9ade2146b29dc808a7e4c538";
-            hash = "sha256-4fI2u3qZOFadyqMYDJOCgiWrT3aRKVTmEgg7FuZJgGo=";
-          };
-        });
+        # avante-nvim = p.avante-nvim.overrideAttrs (_: {
+        #   src = prev.fetchFromGitHub {
+        #     owner = "yetone";
+        #     repo = "avante.nvim";
+        #     rev = "4dde29f9869ef998cb308b179aa8bd28778c1106";
+        #     hash = "sha256-6juWFG16ydfGPOx+FrskLoKNOB0ra70bAJXB2YQ1Fck=";
+        #   };
+        # });
       }
       // (import ./mkFlake2VimPlugin.nix inputs { pkgs = prev; })
     );

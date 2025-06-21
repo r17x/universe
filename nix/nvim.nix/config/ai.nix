@@ -20,6 +20,16 @@ rec {
   ];
 
   plugins = {
+    claude-code = {
+      enable = true;
+      lazyLoad.enable = true;
+      lazyLoad.settings.cmd = [
+        "ClaudeCode"
+        "ClaudeCodeContinue"
+        "ClaudeCodeResume"
+        "ClaudeCodeVerbose"
+      ];
+    };
     avante = {
       enable = true;
       lazyLoad.enable = true;

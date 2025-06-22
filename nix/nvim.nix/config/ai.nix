@@ -22,6 +22,10 @@ rec {
   plugins = {
     claude-code = {
       enable = true;
+      settings.window = {
+        position = "rightbelow vsplit";
+        split_ratio = 0.45;
+      };
       lazyLoad.enable = true;
       lazyLoad.settings.cmd = [
         "ClaudeCode"

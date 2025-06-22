@@ -40,36 +40,95 @@ Since nix uses functional concepts like declarative then it should be utilized w
 
 This is my personal configuration with [nix](https://nixos.org/) using [**flakes**](https://nixos.wiki/wiki/Flakes), [**flake.part**](https://flake.parts/), [**home-manager**](https://github.com/nix-community/home-manager), & [**nix-darwin**](https://github.com/LnL7/nix-darwin) for Darwin or MacOS System.
 
+## What's Inside? 🏚
+
+**R17{x} Universe** is my personal λ-powered development sanctuary - a comprehensive Nix-based configuration that brings together all the tools, configs, and digital spirits I need for daily wizard work. Think of it as a purely functional approach to avoiding the "works on my machine" curse across all my devices.
+
+### Core Philosophy 
+
+Just like how every good wizard knows that having the name of a spirit gives you power over it, this configuration gives me power over my development environment. Whether I'm brewing OCaml potions, crafting ReasonML spells, or tinkering with meta-programming μagic, everything stays consistent across macOS and Linux realms.
+
+### What Makes This Special? ✨
+
+- **λ Programming Environment**: Custom setups for functional programming languages with focus on ReasonML/OCaml/ReScript, JavaScript/TypeScript, Nix, and magic stuff.
+- **AI-Enhanced Neovim**: Because even wizards need intelligent assistants for their code conjuring
+- **Cross-Platform Consistency**: Works seamlessly on both Darwin (macOS) and Linux systems
+- **Personal Knowledge Base**: Integrated note-taking with [`.norg`](https://github.com/nvim-neorg/neorg) format for documenting discoveries
+- **Secret Management**: [SOPS](https://getsops.io/) and [Pass](https://www.passwordstore.org/) integration for keeping the important stuff encrypted
+- **Developer Experience (D.x)**: Everything optimized for smooth development workflows
+
+### The Technical Stack 🔧
+
+- **Nix Flakes**: For pure, reproducible environments that actually work
+- **Home Manager**: Managing user-space configurations without the chaos
+- **Nix-Darwin**: macOS system configuration that doesn't make you cry
+- **NixOS**: Linux configurations for VMs and containers
+- **Custom Development Shells**: Pre-configured environments for various languages and tools
+
 ## Structures
 
 ```mermaid
 graph LR
-F[Flake] --> N(nixosConfigurations)
-F --> D(darwinConfigurations)
-F --> H(homeCofigurations)
-
-N --aarch64-linux--> VM(VM)
-D --aarch64-darwin--> d1(eR17)
-D --aarch64-darwin--> d2(eR17x)
-
-H --> h1(r17)
-
-d1 --"r17@eR17"--> h1
-d2 --"r17@eR17x"--> h1
-d2 --virtual machine with: aarch64-linux--> LB(linux-builder)
-
-F --> M
-M(modules) --> DM(Darwin Modules)
-DM --> D
-M --> NM(NixOS Modules)
-NM --> N
-M --> HM(Home Modules)
-HM --> H
-M --> CM(Cross Modules)
-CM --> D
-CM --> N
-M --> FM(Flake Modules)
-FM --> F
+    F["🌟 flake.nix"] --> CONFIGS["⚙️ Configurations"]
+    F --> MODULES["📦 Modules"]
+    F --> OVERLAYS["🔧 Overlays"]
+    F --> DEVSHELLS["🐚 DevShells"]
+    
+    CONFIGS --> DARWIN["🍎 Darwin Configs"]
+    CONFIGS --> HOME["🏠 Home Config"]
+    CONFIGS --> NIXOS["🐧 NixOS Config"]
+    
+    DARWIN --> eR17["eR17.nix"]
+    DARWIN --> eR17x["eR17x.nix"]
+    HOME --> r17["r17.nix"]
+    NIXOS --> VM["vm.nix"]
+    
+    eR17 -.-> r17
+    eR17x -.-> r17
+    eR17x -.-> VM
+    
+    MODULES --> CROSS["🔗 Cross Modules"]
+    MODULES --> DARWINMOD["🍎 Darwin Modules"]  
+    MODULES --> HOMEMOD["🏠 Home Modules"]
+    MODULES --> NIXOSMOD["🐧 NixOS Modules"]
+    MODULES --> FLAKEMOD["⚡ Flake Modules"]
+    
+    OVERLAYS --> MACPKGS["🍎 macOS Packages"]
+    OVERLAYS --> OCAMLPKGS["🐪 OCaml Packages"]
+    OVERLAYS --> NODEPKGS["📦 Node Packages"]
+    OVERLAYS --> VIMUTILS["📝 Vim Utilities"]
+    
+    F --> APPS["🔮 Custom Apps"]
+    F --> DATA["💾 Database Services"]
+    F --> NOTES["📚 Knowledge Base"]
+    F --> SECRETS["🔐 Secret Management"]
+    
+    APPS --> NORG["norg - OCaml CLI"]
+    APPS --> RINROCKS["rin.rocks - ReasonML Web"]
+    APPS --> EVILFACTORY["evilfactory - OCaml"]
+    
+    DATA --> M1["MariaDB m1"]
+    DATA --> M2["MariaDB m2"] 
+    DATA --> M3["MariaDB m3"]
+    
+    NOTES --> JOURNAL["📅 Daily Journal"]
+    NOTES --> LEARN["🎓 Learning Notes"]
+    NOTES --> TODO["✅ Task Management"]
+    
+    MODULES --> NVIM["🚀 AI-Enhanced Neovim"]
+    NVIM --> AI["🤖 AI Integration"]
+    NVIM --> LSP["📡 Language Servers"]
+    NVIM --> UI["🎨 UI & Themes"]
+    
+    classDef configNode fill:#A0C981,stroke:#303446,stroke-width:2px,color:#303446
+    classDef moduleNode fill:#D48AEA,stroke:#303446,stroke-width:2px,color:#303446  
+    classDef appNode fill:#6CB6EB,stroke:#303446,stroke-width:2px,color:#303446
+    classDef dataNode fill:#EF9F76,stroke:#303446,stroke-width:2px,color:#303446
+    
+    class F,CONFIGS,DARWIN,HOME,NIXOS configNode
+    class MODULES,CROSS,DARWINMOD,HOMEMOD,NIXOSMOD,FLAKEMOD,OVERLAYS moduleNode
+    class APPS,NORG,RINROCKS,EVILFACTORY,NVIM appNode
+    class DATA,M1,M2,M3,NOTES,SECRETS dataNode
 ```
 
 * [Flake](./flake.nix)

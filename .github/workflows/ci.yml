@@ -21,7 +21,7 @@ jobs:
           github-token: ${{ secrets.GH_TOKEN }}
           extra-conf: "experimental-features = nix-command flakes pipe-operators" 
       - uses: DeterminateSystems/magic-nix-cache-action@main
-      - uses: DeterminateSystems/flake-checker-action@v10
+      - uses: DeterminateSystems/flake-checker-action@v11
       - uses: cachix/cachix-action@v16
         with:
           name: r17

@@ -14,6 +14,8 @@
       nixt
       ;
 
+    claude-code = final.branches.master.claude-code;
+
     branches =
       let
         pkgsFrom =

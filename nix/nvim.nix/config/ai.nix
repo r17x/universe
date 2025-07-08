@@ -102,18 +102,9 @@ rec {
     copilot-lua.settings.suggestion.enabled = false;
     copilot-lua.settings.panel.enabled = false;
 
-    codeium-nvim.enable = false;
-    codeium-nvim.settings.config_path.__raw = # lua
-      ''
-        vim.env.HOME .. '/.config/sops-nix/secrets/codeium'
-      '';
-    cmp.settings.sources =
-      lib.optionals plugins.codeium-nvim.enable [
-        { name = "codeium"; }
-      ]
-      ++ lib.optionals plugins.copilot-lua.enable [
-        { name = "copilot"; }
-      ];
+    cmp.settings.sources = lib.optionals plugins.copilot-lua.enable [
+      { name = "copilot"; }
+    ];
 
     which-key.settings.spec = [
       {

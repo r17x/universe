@@ -1,0 +1,28 @@
+* TODOs
+
+** Current
+
+** Completed
+- (x) Address remaining parsing issues: comma subscript false positives
+- (x) Fix inline formatting conversion (italic, underline, strikethrough, etc.)
+- (x) Fix link conversion - [text]{url} to [text](url)
+- (x) Fix list conversion - ~ to numbered lists
+- (x) Fix quote conversion with proper > prefixes
+- (x) Fix definition and footnote conversion
+- (x) Fix whitespace normalization in output
+- (x) Fix paragraph parser to use parse_inline_content instead of plain text
+- (x) Verify specification.norg converts accurately after parser fixes
+- (x) Create modular Renderer structure (Markdown, Html, Json modules)
+- (x) Create comprehensive .mli interface documentation
+- (x) Apply OCaml best practices and clean up code style
+- (x) Make sure `norg` CLI can run well
+- (x) Verify parser accuracy with complex documents  
+- (x) Test all output formats (Markdown, HTML, JSON)
+- (x) Validate interface file with actual usage
+
+** Future Enhancements
+- ( ) Add more output formats (LaTeX, PDF, etc.)
+- ( ) Implement table parsing and rendering
+- ( ) Add syntax highlighting for code blocks
+- ( ) Performance optimizations for large documents
+- ( ) Add validation for Norg document structure

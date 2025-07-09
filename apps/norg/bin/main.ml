@@ -1,5 +1,3 @@
-open Norg
-
 (* Command line argument parsing *)
 let output_format = ref "markdown"
 let input_file = ref ""
@@ -36,7 +34,7 @@ let parse_norg_file filename =
     in
     Norg.parse content
   with
-  | Sys.error msg -> Printf.eprintf "Error: %s\n" msg; exit 1
+  | Sys_error msg -> Printf.eprintf "Error: %s\n" msg; exit 1
   | Failure msg -> Printf.eprintf "Parsing error: %s\n" msg; exit 1
 
 (* Convert parsed Norg file to target format *)

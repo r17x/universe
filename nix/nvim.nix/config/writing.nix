@@ -1,5 +1,4 @@
 {
-  lib,
   icons,
   pkgs,
   helpers,
@@ -153,9 +152,10 @@
 
     neorg = {
       enable = true;
-      lazyLoad.settings.filetype = "norg";
-      lazyLoad.settings.keys = lib.attrNames telescope.keymaps;
+      # lazyLoad.settings.filetype = "norg";
+      # lazyLoad.settings.keys = lib.attrNames telescope.keymaps;
       telescopeIntegration.enable = true;
+      settings.lazy_loading = true;
       settings.load = {
         "core.dirman" = {
           config = {

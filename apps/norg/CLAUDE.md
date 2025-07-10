@@ -8,7 +8,7 @@ Norg Parser
 
 1. **Start**: Read `TODO.norg` for current priorities
 2. **Plan**: Complex tasks  → write plan in `.claude/plans/YYYY-MM-DD-description.md`
-3. **Update**: Keep TODO.md current
+3. **Update**: Keep `TODO.norg` current
 
 ### Testing & Debugging
 

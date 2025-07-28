@@ -37,7 +37,15 @@ rec {
         after.__raw =
           helpers.mkLuaFun # lua
             ''
-              require("claudecode").setup()
+              require("claudecode").setup({
+                  terminal = {
+                  split_side = "right", -- "left" or "right"
+                  split_width_percentage = 0.30,
+                  provider = "native", -- "auto", "snacks", or "native"
+                  auto_close = true,
+                  snacks_win_opts = {}, -- Opts to pass to `Snacks.terminal.open()`
+                },
+              })
             '';
       }
     ];

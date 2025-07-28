@@ -1,4 +1,5 @@
 {
+  pkgs,
   lib,
   icons,
   helpers,
@@ -19,9 +20,29 @@ rec {
     }
   ];
 
+  extraPlugins = [
+    pkgs.branches.master.vimPlugins.claudecode-nvim
+  ];
+
   plugins = {
+    lz-n.plugins = [
+      {
+        __unkeyed-1 = pkgs.branches.master.vimPlugins.claudecode-nvim.name;
+        cmd = [
+          "ClaudeCode"
+          "ClaudeCodeFocus"
+          "ClaudeCodeDiffDeny"
+          "ClaudeCodeDiffAccept"
+        ];
+        after.__raw =
+          helpers.mkLuaFun # lua
+            ''
+              require("claudecode").setup()
+            '';
+      }
+    ];
     claude-code = {
-      enable = true;
+      enable = false;
       settings.window = {
         position = "rightbelow vsplit";
         split_ratio = 0.45;

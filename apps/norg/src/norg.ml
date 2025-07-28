@@ -557,6 +557,48 @@ module Parser = struct
 		| Error msg -> failwith ("Parsing error: " ^ msg)
 end
 
+module MarkdownParser = struct
+	open Ast
+
+	(* Very simple markdown parser for basic functionality *)
+	let parse_simple_text input =
+		let lines = String.split_on_char '\n' input in
+		let blocks = List.map (fun line ->
+			let trimmed = String.trim line in
+			if trimmed = "" then Paragraph []
+			else if String.length trimmed > 0 && trimmed.[0] = '#' then
+				let level = 
+					let rec count_hashes i acc =
+						if i < String.length trimmed && trimmed.[i] = '#' then
+							count_hashes (i + 1) (acc + 1)
+						else acc
+					in count_hashes 0 0
+				in
+				let title = String.trim (String.sub trimmed level (String.length trimmed - level)) in
+				Heading (level, title, [])
+			else if String.length trimmed >= 2 && String.sub trimmed 0 2 = "- " then
+				let content = String.sub trimmed 2 (String.length trimmed - 2) in
+				UnorderedList (1, [Paragraph [Text content]])
+			else
+				(* Simple text processing for bold and italic *)
+				let content = 
+					if String.contains trimmed '*' then
+						(* Very basic bold/italic parsing *)
+						[Text trimmed]
+					else
+						[Text trimmed]
+				in
+				Paragraph content
+		) lines in
+		List.filter (fun block -> match block with Paragraph [] -> false | _ -> true) blocks
+
+	let parse input =
+		try
+			parse_simple_text input
+		with
+		| exn -> failwith ("Markdown parsing error: " ^ Printexc.to_string exn)
+end
+
 module Renderer = struct
 	open Ast
 	
@@ -1123,6 +1165,7 @@ module Renderer = struct
 end
 
 let parse = Parser.parse
+let parse_markdown = MarkdownParser.parse
 let to_markdown = Renderer.to_markdown
 let to_html = Renderer.to_html
 let to_json = Renderer.to_json

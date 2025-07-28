@@ -1,5 +1,6 @@
 (* Command line argument parsing *)
 let output_format = ref "markdown"
+let input_format = ref "norg"
 let input_file = ref ""
 let output_file = ref None
 
@@ -9,16 +10,19 @@ let spec_list = [
   ("--output", Arg.Symbol (["markdown"; "html"; "json"], 
             (fun s -> output_format := s)), 
     " Specify output format (markdown, html, or json)");
+  ("--input", Arg.Symbol (["norg"; "markdown"], 
+            (fun s -> input_format := s)), 
+    " Specify input format (norg or markdown)");
   ("--out", Arg.String set_output_file,
     " Specify output file (defaults to stdout)")
 ]
 
-let usage_msg = "Usage: norg [options] <input_file.norg>"
+let usage_msg = "Usage: norg [options] <input_file>"
 
 let anon_fun filename = input_file := filename
 
-(* Parse the norg file and create AST *)
-let parse_norg_file filename =
+(* Parse input file based on format and create AST *)
+let parse_input_file filename format =
   try
     let content = 
       let ic = open_in filename in
@@ -32,7 +36,10 @@ let parse_norg_file filename =
       in
       read_all ""
     in
-    Norg.parse content
+    match format with
+    | "norg" -> Norg.parse content
+    | "markdown" -> Norg.parse_markdown content
+    | _ -> failwith ("Unsupported input format: " ^ format)
   with
   | Sys_error msg -> Printf.eprintf "Error: %s\n" msg; exit 1
   | Failure msg -> Printf.eprintf "Parsing error: %s\n" msg; exit 1
@@ -64,6 +71,6 @@ let () =
     exit 1
   end;
   
-  let parsed_content = parse_norg_file !input_file in
+  let parsed_content = parse_input_file !input_file !input_format in
   let output = convert_to_format parsed_content !output_format in
   write_output output !output_file

@@ -1,9 +1,9 @@
 * TODOs
 
 ** Current
-   - ( ) Create markdown -> norg conversion functionality to improve bidirectional accuracy (A -> B = B -> A)
 
 ** Completed
+   - (x) Create markdown -> norg conversion functionality to improve bidirectional accuracy (A -> B = B -> A)
    - (x) Address remaining parsing issues: comma subscript false positives
    - (x) Fix inline formatting conversion (italic, underline, strikethrough, etc.)
    - (x) Fix link conversion - [text]{url} to [text](url)

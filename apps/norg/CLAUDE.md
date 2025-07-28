@@ -10,6 +10,13 @@ Norg Parser
 2. **Plan**: Complex tasks  → write plan in `.claude/plans/YYYY-MM-DD-description.md`
 3. **Update**: Keep `TODO.norg` current
 
+## Key Features
+
+**Bidirectional Conversion**: 
+- Norg → Markdown/HTML/JSON: `norg input.norg --output markdown`
+- Markdown → Norg: `norg input.md --input markdown --output markdown` 
+- Enables round-trip testing: A → B → A for conversion accuracy verification
+
 ### Testing & Debugging
 
 **Dune watch mode** (the user typically runs dune build in watch mode outside Claude session):
@@ -30,6 +37,7 @@ Norg Parser
   - `./test/test_parser.sh underline` - Test underline markup
   - `./test/test_parser.sh inline_tests` - All inline markup tests
   - `./test/test_parser.sh binary_search 50` - Test first 50 lines of spec
+  - `./test/test_parser.sh bidirectional_tests` - Test markdown input and bidirectional conversion
   - `TIMEOUT=5 OUTPUT_FORMAT=json ./test/test_parser.sh all_inline`
 
 When tests fail:

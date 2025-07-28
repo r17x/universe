@@ -260,6 +260,37 @@ EOF
     timeout "${TIMEOUT}"s dune exec ./bin/main.exe debug_test.norg -- --output "${OUTPUT_FORMAT}"
 }
 
+test_bidirectional() {
+    cat > debug_test.norg << 'EOF'
+* Heading
+This is **bold** and *italic* text.
+- List item 1  
+- List item 2
+EOF
+    echo "Testing bidirectional conversion..."
+    echo "1. Norg -> Markdown:"
+    timeout "${TIMEOUT}"s dune exec ./bin/main.exe debug_test.norg -- --output markdown > debug_test.md
+    cat debug_test.md
+    echo ""
+    echo "2. Markdown -> Norg:"
+    timeout "${TIMEOUT}"s dune exec ./bin/main.exe debug_test.md -- --input markdown --output markdown
+    echo ""
+    echo "Files created: debug_test.norg, debug_test.md"
+}
+
+test_markdown_input() {
+    cat > debug_test.md << 'EOF'
+# Heading
+
+This is **bold** and *italic* text.
+
+- List item 1
+- List item 2
+EOF
+    echo "Testing markdown input parsing..."
+    timeout "${TIMEOUT}"s dune exec ./bin/main.exe debug_test.md -- --input markdown --output "${OUTPUT_FORMAT}"
+}
+
 test_binary_search() {
     echo "Binary search through specification.norg..."
     
@@ -306,6 +337,8 @@ case "${1:-all}" in
     "json_output") test_json_output ;;
     "html_output") test_html_output ;;
     "simple") test_simple ;;
+    "bidirectional") test_bidirectional ;;
+    "markdown_input") test_markdown_input ;;
     "inline_tests")
         echo "Running all inline markup tests..."
         test_bold && echo "✓ Bold OK"
@@ -332,6 +365,11 @@ case "${1:-all}" in
         echo "Running all output format tests..."
         test_json_output && echo "✓ JSON output OK"
         test_html_output && echo "✓ HTML output OK"
+        ;;
+    "bidirectional_tests")
+        echo "Running bidirectional conversion tests..."
+        test_markdown_input && echo "✓ Markdown input OK"
+        test_bidirectional && echo "✓ Bidirectional conversion OK"
         ;;
     "all")
         echo "Running all tests..."
@@ -363,12 +401,14 @@ case "${1:-all}" in
         echo "  subscript, mixed_subscript, comma_conflict, simple_subscript, comma_only"
         echo "  inline_code, math, variable, spoiler, strikethrough, superscript"
         echo "  heading, lists, quotes, definitions, footnotes"
-        echo "  json_output, html_output, simple, spec_subset, full_spec"
+        echo "  json_output, html_output, simple, bidirectional, markdown_input"
+        echo "  spec_subset, full_spec"
         echo ""
         echo "Test categories:"
         echo "  inline_tests   - All inline markup tests"
         echo "  block_tests    - All block markup tests"
         echo "  output_tests   - All output format tests"
+        echo "  bidirectional_tests - Markdown input and bidirectional conversion tests"
         echo "  all_inline     - Combined inline markup test"
         echo "  all            - All tests"
         echo ""

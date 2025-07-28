@@ -128,6 +128,15 @@ module Parser : sig
   val parse : string -> Ast.document
 end
 
+(** Markdown parser module for converting Markdown text to Norg AST *)
+module MarkdownParser : sig
+  (** Parse a Markdown document string into a Norg AST
+      @param input The Markdown document as a string
+      @return The parsed document as a Norg AST
+      @raise Failure if parsing fails with error message *)
+  val parse : string -> Ast.document
+end
+
 (** Renderer module for converting AST to various output formats *)
 module Renderer : sig
   
@@ -180,6 +189,12 @@ end
     @return The parsed document as an AST
     @raise Failure if parsing fails *)
 val parse : string -> Ast.document
+
+(** Parse a Markdown document string into a Norg AST for bidirectional conversion
+    @param input The Markdown document as a string
+    @return The parsed document as a Norg AST
+    @raise Failure if parsing fails *)
+val parse_markdown : string -> Ast.document
 
 (** Render an AST document to Markdown format
     @param blocks The document blocks to render

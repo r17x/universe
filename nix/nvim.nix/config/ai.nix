@@ -78,11 +78,23 @@ rec {
         "AvanteToggle"
       ];
       settings = {
-        provider = "claude";
+        provider = "copilot";
 
-        behaviors = {
-          enable_cursor_planning_mode = true;
-          auto_apply_diff_after_generation = true;
+        diff = {
+          autojump = true;
+          debug = false;
+          list_opener = "copen";
+        };
+
+        highlights = {
+          diff = {
+            current = "GitConflictAncestor";
+            incoming = "GitConflictIncoming";
+          };
+        };
+
+        hints = {
+          enabled = true;
         };
 
         claude.api_key_name = "cmd:pass show r17x/anthropic";
@@ -95,7 +107,7 @@ rec {
         copilot.temperature = 0.3;
         copilot.max_tokens = 20000;
 
-        vendors = rec {
+        providers = rec {
           copilot37 = {
             model = "claude-3.7-sonnet";
             __inherited_from = "copilot";

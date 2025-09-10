@@ -27,6 +27,9 @@
 
   globals = {
     elite_mode = 1;
+    # --- nvim-tree
+    loaded_netrw = 1;
+    loaded_netrwPlugin = 1;
     # --- colorscheme edge
     edge_style = "neon";
     edge_diagnostic_text_highlight = 1;
@@ -242,20 +245,16 @@
 
     nvim-tree = {
       enable = true;
-      disableNetrw = true;
-      view.side = "left";
-      view.width = 25;
-      respectBufCwd = true;
-      autoReloadOnWrite = true;
-      git.enable = true;
-      filters.dotfiles = true;
-      renderer.highlightGit = true;
-      renderer.indentMarkers.enable = true;
+      settings = {
+        view.side = "left";
+        view.width = 25;
+        git.enable = true;
+        filters.dotfiles = true;
+      };
     };
 
     rainbow-delimiters = {
       enable = true;
-      # highlight = indent-blankline.settings.scope.highlight;
     };
 
     indent-blankline = {
@@ -263,15 +262,6 @@
       settings.indent.char = "";
       settings.scope.enabled = true;
       settings.scope.char = icons.indent;
-      # settings.scope.highlight = [
-      #   "rainbowcol1"
-      #   "rainbowcol2"
-      #   "rainbowcol3"
-      #   "rainbowcol4"
-      #   "rainbowcol5"
-      #   "rainbowcol6"
-      #   "rainbowcol7"
-      # ];
       settings.whitespace.highlight = [ "Whitespace" ];
       settings.exclude.buftypes = [
         "nofile"

@@ -419,36 +419,40 @@
     lsp-format.enable = true;
 
     lspkind.enable = true;
-    lspkind.symbolMap.Codeium = icons.code;
-    lspkind.symbolMap.Copilot = icons.robotFace;
-    lspkind.symbolMap.Suggestion = icons.wand;
-    lspkind.symbolMap.TabNine = icons.face;
-    lspkind.symbolMap.Supermaven = icons.star;
-    lspkind.symbolMap.Error = icons.cross4;
-    lspkind.symbolMap.Hint = icons.hint;
-    lspkind.symbolMap.Info = icons.info2;
-    lspkind.symbolMap.Warn = icons.warning2;
-    lspkind.symbolMap.DiagnosticSignError = icons.cross4;
-    lspkind.symbolMap.DiagnosticSignHint = icons.hint;
-    lspkind.symbolMap.DiagnosticSignInfo = icons.info2;
-    lspkind.symbolMap.DiagnosticSignWarn = icons.warning2;
-    lspkind.cmp.enable = true;
-    lspkind.cmp.maxWidth = 24;
-    lspkind.cmp.after = # lua
-      ''
-        function(entry, vim_item, kind)
-          local strings = vim.split(kind.kind, "%s", { trimempty = true })
-          kind.kind = " " .. (strings[1] or "") .. " "
-          kind.menu = "   ⌈" .. (strings[2] or "") .. "⌋"
-          return kind
-        end
-      '';
+    lspkind.settings = {
+      symbolMap.Codeium = icons.code;
+      symbolMap.Copilot = icons.robotFace;
+      symbolMap.Suggestion = icons.wand;
+      symbolMap.TabNine = icons.face;
+      symbolMap.Supermaven = icons.star;
+      symbolMap.Error = icons.cross4;
+      symbolMap.Hint = icons.hint;
+      symbolMap.Info = icons.info2;
+      symbolMap.Warn = icons.warning2;
+      symbolMap.DiagnosticSignError = icons.cross4;
+      symbolMap.DiagnosticSignHint = icons.hint;
+      symbolMap.DiagnosticSignInfo = icons.info2;
+      symbolMap.DiagnosticSignWarn = icons.warning2;
+      cmp.enable = true;
+      cmp.maxWidth = 24;
+      cmp.after = # lua
+        ''
+          function(entry, vim_item, kind)
+            local strings = vim.split(kind.kind, "%s", { trimempty = true })
+            kind.kind = " " .. (strings[1] or "") .. " "
+            kind.menu = "   ⌈" .. (strings[2] or "") .. "⌋"
+            return kind
+          end
+        '';
 
+    };
     lspsaga.enable = true;
-    lspsaga.lightbulb.sign = false;
-    lspsaga.lightbulb.virtualText = true;
-    lspsaga.lightbulb.debounce = 40;
-    lspsaga.ui.codeAction = icons.gearSM;
+    lspsaga.settings = {
+      lightbulb.sign = false;
+      lightbulb.virtualText = true;
+      lightbulb.debounce = 40;
+      ui.codeAction = icons.gearSM;
+    };
 
     luasnip.enable = true;
     luasnip.lazyLoad.settings.event = "InsertEnter";

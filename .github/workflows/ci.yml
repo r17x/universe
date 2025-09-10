@@ -16,7 +16,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@v18
+      - uses: DeterminateSystems/nix-installer-action@v20
         with:
           github-token: ${{ secrets.GH_TOKEN }}
           extra-conf: "experimental-features = nix-command flakes pipe-operators" 

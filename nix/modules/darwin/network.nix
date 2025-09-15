@@ -1,7 +1,19 @@
 {
+  config,
+  ...
+}:
+
+let
+  cfg = {
+    unbound = config.services.unbound;
+  };
+in
+{
   services.dnscrypt-proxy = {
     settings = {
-      listen_addresses = [ "127.0.0.1:53000" ];
+      listen_addresses = [
+        "127.0.0.1:${if cfg.unbound.enable then "53000" else "53"}"
+      ];
       doh_servers = true;
       dnscrypt_servers = true;
       server_names = [

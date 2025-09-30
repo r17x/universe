@@ -10,10 +10,10 @@
 
   perSystem =
     {
+      self',
       pkgs,
       system,
       config,
-      self',
       ...
     }:
     {
@@ -115,7 +115,7 @@
         #
         mkShells "nodejs_"
         // mkShells "go_"
-        // rec {
+        // {
           default = pkgs.mkShell {
             shellHook = ''
               ${config.pre-commit.installationScript}
@@ -128,11 +128,6 @@
           #    $ nix develop github:r17x/nixpkgs#ocaml
           #
           #
-          ocaml = pkgs.mkShell {
-            description = "OCaml development environment";
-            packages = [ pkgs.opam ];
-          };
-
           rescript-compiler = pkgs.mkShell {
             description = "OCaml development environment";
             packages = [
@@ -149,6 +144,33 @@
               eval $(opam env --switch=default)
             '';
           };
+
+          ocaml =
+            let
+              ocamlPackages = pkgs.ocaml-ng.ocamlPackages_5_1;
+            in
+            pkgs.mkShell {
+              description = "OCaml development environment";
+              buildInputs = [
+                # this needed for common HTTP libraries
+                pkgs.openssl
+                pkgs.libev
+                pkgs.pkgconf
+                pkgs.pkg-config
+                # pkgs.ocamlformat
+                pkgs.opam
+
+                ocamlPackages.ocaml
+                ocamlPackages.dune_3
+                # ocamlPackages.ocaml-lsp
+                # ocamlPackages.merlin
+                # ocamlPackages.merlin-extend
+                # ocamlPackages.utop
+                # ocamlPackages.odoc
+                # ocamlPackages.ocp-indent
+                # ocamlPackages.findlib
+              ];
+            };
 
           #
           #
@@ -209,10 +231,6 @@
               pkg-config
             ];
           };
-
-          rust-opencv = rust-wasm.overrideAttrs (old: {
-            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.opencv4 ];
-          });
 
           rust-cap = pkgs.mkShell {
             description = "Rust  Development Environment";

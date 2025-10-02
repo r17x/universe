@@ -11,10 +11,45 @@
 {
   highlightOverride.LspInlayHint.link = "InclineNormalNc";
 
+  globals.ocamlnvim = {
+    lsp = {
+      # Enable/disable automatic LSP attachment
+      auto_attach = true;
+
+      # Custom on_attach function
+      on_attach = # lua
+        ''
+          function(client_id, bufnr)
+            -- Set up keymaps, autocommands, etc.
+            vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = bufnr })
+            vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr })
+          end
+        '';
+
+      # OCaml LSP server settings
+      settings = {
+        duneDiagnostics = true; # Dune-specific diagnostics
+        syntaxDocumentation = true; # Syntax documentation
+      };
+
+      # Experimental OCaml LSP features
+      experimental = {
+        switchImplIntf = true; # Switch between .ml/.mli files
+        inferIntf = true; # Interface inference
+        typedHoles = true; # Typed holes support
+        typeEnclosing = true; # Type enclosing
+        construct = true; # Construct handling
+        destruct = true; # Destruct handling
+        jumpToNextHole = true; # Jump to next hole
+      };
+    };
+  };
+
   extraPlugins = with pkgs.vimPlugins; [
     codi-vim # repl
     vim-rescript
     neorepl-nvim
+    ocamlnvim
   ];
 
   # make custom command
@@ -387,8 +422,7 @@
         rust_analyzer.installRustc = false;
 
         ocamllsp.enable = true;
-        ocamllsp.autostart = true;
-        ocamllsp.package = pkgs.ocamlPackages.ocaml-lsp;
+        ocamllsp.autostart = false;
         ocamllsp.settings.codelens.enable = false;
         ocamllsp.settings.extendedHover.enable = true;
         ocamllsp.settings.duneDiagnostics.enable = false;

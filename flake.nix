@@ -63,6 +63,13 @@
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.inputs.flake-parts.follows = "flake-parts";
 
+    ##### ---- ocaml
+    ocaml-nvim.url = "github:syaiful6/ocaml.nvim";
+    ocaml-nvim.inputs = {
+      nixpkgs.follows = "nixpkgs";
+      git-hooks.follows = "pre-commit-hooks";
+    };
+
     #### irc
     iamb.url = "github:ulyssa/iamb";
     iamb.inputs.nixpkgs.follows = "nixpkgs";

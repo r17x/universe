@@ -52,7 +52,7 @@
       };
 
       overlays = lib.attrValues inputs.self.overlays ++ [
-        # inputs.ocaml-overlay.overlays.default
+        inputs.ocaml-nvim.overlays.default
       ];
     };
 

@@ -53,11 +53,11 @@ in
     services.aerospace = {
       enable = cfg.wm == "aerospace";
       settings = {
-        exec-on-workspace-change = [
-          "/bin/bash"
-          "-c"
-          "${lib.getExe pkgs.sketchybar} --trigger space_workspace_change FOCUSED=$AEROSPACE_FOCUSED_WORKSPACE"
-        ];
+        # exec-on-workspace-change = [
+        #   "/bin/bash"
+        #   "-c"
+        #   "${lib.getExe pkgs.sketchybar} --trigger space_workspace_change FOCUSED=$AEROSPACE_FOCUSED_WORKSPACE"
+        # ];
         gaps = {
           outer.top = 50;
           outer.bottom = 15;

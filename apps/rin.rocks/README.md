@@ -4,6 +4,10 @@ Personal website [@r17x](https://github.com/r17x) for multi-purpose.
 
 > 🚧 under construction - rebuild with [OCaml](https://ocaml.org)
 
+## TODOs
+
+* [ ] pages directory with [.norg](https://github.com/nvim-neorg/neorg) files.
+
 
 ## **Development**
 

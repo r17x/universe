@@ -2,8 +2,18 @@
  (name shared_js)
  (modes melange)
  (wrapped false)
- (libraries reason-react melange-webapi melange.belt melange.dom)
+ (libraries
+  styled-ppx.melange
+  reason-react
+  melange-webapi
+  melange.belt
+  melange.dom)
  (preprocess
-  (pps melange.ppx reason-react-ppx server-reason-react.browser_ppx -js)))
+  (pps
+   styled-ppx
+   melange.ppx
+   reason-react-ppx
+   server-reason-react.browser_ppx
+   -js)))
 
-(copy_files "../native/lib/*.re")
+(copy_files "../native/shared/*.re")

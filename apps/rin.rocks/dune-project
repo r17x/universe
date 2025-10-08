@@ -1,6 +1,43 @@
-(lang dune 3.8)
+(lang dune 3.9)
 
 (using melange 0.1)
+
 (using directory-targets 0.1)
 
+(using mdx 0.4)
+
+(generate_opam_files true)
+
+(implicit_transitive_deps false)
+
 (name rin-rocks)
+
+(license MIT)
+
+(maintainers "r17x <hi@rin.rocks>")
+
+(authors "r17x <hi@rin.rocks>")
+
+(source
+ (github r17x/universe))
+
+(package
+ (name rin-rocks)
+ (allow_empty)
+ (synopsis "r17x web")
+ (description "I just want to make a website")
+ (depends
+  (server-reason-react
+   (>= 0.3.1))
+  (melange-webapi
+   (>= 0.21.0))
+  (reason-react
+   (>= 0.16.0))
+  (melange
+   (>= 3.0.0))
+  (dream
+   (>= "1.0.0~alpha8"))
+  (dream-livereload (= 0.2.0))
+  bin
+  (styled-ppx
+   (>= 0.59.1))))

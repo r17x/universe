@@ -27,6 +27,7 @@
  (synopsis "r17x web")
  (description "I just want to make a website")
  (depends
+    (crunch (= 4.0.0))
   (server-reason-react
    (>= 0.3.1))
   (melange-webapi

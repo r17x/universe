@@ -3,7 +3,9 @@
   (= %{profile} "dev"))
  (name server)
  (libraries
+  crunch
   dream
+  lwt.unix
   shared_native
   styled-ppx.native
   server-reason-react.react
@@ -16,3 +18,12 @@
    server-reason-react.browser_ppx
    styled-ppx
    lwt_ppx)))
+
+(rule
+ (target blogs_content.ml)
+ (deps
+  (source_tree %{project_root}/blogs))
+ (action
+  (with-stdout-to
+   %{target}
+   (run ocaml-crunch -m plain %{project_root}/blogs))))

@@ -30,6 +30,9 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs.follows = "nixpkgs-unstable";
 
+    ### -- hardware specific
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
+
     ### -- Nix Infra / DevOps
     microvm.url = "github:astro/microvm.nix?rev=1e746a8987eb893adc8dd317b84e73d72803b650";
     microvm.inputs.nixpkgs.follows = "nixpkgs";

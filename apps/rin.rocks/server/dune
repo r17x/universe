@@ -4,7 +4,6 @@
  (name server)
  (libraries
   dream
-  dream-livereload
   shared_native
   styled-ppx.native
   server-reason-react.react

@@ -14,7 +14,6 @@ depends: [
   "reason-react" {>= "0.16.0"}
   "melange" {>= "3.0.0"}
   "dream" {>= "1.0.0~alpha8"}
-  "dream-livereload" {= "0.2.0"}
   "bin"
   "styled-ppx" {>= "0.59.1"}
   "odoc" {with-doc}

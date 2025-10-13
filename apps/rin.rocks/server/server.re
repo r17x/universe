@@ -20,7 +20,7 @@ let app = request => {
 
 Dream.run(~port=8080) @@
 Dream.logger @@
-Dream_livereload.inject_script() @@
+Dream.livereload @@
 Dream.router([
   Dream.get("/", app),
   Dream.get("/try-static-markup", _ =>
@@ -29,5 +29,4 @@ Dream.router([
     |> Dream.html
   ),
   Dream.get("/blog", app),
-  Dream_livereload.route(),
 ]);

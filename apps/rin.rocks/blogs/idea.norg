@@ -1,0 +1,46 @@
+@document.meta
+title: idea
+description: 
+authors: r17x
+categories: 
+created: 2025-10-09T11:43:02+0700
+updated: 2025-10-09T11:50:00+0700
+version: 1.1.1
+@end
+
+* Idea
+
+** A video player focus on eXperience
+
+   I want to build a video player that focus on eXperience. I'm using neovim, which is a text editor and usually for coding and writing. Sometimes, I record a video of my screen to share anything that can be useful for others. But, I don't like to use simple video players or a lot of features that I don't need. I want a video player that can be linked content to another content, like a note-taking app. So, I can watch a video totally focus on the content, and transfer the knowledge like reading note-taking.
+
+*** Imagination
+
+    Imagine, watching a video about "Basic JavaScript", while your watching, the video player can interact with you as a viewer, like asking you with questions, or giving you a quiz. So, you can understand the content better than flat video players. When you answer or giving actions, the video will linked to another content. Example, question is "Are you understand about variable in JavaScript?", if you answer "No", the video will play another video about "Variable in JavaScript". if you answer "Yes", the video may will continue to the next topic, continue to "Function in JavaScript", or another "Next section" that you can control if you are content creator.
+
+*** PoV as content creator
+
+    as a content creator, I produce video usually, so I can prepare the content that I want to share. When you prepare the content, which is mean you "declared" something. Why not to make some "declaration" that can be used to interact with the viewer. Example, I want to share about "Basic JavaScript", so I can prepare the content like this:
+
+    @code yaml
+title: Basic JavaScript
+url: https://example.com/basic-javascript.mp4
+interactions:
+  - question: "Are you understand about variable in JavaScript?"
+    timeline: 03:00
+    answers: 
+      - Yes: next-section("Function in JavaScript")
+      - No: next-section("Variable in JavaScript")
+
+title: Function in JavaScript
+url: https://example.com/function-in-javascript.mp4
+interactions: 
+  - timeline: END
+    continue: 
+      to: next-section("Basic JavaScript")
+      seek: 05:00
+
+    @end
+
+    That's an example of declaration that can be used to interact with the viewer. So, when the viewer watch the video, at 03:00, the video player will ask the question "Are you understand about variable in JavaScript?", and the viewer can answer "Yes" or "No". If the viewer answer "No", the video will play another video about "Variable in JavaScript". if the viewer answer "Yes", the video may will continue to the next topic, continue to "Function in JavaScript", or another "Next section" that you can control if you are content creator.
+

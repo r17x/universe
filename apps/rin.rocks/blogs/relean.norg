@@ -1,0 +1,27 @@
+@document.meta
+title: relean
+description: 
+authors: r17x
+categories: 
+created: 2025-10-09T11:56:09+0700
+updated: 2025-10-13T19:39:38+0700
+version: 1.1.1
+@end
+
+* Relean Refactor Rebuild
+
+  > 3 magic words if you unemployed like me 😃 😢
+
+  Since I have a lot of free time, I want to rebuild my personal website, rin.rocks. I want to rebuild it from "scratch". because I want to continue to learn and explore older things that I have learned before. OCaml is one of the languages that I think need to explore again. I have learned OCaml before and use in my previous company (Ruangguru and Warungpintar). 
+
+  My previous website was built with Next.js and JS Ecosystem. In this time, I want to build it with OCaml Ecosystem and keep it with "React". The things it come from `server-reason-react`, `dream`, and OCaml. These three things are the main things that I want to rebuild my website.
+
+***  `server-reason-react`
+  I have learned `reason-react` before, I use it in production (long time agoe). So, I want to explore it again and use it in my personal website. `reason-react` is a library to use `React.js` in ReasonML or OCaml. It means using JavaScript Ecosystem like NPM, Yarn, Vite, and etc. `server-reason-react` is different, it is a library to use `React.js` in OCaml. It means using OCaml Ecosystem like Opam, Dune, and etc. 
+
+*** `Dream`
+  Dream is a web framework for OCaml. I think it is similar to Express.js in JavaScript Ecosystem. This is very easy but powerful because it has a lot of features that supported by OCaml Ecosystem and can be compiled to native code. So, it will be very fast and "efficient". 
+
+*** `OCaml`
+    OCaml is multi-paradigm programming language. It is functional programming language, but it also support imperative and object-oriented programming. OCaml is very powerful and has a lot of features that can be used to build a web application. It has a strong type system, which is very useful to avoid bugs in the code. It also has a lot of libraries that can be used to build a web application. OCaml have side-effect, the effect is OCaml Dev introduce a new language when have learned OCaml. ReasonML, ReScript, Moontbit, Grain, and "Rust" was inspired and build with OCaml.
+

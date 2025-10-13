@@ -12,7 +12,7 @@ let app = request => {
          });
     };
 
-    Dream.stream(data_stream);
+    Dream.stream(~headers=[("Content-Type", "text/html")], data_stream);
   };
 
   responseStream(<Document> <App /> </Document>);
@@ -23,7 +23,8 @@ Dream.logger @@
 Dream.livereload @@
 Dream.router([
   Dream.get("/", app),
-  Dream.get("/try-static-markup", _ =>
+  Dream.get("/blogs", Blogs.handler),
+  Dream.get("/static", _ =>
     <Document> <App /> </Document>
     |> ReactDOM.renderToStaticMarkup
     |> Dream.html

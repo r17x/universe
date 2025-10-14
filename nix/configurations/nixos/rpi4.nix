@@ -65,7 +65,21 @@
     initialHashedPassword = "";
   };
 
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    banner = ''
+
+       _   __                            _      
+      | | / /                           (_)     
+      | |/ /  ___  _ __ ___  _   _ _ __  ___  __
+      |    \ / _ \| '_ ` _ \| | | | '_ \| \ \/ /
+      | |\  \ (_) | | | | | | |_| | | | | |>  < 
+      \_| \_/\___/|_| |_| |_|\__,_|_| |_|_/_/\_\
+                                                
+          ;/nix/store/milik-bersama;
+
+    '';
+  };
   # simplify sudo
   security = {
     sudo = {

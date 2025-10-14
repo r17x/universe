@@ -88,6 +88,20 @@
 
     '';
   };
+
+  # add swap
+  swapDevices = [
+    {
+      device = "/swapfile";
+      size = 2048;
+    }
+  ];
+
+  zramSwap = {
+    enable = true;
+    memoryPercent = 50;
+  };
+
   # simplify sudo
   security = {
     sudo = {

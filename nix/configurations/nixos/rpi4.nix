@@ -16,6 +16,14 @@
   sdImage.compressImage = false;
   hardware.raspberry-pi."4".touch-ft5406.enable = false;
 
+  nix.settings = {
+    auto-optimise-store = true;
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+  };
+
   nixpkgs = {
     hostPlatform = "aarch64-linux";
     config = {

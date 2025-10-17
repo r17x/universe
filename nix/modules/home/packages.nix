@@ -94,7 +94,7 @@
       #   withOpenASAR = true;
       # })
       # issue > cp: target 'PTB.app/Contents/Resources/app.asar': No such file or directory
-      (discord.override {
+      (pkgs.branches.stable.discord.override {
         withVencord = true;
         withOpenASAR = true;
       })

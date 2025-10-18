@@ -103,10 +103,7 @@
         ];
         services.ollama.ollamaX.enable = true;
         services.ollama.ollamaX.dataDir = "$HOME/.process-compose/ai/data/ollamaX";
-        services.ollama.ollamaX.models = [
-          "qwen2.5-coder"
-          # "deepseek-r1:1.5b"
-        ];
+        services.ollama.ollamaX.models = [ "deepseek-r1:1.5b" ];
       };
 
       # just for demo - https://x.com/dhh/status/1897982683772317776

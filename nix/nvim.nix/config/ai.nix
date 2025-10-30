@@ -142,6 +142,8 @@ rec {
     copilot-lua.enable = true;
     copilot-lua.settings.suggestion.enabled = false;
     copilot-lua.settings.panel.enabled = false;
+    copilot-lua.lazyLoad.enable = true;
+    copilot-lua.lazyLoad.settings.cmd = [ "Copilot" ];
 
     cmp.settings.sources = lib.optionals plugins.copilot-lua.enable [
       { name = "copilot"; }

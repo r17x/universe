@@ -65,8 +65,8 @@ in
         cursor-click-to-move = false;
         macos-window-shadow = false;
         macos-titlebar-style = "transparent";
-        font-feature = "JetBrainsMono Nerd Font Mono";
-        font-family = "FiraCode Nerd Font Mono ";
+        font-feature = "liga,calt,dlig";
+        font-family = "Kode Mono";
         font-thicken = true;
       }
     );

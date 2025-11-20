@@ -20,6 +20,7 @@
 
   # Fonts
   fonts.packages = with pkgs; [
+    kode-mono
     sketchybar-app-font
     sf-mono-liga-bin
     sf-symbols-font

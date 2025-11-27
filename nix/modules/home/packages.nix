@@ -89,11 +89,8 @@
       ##################################
       # Communication
       ##################################
-      # (pkgs.branches.master.discord-ptb.override {
-      #   withVencord = true;
-      #   withOpenASAR = true;
-      # })
-      # issue > cp: target 'PTB.app/Contents/Resources/app.asar': No such file or directory
+
+      # discord
       (pkgs.branches.stable.discord.override {
         withVencord = true;
         withOpenASAR = true;

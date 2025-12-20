@@ -23,6 +23,7 @@ in
       "aarch64-linux"
     ];
     config = {
+      system.stateVersion = lib.mkForce "25.11";
       users.users.root.openssh.authorizedKeys.keys = self.users.r17.keys;
       environment.systemPackages = with pkgs; [
         nixos-rebuild

@@ -26,7 +26,7 @@
 
     ## -- nixpkgs
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/release-25.05";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/release-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs.follows = "nixpkgs-unstable";
 
@@ -42,6 +42,9 @@
     clan-core.inputs.flake-parts.follows = "flake-parts";
     clan-core.inputs.sops-nix.follows = "sops-nix";
     clan-core.inputs.disko.follows = "disko";
+
+    ### -- llms
+    llms-agents.url = "github:numtide/llm-agents.nix";
 
     ## -- Platform
 

@@ -19,9 +19,9 @@
         nixt
         ;
 
-      lib = prev.lib.extend (import ./lib.nix);
+      inherit (inputs.llms-agents.packages.${system}) claude-code;
 
-      claude-code = final.branches.master.claude-code;
+      lib = prev.lib.extend (import ./lib.nix);
 
       # flake.nix: inputs.nixpkgs-stable -> pkgs.branches.stable
       branches = final.lib.mkChannels {

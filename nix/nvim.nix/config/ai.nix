@@ -6,6 +6,10 @@
   ...
 }:
 
+let
+  claude-code-nvim = pkgs.branches.stable.vimPlugins.claudecode-nvim;
+in
+
 rec {
   autoCmd = [
     {
@@ -21,13 +25,13 @@ rec {
   ];
 
   extraPlugins = [
-    pkgs.branches.master.vimPlugins.claudecode-nvim
+    claude-code-nvim
   ];
 
   plugins = {
     lz-n.plugins = [
       {
-        __unkeyed-1 = pkgs.branches.master.vimPlugins.claudecode-nvim.name;
+        __unkeyed-1 = claude-code-nvim.name;
         cmd = [
           "ClaudeCode"
           "ClaudeCodeFocus"

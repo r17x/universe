@@ -1,24 +1,6 @@
 { lib, pkgs, ... }:
 
-let
-  work = {
-    name = "R Adysurya Agus";
-    email = "adysurya@ruangguru.com";
-    signingKey = "F7B293AE6EAB33EE";
-  };
-  evil = {
-    name = "r17x";
-    email = "ri7nz@evilfactory.id";
-    signingKey = "5CA1E57AFBF76F90";
-  };
-  w1 = {
-    name = "Rin";
-    email = "adysurya.agus@efishery.com";
-    signingKey = "4B7C9003F501380C";
-  };
-in
 {
-
   home.packages = [ pkgs.git-filter-repo ];
   home.shellAliases.ghd = "gh-dash";
 
@@ -26,7 +8,11 @@ in
     jujutsu = {
       enable = true;
       settings = {
-        user = lib.removeAttrs evil [ "signingKey" ];
+        # Default user for jujutsu (no signingKey needed)
+        user = {
+          name = "r17x";
+          email = "ri7nz@evilfactory.id";
+        };
       };
     };
 
@@ -85,39 +71,9 @@ in
             insteadOf = "https://bitbucket.org/";
           };
         };
+        # Include dynamically generated identity configs
+        include.path = "~/.config/git/identities.gitconfig";
       };
-
-      includes = [
-        {
-          condition = "gitdir:~/w0/";
-          contents.user = work;
-        }
-
-        {
-          condition = "gitdir:~/w1/";
-          contents.user = w1;
-        }
-
-        {
-          condition = "gitdir:~/go/";
-          contents.user = w1;
-        }
-
-        {
-          condition = "gitdir:~/evl/";
-          contents.user = evil;
-        }
-
-        {
-          condition = "gitdir:~/.local/share/";
-          contents.user = evil;
-        }
-
-        {
-          condition = "gitdir:~/.config/nixpkgs/";
-          contents.user = evil;
-        }
-      ];
     };
   };
 }

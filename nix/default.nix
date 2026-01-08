@@ -26,6 +26,8 @@
       rebuild-scripts.enable = true;
     }
 
+    ./modules/flake/universe.nix
+
     ./modules/flake/pkgs-by-name.nix
     {
       perSystem.pkgsDirectory = ./packages;

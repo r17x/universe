@@ -117,11 +117,32 @@ universe identity --list
 
 #### --export
 
-Export a GPG key by email.
+Export a secret GPG key by email.
 
 ```bash
 universe identity --export <email>
 ```
+
+#### --pubkey
+
+Export a public GPG key by identity name or email.
+
+```bash
+universe identity --pubkey <name|email>
+```
+
+**Examples:**
+```bash
+# By identity name
+universe identity --pubkey myid
+
+# By email
+universe identity --pubkey me@example.com
+```
+
+**What it does:**
+1. Looks up email from identity name in sops (or uses email directly)
+2. Exports the public GPG key in ASCII armor format
 
 ## How It Works
 
@@ -142,8 +163,8 @@ During home-manager activation:
 4. Include directives are generated in `~/.config/git/identities.gitconfig`
 
 **Gitdir rules:**
-- If `gitdirs` array is specified, those directories are used
-- Otherwise, email domain becomes the directory: `user@example.com` → `~/example/`
+- Email domain directory is always included: `user@example.com` → `~/example/`
+- Custom `gitdirs` are added alongside the domain directory
 
 ## Extending Universe
 

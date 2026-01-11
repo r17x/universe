@@ -333,7 +333,7 @@
                     echo "$identities" | ${pkgs.jq}/bin/jq -r '
                       to_entries[] |
                       "  \(.key):\n    name: \(.value.name)\n    email: \(.value.email)\n    signingKey: \(.value.signingKey)" +
-                      (if .value.gitdirs then "\n    gitdirs: \(.value.gitdirs | join(\", \"))" else "" end) +
+                      (if .value.gitdirs then "\n    gitdirs: \(.value.gitdirs | join(", "))" else "" end) +
                       "\n"
                     '
                   }

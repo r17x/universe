@@ -99,8 +99,8 @@ in
 
               trusted-users = [
                 "r17"
-                "nixos"
                 "root"
+                "@admin"
               ];
 
               trusted-substituters = [

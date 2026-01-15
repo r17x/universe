@@ -13,7 +13,11 @@ let
 in
 
 {
-  nix.settings.trusted-users = mkIf cfg.enable [ "@admin" ];
+  nix.settings.trusted-users = mkIf cfg.enable [
+    "@admin"
+    "r17"
+    "root"
+  ];
   nix.settings.builders-use-substitutes = cfg.enable;
   nix.linux-builder = {
     ephemeral = true;

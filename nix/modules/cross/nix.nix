@@ -22,9 +22,9 @@
 
 let
   cfg = config.nix-settings;
-
   hasFull = cfg.use == "full";
   isFull = lib.optionals hasFull;
+  flakeInputs = lib.attrsets.filterAttrs (_: lib.isType "flake") inputs;
 in
 {
   options.nix-settings = {
@@ -62,7 +62,13 @@ in
   config = lib.mkIf cfg.enable {
     nix =
       rec {
-        nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+        nixPath =
+          [
+            "nixpkgs=${inputs.nixpkgs}"
+          ]
+          ++ lib.optionals cfg.inputs-to-registry (
+            lib.mapAttrsToList (name: flake: "${name}=${flake}") flakeInputs
+          );
 
         registry =
           {
@@ -71,7 +77,7 @@ in
           // lib.optionalAttrs cfg.inputs-to-registry (
             lib.attrsets.concatMapAttrs (name: flake: {
               ${name} = { inherit flake; };
-            }) (lib.attrsets.filterAttrs (_: lib.isType "flake") inputs)
+            }) flakeInputs
           );
 
         settings =

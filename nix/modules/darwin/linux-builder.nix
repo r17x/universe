@@ -19,6 +19,14 @@ in
     "root"
   ];
   nix.settings.builders-use-substitutes = cfg.enable;
+
+  # Disable auto-start to reduce CPU spike during rebuild
+  # Start manually with: universe service start linux-builder
+  launchd.daemons.linux-builder.serviceConfig = mkIf cfg.enable {
+    RunAtLoad = mkForce false;
+    KeepAlive = mkForce false;
+  };
+
   nix.linux-builder = {
     ephemeral = true;
     maxJobs = 4;

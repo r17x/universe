@@ -257,5 +257,24 @@ in
           ${leader} - r : yabai -m space --rotate 90
         '';
     };
+
+    # Reduce CPU spike during rebuild by lowering service priority
+    # ProcessType=Background: lower scheduling priority
+    # Nice=5: lower CPU priority (positive = less priority)
+    # LowPriorityIO=true: reduce I/O contention
+    # ThrottleInterval=10: minimum 10 seconds between restarts
+    launchd.user.agents.sketchybar.serviceConfig = {
+      ProcessType = "Background";
+      Nice = 5;
+      LowPriorityIO = true;
+      ThrottleInterval = 10;
+    };
+
+    launchd.user.agents.jankyborders.serviceConfig = {
+      ProcessType = "Background";
+      Nice = 5;
+      LowPriorityIO = true;
+      ThrottleInterval = 10;
+    };
   };
 }

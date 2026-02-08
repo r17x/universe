@@ -26,9 +26,14 @@
 │   ├── modules/        # Reusable modules
 │   │   ├── cross/      # Cross-platform modules
 │   │   ├── darwin/     # Darwin-specific modules
+│   │   │   └── mouseless.nix  # Tiling WM setup (yabai/aerospace, skhd, sketchybar)
 │   │   ├── home/       # Home-manager modules
 │   │   ├── nixos/      # NixOS-specific modules
 │   │   └── flake/      # Flake-specific modules
+│   │       ├── universe.nix   # Universe CLI tool
+│   │       └── universe/      # Platform-specific implementations
+│   │           ├── service-darwin.nix  # macOS launchctl service management
+│   │           └── service-linux.nix   # Linux systemctl service management
 │   │
 │   ├── overlays/       # Nixpkgs overlays
 │   │   ├── macOS packages

@@ -1,5 +1,44 @@
 # Suggested Commands
 
+## Universe CLI
+
+### System Rebuild
+```bash
+universe rebuild              # Run darwin-rebuild switch --flake .
+```
+
+### Service Management
+```bash
+universe service list         # List nix-managed services (default)
+universe service list --all   # List all services (system + third-party)
+universe service list --running   # Show only running services
+universe service list --user      # Show user services only
+
+universe service start <name>     # Start a service
+universe service stop <name>      # Stop a service
+universe service restart <name>   # Restart a service
+universe service status <name>    # Show detailed service status
+universe service enable <name>    # Enable at boot
+universe service disable <name>   # Disable at boot
+universe service delete <name>    # Remove zombie/orphaned service
+universe service logs <name>      # View service logs
+
+# Examples:
+universe service restart sketchybar
+universe service stop linux-builder
+universe service status jankyborders
+```
+
+### Identity Management (GPG/Git)
+```bash
+universe identity --list                          # List all identities
+universe identity --add <name> '<real>' <email>   # Add new identity
+universe identity --regen <name>                  # Regenerate GPG key
+universe identity --remove <name>                 # Remove identity
+universe identity --pubkey <name|email>           # Export public key
+universe identity --export <email>                # Export secret key
+```
+
 ## Darwin (macOS) System Management
 
 ### Build and Switch Configuration

@@ -45,7 +45,7 @@
 
     ### -- llms
     llms-agents.url = "github:numtide/llm-agents.nix";
-    serena.url = "github:oraios/serena?rev=501f76eb1333b85bd7bd98a4be0b87946aea82f6";
+    serena.url = "github:oraios/serena";
 
     ## -- Platform
 

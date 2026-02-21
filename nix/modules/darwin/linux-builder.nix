@@ -54,6 +54,38 @@ in
         "flakes"
         "nix-command"
       ];
+
+      # Swap: zram (primary) + swapfile (fallback) for memory-intensive builds
+      zramSwap = {
+        enable = true;
+        memoryPercent = 50; # 4GB zram (~12GB effective with compression)
+        algorithm = "zstd";
+        priority = 100;
+      };
+      swapDevices = [
+        {
+          device = "/var/lib/swapfile";
+          size = 4 * 1024; # 4GB fallback
+          priority = 10;
+        }
+      ];
+      boot.kernel.sysctl."vm.swappiness" = 100;
+
+      # Increase file descriptor limits for large builds
+      security.pam.loginLimits = [
+        {
+          domain = "*";
+          type = "soft";
+          item = "nofile";
+          value = "524288";
+        }
+        {
+          domain = "*";
+          type = "hard";
+          item = "nofile";
+          value = "524288";
+        }
+      ];
     };
   };
 }

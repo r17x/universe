@@ -19,7 +19,7 @@
         nixt
         ;
 
-      inherit (inputs.llms-agents.packages.${system}) claude-code;
+      inherit (inputs.llms-agents.packages.${system}) claude-code rtk;
 
       lib = prev.lib.extend (import ./lib.nix);
 

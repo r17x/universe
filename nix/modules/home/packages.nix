@@ -69,6 +69,7 @@
       ripgrep # another yet of grep
       ffmpeg
       imagemagick
+      rtk
 
       ##################################
       # Development

@@ -54,6 +54,26 @@ in
         "flakes"
         "nix-command"
       ];
+      nix.settings.substituters = [
+        "https://cache.nixos.org/"
+        "https://nix-community.cachix.org"
+        "https://pre-commit-hooks.cachix.org"
+        "https://r17.cachix.org"
+        "https://cache.clan.lol"
+        "https://cache.boltstart.dev"
+        "https://cache.numtide.com"
+        "https://nixos-raspberrypi.cachix.org"
+      ];
+      nix.settings.trusted-public-keys = [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        "r17.cachix.org-1:vz0nG6BCbdgTPn7SEiOwe/3QwvjH1sb/VV9WLcBtkAY="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "pre-commit-hooks.cachix.org-1:Pkk3Panw5AW24TOv6kz3PvLhlH8puAsJTBbOPmBo7Rc="
+        "cache.clan.lol-1:3KztgSAB5R1M+Dz7vzkBGzXdodizbgLXGXKXlcQLA28="
+        "ncps-1:Vql6Qg9lkuACGNzeRg1DsOgNZWSaooQqIz/MujHuy8k="
+        "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+        "nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI="
+      ];
 
       # Swap: zram (primary) + swapfile (fallback) for memory-intensive builds
       zramSwap = {

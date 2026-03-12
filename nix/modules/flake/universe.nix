@@ -107,7 +107,7 @@
           echo "==> Adding identity to git_identities..."
           local gitdirs_json=""
           if [ ''${#gitdirs[@]} -gt 0 ]; then
-            gitdirs_json=$(printf '%s\n' "''${gitdirs[@]}" | ${pkgs.jq}/bin/jq -R . | ${pkgs.jq}/bin/jq -s .)
+            gitdirs_json=$(printf '%s\n' "''${gitdirs[@]}" | sed 's|/*$|/|' | ${pkgs.jq}/bin/jq -R . | ${pkgs.jq}/bin/jq -s .)
             echo "    Gitdirs: ''${gitdirs[*]}"
           fi
           upsert_identity "$name" "$real_name" "$email" "$KEY_ID" "$gitdirs_json"
@@ -224,7 +224,7 @@
           echo "==> Adding identity to git_identities..."
           local gitdirs_json=""
           if [ ''${#gitdirs[@]} -gt 0 ]; then
-            gitdirs_json=$(printf '%s\n' "''${gitdirs[@]}" | ${pkgs.jq}/bin/jq -R . | ${pkgs.jq}/bin/jq -s .)
+            gitdirs_json=$(printf '%s\n' "''${gitdirs[@]}" | sed 's|/*$|/|' | ${pkgs.jq}/bin/jq -R . | ${pkgs.jq}/bin/jq -s .)
             echo "    Gitdirs: ''${gitdirs[*]}"
           fi
           upsert_identity "$name" "$real_name" "$email" "$KEY_ID" "$gitdirs_json"

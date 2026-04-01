@@ -18,6 +18,7 @@
       pkgs.claude-code
     ];
     sessionVariables.EDITOR = lib.getExe' inputs.self.packages.${pkgs.stdenv.system}.nvim "nvim";
+    sessionVariables.CLAUDE_CODE_DISABLE_1M_CONTEXT = 1;
   };
 
   within = {
@@ -36,8 +37,8 @@
       sops.defaultSopsFile = "${inputs.self}/secrets/secret.yaml";
       sops.secrets.openai_api_key.path = "%r/openai_api_key";
       sops.secrets.codeium.path = "%r/codeium";
-      sops.secrets.git_identities = {};
-      sops.secrets.berkarya_gpg_key = {};
+      sops.secrets.git_identities = { };
+      sops.secrets.berkarya_gpg_key = { };
       programs.git.extraConfig.diff.sopsdiffer.textconv = "sops -d --config /dev/null";
       home.packages = [ pkgs.sops ];
     }

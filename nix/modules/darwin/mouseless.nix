@@ -18,7 +18,7 @@ let
 
   lua = pkgs.lua54Packages.lua.withPackages (ps: [
     ps.lua
-    pkgs.sbarLua
+    pkgs.sbarlua
     pkgs.sketchybarConfigLua
   ]);
 
@@ -45,7 +45,6 @@ in
       config = # lua
         ''
           #!${lua}/bin/lua
-          package.cpath = package.cpath .. ";${lua}/lib/?.so"
           require("init")
         '';
     };
@@ -53,11 +52,11 @@ in
     services.aerospace = {
       enable = cfg.wm == "aerospace";
       settings = {
-        # exec-on-workspace-change = [
-        #   "/bin/bash"
-        #   "-c"
-        #   "${lib.getExe pkgs.sketchybar} --trigger space_workspace_change FOCUSED=$AEROSPACE_FOCUSED_WORKSPACE"
-        # ];
+        exec-on-workspace-change = [
+          "${lib.getExe pkgs.bash}"
+          "-c"
+          "${lib.getExe pkgs.sketchybar} --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE"
+        ];
         gaps = {
           outer.top = 50;
           outer.bottom = 15;

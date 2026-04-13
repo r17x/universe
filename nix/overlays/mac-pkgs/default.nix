@@ -21,7 +21,6 @@
     // {
       sbar_menus = prev.callPackage "${self}/nix/packages/sketchybar/helpers/menus" { };
       sbar_events = prev.callPackage "${self}/nix/packages/sketchybar/helpers/event_providers" { };
-      sbarLua = prev.callPackage "${self}/nix/packages/sketchybar/helpers/sbar.nix" { };
       sketchybarConfigLua = prev.callPackage "${self}/nix/packages/sketchybar" { };
       sf-symbols-font = final.sf-symbols.overrideAttrs (old: {
         pname = "sf-symbols-font";

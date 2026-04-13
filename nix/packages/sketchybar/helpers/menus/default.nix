@@ -1,7 +1,7 @@
 {
   lib,
   stdenv,
-  darwin,
+  apple-sdk_15,
   ...
 }:
 
@@ -9,9 +9,12 @@ stdenv.mkDerivation {
   name = "menus";
   src = lib.cleanSource ./.;
 
-  buildInputs = with darwin.apple_sdk.frameworks; [
-    Carbon
-    SkyLight
+  buildInputs = [
+    apple-sdk_15
+  ];
+
+  nativeBuildInputs = [
+    apple-sdk_15.privateFrameworksHook
   ];
 
   installPhase = ''

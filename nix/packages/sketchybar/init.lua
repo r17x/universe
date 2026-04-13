@@ -5,6 +5,12 @@ sbar = require("sketchybar")
 -- sbar.set_bar_name("bottom_bar")
 
 -- Bundle the entire initial configuration into a single message to sketchybar
+is_aerospace = os.execute("pgrep -x AeroSpace >/dev/null 2>&1")
+
+if is_aerospace then
+	sbar.add("event", "aerospace_workspace_change")
+end
+
 sbar.begin_config()
 require("bar")
 require("default")

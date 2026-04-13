@@ -4,10 +4,35 @@ local settings = require("settings")
 local app_icons = require("helpers.app_icons")
 
 local spaces = {}
+local space_brackets = {}
+local space_paddings = {}
 
-for i = 1, 10, 1 do
-	local space = sbar.add("space", "space." .. i, {
-		space = i,
+local function build_icon_line(apps)
+	if not apps or not next(apps) then
+		return " —"
+	end
+	local parts = {}
+	for _, app in ipairs(apps) do
+		table.insert(parts, app_icons[app] or app_icons["default"])
+	end
+	return " " .. table.concat(parts, " ")
+end
+
+local function set_space_highlight(i, focused)
+	spaces[i]:set({
+		icon = { highlight = focused },
+		label = { highlight = focused },
+		background = { border_color = focused and colors.black or colors.bg2 },
+	})
+	space_brackets[i]:set({
+		background = { border_color = focused and colors.grey or colors.bg2 },
+	})
+end
+
+for i = 1, 10 do
+	local space_type = is_aerospace and "item" or "space"
+	local space_config = {
+		space = not is_aerospace and i or nil,
 		icon = {
 			font = { family = settings.font.numbers },
 			string = i,
@@ -32,12 +57,12 @@ for i = 1, 10, 1 do
 			border_color = colors.black,
 		},
 		popup = { background = { border_width = 5, border_color = colors.black } },
-	})
+	}
 
+	local space = sbar.add(space_type, "space." .. i, space_config)
 	spaces[i] = space
 
-	-- Single item bracket for space items to achieve double border on highlight
-	local space_bracket = sbar.add("bracket", { space.name }, {
+	space_brackets[i] = sbar.add("bracket", { space.name }, {
 		background = {
 			color = colors.transparent,
 			border_color = colors.bg2,
@@ -46,12 +71,11 @@ for i = 1, 10, 1 do
 		},
 	})
 
-	-- Padding space
-	sbar.add("space", "space.padding." .. i, {
-		space = i,
-		script = "",
-		width = settings.group_paddings,
-	})
+	local padding_config = { script = "", width = settings.group_paddings }
+	if not is_aerospace then
+		padding_config.space = i
+	end
+	space_paddings[i] = sbar.add(space_type, "space.padding." .. i, padding_config)
 
 	local space_popup = sbar.add("item", {
 		position = "popup." .. space.name,
@@ -66,37 +90,86 @@ for i = 1, 10, 1 do
 		},
 	})
 
-	space:subscribe("space_change", function(env)
-		local selected = env.SELECTED == "true"
-		space:set({
-			icon = { highlight = selected },
-			label = { highlight = selected },
-			background = { border_color = selected and colors.black or colors.bg2 },
-		})
-		space_bracket:set({
-			background = { border_color = selected and colors.grey or colors.bg2 },
-		})
-	end)
+	if is_aerospace then
+		space:subscribe("mouse.clicked", function(_)
+			sbar.exec("aerospace workspace " .. i)
+		end)
+	else
+		space:subscribe("space_change", function(env)
+			set_space_highlight(i, env.SELECTED == "true")
+		end)
 
-	space:subscribe("mouse.clicked", function(env)
-		if env.BUTTON == "other" then
-			space_popup:set({ background = { image = "space." .. env.SID } })
-			space:set({ popup = { drawing = "toggle" } })
-		else
-			local op = (env.BUTTON == "right") and "--destroy" or "--focus"
-			sbar.exec("yabai -m space " .. op .. " " .. env.SID)
-		end
-	end)
+		space:subscribe("mouse.clicked", function(env)
+			if env.BUTTON == "other" then
+				space_popup:set({ background = { image = "space." .. env.SID } })
+				space:set({ popup = { drawing = "toggle" } })
+			else
+				local op = (env.BUTTON == "right") and "--destroy" or "--focus"
+				sbar.exec("yabai -m space " .. op .. " " .. env.SID)
+			end
+		end)
+	end
 
 	space:subscribe("mouse.exited", function(_)
 		space:set({ popup = { drawing = false } })
 	end)
 end
 
-local space_window_observer = sbar.add("item", {
-	drawing = false,
-	updates = true,
-})
+if is_aerospace then
+	local function update_aerospace(env)
+		local focused = env and tonumber(env.FOCUSED_WORKSPACE) or nil
+
+		sbar.exec("aerospace list-windows --all --format '%{app-name}|%{workspace}'", function(result)
+			local workspace_apps = {}
+			for line in result:gmatch("[^\r\n]+") do
+				local app, ws = line:match("(.+)|(.+)")
+				if app and ws then
+					local ws_num = tonumber(ws)
+					if ws_num then
+						if not workspace_apps[ws_num] then
+							workspace_apps[ws_num] = {}
+						end
+						table.insert(workspace_apps[ws_num], app)
+					end
+				end
+			end
+
+			sbar.begin_config()
+			for ws = 1, 10 do
+				local has_windows = workspace_apps[ws] ~= nil
+				local is_focused = ws == focused
+				local visible = has_windows or is_focused
+
+				spaces[ws]:set({ drawing = visible, label = build_icon_line(workspace_apps[ws]) })
+				space_brackets[ws]:set({ drawing = visible })
+				space_paddings[ws]:set({ drawing = visible })
+
+				if focused then
+					set_space_highlight(ws, is_focused)
+				end
+			end
+			sbar.end_config()
+		end)
+	end
+
+	local window_observer = sbar.add("item", { drawing = false, updates = true })
+	window_observer:subscribe("aerospace_workspace_change", update_aerospace)
+
+	update_aerospace()
+else
+	local space_window_observer = sbar.add("item", {
+		drawing = false,
+		updates = true,
+	})
+
+	space_window_observer:subscribe("space_windows_change", function(env)
+		local apps = {}
+		for app, _ in pairs(env.INFO.apps) do
+			table.insert(apps, app)
+		end
+		spaces[env.INFO.space]:set({ label = build_icon_line(apps) })
+	end)
+end
 
 local spaces_indicator = sbar.add("item", {
 	padding_left = -3,
@@ -120,32 +193,14 @@ local spaces_indicator = sbar.add("item", {
 	},
 })
 
-space_window_observer:subscribe("space_windows_change", function(env)
-	local icon_line = ""
-	local no_app = true
-	for app, _ in pairs(env.INFO.apps) do
-		no_app = false
-		local lookup = app_icons[app]
-		local icon = ((lookup == nil) and app_icons["default"] or lookup)
-		icon_line = icon_line .. " " .. icon
-	end
-
-	if no_app then
-		icon_line = " —"
-	end
-	sbar.animate("tanh", 10, function()
-		spaces[env.INFO.space]:set({ label = icon_line })
-	end)
-end)
-
-spaces_indicator:subscribe("swap_menus_and_spaces", function(env)
+spaces_indicator:subscribe("swap_menus_and_spaces", function(_)
 	local currently_on = spaces_indicator:query().icon.value == icons.switch.on
 	spaces_indicator:set({
 		icon = currently_on and icons.switch.off or icons.switch.on,
 	})
 end)
 
-spaces_indicator:subscribe("mouse.entered", function(env)
+spaces_indicator:subscribe("mouse.entered", function(_)
 	sbar.animate("tanh", 30, function()
 		spaces_indicator:set({
 			background = {
@@ -158,7 +213,7 @@ spaces_indicator:subscribe("mouse.entered", function(env)
 	end)
 end)
 
-spaces_indicator:subscribe("mouse.exited", function(env)
+spaces_indicator:subscribe("mouse.exited", function(_)
 	sbar.animate("tanh", 30, function()
 		spaces_indicator:set({
 			background = {
@@ -171,6 +226,6 @@ spaces_indicator:subscribe("mouse.exited", function(env)
 	end)
 end)
 
-spaces_indicator:subscribe("mouse.clicked", function(env)
+spaces_indicator:subscribe("mouse.clicked", function(_)
 	sbar.trigger("swap_menus_and_spaces")
 end)

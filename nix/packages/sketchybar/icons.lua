@@ -5,6 +5,7 @@ local icons = {
 		plus = "􀅼",
 		loading = "􀖇",
 		apple = "􀣺",
+		nix = "󱄅",
 		gear = "􀍟",
 		cpu = "􀫥",
 		clipboard = "􀉄",

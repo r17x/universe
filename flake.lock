@@ -1489,7 +1489,6 @@
         "process-compose-flake": "process-compose-flake",
         "serena": "serena",
         "services-flake": "services-flake",
-        "sketchybar-app-font": "sketchybar-app-font",
         "sops-nix": "sops-nix",
         "vimPlugins_vim-rescript": "vimPlugins_vim-rescript"
       }
@@ -1563,22 +1562,6 @@
       "original": {
         "owner": "juspay",
         "repo": "services-flake",
-        "type": "github"
-      }
-    },
-    "sketchybar-app-font": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1721378979,
-        "narHash": "sha256-vWOVPllygKFeJe3aDOnXKdfIq9foL2V/sr1kj4VBhbc=",
-        "owner": "kvndrsslr",
-        "repo": "sketchybar-app-font",
-        "rev": "9f439deafe953bc2d2788d725f65195b652e709a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "kvndrsslr",
-        "repo": "sketchybar-app-font",
         "type": "github"
       }
     },

@@ -8,7 +8,10 @@ buildLuaPackage {
   name = "sketchybar-config";
   pname = "sketchybar-config";
   version = "0.0.0";
-  src = lib.cleanSource ./.;
+  src = lib.cleanSourceWith {
+    src = ./.;
+    filter = path: type: type == "directory" || lib.hasSuffix ".lua" path;
+  };
   buildPhase = ":";
   installPhase = # bash
     ''

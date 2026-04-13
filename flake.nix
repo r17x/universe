@@ -101,9 +101,5 @@
       flake = false;
     };
 
-    sketchybar-app-font = {
-      url = "github:kvndrsslr/sketchybar-app-font";
-      flake = false;
-    };
   };
 }

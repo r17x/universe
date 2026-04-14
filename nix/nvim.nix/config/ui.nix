@@ -63,6 +63,7 @@
     edge
     lackluster-nvim
     midnight-nvim
+    hud-colorschemes
 
     # extra
     unicode-vim

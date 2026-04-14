@@ -3,7 +3,7 @@
   lib,
   pkgs,
   ezModules,
-  osConfig,
+  osConfig ? { },
   ...
 }:
 
@@ -11,7 +11,7 @@
   home = rec {
     username = "r17";
     stateVersion = "25.05";
-    homeDirectory = osConfig.users.users.${username}.home;
+    homeDirectory = osConfig.users.users.${username}.home or "/Users/${username}";
     packages = [
       inputs.self.packages.${pkgs.stdenv.system}.nvim
       inputs.self.packages.${pkgs.stdenv.system}.universe

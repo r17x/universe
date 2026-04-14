@@ -1,4 +1,5 @@
 {
+  color,
   config,
   lib,
   pkgs,
@@ -241,12 +242,12 @@ in
 
       interactiveShellInit = ''
         # Fish color
-        set -U fish_color_command 6CB6EB --bold
+        set -U fish_color_command ${color.raw.base04} --bold
         set -U fish_color_redirection DEB974
         set -U fish_color_operator DEB974
         set -U fish_color_end C071D8 --bold
-        set -U fish_color_error EC7279 --bold
-        set -U fish_color_param 6CB6EB
+        set -U fish_color_error ${color.raw.base01} --bold
+        set -U fish_color_param ${color.raw.base04}
         set fish_greeting
       '';
     };
@@ -269,7 +270,7 @@ in
 
           cmd_duration = {
             format = withStartLineBreak "[$duration]($style)";
-            style = "bold #EC7279";
+            style = "bold ${color.scheme.base01}";
             show_notifications = true;
           };
 

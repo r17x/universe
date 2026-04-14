@@ -27,6 +27,18 @@
 let
   decToHex = lib.toHexString;
 
+  # "#RRGGBB" -> "RRGGBB"
+  stripHash = lib.removePrefix "#";
+
+  # "#RRGGBB" -> "0xffrrggbb" (alpha 0.0-1.0, default 1.0)
+  toArgb =
+    alpha: hex:
+    let
+      a = decToHex (builtins.floor (alpha * 255 + 0.5));
+      alphaHex = if builtins.stringLength a < 2 then "0${a}" else a;
+    in
+    "0x${lib.toLower alphaHex}${lib.toLower (stripHash hex)}";
+
   KV = {
     string = a: b: "${toString a}=${b}";
     scheme = a: b: {
@@ -43,8 +55,14 @@ let
   toKVString = lib.lists.imap0 KV.string;
 
   mkColor = xs: {
+    # { base00 = "#2B2D3A"; ... }
     scheme = toScheme xs;
+    # { base00 = "2B2D3A"; ... }
+    raw = lib.mapAttrs (_: stripHash) (toScheme xs);
+    # [ "0=#2B2D3A" ... ]
     listKV = toKVString xs;
+    # "#RRGGBB" -> "0xAARRGGBB"
+    withAlpha = toArgb;
   };
 
 in
@@ -52,6 +70,8 @@ in
   inherit
     KV
     decToHex
+    stripHash
+    toArgb
     toScheme
     toKVString
     mkColor
@@ -98,6 +118,65 @@ in
       "#cf86c1"
       "#65b8c1"
       "#8e8e8e"
+    ];
+
+    # HUD palettes — dark industrial base with chromatic accent variants
+
+    hud-neon = [
+      "#1A1A1E" # base00: Background
+      "#FF5F6A" # base01: Red (neon)
+      "#50FA7B" # base02: Green (electric)
+      "#F1FA8C" # base03: Yellow (bright)
+      "#61AFEF" # base04: Blue (vivid)
+      "#FF79C6" # base05: Magenta (hot pink)
+      "#8BE9FD" # base06: Cyan (electric)
+      "#F8F8F2" # base07: Foreground
+      "#2A2A2E" # base08: Bright Background
+      "#FF6E79" # base09: Bright Red
+      "#8A8A8E" # base0A: Muted text
+      "#3A3A3E" # base0B: Divider
+      "#7EC1F5" # base0C: Light Blue
+      "#FF92D0" # base0D: Light Magenta
+      "#A4F0FF" # base0E: Light Cyan
+      "#FFFFFF" # base0F: Light Background
+    ];
+
+    hud-cool = [
+      "#1A1A1E" # base00: Background
+      "#E05F65" # base01: Red (muted)
+      "#7EC49D" # base02: Green (sage)
+      "#D4A957" # base03: Yellow (amber)
+      "#6E9BCB" # base04: Blue (steel)
+      "#B07EB5" # base05: Magenta (dusty)
+      "#6AAFB2" # base06: Cyan (teal)
+      "#E8E8EC" # base07: Foreground
+      "#2A2A2E" # base08: Bright Background
+      "#EA7A7F" # base09: Bright Red
+      "#8A8A8E" # base0A: Muted text
+      "#3A3A3E" # base0B: Divider
+      "#88B4D8" # base0C: Light Blue
+      "#C499C9" # base0D: Light Magenta
+      "#7FC4C8" # base0E: Light Cyan
+      "#F5F5F8" # base0F: Light Background
+    ];
+
+    hud-warm = [
+      "#1A1A1E" # base00: Background
+      "#D4644A" # base01: Red (terracotta)
+      "#8B9E5E" # base02: Green (olive)
+      "#D9A84E" # base03: Yellow (amber)
+      "#5E8FAE" # base04: Blue (slate)
+      "#A87399" # base05: Magenta (mauve)
+      "#5EA3A0" # base06: Cyan (patina)
+      "#E0DDD8" # base07: Foreground
+      "#2A2A2E" # base08: Bright Background
+      "#E07A62" # base09: Bright Red
+      "#8A8A8E" # base0A: Muted text
+      "#3A3A3E" # base0B: Divider
+      "#78AEC8" # base0C: Light Blue
+      "#BE8DB3" # base0D: Light Magenta
+      "#78BEBA" # base0E: Light Cyan
+      "#F0EDE8" # base0F: Light Background
     ];
   };
 }

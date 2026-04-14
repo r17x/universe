@@ -76,6 +76,8 @@
           #     hash = "sha256-6juWFG16ydfGPOx+FrskLoKNOB0ra70bAJXB2YQ1Fck=";
           #   };
           # });
+
+          hud-colorschemes = prev.callPackage "${inputs.self}/nix/packages/hud-colorschemes" { };
         }
         // (import ./mkFlake2VimPlugin.nix inputs { pkgs = prev; })
       );

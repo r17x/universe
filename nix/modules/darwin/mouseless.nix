@@ -1,4 +1,5 @@
 {
+  colors,
   lib,
   config,
   pkgs,
@@ -6,6 +7,9 @@
 }:
 
 let
+  withAlpha = colors.toArgb;
+  sbarPalette = pkgs.sketchybarConfigLua.defaultPalette;
+
   cfg = config.mouseless;
 
   inherit (lib)
@@ -147,8 +151,8 @@ in
       width = 6.5;
       hidpi = false;
       active_color = "0xfffeeff0";
-      inactive_color = "0xc02c2e34";
-      background_color = "0x302c2e34";
+      inactive_color = withAlpha (192.0 / 255) sbarPalette.barBg;
+      background_color = withAlpha (48.0 / 255) sbarPalette.barBg;
       style = "round";
     };
 

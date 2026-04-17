@@ -1,6 +1,11 @@
-{ config, lib, pkgs, ... }:
 {
-  home.activation.importGpgKeys = lib.hm.dag.entryAfter ["writeBoundary" "setupSecrets"] ''
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
+  home.activation.importGpgKeys = lib.hm.dag.entryAfter [ "writeBoundary" "setupSecrets" ] ''
     export GPG_TTY=$(tty)
 
     import_and_trust() {
@@ -18,56 +23,63 @@
     import_and_trust "${config.sops.secrets.berkarya_gpg_key.path}" "rin@berkarya.ai"
   '';
 
-  home.activation.generateGitIdentities = lib.hm.dag.entryAfter ["writeBoundary" "setupSecrets"] ''
-    # Use sops-nix decrypted secret path
-    IDENTITIES_FILE="${config.sops.secrets.git_identities.path}"
-    GITCONFIG_D="$HOME/.config/git/config.d"
-    INCLUDES_FILE="$HOME/.config/git/identities.gitconfig"
+  home.activation.generateGitIdentities = lib.hm.dag.entryAfter [ "writeBoundary" "setupSecrets" ] ''
+        # Use sops-nix decrypted secret path
+        IDENTITIES_FILE="${config.sops.secrets.git_identities.path}"
+        GITCONFIG_D="$HOME/.config/git/config.d"
+        INCLUDES_FILE="$HOME/.config/git/identities.gitconfig"
 
-    if [ -f "$IDENTITIES_FILE" ]; then
-      mkdir -p "$GITCONFIG_D"
+        if [ -f "$IDENTITIES_FILE" ]; then
+          mkdir -p "$GITCONFIG_D"
 
-      # Clear includes file and old config files
-      : > "$INCLUDES_FILE"
-      rm -f "$GITCONFIG_D"/*.conf
+          # Clear includes file and old config files
+          : > "$INCLUDES_FILE"
+          rm -f "$GITCONFIG_D"/*.conf
 
-      # Read already-decrypted identities
-      IDENTITIES=$(cat "$IDENTITIES_FILE")
+          # Read already-decrypted identities
+          IDENTITIES=$(cat "$IDENTITIES_FILE")
 
-      if [ -n "$IDENTITIES" ]; then
-        # Generate config file for each identity
-        echo "$IDENTITIES" | ${pkgs.jq}/bin/jq -r 'to_entries[] | "\(.key)|\(.value.name)|\(.value.email)|\(.value.signingKey)"' | \
-        while IFS='|' read -r id name email signingKey; do
-          cat > "$GITCONFIG_D/$id.conf" <<EOF
-[user]
-  name = $name
-  email = $email
-  signingKey = $signingKey
-EOF
-        done
+          if [ -n "$IDENTITIES" ]; then
+            # Generate config file for each identity
+            echo "$IDENTITIES" | ${pkgs.jq}/bin/jq -r 'to_entries[] | "\(.key)|\(.value.name)|\(.value.email)|\(.value.signingKey)|\(.value.sshKey // "")"' | \
+            while IFS='|' read -r id name email signingKey sshKey; do
+              cat > "$GITCONFIG_D/$id.conf" <<EOF
+    [user]
+      name = $name
+      email = $email
+      signingKey = $signingKey
+    EOF
+              if [ -n "$sshKey" ]; then
+                expanded_ssh_key=$(echo "$sshKey" | sed "s|^~|$HOME|")
+                cat >> "$GITCONFIG_D/$id.conf" <<EOF
+    [core]
+      sshCommand = ssh -i $expanded_ssh_key -o IdentitiesOnly=yes
+    EOF
+              fi
+            done
 
-        # Generate includeIf for each gitdir (always includes domain + custom gitdirs)
-        echo "$IDENTITIES" | ${pkgs.jq}/bin/jq -r '
-        to_entries[] |
-        .key as $id |
-        .value.email as $email |
-        (($email | split("@")[1] | split(".")[0]) | "~/\(.)/") as $domain_dir |
-        ((.value.gitdirs // []) + [$domain_dir]) | unique | .[] |
-        "\($id)|\(.)"
-        ' | while IFS='|' read -r id gitdir; do
-          # Expand ~ to $HOME
-          expanded_gitdir=$(echo "$gitdir" | sed "s|^~|$HOME|")
+            # Generate includeIf for each gitdir (always includes domain + custom gitdirs)
+            echo "$IDENTITIES" | ${pkgs.jq}/bin/jq -r '
+            to_entries[] |
+            .key as $id |
+            .value.email as $email |
+            (($email | split("@")[1] | split(".")[0]) | "~/\(.)/") as $domain_dir |
+            ((.value.gitdirs // []) + [$domain_dir]) | unique | .[] |
+            "\($id)|\(.)"
+            ' | while IFS='|' read -r id gitdir; do
+              # Expand ~ to $HOME
+              expanded_gitdir=$(echo "$gitdir" | sed "s|^~|$HOME|")
 
-          # Create gitdir if not exists
-          mkdir -p "$expanded_gitdir"
+              # Create gitdir if not exists
+              mkdir -p "$expanded_gitdir"
 
-          # Append includeIf to includes file
-          cat >> "$INCLUDES_FILE" <<EOF
-[includeIf "gitdir:$expanded_gitdir"]
-  path = $GITCONFIG_D/$id.conf
-EOF
-        done
-      fi
-    fi
+              # Append includeIf to includes file
+              cat >> "$INCLUDES_FILE" <<EOF
+    [includeIf "gitdir:$expanded_gitdir"]
+      path = $GITCONFIG_D/$id.conf
+    EOF
+            done
+          fi
+        fi
   '';
 }

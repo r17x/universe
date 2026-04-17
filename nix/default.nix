@@ -84,6 +84,7 @@
     darwin.hosts = {
       eR17.userHomeModules = [ "r17" ];
       eR17x.userHomeModules = [ "r17" ];
+      ATSGJP6QDN402.userHomeModules = [ "rin" ];
     };
     nixos.modulesDirectory = ./modules/nixos;
     nixos.configurationsDirectory = ./configurations/nixos;

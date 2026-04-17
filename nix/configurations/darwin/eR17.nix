@@ -1,9 +1,9 @@
 {
   lib,
+  config,
   pkgs,
   ezModules,
   crossModules,
-  config,
   ...
 }:
 
@@ -13,11 +13,11 @@
   system.stateVersion = 4;
   nixpkgs.hostPlatform = "aarch64-darwin";
 
-  system.primaryUser = "r17";
+  system.primaryUser = lib.mkDefault "r17";
 
-  users.users.r17 = {
-    home = "/Users/r17";
-    shell = pkgs.fish;
+  users.users.${config.system.primaryUser} = {
+    home = "/Users/${config.system.primaryUser}";
+    shell = lib.mkDefault pkgs.fish;
   };
 
   # --- see: nix/nixosModules/nix.nix
@@ -35,7 +35,6 @@
   homebrew.enable = true;
 
   networking = {
-    hostName = lib.mkDefault "eR17";
     computerName = config.networking.hostName;
   };
 }

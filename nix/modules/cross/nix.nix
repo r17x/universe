@@ -104,9 +104,9 @@ in
               max-jobs = "auto";
 
               trusted-users = [
-                "r17"
                 "root"
                 "@admin"
+                "@wheel"
               ];
 
               trusted-substituters = [

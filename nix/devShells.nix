@@ -1,7 +1,7 @@
 ##################################################################
 #                       Development shells
 ##################################################################
-{ inputs, self, ... }:
+{ inputs, ... }:
 
 {
   imports = [
@@ -12,13 +12,12 @@
     {
       self',
       pkgs,
-      system,
       config,
       ...
     }:
     {
       pre-commit.check.enable = true;
-      pre-commit.devShell = self.devShells.default;
+      pre-commit.devShell = self'.devShells.default;
       pre-commit.settings.hooks = {
         actionlint.enable = true;
         shellcheck.enable = true;
@@ -120,7 +119,7 @@
             shellHook = ''
               ${config.pre-commit.installationScript}
             '';
-            packages = [ inputs.clan-core.packages.${system}.clan-cli ];
+            packages = [ ];
           };
 
           #

@@ -1,6 +1,7 @@
 {
   inputs,
   lib,
+  config,
   pkgs,
   ezModules,
   osConfig ? { },
@@ -8,10 +9,11 @@
 }:
 
 {
-  home = rec {
-    username = "r17";
+  home = {
+    username = lib.mkDefault "r17";
     stateVersion = "25.05";
-    homeDirectory = osConfig.users.users.${username}.home or "/Users/${username}";
+    homeDirectory =
+      osConfig.users.users.${config.home.username}.home or "/Users/${config.home.username}";
     packages = [
       inputs.self.packages.${pkgs.stdenv.system}.nvim
       inputs.self.packages.${pkgs.stdenv.system}.universe

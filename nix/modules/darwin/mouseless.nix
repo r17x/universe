@@ -39,6 +39,7 @@ in
   };
 
   config = mkIf cfg.enable {
+    system.defaults.NSGlobalDomain._HIHideMenuBar = true;
     services.sketchybar = {
       inherit (cfg) enable;
       extraPackages = with pkgs; [

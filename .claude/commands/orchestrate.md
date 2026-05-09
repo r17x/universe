@@ -1,17 +1,19 @@
 Read and follow the 16-phase orchestration protocol defined in `.claude/skills/orchestrate.md`.
 
-**Critical path rule:** All `.data/` paths MUST be resolved as absolute paths from the git repo root (the directory containing `flake.nix`). Never use relative paths for `.data/` — agents may have a different working directory.
+**State interface:** The `anakmagang` machine owns phase transitions. The agent classifies, the machine tracks.
 
 **Mandatory steps — do NOT skip any of these:**
 
-1. Read `<repo-root>/.data/manifest.yaml` for current state (or initialize if empty/template)
-2. Classify the current task as TRIVIAL / SMALL / MEDIUM / LARGE
-3. **Write the manifest immediately** after classification with task description, size, branch, and phase status
-4. Select the phase set based on skipping rules
-5. Execute phases in order — **update manifest `current_phase` at each transition**
-6. Route to the appropriate gateway command (`/gateway-nix`) during phases 3 and 8
-7. **After implementation (phase 8)**: you MUST continue to verification phases (9-16). Do not stop after the worker agent returns.
-8. Run verification commands yourself (coordinator verifies, not the worker)
-9. At phase 16 (Completion): clear the manifest task and summarize
+1. Run `anakmagang state` for current session state
+2. Run `anakmagang start "<task>"` to create a session at phase 1/setup
+3. Do Setup work: read `ARCHITECTURE.md`, memories, past feedback
+4. Classify the current task as TRIVIAL / SMALL / MEDIUM / LARGE
+5. Run `anakmagang next "<reflection>" --size <SIZE>` to complete setup — the machine computes active phases
+6. Execute remaining phases — run `anakmagang next "<reflection>"` to advance each phase
+7. Route to the appropriate domain gateway during phases 3 and 8 (e.g., `/gateway-nix` for Nix files)
+8. **After implementation (phase 8)**: you MUST continue to verification phases (9-16). Do not stop after the worker agent returns.
+9. Run verification commands yourself (coordinator verifies, not the worker)
+10. Record issues with `anakmagang observe "<issue>"` at any time
+11. At final phase, run `anakmagang next "<final reflection>"` — the machine completes the session
 
 Start now with Phase 1 (Setup).

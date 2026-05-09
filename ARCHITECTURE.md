@@ -53,6 +53,14 @@ notes/                             # Personal notes (.norg format)
 | `eR17` | Base: Fish shell, aerospace WM, homebrew, fonts, GPG |
 | `eR17x` | Extends eR17: dnscrypt-proxy + unbound DNS, Tailscale, linux-builder VM |
 
+## Apps
+
+| App | Location | Stack | Dev Shell |
+|-----|----------|-------|-----------|
+| anakmagang | `apps/anakmagang/` | Effect 4.x, Bun | `nix develop .#anakmagang` |
+| norg | `apps/norg/` | — | — |
+| rin.rocks | `apps/rin.rocks/` | — | — |
+
 ## Domain → Worker Routing
 
 | Domain | File Patterns | Worker Agent |
@@ -65,6 +73,7 @@ notes/                             # Personal notes (.norg format)
 | Overlays | `nix/overlays/**/*.nix` | `nix-coder` |
 | Packages | `nix/packages/**/default.nix` | `nix-coder` |
 | Neovim | `nix/nvim.nix/**/*.nix` | `nix-coder` |
+| TypeScript apps | `apps/**/*.ts` | `effect-ts` |
 | Secrets | `secrets/*.yaml`, `.sops.yaml` | default (sops CLI) |
 | Docs/scripts | `*.md`, `*.sh`, `*.lua`, `*.yaml` | default |
 

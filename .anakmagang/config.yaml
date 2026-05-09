@@ -1,0 +1,249 @@
+name: r17x-orchestrate
+version: 1
+state:
+  manifest:
+    schema: manifest
+    tracks:
+      current_task: set
+      current_phase: set
+      completed_phases: append
+      task_size: set
+    per: singleton
+  feedback:
+    schema: feedback
+    tracks:
+      reflections: append
+      observations: append
+    per: session
+memory:
+  dirs:
+    - path: .claude/memories
+      source: permanent
+    - path: .anakmagang/out/references
+      source: ephemeral
+  scales:
+    - observation
+    - finding
+    - learning
+    - principle
+  states:
+    - ACTIVE
+    - STALE
+    - ARCHIVED
+  stale_thresholds:
+    user: 10
+    feedback: 3
+    project: 5
+    reference: 8
+  promotion:
+    min_sources: 3
+    auto: false
+  graph:
+    edge_types:
+      - derived_from
+    max_depth: 2
+    max_fan_out: 5
+    max_query_nodes: 10
+  budget: 8
+phases:
+  - id: setup
+    name: Setup
+    exit_question: What assumptions am I carrying? What did past feedback tell me?
+    next: triage
+    actions:
+      - read_manifest
+      - read_feedback
+      - read_architecture
+  - id: triage
+    name: Triage
+    exit_question: Am I solving the right problem? Is my size classification honest or wishful?
+    next: discovery
+    skip_when:
+      - TRIVIAL
+  - id: discovery
+    name: Discovery
+    exit_question: "Am I anchoring on the first thing I found, or did I search broadly enough?"
+    next: skill_discovery
+  - id: skill_discovery
+    name: Skill Discovery
+    exit_question: "Do I have the right tools, or am I forcing familiar ones onto this problem?"
+    next: complexity
+  - id: complexity
+    name: Complexity Analysis
+    exit_question: What am I underestimating? What unknown could derail this?
+    next: brainstorming
+    skip_when:
+      - TRIVIAL
+      - SMALL
+      - MEDIUM
+  - id: brainstorming
+    name: Brainstorming
+    exit_question: "Are these genuinely different approaches, or variations of the same idea?"
+    next: architecture
+    skip_when:
+      - TRIVIAL
+      - SMALL
+  - id: architecture
+    name: Architecture
+    exit_question: "Will this design survive edge cases I haven't imagined? Am I overengineering?"
+    next: implementation
+    skip_when:
+      - TRIVIAL
+      - SMALL
+  - id: implementation
+    name: Implementation
+    exit_question: Did I delegate with enough context? Could the worker misinterpret my intent?
+    next: design_verification
+  - id: design_verification
+    name: Design Verification
+    exit_question: Did the implementation drift from the design? Why?
+    next: domain_compliance
+    skip_when:
+      - TRIVIAL
+      - SMALL
+  - id: domain_compliance
+    name: Domain Compliance
+    exit_question: "Am I checking rules mechanically, or understanding their intent?"
+    next: code_quality
+  - id: code_quality
+    name: Code Quality
+    exit_question: Would I be confident rebuilding the system right now? What makes me hesitate?
+    next: test_planning
+    skip_when:
+      - TRIVIAL
+      - SMALL
+  - id: test_planning
+    name: Test Planning
+    exit_question: "Am I testing what matters, or what's easy to test?"
+    next: testing
+  - id: testing
+    name: Testing
+    exit_question: "Do these checks prove correctness, or just exercise code paths?"
+    next: coverage
+  - id: coverage
+    name: Coverage Analysis
+    exit_question: "What failure mode isn't covered? What would a real user do that I haven't tested?"
+    next: test_quality
+  - id: test_quality
+    name: Test Quality
+    exit_question: Could these checks pass with subtly broken code? Are the assertions meaningful?
+    next: completion
+  - id: completion
+    name: Completion
+    exit_question: What would I do differently if I started over? What did this session teach me?
+    next: null
+    actions:
+      - write_feedback_summary
+      - extract_memories
+      - update_manifest
+transitions:
+  - from: "*"
+    to: previous
+    when: confidence_low
+    description: Low confidence reflection triggers re-evaluation
+guards:
+  - type: agent-first
+    description: Coordinator never edits files directly
+    enforced_by: hook
+    event: PreToolUse
+    matcher: "Edit|Write"
+    command: .claude/hooks/agent-first-enforcement.sh
+    timeout: 5
+  - type: output-location
+    description: Writes constrained to project directory
+    enforced_by: hook
+    event: PreToolUse
+    matcher: "Edit|Write"
+    command: .claude/hooks/output-location-enforcement.sh
+    timeout: 5
+  - type: block-nix-build
+    description: Block slow nix-build and nix-instantiate commands
+    enforced_by: hook
+    event: PreToolUse
+    matcher: Bash
+    command: .claude/hooks/block-nix-build.sh
+    timeout: 5
+  - type: compaction-gate
+    description: Block agent spawning at high context usage
+    enforced_by: hook
+    event: PreToolUse
+    matcher: Agent
+    command: .claude/hooks/compaction-gate.sh
+    timeout: 5
+  - type: iteration-limit
+    description: Cap tool calls per task
+    enforced_by: hook
+    event: PreToolUse
+    command: .claude/hooks/iteration-limit.sh
+    timeout: 5
+    max: 50
+    warn_at: 40
+  - type: auto-nix-eval
+    description: Auto-verify nix files after edit
+    enforced_by: hook
+    event: PostToolUse
+    matcher: "Edit|Write"
+    command: .claude/hooks/auto-nix-eval.sh
+    timeout: 30
+  - type: inject-reminders
+    description: Inject phase reminders on user prompt
+    enforced_by: hook
+    event: UserPromptSubmit
+    command: .claude/hooks/inject-reminders.sh
+    timeout: 5
+  - type: agent-stop-guard
+    description: Ensure worker verified nix changes before stop
+    enforced_by: hook
+    event: SubagentStop
+    command: .claude/hooks/agent-stop-guard.sh
+    timeout: 5
+  - type: session-stop-guard
+    description: Prevent session end with incomplete task
+    enforced_by: hook
+    event: Stop
+    command: .claude/hooks/session-stop-guard.sh
+    timeout: 5
+  - type: bridge-on-start
+    description: Create bridge from Claude session to anakmagang session on start
+    enforced_by: hook
+    event: PostToolUse
+    matcher: Bash
+    timeout: 5
+  - type: context-cache
+    description: Cache context window usage for other hooks
+    enforced_by: statusLine
+    event: statusLine
+    command: .claude/hooks/cache-context-state.sh
+  - type: reflection-required
+    description: Exit question must be answered before phase transition
+    enforced_by: manifest
+  - type: command-substitute
+    description: Block npm/pnpm/yarn — use bun instead
+    enforced_by: hook
+    event: PreToolUse
+    matcher: Bash
+    timeout: 5
+    rules:
+      - contains: ["npm", "pnpm", "yarn"]
+        should: bun
+      - contains: ["npx", "pnpx"]
+        should: bunx
+size_presets:
+  TRIVIAL:
+    phases:
+      - setup
+      - implementation
+      - completion
+  SMALL:
+    skip:
+      - complexity
+      - brainstorming
+      - architecture
+      - design_verification
+      - code_quality
+  MEDIUM:
+    skip:
+      - complexity
+  LARGE:
+    phases:
+      - all

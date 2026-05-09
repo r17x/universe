@@ -1,20 +1,29 @@
-# How: `*` ignores everything, then `!path` whitelists source files.
-# `!*/` allows git to traverse directories. If it's not listed, it's not tracked.
-*
+# IGNORE EVERYTHING EXCEPT OUR SOURCE
+#
+# Principle: Start by ignoring all files, then explicitly whitelist only
+# what belongs in version control. If it's not listed below, it's not tracked.
+#
+# How it works:
+#   *    — ignore everything by default
+#   !*/  — allow git to traverse into directories (required for nested whitelists)
+#   !path — whitelist specific files or globs
 
+*
 !*/
 
-!.gitattributes
-!.gitignore
-!.sops.yaml
-!ARCHITECTURE.md
-!BACALAH.md
-!CLAUDE.md
-!README.md
-!flake.nix
-!flake.lock
+# ── Root files ──────────────────────────────────────────────────────────────────
+!/.gitattributes
+!/.gitignore
+!/.sops.yaml
+!/ARCHITECTURE.md
+!/BACALAH.md
+!/CLAUDE.md
+!/README.md
+!/flake.nix
+!/flake.lock
 
-# settings.local.json is NOT whitelisted (machine-specific)
+# ── .claude/ ────────────────────────────────────────────────────────────────────
+# NOTE: .claude/settings.local.json is NOT whitelisted (machine-specific)
 !.claude/agents/**
 !.claude/commands/**
 !.claude/docs/**
@@ -23,9 +32,39 @@
 !.claude/settings.json
 !.claude/skill-library/**
 !.claude/skills/**
+
+# ── .github/ ────────────────────────────────────────────────────────────────────
 !.github/**
+
+# ── .serena/ ────────────────────────────────────────────────────────────────────
 !.serena/**
-!apps/**
+
+# ── apps/ ───────────────────────────────────────────────────────────────────────
+# Source-only allow-list for all projects under apps/
+# JS/TS ecosystem
+!apps/*/package.json
+!apps/*/bun.lock
+!apps/*/tsconfig.json
+!apps/*/yarn.lock
+!apps/*/.yarnrc.yml
+!apps/*/vite.config.mjs
+!apps/*/tamagui.config.ts
+# OCaml/Reason ecosystem
+!apps/*/dune
+!apps/*/dune-project
+!apps/*/*.opam
+!apps/*/.ocamlformat
+# Source and content
+!apps/*/src/**
+!apps/*/bin/**
+!apps/*/client/**
+!apps/*/server/**
+!apps/*/universal/**
+!apps/*/*.html
 !nix/**
 !notes/**
 !secrets/**
+
+# ── Explicitly ignored (never whitelist) ────────────────────────────────────────
+# .data/          — ephemeral session data, scratchpads, manifests
+# result/         — nix build output symlink

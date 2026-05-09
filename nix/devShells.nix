@@ -10,6 +10,7 @@
 
   perSystem =
     {
+      inputs',
       self',
       pkgs,
       config,
@@ -271,6 +272,30 @@
                   pkgs.darwin.apple_sdk_12_3.frameworks.ScreenCaptureKit
                 ]
               );
+          };
+
+          #
+          #
+          #    $ nix develop github:r17x/nixpkgs#anakmagang
+          #
+          #
+          anakmagang = pkgs.mkShell {
+            LIBFFF_PATH = "${inputs'.fff-nvim.packages.default}/lib";
+            description = "Anakmagang CLI Development Environment";
+            inputsFrom = [ self'.devShells.default ];
+            shellHook = ''
+              ${config.pre-commit.installationScript}
+
+              export ROOT_REPO=$(git rev-parse --show-toplevel)
+              bun build --compile --outfile=anakmagang ./apps/anakmagang/src/bin.ts
+              export PATH="$PATH:$ROOT_REPO"
+            '';
+
+            packages = [
+              pkgs.bun
+              pkgs.typescript
+              inputs'.fff-nvim.packages.default
+            ];
           };
 
           #

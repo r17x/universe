@@ -45,9 +45,9 @@ When the task involves Nix expressions, nix-darwin modules, home-manager configs
    ```
 
 3. **Route to appropriate agent**:
-   - All `.nix` files → delegate to `nix-coder` agent
+   - All `.nix` files → delegate to the domain worker defined in `ARCHITECTURE.md`
    - Non-Nix files (`.md`, `.sh`, `.yaml`, `.lua`) → handle directly or delegate to default agent
-   - Never use `nix-coder` for markdown, shell scripts, or YAML
+   - Never use domain workers for markdown, shell scripts, or YAML — use a default agent
 
 4. **Verify with fast commands**:
    ```bash

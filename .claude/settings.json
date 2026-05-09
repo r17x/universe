@@ -2,57 +2,11 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/block-nix-build.sh",
-            "timeout": 5
-          }
-        ]
-      },
-      {
-        "matcher": "Agent",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/compaction-gate.sh",
-            "timeout": 5
-          }
-        ]
-      },
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/agent-first-enforcement.sh",
-            "timeout": 5
-          },
-          {
-            "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/output-location-enforcement.sh",
-            "timeout": 5
-          }
-        ]
-      },
-      {
         "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/iteration-limit.sh",
-            "timeout": 5
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/inject-reminders.sh",
+            "command": "anakmagang hook eval --event PreToolUse",
             "timeout": 5
           }
         ]
@@ -60,16 +14,23 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "Edit|Write",
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/auto-nix-eval.sh",
+            "command": "anakmagang hook eval --event PostToolUse",
             "timeout": 30
-          },
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/dirty-bit-tracker.sh",
+            "command": "anakmagang hook eval --event UserPromptSubmit",
             "timeout": 5
           }
         ]
@@ -77,10 +38,11 @@
     ],
     "SubagentStop": [
       {
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/agent-stop-guard.sh",
+            "command": "anakmagang hook eval --event SubagentStop",
             "timeout": 5
           }
         ]
@@ -88,10 +50,11 @@
     ],
     "Stop": [
       {
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/session-stop-guard.sh",
+            "command": "anakmagang hook eval --event Stop",
             "timeout": 5
           }
         ]
@@ -100,6 +63,6 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/cache-context-state.sh"
+    "command": "anakmagang hook eval --event statusLine"
   }
 }

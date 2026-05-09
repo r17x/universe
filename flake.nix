@@ -95,6 +95,9 @@
       flake = false;
     };
 
+    # fff.nvim - fast file finder with C FFI
+    fff-nvim.url = "github:dmtrKovalenko/fff.nvim";
+
     # others
     nix-env = {
       url = "github:lilyball/nix-env.fish";

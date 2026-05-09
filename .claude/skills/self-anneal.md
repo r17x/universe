@@ -18,7 +18,7 @@ Run self-annealing when:
 ## Process
 
 ### Step 1: Scan Feedback
-Read all files in `<repo-root>/.data/feedback/` and `.claude/memories/`.
+Read session feedback via `anakmagang state --all` and `.claude/memories/`.
 
 Look for:
 - `observations.tool_failures` — recurring tool errors

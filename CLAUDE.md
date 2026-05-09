@@ -2,42 +2,28 @@
 
 Declarative system configuration for macOS (nix-darwin), NixOS, and home-manager via Nix flakes.
 
-## File Path Rule
+## State Interface
 
-**All `.data/` paths MUST be absolute, rooted at the git repository root** (the directory containing `flake.nix`). Never use relative `.data/` paths in Read/Write/Edit tool calls — agents may have a different working directory. Resolve `<repo-root>` via `git rev-parse --show-toplevel` or from the primary working directory provided in your environment.
+All state operations go through the `anakmagang` CLI. The coordinator NEVER reads or writes state files directly.
 
-- Manifest: `<repo-root>/.data/manifest.yaml`
-- Feedback: `<repo-root>/.data/feedback/<SID>.yaml`
-- Context cache: `<repo-root>/.data/context-cache/`
-
-When delegating to worker agents, **always include the absolute repo root path** in the prompt so they know where `.data/` lives.
+- **Read**: `anakmagang state` (lists sessions) or `anakmagang state <session-id>` (full state)
+- **Machine events** (coordinator runs directly):
+  - `anakmagang start "<task>"` → creates session at phase 1/setup, returns exit question
+  - `anakmagang next "<answer>" --session <id> [--size <SIZE>]` → records reflection, advances to next phase (or COMPLETE). `--size` is required when completing setup (phase 1) — the machine blocks advancement until size is classified.
+  - `anakmagang observe "<text>" --session <id>` → records observation without advancing phase
+- **Notes**: `anakmagang update <KEY> <VALUE> --session <id>` — appends an observation (`key: value`) to the session log. Used for persistent task notes.
+- **Memory**: `anakmagang memory create <name> -T <type> -d "<description>"` — creates a structured memory node
+- **Search**: `anakmagang search "<query>"` — searches codebase and memories
 
 ## Session State
 
-On every new conversation, **silently read `<repo-root>/.data/manifest.yaml`** to load session context.
+On every new conversation, run `anakmagang state` to load session context.
 Do NOT dump a status report unprompted — use the context naturally:
-- If the user asks about tasks/state/progress → report from the manifest
+- If the user asks about tasks/state/progress → run `anakmagang state`
 - If starting new work → check for in-progress tasks and blockers first
 - If just discussing → you still have context if needed
 
-### Manifest Schema
-```yaml
-version: 1
-sessions:
-  - session_id: ""                          # fill the session id by yourself
-    current_task: none | "<description>"    # enum — never null
-    current_phase: none | <phase-number>    # enum — never null
-    completed_phases: []                    # list of completed phase numbers
-    findings: []                            # review/analysis findings
-    decisions: []                           # design decisions made
-    dirty_files: []                         # files modified during task
-    blockers: []                            # current blockers
-    active_tasks: []                        # delegated sub-tasks
-    session_context:                        # freeform session state
-      branch: <branch-name>
-      last_commits: []
-      status: <working tree status>
-```
+Session state is append-only. The manifest at `.anakmagang/out/{session-id}/manifest.yaml` is an event log with 4 event types: `task_start`, `phase_advance`, `observation`, `iteration`. All state (current task, phase, reflections, etc.) is derived from the log.
 
 ## Coordinator Protocol (Kernel Mode)
 
@@ -45,9 +31,9 @@ You are the **coordinator**. You plan, delegate, verify, **observe**, **reflect*
 
 > **FIRST ACTION on every task**: Run `/orchestrate` to classify the task size and begin phase tracking. No exploration, planning, or coding before this step.
 
-- **Before any task**: read `<repo-root>/.data/manifest.yaml` for current state, `ARCHITECTURE.md` for domain definitions, and `<repo-root>/.data/feedback/` for past session learnings
+- **Before any task**: run `anakmagang state` for current state, `ARCHITECTURE.md` for domain definitions, and past session learnings
 - **Delegate by domain**: Route to the worker agent defined in `ARCHITECTURE.md` for each domain. Use default agent for non-domain files (docs, configs, scripts, YAML, markdown, shell, lua)
-- **After delegation**: run verification commands yourself (from `ARCHITECTURE.md`), delegate manifest updates to a default agent
+- **After delegation**: run verification commands yourself (from `ARCHITECTURE.md`), then run `anakmagang next "<reflection>" --session <id>` to advance phase
 - **Cross-module work**: delegate in parallel when modules are independent, verify all after
 - **Questions and options**: Always use `AskUserQuestion` tool when you need user input — never output questions as plain text
 
@@ -56,15 +42,15 @@ You are the **coordinator**. You plan, delegate, verify, **observe**, **reflect*
 | Thread | Has | Does NOT have |
 |--------|-----|---------------|
 | Coordinator (you) | Read, Glob, Grep, Bash (verify only) | Edit, Write, NotebookEdit (delegate instead) |
-| Workers (nix-coder) | Edit, Write, Bash | Agent (cannot delegate) |
+| Workers (domain-specific) | Edit, Write, Bash | Agent (cannot delegate) |
 
 **This boundary is absolute.** No skill or workflow overrides it. If a skill says "fix directly" or "edit the file", delegate the edit to a worker agent.
 
 ### Meta-Cognitive Protocol
 
-The coordinator **reflects** at every phase transition. Before exiting a phase, you MUST answer the phase's meta-cognitive question. The answer is recorded in the feedback file under `reflections`.
+The coordinator **reflects** at every phase transition. Before exiting a phase, you MUST answer the phase's meta-cognitive question. The answer is recorded in session state under `reflections`.
 
-**This is not optional.** The hooks will surface the question on every prompt. The session-stop-guard will block if reflections are missing.
+**This is not optional.** The guards will surface the question on every prompt. The session-stop-guard will block if reflections are missing.
 
 #### Phase Questions
 
@@ -89,64 +75,31 @@ The coordinator **reflects** at every phase transition. Before exiting a phase, 
 
 #### How to reflect
 
-1. Before transitioning to the next phase, **pause and answer the question** for the current phase
-2. Write the answer as a short, honest statement (1-3 sentences) — not a checkbox exercise
-3. Delegate appending the reflection to the feedback file:
-   ```
-   Append to <repo-root>/.data/feedback/<SID>.yaml reflections: { phase: N, question: "...", answer: "...", confidence: high/medium/low }
-   ```
-4. If the reflection reveals a problem (low confidence, wrong assumptions, missed scope), **act on it** before proceeding — go back, re-triage, or escalate to the user
+**This is a hard enforcement.** Every `anakmagang next` call MUST include a genuine answer to the phase's exit question. Violations:
+- Empty string `""` → NOT acceptable
+- Generic filler (`"done"`, `"ok"`, `"moving on"`) → NOT acceptable
+- Answer that doesn't address the specific question → NOT acceptable
+
+The reflection MUST:
+1. **Directly answer the exit question** — restate the question's concern and respond to it honestly
+2. Be a short, honest statement (1-3 sentences) — not a checkbox exercise
+3. Name specific evidence — files read, patterns found, assumptions identified, risks acknowledged
+4. If confidence is low, say so explicitly — then **act on it** before proceeding (re-triage, re-explore, or escalate to user)
+
+Run `anakmagang next "<answer>" --session <id>` — the machine records the reflection and advances.
 
 ### Session Feedback (Observer Role)
 
-The coordinator **observes** every tool call, delegation, and verification result throughout the session. All observations are recorded to `<repo-root>/.data/feedback/<SESSION_ID>.yaml`.
+The coordinator **observes** every tool call, delegation, and verification result throughout the session.
 
-**What to observe and record:**
-- **dependency_issues**: Missing flake inputs, version conflicts, incompatible modules
-- **tool_failures**: Tool calls that errored or returned unexpected results
-- **wrong_approaches**: Approaches attempted then abandoned — what and why
-- **delegation_issues**: Worker agents that failed, got stuck, or produced incorrect output
-- **verification_failures**: Commands that failed during verification phases
-- **blockers**: Anything that required user intervention or could not be resolved
-- **patterns_discovered**: New patterns, conventions, or codebase knowledge learned during the session
-- **improvements**: Suggestions for skills, hooks, or workflow based on what happened
-
-**When to write feedback:**
-- Delegate a feedback write to a default agent whenever an issue occurs (don't batch — write immediately)
-- Delegate a reflection write at every phase transition (see Meta-Cognitive Protocol)
-- At phase 16 (Completion), delegate a final feedback summary with all accumulated observations
-- On compaction gate, include feedback file path in handoff notes
-
-**Feedback schema** (`<repo-root>/.data/feedback/<SESSION_ID>.yaml`):
-```yaml
-session_id: "<SESSION_ID>"
-date: "YYYY-MM-DD"
-task: "description of the task"
-task_type: SMALL
-status: completed  # in_progress/completed/partial/failed
-
-reflections:
-  - phase: 1
-    question: "What assumptions am I carrying?"
-    answer: "honest reflection here"
-    confidence: high  # high/medium/low
-
-observations:
-  dependency_issues: []
-  tool_failures: []
-  wrong_approaches: []
-  delegation_issues: []
-  verification_failures: []
-  blockers: []
-  patterns_discovered: []
-  improvements: []
-```
+**When to record:**
+- On any issue: run `anakmagang observe "<description of issue>" --session <id>`
+- At phase transitions: run `anakmagang next "<reflection>" --session <id>` (machine records and advances)
+- At completion: run `anakmagang observe "<summary>" --session <id>`
 
 **Reading past feedback:**
-- At phase 1 (Setup), scan `<repo-root>/.data/feedback/` for recent sessions
-- Look for low-confidence reflections — they indicate recurring uncertainty
-- Look for unresolved issues and recurring patterns
-- Apply learnings to the current task
+- Run `anakmagang state` to see all sessions
+- Run `anakmagang state <session-id>` for specific session feedback
 
 ### Orchestration Phases
 
@@ -161,43 +114,38 @@ Follow the 16-phase protocol in `.claude/skills/orchestrate.md`. Phase skipping:
 
 ## Deterministic Enforcement
 
-### Agent-First Enforcement (Hook)
-The `agent-first-enforcement.sh` PreToolUse hook blocks ALL Edit/Write from the coordinator. Every file modification must be delegated to a worker agent — `.nix` files to `nix-coder`, everything else to a default agent.
+All enforcement is handled by `anakmagang` guards defined in `.anakmagang/config.yaml`. Guards are pure functions: `(Event, State, Context) → Decision`.
 
-### Iteration Limit (Hook)
-The `iteration-limit.sh` PreToolUse hook tracks tool calls per task via `.data/iteration-counts/`. After 50 calls, execution is blocked and must escalate to the user. Warning at 40.
-
-### Output Location Enforcement (Hook)
-The `output-location-enforcement.sh` PreToolUse hook validates all Edit/Write targets are within the project directory and not in restricted paths (secrets, .git, result/).
-
-### Dirty Bit Tracking (Hook)
-The `dirty-bit-tracker.sh` PostToolUse hook records every file modified per phase in `.data/dirty-bits/phase-N.files`. The coordinator checks this before advancing phases — if files changed, re-run verification.
+### Guards
+- **agent-first**: Coordinator cannot use Edit/Write tools directly
+- **output-location**: Writes constrained to project directory
+- **block-nix-build**: Blocks slow nix-build and nix-instantiate
+- **compaction-gate**: Blocks agent spawning at high context usage (>85%)
+- **iteration-limit**: Caps worker tool calls per task (per: task, scoped by agent)
+- **auto-nix-eval**: Auto-verifies .nix files after edit
+- **bridge-on-start**: Auto-creates Claude↔anakmagang session bridge on `anakmagang start`
+- **agent-stop-guard**: Ensures workers verified nix changes
+- **session-stop-guard**: Prevents session end with incomplete task
+- **context-cache**: StatusLine display — shows task/phase/workers when orchestrating
 
 ### Completion Promises
 Worker agents MUST include exactly one signal string in their final message:
-- `IMPLEMENTATION_COMPLETE` / `VERIFICATION_PASSED` / `VERIFICATION_FAILED` / `IMPLEMENTATION_BLOCKED` / `NEEDS_COORDINATOR_INPUT` (nix-coder)
-- `REVIEW_PASSED` / `REVIEW_ISSUES_FOUND` / `REVIEW_BLOCKED` (nix-reviewer)
-- `ANNEAL_COMPLETE` / `ANNEAL_PROPOSALS_ONLY` (self-anneal)
+- `IMPLEMENTATION_COMPLETE` / `VERIFICATION_PASSED` / `VERIFICATION_FAILED` / `IMPLEMENTATION_BLOCKED` / `NEEDS_COORDINATOR_INPUT` (domain workers)
+- `REVIEW_PASSED` / `REVIEW_ISSUES_FOUND` / `REVIEW_BLOCKED` (review workers)
 
-### Scratchpad
-Per-task persistent notes in `.data/scratchpad/<task-id>.md`. Record:
-- What approaches were tried and why they failed
-- Key findings during exploration
-- Decisions made and their rationale
-Survives compaction — agents and future sessions can read these.
+### Task Notes
+For persistent task notes, use observations:
+- `anakmagang observe "approach: tried X, failed because Y" --session <id>`
+- `anakmagang observe "finding: discovered Z" --session <id>`
+- `anakmagang observe "decision: chose A over B because C" --session <id>`
 
-### Distributed File Locking
-For parallel agent writes, use `.data/locks/<file-hash>.lock`. Agents must:
-1. Check for existing lock before writing
-2. Create lock with agent name and timestamp
-3. Remove lock after write completes
-4. Stale locks (>5 min) can be force-removed
+Observations are appended to the session's manifest.yaml event log.
 
 ### Self-Annealing
-The `/self-anneal` skill analyzes feedback files for recurring patterns and proposes patches to hooks/skills. Run at session end or when failure patterns recur 3+ times. Never auto-applies patches to CLAUDE.md.
+The `/self-anneal` skill analyzes feedback for recurring patterns and proposes patches to hooks/skills. Run at session end or when failure patterns recur 3+ times. Never auto-applies patches to CLAUDE.md.
 
 ### Reviewer Agent
-The `nix-reviewer` agent performs compliance checking against project conventions. Use for code review tasks — it has Read/Glob/Grep/Bash (read-only) but NO Edit/Write.
+Review workers perform compliance checking against project conventions. Use for code review tasks — they have Read/Glob/Grep/Bash (read-only) but NO Edit/Write. The specific reviewer agent type is defined in `ARCHITECTURE.md`.
 
 ## Rules
 
@@ -238,6 +186,13 @@ Mechanical overrides for context management and edit safety.
 
 Write project memories to `.claude/memories/` (tracked in git, shared across sessions).
 
+The `anakmagang` CLI provides memory management:
+- `anakmagang memory create <name> -T <type> -d "<description>" [-s <scale>]` — create a memory node
+- `anakmagang memory query "<keywords>"` — search memories by keyword
+- `anakmagang memory status` — list all memory nodes with state
+- `anakmagang memory promote <id>` — promote a memory's scale (observation → finding → learning → principle)
+- `anakmagang memory prune` — mark stale memories for archival
+
 ### Rules
 
 - **OVERRIDE: All memories go to `.claude/memories/`** — this overrides the default auto-memory system path. When asked to remember something, or when persisting learnings from feedback, ALWAYS write to `.claude/memories/` in the project directory. NEVER write to `~/.claude/projects/*/memory/` or any user-level path. This project uses project-scoped memories tracked in git.
@@ -252,8 +207,8 @@ Write project memories to `.claude/memories/` (tracked in git, shared across ses
   ---
   ```
 - **Update, don't duplicate** — check if a memory file for the topic exists before creating a new one
-- **Derive from feedback** — at session end, extract reusable learnings from `<repo-root>/.data/feedback/<SID>.yaml` and persist as memories. Feedback files are ephemeral (gitignored); memories are permanent (tracked).
-- **No ephemeral state** — memories are for knowledge that survives across sessions, not current task state (that's the manifest)
+- **Derive from feedback** — at session end, extract reusable learnings from `anakmagang state <session-id>` feedback and persist as memories. Feedback files are ephemeral (gitignored); memories are permanent (tracked).
+- **No ephemeral state** — memories are for knowledge that survives across sessions, not current task state (that's the session state)
 
 ### What to memorize
 
@@ -265,7 +220,7 @@ Write project memories to `.claude/memories/` (tracked in git, shared across ses
 
 ### Feedback → Memory pipeline
 
-At phase 16 (Completion), after finalizing the feedback file:
+At phase 16 (Completion), after finalizing session feedback:
 1. Read the session's feedback observations and reflections
 2. Extract anything reusable across future sessions (not task-specific)
 3. Delegate writing/updating the appropriate memory file in `.claude/memories/`
@@ -273,27 +228,26 @@ At phase 16 (Completion), after finalizing the feedback file:
 
 ## Workflow
 
-1. Read `<repo-root>/.data/manifest.yaml` for session state
-2. Read `ARCHITECTURE.md` for domain definitions and verification commands
-3. Scan `<repo-root>/.data/feedback/` for learnings from past sessions
-4. Run `/orchestrate` to classify and begin phase tracking
-5. At each phase: do the work, reflect, record, transition
-6. Delegate implementation to workers via domain gateway (`/gateway-nix`)
-7. Run verification commands from `ARCHITECTURE.md` (coordinator verifies)
-8. Update manifest via default agent
-9. Write session feedback via default agent (ongoing + final at completion)
+1. Run `anakmagang state` — load current session state
+2. Run `anakmagang start "<task>"` — machine creates session at phase 1/setup
+3. Read `ARCHITECTURE.md`, memories, past feedback — do Setup work
+4. Classify task size (TRIVIAL / SMALL / MEDIUM / LARGE)
+5. Run `anakmagang next "<reflection>" --session <id> --size <SIZE>` — completes setup, machine computes active phases
+6. At each subsequent phase: do the work, then run `anakmagang next "<reflection>" --session <id>` to advance
+7. Run `anakmagang observe "<issue>" --session <id>` when issues occur
+8. Delegate implementation to workers via domain gateway (`/gateway-nix`)
+9. Run verification commands from `ARCHITECTURE.md` (coordinator verifies)
 
 ## Guardrails
 
-- **Coordinator NEVER uses Edit/Write tools**: Enforced by `agent-first-enforcement.sh` hook — not just a guideline
+- **Coordinator NEVER uses Edit/Write tools**: Enforced by `agent-first` guard
+- **Coordinator drives the machine**: Uses `anakmagang start/next/observe` for phase transitions
 - **Workers NEVER delegate**: They implement, they don't coordinate
-- **Iteration limit enforced**: 50 tool calls per task max, enforced by `iteration-limit.sh` hook
-- **Output paths enforced**: All writes must be within project directory, enforced by `output-location-enforcement.sh` hook
-- **Dirty bit tracking**: File modifications tracked per phase by `dirty-bit-tracker.sh` — verify before advancing
-- **Completion promises required**: Workers must emit signal strings — hooks parse these deterministically
-- **Manifest is the session state**: Always update it at phase transitions
-- **Feedback is the session log**: Record all issues as they occur, not just at the end
+- **Iteration limit enforced**: Per task per agent, enforced by `iteration-limit` guard
+- **Output paths enforced**: All writes within project directory
+- **Completion promises required**: Workers must emit signal strings
+- **State via CLI only**: `anakmagang state` to read, `anakmagang start/next/observe` for transitions
 - **Reflections are mandatory**: Every phase transition requires answering the meta-cognitive question
-- **Low confidence = action required**: A "low" confidence reflection means something is wrong — investigate before proceeding
-- **Eval, not build**: `nix eval` and `nix flake check --no-build` for verification, never full builds
+- **Low confidence = action required**: A "low" confidence reflection means something is wrong
+- **Eval, not build**: `nix eval` and `nix flake check --no-build` for verification
 - **ARCHITECTURE.md is the domain map**: Never hardcode domain routing in CLAUDE.md

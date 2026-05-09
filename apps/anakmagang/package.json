@@ -1,0 +1,21 @@
+{
+  "name": "anakmagang",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "bun build --outfile=anakmagang --compile ./src/bin.ts",
+    "dev": "bun run src/bin.ts",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "prepare": "effect-language-service patch"
+  },
+  "dependencies": {
+    "@effect/platform-bun": "4.0.0-beta.59",
+    "effect": "4.0.0-beta.59"
+  },
+  "devDependencies": {
+    "@effect/language-service": "0.75.1",
+    "@types/bun": "1.2.16",
+    "typescript": "5.8.3"
+  }
+}

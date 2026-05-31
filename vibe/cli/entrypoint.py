@@ -1,0 +1,224 @@
+from __future__ import annotations
+
+import argparse
+import os
+from pathlib import Path
+import sys
+
+from rich import print as rprint
+
+from vibe import __version__
+from vibe.core.config.harness_files import init_harness_files_manager
+from vibe.core.trusted_folders import find_trustable_files, trusted_folders_manager
+from vibe.setup.trusted_folders.trust_folder_dialog import (
+    TrustDialogQuitException,
+    ask_trust_folder,
+)
+
+
+def parse_arguments() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Run the Mistral Vibe interactive CLI",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Environment variables:\n"
+            "  VIBE_HOME       Override the Vibe home directory (default: ~/.vibe)\n"
+            "  LOG_LEVEL       Logging level: DEBUG, INFO, WARNING (default), ERROR, CRITICAL.\n"
+            "                  Logs are written to $VIBE_HOME/logs/vibe.log.\n"
+            "  LOG_MAX_BYTES   Max size of vibe.log before rotation (default: 10485760).\n"
+            "  VIBE_*          Override any config field (e.g. VIBE_ACTIVE_MODEL=local)."
+        ),
+    )
+    parser.add_argument(
+        "-v", "--version", action="version", version=f"%(prog)s {__version__}"
+    )
+    parser.add_argument(
+        "initial_prompt",
+        nargs="?",
+        metavar="PROMPT",
+        help="Initial prompt to start the interactive session with.",
+    )
+    parser.add_argument(
+        "-p",
+        "--prompt",
+        nargs="?",
+        const="",
+        metavar="TEXT",
+        help="Run in programmatic mode: send prompt, output response, and exit. "
+        "Tool approval follows the selected --agent (or 'default_agent' config); "
+        "pass --agent auto-approve for the previous YOLO behavior.",
+    )
+    parser.add_argument(
+        "--max-turns",
+        type=int,
+        metavar="N",
+        help="Maximum number of assistant turns "
+        "(only applies in programmatic mode with -p).",
+    )
+    parser.add_argument(
+        "--max-price",
+        type=float,
+        metavar="DOLLARS",
+        help="Maximum cost in dollars (only applies in programmatic mode with -p). "
+        "Session will be interrupted if cost exceeds this limit.",
+    )
+    parser.add_argument(
+        "--max-tokens",
+        type=int,
+        metavar="N",
+        help="Maximum total prompt + completion tokens across the session "
+        "(only applies in programmatic mode with -p). "
+        "Session will be interrupted if usage exceeds this limit.",
+    )
+    parser.add_argument(
+        "--enabled-tools",
+        action="append",
+        metavar="TOOL",
+        help="Enable specific tools. In programmatic mode (-p), this disables "
+        "all other tools. "
+        "Can use exact names, glob patterns (e.g., 'bash*'), or "
+        "regex with 're:' prefix. Can be specified multiple times.",
+    )
+    parser.add_argument(
+        "--output",
+        type=str,
+        choices=["text", "json", "streaming"],
+        default="text",
+        help="Output format for programmatic mode (-p): 'text' "
+        "for human-readable (default), 'json' for all messages at end, "
+        "'streaming' for newline-delimited JSON per message.",
+    )
+    parser.add_argument(
+        "--agent",
+        metavar="NAME",
+        default=None,
+        help="Agent to use (builtin: default, plan, accept-edits, auto-approve, "
+        "or custom from ~/.vibe/agents/NAME.toml). Defaults to the "
+        "'default_agent' config setting in both interactive and programmatic "
+        "(-p/--prompt) mode. Pass --agent auto-approve for non-interactive "
+        "automation that needs tools to run without approval.",
+    )
+    parser.add_argument("--setup", action="store_true", help="Setup API key and exit")
+    parser.add_argument(
+        "--workdir",
+        type=Path,
+        metavar="DIR",
+        help="Change to this directory before running",
+    )
+    parser.add_argument(
+        "--add-dir",
+        action="append",
+        metavar="DIR",
+        default=[],
+        help="Additional working directory for file access and context. "
+        "Implicitly trusted for the session (same semantics as --trust). "
+        "Can be specified multiple times.",
+    )
+    parser.add_argument(
+        "--trust",
+        action="store_true",
+        help="Trust the working directory for this invocation only (not "
+        "persisted to trusted_folders.toml). Skips the trust prompt. "
+        "Use this for non-interactive automation.",
+    )
+
+    # Feature flag for teleport, not exposed to the user yet
+    parser.add_argument("--teleport", action="store_true", help=argparse.SUPPRESS)
+
+    continuation_group = parser.add_mutually_exclusive_group()
+    continuation_group.add_argument(
+        "-c",
+        "--continue",
+        action="store_true",
+        dest="continue_session",
+        help="Continue from the most recent saved session",
+    )
+    continuation_group.add_argument(
+        "--resume",
+        nargs="?",
+        const=True,
+        default=None,
+        metavar="SESSION_ID",
+        help="Resume a session. Without SESSION_ID, shows an interactive picker.",
+    )
+    return parser.parse_args()
+
+
+def check_and_resolve_trusted_folder(cwd: Path) -> None:
+    if cwd.resolve() == Path.home().resolve():
+        return
+
+    detected_files = find_trustable_files(cwd)
+
+    if not detected_files:
+        return
+
+    is_folder_trusted = trusted_folders_manager.is_trusted(cwd)
+
+    if is_folder_trusted is not None:
+        return
+
+    try:
+        is_folder_trusted = ask_trust_folder(cwd, detected_files)
+    except (KeyboardInterrupt, EOFError, TrustDialogQuitException):
+        sys.exit(0)
+    except Exception as e:
+        rprint(f"[yellow]Error showing trust dialog: {e}[/]")
+        return
+
+    if is_folder_trusted is True:
+        trusted_folders_manager.add_trusted(cwd)
+    elif is_folder_trusted is False:
+        trusted_folders_manager.add_untrusted(cwd)
+
+
+def main() -> None:
+    args = parse_arguments()
+
+    if args.workdir:
+        workdir = args.workdir.expanduser().resolve()
+        if not workdir.is_dir():
+            rprint(
+                f"[red]Error: --workdir does not exist or is not a directory: {workdir}[/]"
+            )
+            sys.exit(1)
+        os.chdir(workdir)
+
+    try:
+        cwd = Path.cwd()
+    except FileNotFoundError:
+        rprint(
+            "[red]Error: Current working directory no longer exists.[/]\n"
+            "[yellow]The directory you started vibe from has been deleted. "
+            "Please change to an existing directory and try again, "
+            "or use --workdir to specify a working directory.[/]"
+        )
+        sys.exit(1)
+
+    if args.trust:
+        trusted_folders_manager.trust_for_session(cwd)
+
+    additional_dirs: list[Path] = []
+    for d in args.add_dir:
+        resolved = Path(d).expanduser().resolve()
+        if not resolved.is_dir():
+            rprint(
+                f"[red]Error: --add-dir path does not exist "
+                f"or is not a directory: {d}[/]"
+            )
+            sys.exit(1)
+        additional_dirs.append(resolved)
+        trusted_folders_manager.trust_for_session(resolved)
+
+    is_interactive = args.prompt is None
+    if is_interactive:
+        check_and_resolve_trusted_folder(cwd)
+    init_harness_files_manager("user", "project", additional_dirs=additional_dirs)
+
+    from vibe.cli.cli import run_cli
+
+    run_cli(args)
+
+
+if __name__ == "__main__":
+    main()

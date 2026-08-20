@@ -1,14 +1,20 @@
 {
-  "$schema": "https://raw.githubusercontent.com/Effect-TS/language-service/refs/heads/main/schema.json",
+  "$schema": "https://raw.githubusercontent.com/AriaMoradi/effect-tsgo/refs/heads/main/schema.json",
   "compilerOptions": {
     "strict": true,
     "target": "ES2022",
-    "module": "ESNext",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "preserve",
     "moduleResolution": "bundler",
     "moduleDetection": "force",
+    "verbatimModuleSyntax": true,
+    "rewriteRelativeImportExtensions": true,
     "exactOptionalPropertyTypes": true,
     "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "noImplicitOverride": true,
+    "noUncheckedIndexedAccess": true,
+    "noFallthroughCasesInSwitch": true,
     "noEmit": true,
     "declaration": true,
     "declarationMap": true,
@@ -17,10 +23,34 @@
     "incremental": true,
     "plugins": [
       {
-        "name": "@effect/language-service"
+        "name": "@effect/language-service",
+        "diagnostics": true,
+        "quickinfo": true,
+        "completions": true,
+        "goto": true,
+        "renames": true,
+        "refactors": true,
+        "diagnosticSeverity": {
+          "nestedEffectGenYield": "error",
+          "effectDoNotation": "error",
+          "asyncFunction": "error",
+          "extendsNativeError": "error",
+          "anyUnknownInErrorContext": "error",
+          "unsafeEffectTypeAssertion": "error",
+          "preferSchemaOverJson": "error",
+          "newPromise": "error",
+          "globalConsoleInEffect": "error",
+          "globalFetchInEffect": "error",
+          "globalDateInEffect": "error",
+          "globalRandomInEffect": "error",
+          "globalTimersInEffect": "error",
+          "processEnvInEffect": "error",
+          "cryptoRandomUUIDInEffect": "error",
+          "nodeBuiltinImport": "error"
+        }
       }
     ]
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "out/**/*.d.ts"],
   "exclude": ["node_modules"]
 }

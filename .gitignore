@@ -43,8 +43,11 @@
 # Source-only allow-list for all projects under apps/
 # JS/TS ecosystem
 !apps/*/package.json
+!apps/*/build.ts
 !apps/*/bun.lock
+!apps/*/bun.nix
 !apps/*/tsconfig.json
+!apps/*/build.ts
 !apps/*/yarn.lock
 !apps/*/.yarnrc.yml
 !apps/*/vite.config.mjs
@@ -64,7 +67,9 @@
 !nix/**
 !notes/**
 !secrets/**
+!.anakmagang/config.yaml
 
 # ── Explicitly ignored (never whitelist) ────────────────────────────────────────
-# .data/          — ephemeral session data, scratchpads, manifests
-# result/         — nix build output symlink
+# .anakmagang/out/ — ephemeral session data, scratchpads, manifests (managed by `anakmagang` CLI)
+# result/          — nix build output symlink
+.anakmagang/references/

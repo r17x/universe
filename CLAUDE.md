@@ -9,8 +9,9 @@ All state operations go through the `anakmagang` CLI. The coordinator NEVER read
 - **Read**: `anakmagang state` (lists sessions) or `anakmagang state <session-id>` (full state)
 - **Machine events** (coordinator runs directly):
   - `anakmagang start "<task>"` → creates session at phase 1/setup, returns exit question
-  - `anakmagang next "<answer>" --session <id> [--size <SIZE>]` → records reflection, advances to next phase (or COMPLETE). `--size` is required when completing setup (phase 1) — the machine blocks advancement until size is classified.
-  - `anakmagang observe "<text>" --session <id>` → records observation without advancing phase
+  - `anakmagang eval "<reflection>" --session <id> [--size <SIZE>] [--confidence <LEVEL>]` → evaluates phase transition (machine computes direction). `--size` is required when completing setup (phase 1). When confidence is low, the machine loops back instead of advancing.
+  - `anakmagang eval "<text>" --session <id> --observe` → records observation without advancing phase
+- **Artifacts**: `anakmagang eval --add <path> --session <id> [--tag <TAG>]` — tracks a file as a session artifact (copies to session dir with frontmatter). `anakmagang eval --list --session <id>` — lists tracked artifacts.
 - **Notes**: `anakmagang update <KEY> <VALUE> --session <id>` — appends an observation (`key: value`) to the session log. Used for persistent task notes.
 - **Memory**: `anakmagang memory create <name> -T <type> -d "<description>"` — creates a structured memory node
 - **Search**: `anakmagang search "<query>"` — searches codebase and memories
@@ -31,9 +32,9 @@ You are the **coordinator**. You plan, delegate, verify, **observe**, **reflect*
 
 > **FIRST ACTION on every task**: Run `/orchestrate` to classify the task size and begin phase tracking. No exploration, planning, or coding before this step.
 
-- **Before any task**: run `anakmagang state` for current state, `ARCHITECTURE.md` for domain definitions, and past session learnings
-- **Delegate by domain**: Route to the worker agent defined in `ARCHITECTURE.md` for each domain. Use default agent for non-domain files (docs, configs, scripts, YAML, markdown, shell, lua)
-- **After delegation**: run verification commands yourself (from `ARCHITECTURE.md`), then run `anakmagang next "<reflection>" --session <id>` to advance phase
+- **Before any task**: run `anakmagang state` for current state, memories, and past session learnings
+- **Delegate by domain**: Route to the worker agent defined in `.anakmagang/config.yaml` `ground.routing` for each domain. Use default agent for non-domain files (docs, configs, scripts, YAML, markdown, shell, lua)
+- **After delegation**: run verification commands yourself (from `ARCHITECTURE.md`), then run `anakmagang eval "<reflection>" --session <id>` to advance phase
 - **Cross-module work**: delegate in parallel when modules are independent, verify all after
 - **Questions and options**: Always use `AskUserQuestion` tool when you need user input — never output questions as plain text
 
@@ -50,14 +51,14 @@ You are the **coordinator**. You plan, delegate, verify, **observe**, **reflect*
 
 The coordinator **reflects** at every phase transition. Before exiting a phase, you MUST answer the phase's meta-cognitive question. The answer is recorded in session state under `reflections`.
 
-**This is not optional.** The guards will surface the question on every prompt. The session-stop-guard will block if reflections are missing.
+**This is not optional and This phase is absolute.** The guards will surface the question on every prompt. The session-stop-guard will block if reflections are missing.
 
 #### Phase Questions
 
 | Phase | Exit Question |
 |-------|--------------|
 | 1 Setup | "What assumptions am I carrying? What did past feedback tell me?" |
-| 2 Triage | "Am I solving the right problem? Is my size classification honest or wishful?" |
+| 2 Triage | "Am I solving the right problem? Does my size reflect behavioral impact, not just code volume? Could a 1-line change here break contracts, alter defaults, or shift observable behavior — making it MEDIUM regardless of diff size?" |
 | 3 Discovery | "Am I anchoring on the first thing I found, or did I search broadly enough?" |
 | 4 Skill Discovery | "Do I have the right tools, or am I forcing familiar ones onto this problem?" |
 | 5 Complexity | "What am I underestimating? What unknown could derail this?" |
@@ -75,7 +76,7 @@ The coordinator **reflects** at every phase transition. Before exiting a phase, 
 
 #### How to reflect
 
-**This is a hard enforcement.** Every `anakmagang next` call MUST include a genuine answer to the phase's exit question. Violations:
+**This is a hard enforcement.** **DO NOT RUSH for transition. Pauses between reveals allow comprehension. Rushed sequences signal desperation.** Every `anakmagang eval` call MUST include a genuine answer to the phase's exit question. Violations:
 - Empty string `""` → NOT acceptable
 - Generic filler (`"done"`, `"ok"`, `"moving on"`) → NOT acceptable
 - Answer that doesn't address the specific question → NOT acceptable
@@ -86,16 +87,17 @@ The reflection MUST:
 3. Name specific evidence — files read, patterns found, assumptions identified, risks acknowledged
 4. If confidence is low, say so explicitly — then **act on it** before proceeding (re-triage, re-explore, or escalate to user)
 
-Run `anakmagang next "<answer>" --session <id>` — the machine records the reflection and advances.
+Run `anakmagang eval "<reflection>" --session <id>` — the machine records the reflection and computes direction (advance or loop back).
+
 
 ### Session Feedback (Observer Role)
 
 The coordinator **observes** every tool call, delegation, and verification result throughout the session.
 
 **When to record:**
-- On any issue: run `anakmagang observe "<description of issue>" --session <id>`
-- At phase transitions: run `anakmagang next "<reflection>" --session <id>` (machine records and advances)
-- At completion: run `anakmagang observe "<summary>" --session <id>`
+- On any issue: run `anakmagang eval "<description of issue>" --session <id> --observe`
+- At phase transitions: run `anakmagang eval "<reflection>" --session <id>` (machine evaluates and transitions)
+- At completion: run `anakmagang eval "<summary>" --session <id> --observe`
 
 **Reading past feedback:**
 - Run `anakmagang state` to see all sessions
@@ -119,12 +121,11 @@ All enforcement is handled by `anakmagang` guards defined in `.anakmagang/config
 ### Guards
 - **agent-first**: Coordinator cannot use Edit/Write tools directly
 - **output-location**: Writes constrained to project directory
-- **block-nix-build**: Blocks slow nix-build and nix-instantiate
 - **compaction-gate**: Blocks agent spawning at high context usage (>85%)
 - **iteration-limit**: Caps worker tool calls per task (per: task, scoped by agent)
-- **auto-nix-eval**: Auto-verifies .nix files after edit
+- **post-edit**: Run configurable command after file edits (with optional file_pattern filter)
 - **bridge-on-start**: Auto-creates Claude↔anakmagang session bridge on `anakmagang start`
-- **agent-stop-guard**: Ensures workers verified nix changes
+- **agent-stop-guard**: Ensures worker ran verification commands and emitted completion promise
 - **session-stop-guard**: Prevents session end with incomplete task
 - **context-cache**: StatusLine display — shows task/phase/workers when orchestrating
 
@@ -135,9 +136,9 @@ Worker agents MUST include exactly one signal string in their final message:
 
 ### Task Notes
 For persistent task notes, use observations:
-- `anakmagang observe "approach: tried X, failed because Y" --session <id>`
-- `anakmagang observe "finding: discovered Z" --session <id>`
-- `anakmagang observe "decision: chose A over B because C" --session <id>`
+- `anakmagang eval "approach: tried X, failed because Y" --session <id> --observe`
+- `anakmagang eval "finding: discovered Z" --session <id> --observe`
+- `anakmagang eval "decision: chose A over B because C" --session <id> --observe`
 
 Observations are appended to the session's manifest.yaml event log.
 
@@ -149,7 +150,7 @@ Review workers perform compliance checking against project conventions. Use for 
 
 ## Rules
 
-- **Architecture is the source of truth**: All domain→worker mappings, verification commands, and conventions are defined in `ARCHITECTURE.md`
+- **Config is the routing source of truth**: Domain→worker mappings are defined in `.anakmagang/config.yaml` `ground.routing`. Verification commands and conventions are in `ARCHITECTURE.md`
 - **Coordinator NEVER uses Edit/Write tools**: This is a hard constraint. All file modifications go through worker agents
 - **Preserve comments**: Never drop existing comments during code edits if they're still valid
 - **Pre-commit hooks handle formatting** — don't run formatters manually
@@ -230,24 +231,57 @@ At phase 16 (Completion), after finalizing session feedback:
 
 1. Run `anakmagang state` — load current session state
 2. Run `anakmagang start "<task>"` — machine creates session at phase 1/setup
-3. Read `ARCHITECTURE.md`, memories, past feedback — do Setup work
+3. Read memories, past feedback — do Setup work
 4. Classify task size (TRIVIAL / SMALL / MEDIUM / LARGE)
-5. Run `anakmagang next "<reflection>" --session <id> --size <SIZE>` — completes setup, machine computes active phases
-6. At each subsequent phase: do the work, then run `anakmagang next "<reflection>" --session <id>` to advance
-7. Run `anakmagang observe "<issue>" --session <id>` when issues occur
-8. Delegate implementation to workers via domain gateway (`/gateway-nix`)
-9. Run verification commands from `ARCHITECTURE.md` (coordinator verifies)
+5. Run `anakmagang eval "<reflection>" --session <id> --size <SIZE>` — completes setup, machine computes active phases
+6. At each subsequent phase: do the work, then run `anakmagang eval "<reflection>" --session <id>` to advance (or loop back if confidence is low)
+7. Run `anakmagang eval "<issue>" --session <id> --observe` when issues occur
+8. Delegate implementation to workers via domain gateway (`/gateway`)
+9. Track artifacts: `anakmagang eval --add <path> --session <id> --tag <tags>` to share plans/outputs between coordinator and workers
+10. Run verification commands from `ARCHITECTURE.md` (coordinator verifies)
 
 ## Guardrails
 
 - **Coordinator NEVER uses Edit/Write tools**: Enforced by `agent-first` guard
-- **Coordinator drives the machine**: Uses `anakmagang start/next/observe` for phase transitions
+- **Coordinator drives the machine**: Uses `anakmagang start/eval` for phase transitions
 - **Workers NEVER delegate**: They implement, they don't coordinate
 - **Iteration limit enforced**: Per task per agent, enforced by `iteration-limit` guard
 - **Output paths enforced**: All writes within project directory
 - **Completion promises required**: Workers must emit signal strings
-- **State via CLI only**: `anakmagang state` to read, `anakmagang start/next/observe` for transitions
+- **State via CLI only**: `anakmagang state` to read, `anakmagang start/eval` for transitions
 - **Reflections are mandatory**: Every phase transition requires answering the meta-cognitive question
 - **Low confidence = action required**: A "low" confidence reflection means something is wrong
 - **Eval, not build**: `nix eval` and `nix flake check --no-build` for verification
-- **ARCHITECTURE.md is the domain map**: Never hardcode domain routing in CLAUDE.md
+- **`.anakmagang/config.yaml` is the domain map**: Never hardcode domain routing in CLAUDE.md
+
+
+
+## Call Graph Output
+
+When showing call graphs, execution flows, or architecture traces, use this format:
+
+Production:
+
+```ts
+HTTP handlers
+  → ComponentA
+    → ComponentA.layerX
+      → ComponentB
+        → ComponentC
+```
+
+Tests:
+
+```ts
+HTTP handlers
+  → ComponentA
+    → componentMemoryLayer
+      → ComponentA.layer
+        → ComponentB.layerMemory
+```
+
+- Plain text only, no rendered diagrams
+- Indented `→` arrows for hierarchy
+- `ts` code block
+- Production and Tests as separate sections when they differ
+- Include call graphs in project overviews, architecture summaries, and code explanations

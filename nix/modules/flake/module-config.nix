@@ -24,7 +24,7 @@ let
   # Define the option type for a directory path
   dirOptionType = lib.types.submodule {
     options.dir = lib.mkOption {
-      type = lib.types.path;
+      type = lib.types.raw;
       description = "The directory containing Nix modules to be imported.";
     };
   };
@@ -43,16 +43,16 @@ let
         readFileType
         ;
     in
-    if pathExists "${dir}.nix" && readFileType "${dir}.nix" == "regular" then
+    if pathExists (dir + ".nix") && readFileType (dir + ".nix") == "regular" then
       { default = dir; }
     else if pathExists dir && readFileType dir == "directory" then
       lib.concatMapAttrs (
         entry: type:
         let
-          dirDefault = "${dir}/${entry}/default.nix";
+          dirDefault = dir + "/${entry}/default.nix";
         in
         if type == "regular" && lib.strings.hasSuffix ".nix" entry then
-          { ${lib.strings.removeSuffix ".nix" entry} = "${dir}/${entry}"; }
+          { ${lib.strings.removeSuffix ".nix" entry} = dir + "/${entry}"; }
         else if pathExists dirDefault && readFileType dirDefault == "regular" then
           { ${entry} = dirDefault; }
         else

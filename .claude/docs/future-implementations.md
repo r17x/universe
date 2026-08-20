@@ -1,6 +1,6 @@
 ---
 name: Future Implementation Designs (Superseded)
-description: Historical record — original pre-unification designs for MCP, Audit, and Memory subsystems. See anakmagang.md for current architecture.
+description: Historical record — original pre-unification designs for Audit and Memory subsystems. See anakmagang.md for current architecture.
 type: reference
 created: 2026-04-20
 updated: 2026-04-27
@@ -12,7 +12,7 @@ updated: 2026-04-27
 
 ## Decision Timeline
 
-1. **2026-04-20**: Original designs captured — MCP wrappers, audit tooling, fractal memory as separate subsystems
+1. **2026-04-20**: Original designs captured — audit tooling, fractal memory as separate subsystems
 2. **2026-04-24**: Unified into single CLI (anakmagang) with Effect-TS + Bun
 3. **2026-04-27**: Consolidated to single memory schema. Added fff-c native search via bun:ffi.
 

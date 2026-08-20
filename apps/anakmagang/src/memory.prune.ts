@@ -1,13 +1,15 @@
-import { Command, Flag } from "effect/unstable/cli"
-import { Console, Effect, Option } from "effect"
-import { MemoryStore } from "./MemoryStore"
+import { Command, Flag } from "effect/unstable/cli";
+import { Array as Arr, Effect, Option } from "effect";
+import { MemoryStore } from "./MemoryStore";
+import { Output } from "./protocol.Output";
+import { Line, Record } from "./protocol.Emission";
 
-const DEFAULT_THRESHOLDS: Record<string, number> = {
+const DEFAULT_THRESHOLDS: globalThis.Record<string, number> = {
   user: 10,
   feedback: 3,
   project: 5,
   reference: 8,
-}
+};
 
 export const memoryPruneCommand = Command.make(
   "prune",
@@ -17,30 +19,47 @@ export const memoryPruneCommand = Command.make(
   },
   ({ dryRun, source }) =>
     Effect.gen(function* () {
-      const store = yield* MemoryStore
-      const sourceFilter = Option.getOrUndefined(source)
+      const store = yield* MemoryStore;
+      const output = yield* Output;
+      const sourceFilter = Option.getOrUndefined(source);
       if (dryRun) {
-        const all = yield* store.list({ state: "ACTIVE", source: sourceFilter })
-        const wouldPrune = all.filter((n) => {
-          const threshold = DEFAULT_THRESHOLDS[n.type]
-          return threshold !== undefined && n.session_count > threshold
-        })
+        const all = yield* store.list({ state: "ACTIVE", source: sourceFilter });
+        const wouldPrune = Arr.filter(all, (n) => {
+          const threshold = DEFAULT_THRESHOLDS[n.type];
+          return threshold !== undefined && n.session_count > threshold;
+        });
         if (wouldPrune.length === 0) {
-          yield* Console.log("No nodes would be pruned.")
-          return
+          yield* output.emit(Line({ text: "No nodes would be pruned." }));
+          return;
         }
-        for (const n of wouldPrune) {
-          yield* Console.log(`Would prune: ${n.id} (${n.type}, sessions=${n.session_count}, source=${n.source})`)
-        }
-        return
+        yield* Effect.forEach(wouldPrune, (n) =>
+          output.emit(
+            Record({
+              fields: [
+                ["id", n.id],
+                ["type", n.type],
+                ["sessions", String(n.session_count)],
+                ["source", n.source],
+              ],
+            }),
+          ),
+        );
+        return;
       }
-      const pruned = yield* store.prune(DEFAULT_THRESHOLDS)
+      const pruned = yield* store.prune(DEFAULT_THRESHOLDS);
       if (pruned.length === 0) {
-        yield* Console.log("No nodes pruned.")
-        return
+        yield* output.emit(Line({ text: "No nodes pruned." }));
+        return;
       }
-      for (const n of pruned) {
-        yield* Console.log(`Pruned: ${n.id} -> ${n.state}`)
-      }
-    }).pipe(Effect.provide(MemoryStore.layer))
-)
+      yield* Effect.forEach(pruned, (n) =>
+        output.emit(
+          Record({
+            fields: [
+              ["id", n.id],
+              ["state", n.state],
+            ],
+          }),
+        ),
+      );
+    }).pipe(Effect.provide(MemoryStore.layer)),
+);

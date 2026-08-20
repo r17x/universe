@@ -2,7 +2,7 @@
 name: Session storage restructure design
 description: Mapping from current SEGA machine (State/Events/Guards/Actions) to new append-only manifest.yaml + logs.yaml structure
 type: project
-updated: 2026-05-06
+updated: 2026-05-25
 ---
 
 ## Proposed Directory Structure
@@ -17,6 +17,10 @@ updated: 2026-05-06
   references/
 ```
 
+**Provider selection**: When a user selects a session, the session ID maps to a provider subdirectory:
+`.anakmagang/out/<SESSION_ID>/<PROVIDER>` (e.g., `.anakmagang/out/abc123/claude`).
+This lets the UI show which provider (claude, etc.) is associated with each session.
+
 ## File Split
 
 | File | Traffic | Event types | Access pattern |
@@ -29,8 +33,8 @@ updated: 2026-05-06
 | Event type | File | Produced by | Consumed by |
 |---|---|---|---|
 | task_start | manifest.yaml | anakmagang start | phase engine, guards, statusline (derives: current_task, task_size, active) |
-| phase_advance | manifest.yaml | anakmagang next | phase engine, guards, statusline, status cmd (derives: current_phase, completed_phases, reflections) |
-| observation | manifest.yaml | anakmagang observe | status cmd (display only) |
+| phase_advance | manifest.yaml | anakmagang eval | phase engine, guards, statusline, status cmd (derives: current_phase, completed_phases, reflections) |
+| observation | manifest.yaml | anakmagang eval --observe | status cmd (display only) |
 | iteration | logs.yaml | iteration-limit guard | iteration-limit guard (count by agent+task) |
 
 ## State Derivation (from manifest.yaml)

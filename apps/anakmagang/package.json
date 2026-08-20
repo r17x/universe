@@ -1,21 +1,34 @@
 {
   "name": "anakmagang",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "bun build --outfile=anakmagang --compile ./src/bin.ts",
+    "build": "bun run build.ts",
     "dev": "bun run src/bin.ts",
     "test": "bun test",
+    "bench": "bun test $(find ./src/tests/bench -name '*.bench.ts' | sort)",
+    "bench:low": "bun test $(find ./src/tests/bench/low -name '*.bench.ts' | sort)",
+    "bench:middle": "bun test $(find ./src/tests/bench/middle -name '*.bench.ts' | sort)",
+    "bench:high": "bun test $(find ./src/tests/bench/high -name '*.bench.ts' | sort)",
     "typecheck": "tsc --noEmit",
-    "prepare": "effect-language-service patch"
+    "prepare": "effect-tsgo patch",
+    "lint": "oxlint --ignore-path .gitignore",
+    "lint:fix": "oxlint --fix --ignore-path .gitignore",
+    "format": "oxfmt src",
+    "format:check": "oxfmt src -- --check"
   },
   "dependencies": {
-    "@effect/platform-bun": "4.0.0-beta.59",
-    "effect": "4.0.0-beta.59"
+    "@effect/platform-browser": "4.0.0-beta.100",
+    "@effect/platform-bun": "4.0.0-beta.100",
+    "effect": "4.0.0-beta.100",
+    "foldkit": "0.145.0"
   },
   "devDependencies": {
-    "@effect/language-service": "0.75.1",
+    "@effect/tsgo": "0.31.0",
     "@types/bun": "1.2.16",
-    "typescript": "5.8.3"
+    "typescript-language-server": "5.1.3",
+    "typescript": "7.0.2",
+    "oxfmt": "0.60.0",
+    "oxlint": "1.75.0"
   }
 }

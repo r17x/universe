@@ -14,6 +14,6 @@ The agent classifies, the machine tracks. Size is the agent's output from Phase 
 2. `anakmagang start "<task>"` → machine creates session at phase 1/setup
 3. Agent does Setup work (reads ARCHITECTURE.md, memories, past feedback)
 4. Agent classifies size (TRIVIAL / SMALL / MEDIUM / LARGE)
-5. `anakmagang next "<reflection>" --size <SIZE>` → completes setup, machine computes active phases
+5. `anakmagang eval "<reflection>" --size <SIZE>` → completes setup, machine computes active phases
 
-**How to apply:** Always run `/orchestrate` first. `start` initializes without size. The first `next` call provides the size after the agent has done its analysis. The machine blocks advancement from setup until size is provided.
+**How to apply:** Always run `/orchestrate` first. `start` initializes without size. The first `eval` call provides the size after the agent has done its analysis. The machine blocks advancement from setup until size is provided.

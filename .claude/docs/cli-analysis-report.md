@@ -21,10 +21,6 @@ Deterministic, observable AI orchestration
 │  ├─ Agent definition validation (9-phase)
 │  ├─ Skill file compliance (28-phase)
 │  └─ Convention drift detection via ARCHITECTURE.md parsing
-└─ Type-safe tool integration (MCP)
-   ├─ Schema-validated I/O (Effect Schema at boundaries)
-   ├─ Stdio transport safety (kill+respawn, never retry same pipe)
-   └─ Server lifecycle management (Scope-managed child processes)
 ```
 
 ### Why This Exists
@@ -32,7 +28,6 @@ Deterministic, observable AI orchestration
 The R17{x} Universe orchestration harness generates knowledge at every phase transition (reflections, observations, patterns). Current state:
 - Agent/skill definitions trusted implicitly — no automated validation
 - Knowledge stored flat in feedback files — no cross-session retrieval
-- MCP tool responses unvalidated — coordinator trusts raw JSON
 
 **Real problem:** Not tooling — it's knowledge persistence and trust in AI-generated configurations. anakmagang shifts from "trust humans to follow rules" to "tools enforce rules and remember what worked."
 
@@ -41,7 +36,7 @@ The R17{x} Universe orchestration harness generates knowledge at every phase tra
 | Priority | Persona | Primary Need | anakmagang Subsystem |
 |----------|---------|-------------|---------------------|
 | 1 | R17 (developer) | Quality gate + knowledge base | Audit + Memory |
-| 2 | Claude (coordinator) | Persistent context + type-safe tools | Memory + MCP |
+| 2 | Claude (coordinator) | Persistent context + type-safe tools | Memory |
 | 3 | Worker agents | Real-time compliance feedback | Audit (indirect) |
 | 4 | Future contributors | Self-service onboarding | Memory + Audit |
 
@@ -67,7 +62,7 @@ The R17{x} Universe orchestration harness generates knowledge at every phase tra
 - NO centralized errors/schemas, NO helpers/utils unless truly needed
 - NO console.log (Effect.log/Console.info only), NO process.exit
 - NO additional edge types beyond derived_from until proven insufficient
-- NO HTTP server capabilities, NO bundled MCP schemas
+- NO HTTP server capabilities
 - NO eager global layer provision (lazy per-command for domain services)
 
 ## Failure Mode Summary
@@ -76,7 +71,6 @@ The R17{x} Universe orchestration harness generates knowledge at every phase tra
 
 | Risk | Likelihood | Mitigation |
 |------|-----------|------------|
-| Stdio corruption (MCP) | HIGH | Kill+respawn on any transport error. Never retry same pipe. Redirect all logs to stderr. |
 | Stale memory poisoning | HIGH | session_count + state transitions from day one. Prune command enforces lifecycle. |
 | CRDT file corruption | MEDIUM | Atomic writes (temp+rename). Backup on parse failure. Rebuildable from source files. |
 | ARCHITECTURE.md parse failure | MEDIUM | Validate parsed output against DomainRoute schema. Fail loudly on zero routes. |
@@ -86,7 +80,6 @@ The R17{x} Universe orchestration harness generates knowledge at every phase tra
 | System | Cascade Point | Impact |
 |--------|--------------|--------|
 | CLI Lifecycle | PROVIDE_LAYERS root failure | All subsystems fail. Mitigated by lazy per-command provision. |
-| MCP Call Flow | Stdio corruption | Connection poisoned forever. Must kill+respawn process. |
 | Audit Pipeline | ArchParser failure | Phase 8 fails for all targets. Other phases unaffected. |
 | Memory CRUD | Concurrent writes | Atomic temp+rename for file writes. CRDT for schema registry. |
 | Session Integration | Manifest corruption | All phase tracking lost. Backup+reinitialize on parse failure. |
@@ -99,9 +92,8 @@ The R17{x} Universe orchestration harness generates knowledge at every phase tra
 Layer 0 (external):     @effect/platform-bun, @effect/cli, effect 4.x, libfff.dylib (bun:ffi)
 Layer 1 (shared):       Config, Yaml, Search
 Layer 2 (domain):       MemoryStore,
-                        ArchParser, AgentAuditor, SkillAuditor,
-                        McpClient, SchemaRegistry
-Layer 3 (commands):     memory.*, audit.*, mcp.* (13 command files)
+                        ArchParser, AgentAuditor, SkillAuditor
+Layer 3 (commands):     memory.*, audit.* (command files)
 Layer 4 (composition):  cli.ts, bin.ts
 ```
 
@@ -109,7 +101,7 @@ Imports flow strictly downward. No circular dependencies. Verified.
 
 ### Layer Provision Strategy
 
-All layers are command-lazy — domain services (Config, Yaml, Search, McpClient, AgentAuditor, MemoryStore) are provided per-command via `Effect.provide` inside handler. No root-eager provision exists. A service failure in MCP doesn't prevent `memory status` from working.
+All layers are command-lazy — domain services (Config, Yaml, Search, AgentAuditor, MemoryStore) are provided per-command via `Effect.provide` inside handler. No root-eager provision exists.
 
 ### Implementation Sequence
 
@@ -119,7 +111,6 @@ All layers are command-lazy — domain services (Config, Yaml, Search, McpClient
 | B (Memory core) | MemoryStore, memory.status, memory.ts | Integration: `bun run bin.ts memory status` | Low |
 | C (Memory + Audit foundation) | memory.create/query/promote/prune, ArchParser | Integration: create+query round-trip, ArchParser parses ARCHITECTURE.md | Low |
 | D (Audit) | AgentAuditor, SkillAuditor, audit.agents/skills/all, audit.ts | Integration: `audit agents` against real .claude/agents/ | Medium |
-| E (MCP + Integration) | McpClient, SchemaRegistry, mcp.*, cli.ts, bin.ts | Integration: requires running MCP server | High |
 
 ### Key Decisions
 
@@ -129,7 +120,6 @@ All layers are command-lazy — domain services (Config, Yaml, Search, McpClient
 | Audit scope | Full 9+28 phases | Complete audit engine from day one; user decision | 0.80 |
 | Unification | Single CLI binary | Shared infra (Config, Yaml), single install; user decision | 0.85 |
 | Structure | Flat ~28 files | PascalCase/dot naming convention is sufficient grouping; user decision | 0.85 |
-| MCP transport | Stdio via @effect/platform/Command | Native Effect integration, kill+respawn on errors | 0.80 |
 | Memory schema | Unified fractal graph | Full schema from day one | 0.85 |
 
 ## Confidence Scores
@@ -147,16 +137,14 @@ All layers are command-lazy — domain services (Config, Yaml, Search, McpClient
 ### Key Caveats
 
 1. **effect-crdts port to Effect 4.x** — Uncharted territory. The library is small (~2k LOC) but depends on Effect 3.x STM and Schema APIs that may have changed. Fallback: plain JSON persistence if port proves too costly.
-2. **effect/unstable/ai** — API may change. Pin exact versions. Fallback: wrap official MCP SDK with Effect.
-3. **28-phase skill audit** — Comprehensive but untested against real skills. May produce false positives that erode trust.
-4. **Flat 28-file structure** — Works now; monitor for cognitive load as features grow. If it becomes a wall, add 3 shallow dirs.
+2. **28-phase skill audit** — Comprehensive but untested against real skills. May produce false positives that erode trust.
+3. **Flat 28-file structure** — Works now; monitor for cognitive load as features grow. If it becomes a wall, add 3 shallow dirs.
 
 ## R1 Recommendations (Applied)
 
 1. ~~Resolve CRDT contradiction~~ → User chose: port effect-crdts to Effect 4.x
-2. Design MCP server config resolution (how `<server>` maps to command) — **STILL OPEN**
-3. Move Bun stdio validation to Phase A — **ACCEPTED** (add smoke test)
-4. ~~Specify memory version detection~~ → Resolved: unified schema, no versions to detect
+2. Move Bun stdio validation to Phase A — **ACCEPTED** (add smoke test)
+3. ~~Specify memory version detection~~ → Resolved: unified schema, no versions to detect
 
 ## R2 Issues (User Overrode)
 

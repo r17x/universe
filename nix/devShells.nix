@@ -14,6 +14,7 @@
       self',
       pkgs,
       config,
+      system,
       ...
     }:
     {
@@ -31,6 +32,22 @@
         dune-fmt.settings.extraRuntimeInputs = [ pkgs.ocamlPackages.ocamlformat ];
         dune-fmt.files = "apps/rin.rocks";
         dune-fmt.entry = "dune build @fmt --root=apps/rin.rocks --auto-promote";
+        oxlint = {
+          enable = true;
+          name = "oxlint";
+          entry = "${pkgs.oxlint}/bin/oxlint --ignore-path .gitignore";
+          files = "\\.(ts|tsx|js|jsx)$";
+          pass_filenames = false;
+          language = "system";
+        };
+        oxfmt = {
+          enable = true;
+          name = "oxfmt";
+          entry = "${pkgs.bun}/bin/bun x oxfmt apps/anakmagang/src -- --check";
+          files = "\\.(ts|tsx|js|jsx)$";
+          pass_filenames = false;
+          language = "system";
+        };
       };
 
       devShells =
@@ -101,7 +118,9 @@
               mkShell_ = mkShell pkgName;
             in
             builtins.foldl' (acc: name: acc // { "${toCamelCase name}" = mkShell_ name; }) { } (
-              builtins.filter (lib.strings.hasPrefix pkgName) (builtins.attrNames pkgs)
+              builtins.filter (
+                name: lib.strings.hasPrefix pkgName name && (builtins.tryEval pkgs.${name}).success
+              ) (builtins.attrNames pkgs)
             );
 
         in
@@ -280,21 +299,54 @@
           #
           #
           anakmagang = pkgs.mkShell {
-            LIBFFF_PATH = "${inputs'.fff-nvim.packages.default}/lib";
+            LIBFFF_PATH = "${pkgs.fff-nvim}/lib";
             description = "Anakmagang CLI Development Environment";
             inputsFrom = [ self'.devShells.default ];
             shellHook = ''
               ${config.pre-commit.installationScript}
 
               export ROOT_REPO=$(git rev-parse --show-toplevel)
-              bun build --compile --outfile=anakmagang ./apps/anakmagang/src/bin.ts
-              export PATH="$PATH:$ROOT_REPO"
+              export ANAKMAGANG_PATH="$ROOT_REPO/apps/anakmagang"
+
+              build-anakmagang
+              export PATH="$ROOT_REPO:$PATH:$ANAKMAGANG_PATH/node_modules/.bin"
             '';
 
             packages = [
               pkgs.bun
+              (pkgs.writeShellScriptBin "bunx" ''exec bun --bun x "$@"'')
+              (pkgs.writeShellScriptBin "build-anakmagang" ''
+                set -euo pipefail
+                ROOT_REPO="$(git rev-parse --show-toplevel)"
+                ANAKMAGANG_PATH="$ROOT_REPO/apps/anakmagang"
+                cd "$ANAKMAGANG_PATH" && ${pkgs.bun}/bin/bun install
+                cd "$ANAKMAGANG_PATH" && OUTFILE="$ROOT_REPO/anakmagang" ${pkgs.bun}/bin/bun run build.ts
+                cd "$ROOT_REPO"
+              '')
+              (pkgs.writeShellScriptBin "browser" ''
+                DIA_APP="/Applications/Dia.app"
+                CDP_PORT=9222
+
+                if pgrep -f "remote-debugging-port=$CDP_PORT" > /dev/null 2>&1; then
+                  echo "Dia is already running with CDP enabled."
+                  echo "CDP endpoint: cdp://localhost:$CDP_PORT"
+                elif pgrep -f "Dia" > /dev/null 2>&1; then
+                  echo "WARNING: Dia is running but WITHOUT CDP enabled."
+                  echo "Restarting Dia with CDP..."
+                  pkill -f "Dia"
+                  sleep 1
+                  open -a "$DIA_APP" --args --remote-debugging-port=$CDP_PORT
+                  echo "Dia relaunched with CDP."
+                  echo "CDP endpoint: cdp://localhost:$CDP_PORT"
+                else
+                  echo "Launching Dia with CDP enabled..."
+                  open -a "$DIA_APP" --args --remote-debugging-port=$CDP_PORT
+                  echo "CDP endpoint: cdp://localhost:$CDP_PORT"
+                fi
+              '')
+              inputs.bun2nix.packages.${system}.default
               pkgs.typescript
-              inputs'.fff-nvim.packages.default
+              pkgs.fff-nvim
             ];
           };
 

@@ -1,6 +1,6 @@
 ---
 name: Anakmagang
-description: Comprehensive architecture — deterministic AI orchestration CLI with state-machine-as-data, fractal memory, supply chain audit, and MCP gateway
+description: Comprehensive architecture — deterministic AI orchestration CLI with state-machine-as-data, fractal memory, and supply chain audit
 type: reference
 created: 2026-04-24
 updated: 2026-05-03
@@ -26,13 +26,11 @@ Deterministic, observable AI orchestration
 **Problem:** The 16-phase orchestration protocol generates knowledge at every phase, but:
 - Agent/skill definitions accumulate without validation
 - Knowledge is trapped in session-scoped feedback files
-- MCP tool responses are trusted without schema validation
 - Each session cold-starts without prior context
 
 **What it replaces:**
 - Manual `grep` for agent/skill validation → `anakmagang audit`
 - Manual feedback file extraction → `anakmagang memory`
-- Unvalidated MCP stdio calls → `anakmagang mcp`
 
 **Who it serves (priority order):**
 1. R17 (developer) — quality gate + knowledge base
@@ -49,13 +47,13 @@ Deterministic, observable AI orchestration
 
 ## Categorical Foundations
 
-anakmagang IS the data model. Every command — `init`, `audit`, `memory`, `mcp` — is an interpretation of one algebraic structure. The state machine preset is not a feature; it is the core type from which everything derives.
+anakmagang IS the data model. Every command — `init`, `audit`, `memory` — is an interpretation of one algebraic structure. The state machine preset is not a feature; it is the core type from which everything derives.
 
 ### Categorical Insight
 
 anakmagang forms a **small category**:
 
-- **Objects** = states (phases, memory lifecycle, audit checks, MCP protocol states)
+- **Objects** = states (phases, memory lifecycle, audit checks)
 - **Morphisms** = guarded, effectful transitions between states
 - **Identity** = staying in the current state (no-op transition)
 - **Composition** = sequential transitions: `(A → B) ∘ (B → C) = (A → C)`
@@ -253,37 +251,6 @@ data Status = Pass | Warn | Fail
 type AuditPipeline = Machine AuditPhase AuditEvent AuditGuard AuditAction
 ```
 
-#### MCP Protocol
-
-```haskell
-module Anakmagang.Mcp where
-
-data McpState
-  = Disconnected | Spawned | Connected | Introspected | Ready
-  deriving (Eq, Show)
-
-data McpEvent
-  = SpawnServer ServerConfig
-  | HandshakeComplete
-  | IntrospectComplete [ToolSchema]
-  | CallTool ToolName Args
-  | TransportError Text
-
-data McpGuard
-  = ServerReachable
-  | SchemaRegistered ToolName
-
-data McpAction
-  = SpawnProcess ServerConfig
-  | SendJsonRpc Request
-  | PersistSchema ToolName Schema
-  | KillProcess                  -- on transport error, kill + respawn
-  | ValidateInput Schema Value
-  | ValidateOutput Schema Value
-
-type McpProtocol = Machine McpState McpEvent McpGuard McpAction
-```
-
 ### Composition
 
 Machines compose. This is what makes the unified model work — the full anakmagang runtime is a **product** of four machines running in concert.
@@ -313,24 +280,20 @@ product m1 m2 = Machine
   }
 
 -- | DAG Coupling: subsystems signal back to orchestration only.
---   No Memory<->Audit, no Audit<->MCP. Orchestration is the hub.
+--   No Memory<->Audit. Orchestration is the hub.
 --
 --        Memory --> Orchestration <-- Audit
---                        |
---                       MCP
 
 data BackEvent
   = AuditSignal AuditBackEvent
-  | McpSignal McpBackEvent
   | MemorySignal MemBackEvent
 
 data AuditBackEvent  = AuditFailed Text | AuditBlocked
-data McpBackEvent    = TransportError Text | ServerUnreachable
 data MemBackEvent    = ConflictDetected NodeId NodeId | StaleContext
 
--- The full runtime: product of all four, orchestration absorbs back-events
+-- The full runtime: product of all machines, orchestration absorbs back-events
 type Anakmagang = Machine
-  (Phase, Map NodeId MemState, Maybe AuditPhase, Map Server McpState)
+  (Phase, Map NodeId MemState, Maybe AuditPhase)
   AnakmagangEvent
   AnakmagangGuard
   AnakmagangAction
@@ -339,12 +302,10 @@ data AnakmagangEvent
   = OrcE OrcEvent
   | MemE NodeId MemEvent
   | AudE AuditEvent
-  | McpE Server McpEvent
   | BackE BackEvent           -- subsystem -> orchestration feedback
 
 -- Back-events feed into orchestration's transition function:
 --   BackE (AuditSignal (AuditFailed _))  -> retreat to implementation
---   BackE (McpSignal (TransportError _)) -> block implementation
 --   BackE (MemorySignal (ConflictDetected _ _)) -> re-triage
 ```
 
@@ -373,10 +334,6 @@ hookEval :: Machine s e g a -> s -> HookEvent -> g -> HookResult
 data HookEvent = PreToolUse Tool Input | PostToolUse Tool Output | PromptSubmit Text
 data HookResult = Allow | Block Text | Warn Text
 
--- | serve: Machine -> McpServer
---   Exposes actions (a) as MCP tools that Claude Code can call.
-serve :: Machine s e g a -> McpServer
-
 -- | status: Machine x State -> Report
 status :: Machine s e g a -> s -> Report
 
@@ -385,9 +342,6 @@ audit :: AuditPipeline -> FilePath -> IO AuditReport
 
 -- | memory: MemoryLifecycle x Operation -> Node
 memory :: MemoryLifecycle -> MemoryOp -> IO MemoryNode
-
--- | mcp: McpProtocol x Call -> Response
-mcp :: McpProtocol -> McpCall -> IO McpResponse
 ```
 
 All commands derive from `Machine s e g a`:
@@ -398,15 +352,13 @@ Machine s e g a
    +-- s (states)    -> manifest tracks current state
    +-- e (events)    -> what triggers transitions
    +-- g (guards)    -> anakmagang hook list / hook <id>
-   +-- a (actions)   -> anakmagang serve (MCP tools)
+   +-- a (actions)   -> transitions
 
 CLI command tree:
    init    = Preset -> RepoState -> [Artifact]
    hook    = Machine -> g -> HookResult
-   serve   = Machine -> McpServer
    audit   = Machine -> [File] -> Report
    memory  = Machine -> MemOp -> Node
-   mcp     = Machine -> McpCall -> Response
    status  = Machine -> s -> Report
 ```
 
@@ -476,7 +428,6 @@ reify                      Schema.decode (Preset -> Machine)
 init                       effect/platform FileSystem writes
 hookList                   Machine.guards projected as list
 hookEval                   Effect.if / Effect.when (guard -> boolean)
-serve                      McpServer.layerStdio() (actions -> MCP tools) [Phase F]
 status                     Effect.sync (read manifest, no transitions)
 ```
 
@@ -500,7 +451,7 @@ Core idea: the orchestration protocol is **data**, not code. anakmagang reads a 
 
 ```yaml
 # .anakmagang/config.yaml — the portable unit
-name: r17x-orchestrate
+name: orchestrate
 version: 1
 
 phases:
@@ -610,51 +561,93 @@ guards:
   - type: agent-first
     description: "Coordinator never edits files directly"
     enforced_by: hook
-
-  - type: iteration-limit
-    max: 50
-    warn_at: 40
-    enforced_by: hook
-
-  - type: dirty-bit-tracking
-    description: "Track file mutations per phase"
-    enforced_by: hook
+    event: PreToolUse
+    matcher: "Edit|Write"
+    routes:
+      ".nix": "/gateway-nix"
 
   - type: output-location
     description: "Writes constrained to project directory"
     enforced_by: hook
-
-  - type: reflection-required
-    description: "Exit question must be answered before phase transition"
-    enforced_by: manifest
-
-  - type: block-nix-build
-    description: "Blocks slow nix build commands"
-    enforced_by: hook
+    event: PreToolUse
+    matcher: "Edit|Write"
+    restricted_paths:
+      - "secrets/secret.yaml"
+      - ".sops.yaml"
+    restricted_prefixes:
+      - "result/"
 
   - type: compaction-gate
     description: "Blocks agent spawn at high context usage"
     enforced_by: hook
+    event: PreToolUse
+    matcher: Agent
 
-  - type: auto-nix-eval
-    description: "Auto-runs nix eval after .nix file edits"
+  - type: iteration-limit
+    description: "Caps tool calls per task"
+    max: 50
+    warn_at: 40
     enforced_by: hook
+    event: PreToolUse
+
+  - type: command-substitute
+    description: "Block forbidden commands — suggest alternatives"
+    enforced_by: hook
+    event: PreToolUse
+    matcher: Bash
+    rules:
+      - contains: ["npm", "pnpm", "yarn"]
+        should: bun
+      - contains: ["npx", "pnpx"]
+        should: bunx
+      - contains: ["nix-instantiate"]
+        should: nix eval
+      - contains: ["darwin-rebuild switch"]
+        should: darwin-rebuild switch --dry-run
+        unless_contains: "--dry-run"
+
+  - type: post-edit
+    description: "Auto-verify nix files after edit"
+    enforced_by: hook
+    event: PostToolUse
+    matcher: "Edit|Write"
+    file_pattern: "\\.nix$"
+    command: "nix flake check --no-build"
 
   - type: inject-reminders
     description: "Injects phase reminders into prompts"
     enforced_by: hook
+    event: UserPromptSubmit
+    reminders:
+      - "Route Nix work via /gateway-nix. Use /orchestrate for non-trivial tasks."
 
   - type: agent-stop-guard
-    description: "Ensures nix changes verified before worker stops"
+    description: "Ensures worker ran verification and emitted completion promise"
     enforced_by: hook
+    event: SubagentStop
+    verification_rules:
+      - file_pattern: "\\.nix\\b"
+        required_commands: ["nix eval", "nix flake check", "nix flake show", "nix fmt", "nixfmt"]
+        message: "Run nix verification before stopping."
+    promises:
+      - IMPLEMENTATION_COMPLETE
+      - VERIFICATION_PASSED
+      - VERIFICATION_FAILED
+      - IMPLEMENTATION_BLOCKED
+      - NEEDS_COORDINATOR_INPUT
+      - REVIEW_PASSED
+      - REVIEW_ISSUES_FOUND
+      - REVIEW_BLOCKED
 
   - type: session-stop-guard
     description: "Prevents session end with incomplete task"
     enforced_by: hook
+    event: Stop
 
-  - type: context-cache
-    description: "Caches context window usage metrics"
-    enforced_by: hook
+  - type: reflection-required
+    description: "Exit question must be answered before phase transition"
+    enforced_by: manifest
+    event: PhaseTransition
 
 size_presets:
   TRIVIAL:
@@ -669,27 +662,26 @@ size_presets:
 
 ### Guard Types
 
-11 guard types are implemented, each bound to a specific hook event:
+10 guard types are implemented, each bound to a specific hook event:
 
 | Guard | Event | Description |
 |-------|-------|-------------|
-| agent-first | PreToolUse | Coordinator cannot use Edit/Write directly |
-| output-location | PreToolUse | Writes constrained to project directory |
-| block-nix-build | PreToolUse | Blocks slow nix commands |
-| compaction-gate | PreToolUse | Blocks agent spawn at high context usage |
-| iteration-limit | PreToolUse | Caps tool calls per task (50 max, warn at 40) |
-| auto-nix-eval | PostToolUse | Auto-runs nix eval after .nix file edits |
-| dirty-bit-tracking | PostToolUse | Records file mutations per phase |
-| inject-reminders | PromptSubmit | Injects phase reminders into prompt |
-| agent-stop-guard | PostToolUse | Ensures nix changes verified before worker stops |
-| session-stop-guard | PostToolUse | Prevents session end with incomplete task |
-| context-cache | PostToolUse | Caches context window usage metrics |
+| agent-first | PreToolUse | Coordinator cannot use Edit/Write directly; routes via config `routes` map |
+| output-location | PreToolUse | Writes constrained to project directory; config-driven `restricted_paths`/`restricted_prefixes` |
+| compaction-gate | PreToolUse | Blocks agent spawn at high context usage (>80% block, >75% warn) |
+| iteration-limit | PreToolUse | Caps tool calls per task (configurable `max`/`warn_at`) |
+| command-substitute | PreToolUse | Blocks commands matching configurable `rules` with `unless_contains` exemptions |
+| post-edit | PostToolUse | Runs configurable `command` after file edits; optional `file_pattern` filter |
+| inject-reminders | UserPromptSubmit | Injects task/phase/memory context; config-driven `reminders` array |
+| agent-stop-guard | SubagentStop | Config-driven `verification_rules` + `promises` check on worker stop |
+| session-stop-guard | Stop | Prevents session end with incomplete task (escape hatch after 2 blocks) |
+| reflection-required | PhaseTransition | Exit question must be answered before phase transition |
 
 ### Presets
 
 | Preset | Phases | Use Case |
 |--------|--------|----------|
-| `r17x-orchestrate` | 16 phases | Full deterministic orchestration (current R17x workflow) |
+| `orchestrate` | 16 phases | Full deterministic orchestration (current R17x workflow) |
 | `minimal` | 4 phases: plan → implement → verify → complete | Small projects, quick tasks |
 | `review-only` | 3 phases: discover → review → report | Code review workflows |
 | `blank` | 0 phases | Empty machine — define your own |
@@ -698,7 +690,7 @@ size_presets:
 
 ```bash
 # From a preset
-anakmagang init --preset r17x-orchestrate
+anakmagang init --preset orchestrate
 anakmagang init --preset minimal
 
 # From a custom definition
@@ -715,18 +707,13 @@ anakmagang init --preset minimal --target /path/to/project
   .claude/
     skills/
       orchestrate.md          # Generated from phases + transitions
-      gateway-nix.md          # Domain-specific (if declared)
     agents/
       # Not generated — project-specific
   .anakmagang/
     config.yaml              # Source definition (generated by init, committed)
-  .data/
+  .anakmagang/
     manifest.yaml             # Initialized with machine's state schema
-    feedback/                 # Created empty
-  hooks/
-    agent-first.sh            # Generated from guards[type=agent-first]
-    iteration-limit.sh        # Generated from guards[type=iteration-limit]
-    dirty-bit-tracker.sh      # Generated from guards[type=dirty-bit-tracking]
+    out/                      # Session output (gitignored)
   CLAUDE.md                   # Protocol section injected/appended
   ARCHITECTURE.md             # Scaffold if missing
 ```
@@ -759,9 +746,8 @@ The subsystems are **machine-agnostic** — they don't know which phases exist. 
 | Layer | Choice | Rationale |
 |-------|--------|-----------|
 | Runtime | Bun | Fast startup, native TS, built-in bundler |
-| Core | effect 4.x | Typed errors, services, layers, structured concurrency, native MCP support |
+| Core | effect 4.x | Typed errors, services, layers, structured concurrency |
 | CRDT | effect-crdts | STM-based CRDTs with file persistence via KeyValueStore — concurrent schema safety |
-| MCP | effect/unstable/ai | Native McpServer.layerStdio() + Toolkit/Tool for MCP over stdio |
 | CLI framework | @effect/cli | Command/Options/Args with Effect integration |
 | Platform | @effect/platform-bun | FileSystem, Process, Terminal |
 | Schema/Validation | effect/Schema | Idiomatic, zero extra deps, encodes/decodes |
@@ -786,16 +772,12 @@ The subsystems are **machine-agnostic** — they don't know which phases exist. 
 
 > **Note:** In Effect 4.x beta monorepo, @effect/cli, @effect/platform, and @effect/printer are bundled within effect. They are imported as effect/unstable/cli, etc. effect-crdts is Phase E (not yet added).
 
-> **Native dependency:** `libfff.dylib` is built from `.data/references/fff.nvim` crate `fff-c` via `rustPlatform.buildRustPackage` in the Nix flake. No npm package needed — loaded directly via `bun:ffi` using `Bun.dlopen()`.
+> **Native dependency:** `libfff.dylib` is built from `.anakmagang/references/fff.nvim` crate `fff-c` via `rustPlatform.buildRustPackage` in the Nix flake. No npm package needed — loaded directly via `bun:ffi` using `Bun.dlopen()`.
 
-### Research References (cloned in `.data/references/`)
+### Research References (cloned in `.anakmagang/references/`)
 
 | Repo | Path | Purpose |
 |------|------|---------|
-| ghardin1314/effect-mcp | `effect-mcp-ghardin/` | Full Effect MCP client+server monorepo |
-| tim-smart/effect-mcp | `effect-mcp-tim-smart/` | Effect 4.x native `McpServer.layerStdio()` example |
-| jpowersdev/effect-mcp | `effect-mcp-jpowers/` | Clean service architecture with StdioTransport |
-| modelcontextprotocol/typescript-sdk | `mcp-typescript-sdk/` | Official MCP protocol reference |
 | front-depiction/Effect-CRDTs | `Effect-CRDTs/` | Pure Effect-TS CRDT library with file persistence |
 | loro-dev/loro | `loro/` | Rich CRDT with WASM bindings (fallback option) |
 | automerge/automerge | `automerge/` | Mature CRDT with WASM (fallback option) |
@@ -832,7 +814,7 @@ anakmagang
   |   +-- query [--tag T] [--scale S] [--text Q]
   |   +-- promote <id>                 # Promote to higher scale
   |   +-- prune [--dry-run]            # Archive stale nodes
-  |   +-- index                        # Scan .data/references, create nodes
+  |   +-- index                        # Scan .anakmagang/references, create nodes
   |   +-- resolve --query <Q>          # Fuzzy memory search
   +-- start <task>                     # Begin new orchestration session
   +-- next [answer] --session <id>     # Advance to next phase
@@ -851,7 +833,7 @@ anakmagang
 
 > File layout is provisional. Will be refined during implementation.
 
-**Convention:** lowercase dot-separated = commands (`domain.sub.ts`), PascalCase = Effect services (`McpClient.ts`). Errors and schemas live in their owning module, not centralized.
+**Convention:** lowercase dot-separated = commands (`domain.sub.ts`), PascalCase = Effect services (`MemoryStore.ts`). Errors and schemas live in their owning module, not centralized.
 
 ```
 apps/anakmagang/
@@ -878,17 +860,6 @@ apps/anakmagang/
     hook.sync.ts                 # `hook sync` — sync guards to .claude/settings.json
     guard.ts                     # Guard type definitions and evaluation
 
-    # --- Serve ---
-    serve.ts                     # [Phase F — not yet implemented]
-
-    # --- MCP ---
-    mcp.ts                       # [Phase E — not yet implemented]
-    mcp.validate.ts              # [Phase E — not yet implemented]
-    mcp.introspect.ts            # [Phase E — not yet implemented]
-    mcp.call.ts                  # [Phase E — not yet implemented]
-    McpClient.ts                 # [Phase E — not yet implemented]
-    SchemaRegistry.ts            # [Phase E — not yet implemented]
-
     # --- Audit ---
     audit.ts                     # `anakmagang audit` command group
     audit.agents.ts              # `audit agents [name]` — 9-phase agent audit
@@ -905,7 +876,7 @@ apps/anakmagang/
     memory.promote.ts            # `memory promote` — promote to higher scale
     memory.prune.ts              # `memory prune` — archive stale nodes
     memory.status.ts             # `memory status` — memory system overview
-    memory.index.ts              # `memory index` — scan .data/references, create nodes
+    memory.index.ts              # `memory index` — scan .anakmagang/references, create nodes
     memory.resolve.ts            # `memory resolve` — fuzzy memory search
     MemoryStore.ts               # Service: CRUD + state transitions (ACTIVE->STALE->ARCHIVED)
 
@@ -914,13 +885,10 @@ apps/anakmagang/
     EventLog.ts                  # Service: session event persistence
     Ulid.ts                      # Service: ULID generation
     start.cmd.ts                 # `anakmagang start` — begin orchestration session
-    next.cmd.ts                  # `anakmagang next` — advance to next phase
-    observe.cmd.ts               # `anakmagang observe` — record observation
+    eval.cmd.ts                  # `anakmagang eval` — phase transitions, observations, artifacts
     state.cmd.ts                 # `anakmagang state` — show session state
-    status.ts                    # `anakmagang status` — machine/session overview
     update.cmd.ts                # `anakmagang update` — add observation key:value
     drop.cmd.ts                  # `anakmagang drop` — remove session
-    logs.cmd.ts                  # `anakmagang logs` — show raw event stream
 
     # --- Shared Services ---
     Config.ts                    # Service: repo root, CLAUDE.md, ARCHITECTURE.md paths
@@ -962,7 +930,7 @@ class Config extends Context.Service("Config")<Config>() {
         claudeMd: fs.readFileString(`${repoRoot}/CLAUDE.md`),
         architectureMd: fs.readFileString(`${repoRoot}/ARCHITECTURE.md`),
         memoriesDir: `${repoRoot}/.claude/memories`,
-        feedbackDir: `${repoRoot}/.data/feedback`,
+        outDir: `${repoRoot}/.anakmagang/out`,
       })
     })
   )
@@ -1039,12 +1007,6 @@ const auditAgentsHandler = Effect.gen(function* () {
 Errors are co-located with the service that owns them — no centralized `errors.ts`.
 
 ```typescript
-// In McpClient.ts
-class McpConnectionError extends Schema.TaggedError<McpConnectionError>()(
-  "McpConnectionError",
-  { server: Schema.String, message: Schema.String }
-) {}
-
 // In MemoryStore.ts
 class MemoryNodeError extends Schema.TaggedError<MemoryNodeError>()(
   "MemoryNodeError",
@@ -1089,9 +1051,8 @@ Layer 0 (external):     @effect/platform-bun, @effect/cli, effect 4.x, effect-cr
 Layer 1 (shared):       Config, Yaml, Search
 Layer 2 (domain):       MemoryStore,
                         ArchParser, AgentAuditor, SkillAuditor,
-                        McpClient, SchemaRegistry,
                         MachineLoader
-Layer 3 (commands):     memory.*, audit.*, mcp.*, init, hook.*, serve (~20 files)
+Layer 3 (commands):     memory.*, audit.*, init, hook.* (~15 files)
 Layer 4 (composition):  cli.ts, bin.ts
 ```
 
@@ -1237,7 +1198,7 @@ interface MemoryStore {
 |---------|----------|------------|
 | Graph cycles in derived_from | Catastrophic | DAG constraint — validate on write |
 | Context overflow from traversal | Catastrophic | Hard caps: depth 2, fan-out 5, max 10 nodes |
-| Concurrent write corruption | Catastrophic | Use .data/locks/ for memory file writes |
+| Concurrent write corruption | Catastrophic | Atomic temp+rename for memory file writes |
 | Stale node poisoning | Recoverable | session_count + per-type state transitions |
 | Orphan node accumulation | Recoverable | Edge-validity check during prune |
 | Budget starvation | Recoverable | Soft sub-budget, yield to task ops |
@@ -1332,82 +1293,9 @@ const AuditReport = Schema.Struct({
 
 ---
 
-### MCP (Gateway — Both Roles)
-
-anakmagang plays **two distinct roles** in the MCP ecosystem:
-
-#### Role 1: MCP Client (Gateway wrapping external servers)
-
-anakmagang wraps external MCP servers with schema validation. All external MCP calls pass through the Machine's state machine — the Machine IS the gateway.
-
-**Flow:**
-```
-introspect -> generates schemas -> persists via CRDT LWWMap
-validate   -> loads schemas from CRDT -> validates against MCP server response
-call       -> validates input -> calls MCP over stdio -> validates output -> returns typed result
-```
-
-The `McpProtocol` machine tracks each server's connection state:
-```
-Disconnected -> Spawned -> Connected -> Introspected -> Ready
-```
-On `TransportError`: Kill process (never retry same pipe). Restart from `Spawned`.
-
-**Key Service: McpClient**
-```typescript
-interface McpClient {
-  readonly listTools: (server: string) => Effect.Effect<ReadonlyArray<McpToolInfo>, McpConnectionError>
-  readonly callTool: (server: string, tool: string, args: unknown) => Effect.Effect<unknown, McpConnectionError | McpValidationError>
-  readonly introspect: (server: string) => Effect.Effect<ReadonlyArray<McpToolSchema>, McpConnectionError>
-}
-```
-
-**Key Service: SchemaRegistry (CRDT-backed)**
-```typescript
-interface SchemaRegistry {
-  readonly get: (server: string, tool: string) => Effect.Effect<Schema.Schema<any>, SchemaNotFound>
-  readonly register: (server: string, tool: string, schema: Schema.Schema<any>) => Effect.Effect<void>
-  readonly generateFromIntrospection: (tools: ReadonlyArray<McpToolSchema>) => Effect.Effect<void>
-  readonly sync: Effect.Effect<void>  // CRDT sync for concurrent session safety
-}
-```
-
-Schema persistence uses `effect-crdts` LWWMap backed by `KeyValueStore.layerFileSystem()` — multiple sessions can register schemas concurrently without conflicts.
-
-#### Role 2: MCP Server (exposes Machine actions as tools)
-
-`anakmagang serve` makes the Machine itself available as an MCP server. Claude Code connects to anakmagang as an MCP server and calls Machine actions (guards, transitions, memory ops) directly.
-
-```
-serve :: Machine s e g a -> McpServer
-```
-
-The `serve` command uses `McpServer.layerStdio()` to expose:
-- Machine actions (`a`) as MCP tools — Claude Code can trigger transitions
-- Guard evaluations — Claude Code can query whether a transition is allowed
-- Memory operations — Claude Code can read/write memory nodes through the Machine
-- State queries — Claude Code can observe current orchestration state
-
-**Effect 4.x Native MCP:**
-- `McpServer.layerStdio()` — complete stdio transport as a single Layer
-- `Toolkit.make()` + `Tool.make()` — tool registration with Effect Schema validation
-- Logs automatically redirect to stderr to avoid corrupting JSON-RPC stream on stdout
-
-**The unified picture:**
-```
-External MCP servers                anakmagang                 Claude Code
-      |                                  |                          |
-      |  <-- McpClient (validates) ------+                          |
-      |                                  |                          |
-      |            (Machine as gateway)  |<-- serve (McpServer) ----+
-      |                                  |                          |
-```
-
----
-
 ## Implementation Phases
 
-> **Status:** Phases A-D are complete (foundation, memory, audit). Phase E (MCP + CRDT) and Phase F (state machine framework) are partially implemented — init, hook list/eval/sync, and search are done; serve, mcp commands, and SchemaRegistry are not yet implemented.
+> **Status:** Phases A-D are complete (foundation, memory, audit). Phase F (state machine framework) is partially implemented — init, hook list/eval/sync, and search are done.
 
 ### Phase A: Foundation (4 files)
 
@@ -1503,40 +1391,15 @@ bun run src/bin.ts audit all --format json
 echo $?
 ```
 
-### Phase E: MCP + Integration (7 files)
+### Phase F: State Machine Framework (init, hook)
 
-**Files:** McpClient.ts, SchemaRegistry.ts, mcp.introspect.ts, mcp.validate.ts, mcp.call.ts, mcp.ts + cli.ts, bin.ts
-
-**Pre-requisite:** Port effect-crdts to Effect 4.x (separate task — see below). CRDT is a hard requirement.
+**Files:** init.ts, MachineLoader.ts, hook.ts, hook.list.ts, hook.eval.ts
 
 **Acceptance:**
-- `mcp introspect <server>` lists tools from a running MCP server
-- `mcp validate <server>` validates schemas against server response
-- `mcp call <server> <tool> [args]` executes with validation
-- SchemaRegistry persists schemas via ported effect-crdts LWWMap
-- McpClient kills+respawns on transport errors
-- `anakmagang --help` shows all subcommand groups
-
-**Verification:**
-```bash
-bun test src/McpClient.test.ts
-bun test src/SchemaRegistry.test.ts
-bun run src/bin.ts mcp introspect <server>
-bun run src/bin.ts --help
-bun run src/bin.ts memory status
-bun run src/bin.ts audit agents
-```
-
-### Phase F: State Machine Framework (init, hook, serve)
-
-**Files:** init.ts, MachineLoader.ts, hook.ts, hook.list.ts, hook.eval.ts, serve.ts
-
-**Acceptance:**
-- `anakmagang init --preset r17x-orchestrate` generates all artifacts from the bundled preset
+- `anakmagang init --preset orchestrate` generates all artifacts from the bundled preset
 - `anakmagang init --from ./.anakmagang/config.yaml` loads and reifies a custom definition
 - `anakmagang hook list` projects guards from the loaded machine
 - `anakmagang hook <id>` evaluates a guard — callable from settings.json hooks
-- `anakmagang serve` starts MCP server exposing Machine actions as tools
 - Init is idempotent: re-running merges without destructive overwrites
 
 **Verification:**
@@ -1545,12 +1408,11 @@ bun test src/MachineLoader.test.ts
 bun run src/bin.ts init --preset minimal --target /tmp/test-project
 ls /tmp/test-project/.claude/skills/
 bun run src/bin.ts hook list
-bun run src/bin.ts serve  # smoke: starts without error
 ```
 
 ### Parallel Task: Port effect-crdts to Effect 4.x
 
-**Source:** `.data/references/Effect-CRDTs/`
+**Source:** `.anakmagang/references/Effect-CRDTs/`
 **Scope:** ~2k LOC, primarily STM and Schema API updates
 **Output:** `apps/anakmagang/src/crdt/` or published fork
 
@@ -1587,16 +1449,6 @@ bun run src/bin.ts serve  # smoke: starts without error
 | FR-AUD-5 | Human and JSON output formats | P0 | `--format json` produces valid JSON; default is human-readable |
 | FR-AUD-6 | Exit codes: 0=pass, 1=warnings, 2=failures | P0 | Verified via `echo $?` after invocation |
 
-**FR-MCP: MCP Subsystem**
-
-| ID | Requirement | Priority | Success Metric |
-|----|------------|----------|---------------|
-| FR-MCP-1 | Introspect MCP server tools via stdio | P1 | Lists all tools with schemas from running server |
-| FR-MCP-2 | Validate tool I/O against persisted schemas | P1 | Schema mismatch produces McpValidationError |
-| FR-MCP-3 | Wrapped MCP call with input/output validation | P1 | Call succeeds with validated result or fails with typed error |
-| FR-MCP-4 | CRDT-backed schema persistence (hard requirement) | P1 | Schemas survive across CLI invocations; concurrent writes merge |
-| FR-MCP-5 | Serve Machine actions as MCP tools | P1 | `anakmagang serve` starts MCP server; actions callable from Claude Code |
-
 **FR-INIT: Init & Hook Subsystem**
 
 | ID | Requirement | Priority | Success Metric |
@@ -1625,20 +1477,18 @@ bun run src/bin.ts serve  # smoke: starts without error
 
 | Risk | Likelihood | Mitigation |
 |------|-----------|------------|
-| Stdio corruption (MCP) | HIGH | Kill+respawn on any transport error. Never retry same pipe. Redirect all logs to stderr. |
 | Stale memory poisoning | HIGH | per-type session_count thresholds + state transitions from day one. Prune command enforces lifecycle. |
 | CRDT file corruption | MEDIUM | Atomic writes (temp+rename). Backup on parse failure. Rebuildable from source files. |
 | ARCHITECTURE.md parse failure | MEDIUM | Validate parsed output against DomainRoute schema. Fail loudly on zero routes. |
 | Graph cycles in derived_from | Catastrophic | DAG constraint — validate on write |
 | Context overflow from graph traversal | Catastrophic | Hard caps: depth 2, fan-out 5, max 10 nodes |
-| Concurrent write corruption | Catastrophic | Use .data/locks/ for memory file writes |
+| Concurrent write corruption | Catastrophic | Atomic temp+rename for memory file writes |
 
 ### State Machine Cascade Points
 
 | System | Cascade Point | Impact |
 |--------|--------------|--------|
 | CLI Lifecycle | PROVIDE_LAYERS root failure | All subsystems fail. Mitigated by lazy per-command provision. |
-| MCP Call Flow | Stdio corruption | Connection poisoned forever. Must kill+respawn process. |
 | Audit Pipeline | ArchParser failure | Phase 8 fails for all targets. Other phases unaffected. |
 | Memory CRUD | Concurrent writes | Atomic temp+rename for file writes. CRDT for schema registry. |
 | Session Integration | Manifest corruption | All phase tracking lost. Backup+reinitialize on parse failure. |
@@ -1650,8 +1500,7 @@ bun run src/bin.ts serve  # smoke: starts without error
 - **DO NOT** position anakmagang as a replacement for CLAUDE.md — it enforces what CLAUDE.md declares
 - **DO NOT** build features for hypothetical users — R17 and Claude are the only confirmed users
 - **DO NOT** use external validation libraries — `effect/Schema` handles everything
-- **DO NOT** add HTTP server capabilities — this is a CLI tool (plus stdio MCP server), not a service
-- **DO NOT** bundle MCP schemas at build time — introspect and generate at runtime
+- **DO NOT** add HTTP server capabilities — this is a CLI tool, not a service
 - **DO NOT** use `console.log` — use `Effect.log` / `Console.info`
 - **DO NOT** use `process.exit` — let Effect runtime handle exit codes via error channel
 - **DO NOT** add abstractions for single-use operations — three lines > premature helper
@@ -1673,16 +1522,15 @@ bun run src/bin.ts serve  # smoke: starts without error
 
 ## Open Questions
 
-1. **MCP server config resolution**: How does `<server>` argument map to a stdio command? Options: parse claude_desktop_config.json, accept `--command` flag, or define `.anakmagang/servers.json`. (R1 recommendation: still open)
-2. **Native lib delivery**: Should `libfff.dylib` be built inline via Nix or consumed from fff.nvim's flake output?
-3. **Machine extension**: Should `extends` be a pullback in the category of presets? (e.g., `extends: minimal` adds phases to a base machine)
-4. **Guard evaluation order**: Guards are a list — is it conjunction (all must pass) or should we support disjunction?
-5. **Action atomicity**: Are actions within a single transition atomic? If one fails, do we roll back?
-6. **Hot reload**: If the preset YAML changes, can the running machine adapt without restart?
-7. **Machine definition format**: Resolved — YAML at `.anakmagang/config.yaml` (generated by `anakmagang init`, not created manually). YAML is more portable for OSS.
-8. **Init idempotency strategy**: Merge vs overwrite generated files?
-9. **Hook generation**: Shell scripts (portable) or Effect-TS hooks (typed but requires Bun)?
-10. **Preset distribution**: Bundled in the binary, or fetched from a registry/repo?
+1. **Native lib delivery**: Should `libfff.dylib` be built inline via Nix or consumed from fff.nvim's flake output?
+2. **Machine extension**: Should `extends` be a pullback in the category of presets? (e.g., `extends: minimal` adds phases to a base machine)
+3. **Guard evaluation order**: Guards are a list — is it conjunction (all must pass) or should we support disjunction?
+4. **Action atomicity**: Are actions within a single transition atomic? If one fails, do we roll back?
+5. **Hot reload**: If the preset YAML changes, can the running machine adapt without restart?
+6. **Machine definition format**: Resolved — YAML at `.anakmagang/config.yaml` (generated by `anakmagang init`, not created manually). YAML is more portable for OSS.
+7. **Init idempotency strategy**: Merge vs overwrite generated files?
+8. **Hook generation**: Shell scripts (portable) or Effect-TS hooks (typed but requires Bun)?
+9. **Preset distribution**: Bundled in the binary, or fetched from a registry/repo?
 
 ---
 
@@ -1690,25 +1538,23 @@ bun run src/bin.ts serve  # smoke: starts without error
 
 | Date | Decision | Choice | Rationale |
 |------|----------|--------|-----------|
-| 2026-04-20 | Original designs | MCP wrappers, audit tooling, fractal memory as separate subsystems | Initial exploration |
+| 2026-04-20 | Original designs | Audit tooling, fractal memory as separate subsystems | Initial exploration |
 | 2026-04-21 | Memory design | Via Principal Thinking protocol + R1/R2 review | Structured design process |
 | 2026-04-24 | CLI unification | Single `anakmagang` CLI with Effect-TS + Bun | Shared infra, single install |
 | 2026-04-24 | CLI name | `anakmagang` | Indonesian for 'intern/apprentice' |
 | 2026-04-24 | Location | `apps/anakmagang/` | Alongside other apps in the repo |
-| 2026-04-24 | Effect version | 4.x | Native MCP support via `effect/unstable/ai` |
-| 2026-04-24 | MCP transport | stdio via `@effect/platform/Command` + `McpServer.layerStdio()` | Native Effect integration, kill+respawn on errors |
+| 2026-04-24 | Effect version | 4.x | Typed errors, services, structured concurrency |
 | 2026-04-24 | Validation | `effect/Schema` | Native, zero extra deps |
 | 2026-04-24 | Audit scope | Full 9-phase agent + 28-phase skill | Complete audit engine; user decision (R2 overridden) |
-| 2026-04-24 | CRDT | Port `effect-crdts` to Effect 4.x | Concurrent-safe SchemaRegistry; user decision (R2 overridden) |
+| 2026-04-24 | CRDT | Port `effect-crdts` to Effect 4.x | Concurrent-safe schema persistence; user decision (R2 overridden) |
 | 2026-04-27 | Memory schema | Single unified schema | Full fractal graph from day one |
 | 2026-04-27 | Search engine | fff-c via bun:ffi | Native performance, no npm wrapper |
 | 2026-04-27 | Coupling topology | DAG — Orchestration is the hub | Subsystems signal back via `BackEvent` only. No cross-subsystem couplings. |
 | 2026-04-27 | Layer provision | All command-lazy — each command provides its own layers | Isolate failure domains per subsystem |
 | 2026-04-27 | File writes | Atomic temp+rename (inline, 3 lines) | No helper needed; prevents partial writes |
 | 2026-05-03 | Doc hierarchy | Merge all into `anakmagang.md` | Single source of truth |
-| 2026-05-03 | MCP role | BOTH client (gateway) + server (exposes tools) | Full bidirectional integration with Claude Code |
 | 2026-05-03 | `init` command | In scope now — Phase F | First-class command in command tree |
-| 2026-05-03 | CRDT | Hard requirement for Phase E | Not optional — concurrent safety is a core constraint |
+| 2026-05-03 | CRDT | Hard requirement for concurrent safety | Not optional — concurrent safety is a core constraint |
 | 2026-05-03 | CREATED state | REMOVED | File existence = created; lifecycle starts at ACTIVE |
 | 2026-05-03 | Stale threshold | Configurable per-node type | user: 10, feedback: 3, project: 5, reference: 8 (defaults) |
 
@@ -1729,17 +1575,15 @@ bun run src/bin.ts serve  # smoke: starts without error
 ### Key Caveats
 
 1. **effect-crdts port to Effect 4.x** — Uncharted territory. The library is small (~2k LOC) but depends on Effect 3.x STM and Schema APIs that may have changed. Fallback: plain JSON persistence if port proves too costly. (CRDT is a hard requirement — fallback must still provide concurrent safety.)
-2. **effect/unstable/ai** — API may change. Pin exact versions. Fallback: wrap official MCP SDK with Effect.
-3. **28-phase skill audit** — Comprehensive but untested against real skills. May produce false positives that erode trust.
-4. **Flat structure** — ~34 files now. Works now; monitor for cognitive load as features grow. If it becomes a wall, add 3 shallow dirs.
-5. **Promotion threshold (3+)** — Arbitrary threshold, needs empirical tuning. Confidence: 0.60.
+2. **28-phase skill audit** — Comprehensive but untested against real skills. May produce false positives that erode trust.
+3. **Flat structure** — ~34 files now. Works now; monitor for cognitive load as features grow. If it becomes a wall, add 3 shallow dirs.
+4. **Promotion threshold (3+)** — Arbitrary threshold, needs empirical tuning. Confidence: 0.60.
 
 ### R1 Recommendations (Status)
 
 1. ~~Resolve CRDT contradiction~~ Resolved: port effect-crdts to Effect 4.x (hard requirement)
-2. Design MCP server config resolution (how `<server>` maps to command) — **STILL OPEN**
-3. ~~Move Bun stdio validation to Phase A~~ Accepted: smoke test in Phase A
-4. ~~Specify memory version detection~~ Resolved: unified schema, no versions to detect
+2. ~~Move Bun stdio validation to Phase A~~ Accepted: smoke test in Phase A
+3. ~~Specify memory version detection~~ Resolved: unified schema, no versions to detect
 
 ### R2 Issues (User Overrode)
 
@@ -1748,7 +1592,6 @@ bun run src/bin.ts serve  # smoke: starts without error
 | effect-crdts/Effect 4.x incompatibility | 2/10 | Port it (hard requirement) |
 | 34 flat files vs 15+dirs | 3/10 | Keep flat |
 | 28-phase audit overkill | 2/10 | Build it all |
-| unstable/ai risk | 3/10 | Accept risk, pin versions |
 | Unification questioned | 4/10 | Keep unified |
 
 These were informed, deliberate choices. The user accepts the risk profile.

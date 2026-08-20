@@ -63,6 +63,8 @@ notes/                             # Personal notes (.norg format)
 
 ## Domain → Worker Routing
 
+> **Source of truth**: `.anakmagang/config.yaml` under `ground.routing`. This table is informational.
+
 | Domain | File Patterns | Worker Agent |
 |--------|--------------|-------------|
 | Darwin modules | `nix/modules/darwin/**/*.nix`, `nix/configurations/darwin/*.nix` | `nix-coder` |
@@ -75,6 +77,7 @@ notes/                             # Personal notes (.norg format)
 | Neovim | `nix/nvim.nix/**/*.nix` | `nix-coder` |
 | TypeScript apps | `apps/**/*.ts` | `effect-ts` |
 | Secrets | `secrets/*.yaml`, `.sops.yaml` | default (sops CLI) |
+| Code review | `nix/**/*.nix`, `flake.nix` (review tasks) | `nix-reviewer` |
 | Docs/scripts | `*.md`, `*.sh`, `*.lua`, `*.yaml` | default |
 
 ## Nix Conventions

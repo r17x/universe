@@ -31,7 +31,7 @@
     nixpkgs.follows = "nixpkgs-unstable";
 
     ### -- Nix Infra / DevOps
-    microvm.url = "github:astro/microvm.nix?rev=1e746a8987eb893adc8dd317b84e73d72803b650";
+    microvm.url = "github:astro/microvm.nix";
     microvm.inputs.nixpkgs.follows = "nixpkgs";
 
     disko.url = "github:nix-community/disko";
@@ -85,6 +85,11 @@
     # utilities
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
     pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
+
+    bun2nix.url = "github:nix-community/bun2nix/f2bc12af1a6369648aac41041ceeaa0b866599c6";
+
+    rust-overlay.url = "github:oxalica/rust-overlay";
+    rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
     # vimPlugins from flake inputs
     # prefix "vimPlugins_"

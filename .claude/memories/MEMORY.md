@@ -1,0 +1,26 @@
+# Memory Index
+
+- [No code comments](feedback_no_comments.md) — user prefers self-documenting code, no comments unless truly needed for non-obvious WHY
+- [Effect TS errors are real errors](feedback_effect_ts_errors.md) — never skip TS15/TS44/TS18; codified in skill-library/effect-error-patterns.md
+- [anakmagang machine interface](architecture_machine_interface.md) — state machine owns transitions via start/next/observe
+- [machine-agent role separation](feedback_machine_agent_roles.md) — agent classifies and thinks, machine tracks state
+- [Session storage restructure design](session-restructure-design.md) — append-only manifest.yaml + logs.yaml structure
+- [Explicit session IDs](feedback_explicit_session_ids.md) — state machines require explicit identity, no env vars or fallback
+- [Generic abstractions over provider-specific](feedback_generic_over_specific.md) — prefer generic typed store over provider-named methods
+- [Worker delegation anti-patterns](feedback_worker_antipatterns.md) — include explicit anti-patterns when delegating to workers
+- [Test-first guards](feedback_test_first_guards.md) — write bun unit tests in guard.test.ts first, not ad-hoc bash
+- [Never batch destructive ops](feedback_destructive_ops.md) — always inspect each item individually before delete/drop/rm
+- [Algebraic Effect flow](feedback_algebraic_effect_flow.md) — lift monads into Effect; codified in skill-library/effect-error-patterns.md
+- [Reduction has a floor](feedback_reduction_has_floor.md) — compute theoretical minimum before committing to a reduction target
+- [Verify worker artifacts](feedback_verify_worker_artifacts.md) — workers can claim completion without writing files, always verify
+- [Effect constructors + native chaining](feedback_effect_construction_chaining.md) — use Effect constructors for creation, native methods for standard transforms
+- [Explore before proposing](feedback_explore_before_proposing.md) — independently explore Effect modules and references before proposing solutions
+- [Deterministic AI Agent](./det.md) — Deterministic AI Orchestration: A Platform Architecture for Autonomous Development
+- [Effect Module Pattern](feedback_effect_module_pattern.md) — three-zone canonical shape: DEPENDENCY, DECLARED, return SHAPE
+- [serviceOption for guard extensions](feedback_serviceOption_guard_extension.md) — use Effect.serviceOption to add optional services to guards without changing GuardDeps
+- [Artifact principle](feedback_artifact_principle.md) — artifacts are deliberate coordinator knowledge products, not auto-tracked file changes
+- [Schema mirrors formal model](feedback_schema_mirrors_formal_model.md) — Effect Schema must match spec-defined required fields, never Schema.optional for required spec fields
+- [Bun-native APIs first](feedback_bun_native_first.md) — check Bun globals (Bun.hash, Bun.CryptoHasher) before Node built-ins or third-party
+- [Trust tsc effect warnings](feedback_tsc_effect_warnings.md) — all effect-language-service tsc warnings are real issues, fix them including pre-existing
+- [Never install to ~/.local/bin](feedback_no_local_bin.md) — Nix manages binary paths, run from build output or source
+- [No manual _tag in Schema](feedback_no_manual_tag.md) — use Schema.TaggedStruct, never Schema.tag() or manual _tag fields

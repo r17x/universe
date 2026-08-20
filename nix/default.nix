@@ -54,6 +54,7 @@
       };
 
       overlays = lib.attrValues inputs.self.overlays ++ [
+        inputs.bun2nix.overlays.default
         inputs.ocaml-nvim.overlays.default
       ];
     };
@@ -121,7 +122,7 @@
         };
         services.mysql."m2" = {
           enable = true;
-          package = pkgs.mariadb_105;
+          package = pkgs.mariadb_106;
           settings.mysqld.port = 3308;
         };
         services.mysql."m3" = {

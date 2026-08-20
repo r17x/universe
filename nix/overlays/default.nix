@@ -21,6 +21,27 @@
 
       inherit (inputs.llms-agents.packages.${system}) claude-code rtk;
 
+      fff-nvim = (inputs.fff-nvim.packages.${system}.default).overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [
+          (prev.writeText "fff-nvim-cancel-on-destroy.patch" (
+            builtins.concatStringsSep "\n" [
+              "--- a/crates/fff-c/src/lib.rs"
+              "+++ b/crates/fff-c/src/lib.rs"
+              "@@ -294,6 +294,8 @@ pub unsafe extern \"C\" fn fff_destroy(fff_handle: *mut c_void) {"
+              "     if let Ok(mut guard) = instance.picker.write()"
+              "         && let Some(mut picker) = guard.take()"
+              "     {"
+              "+        picker.cancel();"
+              "+        std::thread::sleep(Duration::from_millis(50));"
+              "         picker.stop_background_monitor();"
+              "     }"
+              " "
+              ""
+            ]
+          ))
+        ];
+      });
+
       lib = prev.lib.extend (import ./lib.nix);
 
       # flake.nix: inputs.nixpkgs-stable -> pkgs.branches.stable
@@ -49,6 +70,8 @@
           cp -R $src/*.otf $out/share/fonts/opentype
         '';
       });
+
+      bun = import ./bun.nix { inherit inputs prev; };
 
       nixfmt = prev.nixfmt-rfc-style;
 

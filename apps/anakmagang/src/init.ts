@@ -1,8 +1,11 @@
-import { Command, Flag } from "effect/unstable/cli"
-import { Console, Effect, Option } from "effect"
-import { Path } from "effect/Path"
-import { MachineLoader, MachineLoadError } from "./MachineLoader"
-import { syncHooksToSettings } from "./hook.sync"
+import { Command, Flag } from "effect/unstable/cli";
+import { Array as Arr, Effect, Option } from "effect";
+import { Output } from "./protocol.Output";
+import { Diagnostic, Line } from "./protocol.Emission";
+import { Path } from "effect/Path";
+import { FileSystem } from "effect/FileSystem";
+import { MachineLoader, MachineLoadError } from "./MachineLoader";
+import { syncHooksToSettings } from "./hook.sync";
 
 export const initCommand = Command.make(
   "init",
@@ -19,7 +22,12 @@ export const initCommand = Command.make(
     ),
     target: Flag.directory("target").pipe(
       Flag.withAlias("t"),
-      Flag.withDefault(Effect.gen(function* () { const p = yield* Path; return p.resolve(".") })),
+      Flag.withDefault(
+        Effect.gen(function* () {
+          const p = yield* Path;
+          return p.resolve(".");
+        }),
+      ),
       Flag.withDescription("Target project directory (defaults to cwd)"),
     ),
     force: Flag.boolean("force").pipe(
@@ -30,54 +38,63 @@ export const initCommand = Command.make(
   },
   (config) =>
     Effect.gen(function* () {
-      const loader = yield* MachineLoader
+      const output = yield* Output;
+      const loader = yield* MachineLoader;
 
-      const preset = Option.getOrUndefined(config.preset)
-      const from = Option.getOrUndefined(config.from)
+      const preset = Option.getOrUndefined(config.preset);
+      const from = Option.getOrUndefined(config.from);
       if (preset && from) {
-        yield* Console.error("Cannot use both --preset and --from")
+        yield* output.emit(
+          Diagnostic({ severity: "error", message: "Cannot use both --preset and --from" }),
+        );
         return yield* new MachineLoadError({
           source: "init",
           message: "Conflicting config sources",
-        })
+        });
       }
+
+      const fs = yield* FileSystem;
+      const path = yield* Path;
+      const configPath = path.join(config.target, ".anakmagang", "config.yaml");
+      const hasProjectConfig = yield* fs.exists(configPath).pipe(Effect.orElseSucceed(() => false));
 
       const machineConfig = from
         ? yield* loader.loadFromFile(from)
-        : yield* loader.loadPreset(preset ?? "r17x-orchestrate")
+        : preset
+          ? yield* loader.loadPreset(preset)
+          : hasProjectConfig
+            ? yield* loader.loadFromFile(configPath)
+            : yield* loader.loadPreset("orchestrate");
 
-      yield* Console.info(`Initializing ${machineConfig.name} in ${config.target}`)
+      yield* output.emit(Line({ text: `Initializing ${machineConfig.name} in ${config.target}` }));
 
-      const results = yield* loader.generate(machineConfig, config.target, { force: config.force })
+      const results = yield* loader.generate(machineConfig, config.target, { force: config.force });
 
-      const created = results.filter((r) => r.status === "created")
-      const skipped = results.filter((r) => r.status === "skipped")
-      const updated = results.filter((r) => r.status === "updated")
+      const created = Arr.filter(results, (r) => r.status === "created");
+      const skipped = Arr.filter(results, (r) => r.status === "skipped");
+      const updated = Arr.filter(results, (r) => r.status === "updated");
 
       if (created.length > 0) {
-        yield* Console.info(`Created ${created.length} file(s):`)
-        for (const f of created) {
-          yield* Console.info(`  + ${f.path}`)
-        }
+        yield* output.emit(Line({ text: `Created ${created.length} file(s):` }));
+        yield* Effect.forEach(created, (f) => output.emit(Line({ text: `  + ${f.path}` })));
       }
       if (updated.length > 0) {
-        yield* Console.info(`Updated ${updated.length} file(s):`)
-        for (const f of updated) {
-          yield* Console.info(`  ~ ${f.path}`)
-        }
+        yield* output.emit(Line({ text: `Updated ${updated.length} file(s):` }));
+        yield* Effect.forEach(updated, (f) => output.emit(Line({ text: `  ~ ${f.path}` })));
       }
       if (skipped.length > 0) {
-        yield* Console.info(`Skipped ${skipped.length} file(s) (already exist)`)
+        yield* output.emit(Line({ text: `Skipped ${skipped.length} file(s) (already exist)` }));
       }
 
-      const guardsWithEvents = (machineConfig.guards ?? []).filter(
+      const guardsWithEvents = Arr.filter(
+        machineConfig.guards ?? [],
         (g) => g.event !== undefined && g.enforced_by === "hook",
-      )
+      );
       if (guardsWithEvents.length > 0) {
-        const settingsPath = yield* syncHooksToSettings(machineConfig.guards ?? [], config.target)
-        yield* Console.info(`Synced hooks to ${settingsPath}`)
+        const settingsPath = yield* syncHooksToSettings(machineConfig.guards ?? [], config.target);
+        yield* output.emit(Line({ text: `Synced hooks to ${settingsPath}` }));
       }
 
-      yield* Console.info("Done.")
+      yield* output.emit(Line({ text: "Done." }));
     }).pipe(Effect.provide(MachineLoader.layer)),
-)
+);

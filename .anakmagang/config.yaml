@@ -1,50 +1,137 @@
-name: r17x-orchestrate
+name: orchestrate
 version: 1
-state:
-  manifest:
-    schema: manifest
-    tracks:
-      current_task: set
-      current_phase: set
-      completed_phases: append
-      task_size: set
-    per: singleton
-  feedback:
-    schema: feedback
-    tracks:
-      reflections: append
-      observations: append
-    per: session
-memory:
-  dirs:
-    - path: .claude/memories
-      source: permanent
-    - path: .anakmagang/out/references
-      source: ephemeral
-  scales:
-    - observation
-    - finding
-    - learning
-    - principle
-  states:
-    - ACTIVE
-    - STALE
-    - ARCHIVED
-  stale_thresholds:
-    user: 10
-    feedback: 3
-    project: 5
-    reference: 8
-  promotion:
-    min_sources: 3
-    auto: false
-  graph:
-    edge_types:
-      - derived_from
-    max_depth: 2
-    max_fan_out: 5
-    max_query_nodes: 10
-  budget: 8
+ground:
+  stores:
+    - kind: Slot
+      name: manifest
+      per: singleton
+      tracks:
+        current_task: set
+        current_phase: set
+        completed_phases: append
+        task_size: set
+    - kind: Slot
+      name: feedback
+      per: session
+      tracks:
+        reflections: append
+        observations: append
+    - kind: Memory
+      name: learnings
+      path: .claude/memories
+      budget: 8
+    - kind: Artifact
+      name: sessions
+      path: .anakmagang/out
+      writable: true
+    - kind: Artifact
+      name: references
+      path: .anakmagang/references
+      writable: false
+  flows:
+    - from: feedback
+      to: learnings
+      trigger: phase.completion.actions.extract_memories
+  routing:
+    - domain: Darwin modules
+      patterns:
+        - "nix/modules/darwin/**/*.nix"
+        - "nix/configurations/darwin/*.nix"
+      worker: nix-coder
+    - domain: Home modules
+      patterns:
+        - "nix/modules/home/**/*.nix"
+        - "nix/configurations/home/*.nix"
+      worker: nix-coder
+    - domain: NixOS modules
+      patterns:
+        - "nix/modules/nixos/**/*.nix"
+        - "nix/configurations/nixos/*.nix"
+      worker: nix-coder
+    - domain: Cross modules
+      patterns:
+        - "nix/modules/cross/**/*.nix"
+      worker: nix-coder
+    - domain: Flake modules
+      patterns:
+        - "nix/modules/flake/**/*.nix"
+        - "nix/default.nix"
+        - "flake.nix"
+      worker: nix-coder
+    - domain: Overlays
+      patterns:
+        - "nix/overlays/**/*.nix"
+      worker: nix-coder
+    - domain: Packages
+      patterns:
+        - "nix/packages/**/default.nix"
+      worker: nix-coder
+    - domain: Neovim
+      patterns:
+        - "nix/nvim.nix/**/*.nix"
+      worker: nix-coder
+    - domain: TypeScript apps
+      patterns:
+        - "apps/**/*.ts"
+      worker: effect-ts
+    - domain: Secrets
+      patterns:
+        - "secrets/*.yaml"
+        - ".sops.yaml"
+      worker: default
+    - domain: Code review
+      patterns:
+        - "nix/**/*.nix"
+        - "flake.nix"
+      worker: nix-reviewer
+    - domain: Docs/scripts
+      patterns:
+        - "*.md"
+        - "*.sh"
+        - "*.lua"
+        - "*.yaml"
+      worker: default
+  providers:
+    - id: claude
+      directory: .claude
+      memories_dir: memories
+      skills_dir: skills
+      agents_dir: agents
+      settings_file: settings.json
+    - id: mistral
+      directory: .vibe
+      memories_dir: memories
+      skills_dir: skills
+      agents_dir: agents
+      settings_file: config.toml
+      hooks_file: hooks.toml
+      env_vars:
+        CLAUDE_PROJECT_DIR: VIBE_WORKDIR
+runtime:
+  memory:
+    scales:
+      - observation
+      - finding
+      - learning
+      - principle
+    states:
+      - ACTIVE
+      - STALE
+      - ARCHIVED
+    stale_thresholds:
+      user: 10
+      feedback: 3
+      project: 5
+      reference: 8
+    promotion:
+      min_sources: 3
+      auto: false
+    graph:
+      edge_types:
+        - derived_from
+      max_depth: 2
+      max_fan_out: 5
+      max_query_nodes: 10
 phases:
   - id: setup
     name: Setup
@@ -53,10 +140,9 @@ phases:
     actions:
       - read_manifest
       - read_feedback
-      - read_architecture
   - id: triage
     name: Triage
-    exit_question: Am I solving the right problem? Is my size classification honest or wishful?
+    exit_question: "Am I solving the right problem? Does my size reflect behavioral impact, not just code volume? Could a 1-line change here break contracts, alter defaults, or shift observable behavior — making it MEDIUM regardless of diff size?"
     next: discovery
     skip_when:
       - TRIVIAL
@@ -147,76 +233,76 @@ guards:
     enforced_by: hook
     event: PreToolUse
     matcher: "Edit|Write"
-    command: .claude/hooks/agent-first-enforcement.sh
     timeout: 5
+    routes:
+      ".nix": "/gateway-nix"
   - type: output-location
     description: Writes constrained to project directory
     enforced_by: hook
     event: PreToolUse
     matcher: "Edit|Write"
-    command: .claude/hooks/output-location-enforcement.sh
     timeout: 5
-  - type: block-nix-build
-    description: Block slow nix-build and nix-instantiate commands
-    enforced_by: hook
-    event: PreToolUse
-    matcher: Bash
-    command: .claude/hooks/block-nix-build.sh
-    timeout: 5
+    restricted_paths:
+      - "secrets/secret.yaml"
+      - ".sops.yaml"
+    restricted_prefixes:
+      - "result/"
   - type: compaction-gate
     description: Block agent spawning at high context usage
     enforced_by: hook
     event: PreToolUse
     matcher: Agent
-    command: .claude/hooks/compaction-gate.sh
     timeout: 5
   - type: iteration-limit
     description: Cap tool calls per task
     enforced_by: hook
     event: PreToolUse
-    command: .claude/hooks/iteration-limit.sh
     timeout: 5
     max: 50
     warn_at: 40
-  - type: auto-nix-eval
+  - type: post-edit
     description: Auto-verify nix files after edit
     enforced_by: hook
     event: PostToolUse
     matcher: "Edit|Write"
-    command: .claude/hooks/auto-nix-eval.sh
     timeout: 30
+    file_pattern: "\\.nix$"
+    command: "nix flake check --no-build"
   - type: inject-reminders
     description: Inject phase reminders on user prompt
     enforced_by: hook
     event: UserPromptSubmit
-    command: .claude/hooks/inject-reminders.sh
     timeout: 5
+    reminders:
+      - "Route Nix work via /gateway-nix. Use /orchestrate for non-trivial tasks."
   - type: agent-stop-guard
-    description: Ensure worker verified nix changes before stop
+    description: Ensure worker verified changes and emitted completion promise
     enforced_by: hook
     event: SubagentStop
-    command: .claude/hooks/agent-stop-guard.sh
     timeout: 5
+    verification_rules:
+      - file_pattern: "\\.nix\\b"
+        required_commands:
+          - "nix eval"
+          - "nix flake check"
+          - "nix flake show"
+          - "nix fmt"
+          - "nixfmt"
+        message: "Worker modified .nix files but did not run nix verification.\nRun 'nix flake check --no-build' or 'nix eval' before stopping."
+    promises:
+      - IMPLEMENTATION_COMPLETE
+      - VERIFICATION_PASSED
+      - VERIFICATION_FAILED
+      - IMPLEMENTATION_BLOCKED
+      - NEEDS_COORDINATOR_INPUT
+      - REVIEW_PASSED
+      - REVIEW_ISSUES_FOUND
+      - REVIEW_BLOCKED
   - type: session-stop-guard
     description: Prevent session end with incomplete task
     enforced_by: hook
     event: Stop
-    command: .claude/hooks/session-stop-guard.sh
     timeout: 5
-  - type: bridge-on-start
-    description: Create bridge from Claude session to anakmagang session on start
-    enforced_by: hook
-    event: PostToolUse
-    matcher: Bash
-    timeout: 5
-  - type: context-cache
-    description: Cache context window usage for other hooks
-    enforced_by: statusLine
-    event: statusLine
-    command: .claude/hooks/cache-context-state.sh
-  - type: reflection-required
-    description: Exit question must be answered before phase transition
-    enforced_by: manifest
   - type: command-substitute
     description: Block npm/pnpm/yarn — use bun instead
     enforced_by: hook
@@ -224,16 +310,38 @@ guards:
     matcher: Bash
     timeout: 5
     rules:
-      - contains: ["npm", "pnpm", "yarn"]
+      - contains:
+          - npm
+          - pnpm
+          - yarn
         should: bun
-      - contains: ["npx", "pnpx"]
+      - contains:
+          - npx
+          - pnpx
         should: bunx
+      - contains:
+          - nix-instantiate
+        should: nix eval
+      - contains:
+          - darwin-rebuild switch
+        should: darwin-rebuild switch --dry-run
+        unless_contains: "--dry-run"
+  - type: reflection-required
+    description: Exit question must be answered before phase transition
+    enforced_by: manifest
+  - type: reflection-required
+    description: Exit question must be answered before phase transition (internal)
+    enforced_by: manifest
+    event: PhaseTransition
+    timeout: 5
 size_presets:
   TRIVIAL:
     phases:
       - setup
       - implementation
       - completion
+    criteria:
+      - "No behavioral change — typo, comment, formatting, docs only"
   SMALL:
     skip:
       - complexity
@@ -241,9 +349,34 @@ size_presets:
       - architecture
       - design_verification
       - code_quality
+    criteria:
+      - "Single behavioral change, isolated blast radius"
+      - No contract/interface/default changes
+      - Bug fix or mechanical refactor within existing patterns
   MEDIUM:
     skip:
       - complexity
+    criteria:
+      - "Changes contracts, defaults, control flow, or observable output — regardless of diff size"
+      - New feature (any size) = MEDIUM minimum
+      - "1 char changing behavior = MEDIUM, not SMALL"
   LARGE:
     phases:
       - all
+    criteria:
+      - New subsystem or cross-platform changes
+      - Architectural changes affecting multiple modules
+
+experimental:
+  - id: enhanced-search
+    enabled: true
+    description: Use anakmagang search for multi-pattern and cross-scope codebase exploration
+    prompt: "During Discovery and Skill Discovery phases, consider using `anakmagang search find <query>` for ranked file discovery, `anakmagang search multi-grep <pattern1> <pattern2>` for multi-pattern searches, and `anakmagang query <query> --scope all` for cross-scope searches (files + grep + memory + sessions). These provide combo-boost scoring and broader reach than individual Grep/Glob calls."
+  - id: memory-query
+    enabled: false
+    description: Auto-surface relevant memories during discovery
+    prompt: "During Discovery phase, run `anakmagang memory query -q <keywords> -s learning` to surface relevant learnings before proposing solutions. Check `anakmagang memory status` for available memory nodes."
+  - id: session-search
+    enabled: false
+    description: Search past sessions for related work
+    prompt: "During Setup phase, run `anakmagang query <task-keywords> --scope sessions` to find related past sessions and their outcomes."

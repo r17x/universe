@@ -21,13 +21,6 @@
 !.github/**/
 !.github/**/*.yml
 
-# .serena - project config and memories
-!.serena/
-!.serena/.gitignore
-!.serena/*.yml
-!.serena/memories/
-!.serena/memories/*.md
-
 # nix - system configuration
 !nix/
 !nix/**/

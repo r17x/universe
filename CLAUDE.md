@@ -2,6 +2,8 @@
 
 Declarative system configuration for macOS (nix-darwin), NixOS, and home-manager via Nix flakes.
 
+Read `.gitignore` first — it uses an allowlist pattern (`*` then `!`) that defines exactly which files and extensions exist in this repository; do not assume files exist outside of it.
+
 ## Quick Reference
 
 - **Rebuild macOS**: `universe rebuild` or `sudo darwin-rebuild switch --flake .`

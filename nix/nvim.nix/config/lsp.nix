@@ -11,45 +11,46 @@
 {
   highlightOverride.LspInlayHint.link = "InclineNormalNc";
 
-  globals.ocamlnvim = {
-    lsp = {
-      # Enable/disable automatic LSP attachment
-      auto_attach = true;
+  # globals.ocamlnvim = {
+  #   lsp = {
+  #     # Enable/disable automatic LSP attachment
+  #     auto_attach = true;
+  #
+  #     # Custom on_attach function
+  #     on_attach = # lua
+  #       ''
+  #         function(client_id, bufnr)
+  #           -- Set up keymaps, autocommands, etc.
+  #           vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = bufnr })
+  #           vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr })
+  #         end
+  #       '';
+  #
+  #     # OCaml LSP server settings
+  #     settings = {
+  #       duneDiagnostics = true; # Dune-specific diagnostics
+  #       syntaxDocumentation = true; # Syntax documentation
+  #     };
+  #
+  #     # Experimental OCaml LSP features
+  #     experimental = {
+  #       switchImplIntf = true; # Switch between .ml/.mli files
+  #       inferIntf = true; # Interface inference
+  #       typedHoles = true; # Typed holes support
+  #       typeEnclosing = true; # Type enclosing
+  #       construct = true; # Construct handling
+  #       destruct = true; # Destruct handling
+  #       jumpToNextHole = true; # Jump to next hole
+  #     };
+  #   };
+  # };
 
-      # Custom on_attach function
-      on_attach = # lua
-        ''
-          function(client_id, bufnr)
-            -- Set up keymaps, autocommands, etc.
-            vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = bufnr })
-            vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr })
-          end
-        '';
-
-      # OCaml LSP server settings
-      settings = {
-        duneDiagnostics = true; # Dune-specific diagnostics
-        syntaxDocumentation = true; # Syntax documentation
-      };
-
-      # Experimental OCaml LSP features
-      experimental = {
-        switchImplIntf = true; # Switch between .ml/.mli files
-        inferIntf = true; # Interface inference
-        typedHoles = true; # Typed holes support
-        typeEnclosing = true; # Type enclosing
-        construct = true; # Construct handling
-        destruct = true; # Destruct handling
-        jumpToNextHole = true; # Jump to next hole
-      };
-    };
-  };
+  extraPackages = [ pkgs.typescript ];
 
   extraPlugins = with pkgs.vimPlugins; [
     codi-vim # repl
     vim-rescript
     neorepl-nvim
-    ocamlnvim
   ];
 
   # make custom command
@@ -78,6 +79,19 @@
           ''
             require('lspconfig').rescriptls.setup({})
           '';
+    }
+    {
+      event = [ "LspAttach" ];
+      callback.__raw = # lua
+        ''
+          function(args)
+            local bufnr = args.buf
+            local client = vim.lsp.get_client_by_id(args.data.client_id)
+            if client and client.server_capabilities.codeLensProvider then
+              vim.lsp.codelens.enable(true, { bufnr = bufnr })
+            end
+          end
+        '';
     }
     {
       event = [ "LspAttach" ];
@@ -306,9 +320,13 @@
     ];
 
     typescript-tools.enable = true;
-    typescript-tools.settings.code_lens = "references_only";
-    typescript-tools.settings.complete_function_calls = true;
-    typescript-tools.settings.expose_as_code_action = "all";
+    typescript-tools.settings.settings.tsserver_max_memory = 8192;
+    typescript-tools.settings.settings.separate_diagnostic_server = false;
+    # code_lens disabled here because typescript-tools.nvim uses deprecated
+    # vim.lsp.codelens.refresh() — we enable codelens via the new API below
+    typescript-tools.settings.settings.code_lens = "off";
+    typescript-tools.settings.settings.complete_function_calls = true;
+    typescript-tools.settings.settings.expose_as_code_action = "all";
     typescript-tools.settings.handlers = {
       "textDocument/publishDiagnostics" =
         # lua

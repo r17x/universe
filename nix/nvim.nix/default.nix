@@ -1,9 +1,14 @@
 { self, inputs, ... }:
 {
+  imports = [
+    # Import nixvim's flake-parts module;
+    # Adds `flake.nixvimModules` and `perSystem.nixvimConfigurations`
+    inputs.nixvim.flakeModules.default
+  ];
+
   perSystem =
     {
       icons,
-      pkgs,
       system,
       ...
     }:
@@ -27,11 +32,27 @@
             end
           '';
       };
-      nixvim' = inputs.nixvim.legacyPackages.${system};
-      nixvimModule = {
-        inherit pkgs;
-        module = import ./config; # import the module directly
-        # You can use `extraSpecialArgs` to pass additional arguments to your module files
+      configuration = nixvimLib.evalNixvim {
+        inherit system;
+        modules = [
+          self.nixvimModules.default
+          {
+            nixpkgs.config = {
+              allowUnfree = true;
+            };
+            nixpkgs.overlays = [
+              (_: prev: {
+                vimPlugins = prev.vimPlugins.extend (
+                  _: __:
+                  {
+                    hud-colorschemes = prev.callPackage "${inputs.self}/nix/packages/hud-colorschemes" { };
+                  }
+                  // (import "${inputs.self}/nix/overlays/mkFlake2VimPlugin.nix" inputs { pkgs = prev; })
+                );
+              })
+            ];
+          }
+        ];
         extraSpecialArgs = {
           inherit
             icons
@@ -41,14 +62,14 @@
             inputs
             ;
         };
+
       };
-      nvim = nixvim'.makeNixvimWithModule nixvimModule;
-      nvimCheck = nixvimLib.${system}.check.mkTestDerivationFromNixvimModule nixvimModule;
+      nvim = configuration.config.build.package;
     in
     {
       checks = {
         # Run `nix flake check .` to verify that your config is not broken
-        nvim = nvimCheck;
+        nvim = configuration.config.build.test;
       };
 
       packages = {

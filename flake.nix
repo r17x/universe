@@ -10,10 +10,17 @@
         "x86_64-linux"
       ];
 
-      imports = [ ./nix ];
+      imports = [
+        ./nix
+        # ./den
+      ];
     };
 
   inputs = {
+    # # nix effectfull, context aware, dag.
+    # import-tree.url = "github:denful/import-tree";
+    # den.url = "github:denful/den";
+
     # utilities for Flake
     flake-parts.url = "github:hercules-ci/flake-parts";
     ez-configs.url = "github:ehllie/ez-configs";
@@ -64,7 +71,6 @@
 
     #### ---- nixvim
     nixvim.url = "github:nix-community/nixvim";
-    nixvim.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.inputs.flake-parts.follows = "flake-parts";
 
     ##### ---- ocaml

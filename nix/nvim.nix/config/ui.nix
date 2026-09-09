@@ -69,8 +69,7 @@
     unicode-vim
     lsp-progress-nvim
 
-    # TODO: removed branches when inputs.nixpkgs-unstable is updated
-    pkgs.branches.master.vimPlugins.nvzone-typr
+    nvzone-typr
   ];
 
   userCommands.StatusLine.desc = "Toggle Status Line";
@@ -88,7 +87,7 @@
         require('lualine').hide({ unhide = toggle() })
       '';
 
-  plugins = rec {
+  plugins = {
     # lazy load management
     lz-n = {
       enable = true;
@@ -216,10 +215,10 @@
       };
     };
 
-    presence-nvim = {
+    presence = {
       enable = true;
-      enableLineNumber = true;
-      autoUpdate = true;
+      settings.enable_line_number = true;
+      settings.auto_update = true;
     };
 
     colorizer = {
@@ -404,7 +403,7 @@
       enable = true;
       lazyLoad.enable = true;
       lazyLoad.settings.event = "BufRead";
-      folding = true;
+      folding.enable = true;
       settings.indent.enable = true;
       settings.highlight.enable = true;
       grammarPackages =
@@ -478,7 +477,6 @@
             "templ"
             "terraform"
             "textproto"
-            "tmux"
             "todotxt"
             "toml"
             "tsx"

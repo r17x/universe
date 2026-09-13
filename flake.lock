@@ -31,7 +31,7 @@
           "llms-agents",
           "flake-parts"
         ],
-        "import-tree": "import-tree",
+        "import-tree": "import-tree_2",
         "nixpkgs": [
           "llms-agents",
           "nixpkgs"
@@ -88,6 +88,37 @@
       "original": {
         "owner": "clan-lol",
         "repo": "clan-core",
+        "type": "github"
+      }
+    },
+    "den": {
+      "locked": {
+        "lastModified": 1788557660,
+        "narHash": "sha256-d+MZh9bFT8FrI6FCCEKr/Jar0ipVbX0lm2/1/7wjFQI=",
+        "owner": "denful",
+        "repo": "den",
+        "rev": "d50f0fce6fc1a8ba00fd0d310746d0e8ecc2f70d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "denful",
+        "repo": "den",
+        "type": "github"
+      }
+    },
+    "den-diagram": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787428934,
+        "narHash": "sha256-yoNA6amBBRU1A0xGd4Sdcwht6ljuBBXKhs5sAnEUVuw=",
+        "owner": "denful",
+        "repo": "den-diagram",
+        "rev": "9648e2f64e68b26af73cdd5c575d462e3737e4cb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "denful",
+        "repo": "den-diagram",
         "type": "github"
       }
     },
@@ -691,6 +722,21 @@
       }
     },
     "import-tree": {
+      "locked": {
+        "lastModified": 1788467110,
+        "narHash": "sha256-ljEMTXP/rH0tOvDzc9gzwww6KcHRPRnEHzd9lK48V7s=",
+        "owner": "denful",
+        "repo": "import-tree",
+        "rev": "eb1b52eaecc57f7c136d07ae8a93e724dfecac46",
+        "type": "github"
+      },
+      "original": {
+        "owner": "denful",
+        "repo": "import-tree",
+        "type": "github"
+      }
+    },
+    "import-tree_2": {
       "locked": {
         "lastModified": 1763762820,
         "narHash": "sha256-ZvYKbFib3AEwiNMLsejb/CWs/OL/srFQ8AogkebEPF0=",
@@ -1411,11 +1457,14 @@
     "root": {
       "inputs": {
         "clan-core": "clan-core",
+        "den": "den",
+        "den-diagram": "den-diagram",
         "disko": "disko",
         "ez-configs": "ez-configs",
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
         "iamb": "iamb",
+        "import-tree": "import-tree",
         "llms-agents": "llms-agents",
         "microvm": "microvm",
         "nix-darwin": "nix-darwin",

@@ -19,7 +19,7 @@
         nixt
         ;
 
-      inherit (inputs.llms-agents.packages.${system}) claude-code rtk;
+      inherit (inputs.llms-agents.packages.${system}) claude-code;
 
       lib = prev.lib.extend (import ./lib.nix);
 
@@ -81,12 +81,5 @@
         }
         // (import ./mkFlake2VimPlugin.nix inputs { pkgs = prev; })
       );
-
-      fishPlugins = prev.fishPlugins // {
-        nix-env = {
-          name = "nix-env";
-          src = inputs.nix-env;
-        };
-      };
     };
 }

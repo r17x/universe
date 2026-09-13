@@ -12,14 +12,15 @@
 
       imports = [
         ./nix
-        # ./den
+        ./den
       ];
     };
 
   inputs = {
-    # # nix effectfull, context aware, dag.
-    # import-tree.url = "github:denful/import-tree";
-    # den.url = "github:denful/den";
+    import-tree.url = "github:denful/import-tree";
+    den.url = "github:denful/den";
+    den-diagram.url = "github:denful/den-diagram";
+    den-diagram.flake = false;
 
     # utilities for Flake
     flake-parts.url = "github:hercules-ci/flake-parts";

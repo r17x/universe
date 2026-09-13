@@ -1,6 +1,8 @@
 {
   programs.himalaya.enable = true;
 
+  accounts.calendar.basePath = ".calendar";
+
   accounts.email = {
     maildirBasePath = "Documents/Mail";
     accounts.r17x = rec {

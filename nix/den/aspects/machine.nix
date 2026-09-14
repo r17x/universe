@@ -12,6 +12,7 @@
       aspects.git
       aspects.terminal
       aspects.secrets
+      aspects.editor
     ];
 
     darwin =
@@ -33,18 +34,15 @@
     homeManager =
       {
         inputs,
-        lib,
         pkgs,
         ...
       }:
       {
         home = {
           packages = [
-            inputs.self.packages.${pkgs.stdenv.system}.nvim
             inputs.self.packages.${pkgs.stdenv.system}.universe
             pkgs.claude-code
           ];
-          sessionVariables.EDITOR = lib.getExe' inputs.self.packages.${pkgs.stdenv.system}.nvim "nvim";
           sessionVariables.CLAUDE_CODE_DISABLE_1M_CONTEXT = 1;
         };
 

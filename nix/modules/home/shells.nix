@@ -1,6 +1,7 @@
 {
   color,
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -225,7 +226,12 @@ in
       # See:
       # https://github.com/NixOS/nixpkgs/tree/90e20fc4559d57d33c302a6a1dce545b5b2a2a22/pkgs/shells/fish/plugins
       # for list available plugins built-in nixpkgs
-      plugins = with pkgs.fishPlugins; [ nix-env ];
+      plugins = [
+        {
+          name = "nix-env";
+          src = inputs.nix-env;
+        }
+      ];
 
       functions = {
         ghds = ''

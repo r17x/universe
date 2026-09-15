@@ -65,82 +65,397 @@ Just like how every good wizard knows that having the name of a spirit gives you
 - **NixOS**: Linux configurations for VMs and containers
 - **Custom Development Shells**: Pre-configured environments for various languages and tools
 
-## Structures
+## Graph
+
+<!-- BEGIN:AUTO-GENERATED -->
+
+### Overview
 
 ```mermaid
-graph LR
-    F["🌟 flake.nix"] --> CONFIGS["⚙️ Configurations"]
-    F --> MODULES["📦 Modules"]
-    F --> OVERLAYS["🔧 Overlays"]
-    F --> DEVSHELLS["🐚 DevShells"]
-    
-    CONFIGS --> DARWIN["🍎 Darwin Configs"]
-    CONFIGS --> HOME["🏠 Home Config"]
-    CONFIGS --> NIXOS["🐧 NixOS Config"]
-    
-    DARWIN --> eR17["eR17.nix"]
-    DARWIN --> eR17x["eR17x.nix"]
-    HOME --> r17["r17.nix"]
-    NIXOS --> VM["vm.nix"]
-    
-    eR17 -.-> r17
-    eR17x -.-> r17
-    eR17x -.-> VM
-    
-    MODULES --> CROSS["🔗 Cross Modules"]
-    MODULES --> DARWINMOD["🍎 Darwin Modules"]  
-    MODULES --> HOMEMOD["🏠 Home Modules"]
-    MODULES --> NIXOSMOD["🐧 NixOS Modules"]
-    MODULES --> FLAKEMOD["⚡ Flake Modules"]
-    
-    OVERLAYS --> MACPKGS["🍎 macOS Packages"]
-    OVERLAYS --> OCAMLPKGS["🐪 OCaml Packages"]
-    OVERLAYS --> NODEPKGS["📦 Node Packages"]
-    OVERLAYS --> VIMUTILS["📝 Vim Utilities"]
-    
-    F --> APPS["🔮 Custom Apps"]
-    F --> DATA["💾 Database Services"]
-    F --> NOTES["📚 Knowledge Base"]
-    F --> SECRETS["🔐 Secret Management"]
-    
-    APPS --> NORG["norg - OCaml CLI"]
-    APPS --> RINROCKS["rin.rocks - ReasonML Web"]
-    APPS --> EVILFACTORY["evilfactory - OCaml"]
-    
-    DATA --> M1["MariaDB m1"]
-    DATA --> M2["MariaDB m2"] 
-    DATA --> M3["MariaDB m3"]
-    
-    NOTES --> JOURNAL["📅 Daily Journal"]
-    NOTES --> LEARN["🎓 Learning Notes"]
-    NOTES --> TODO["✅ Task Management"]
-    
-    MODULES --> NVIM["🚀 AI-Enhanced Neovim"]
-    NVIM --> AI["🤖 AI Integration"]
-    NVIM --> LSP["📡 Language Servers"]
-    NVIM --> UI["🎨 UI & Themes"]
-    
-    classDef configNode fill:#A0C981,stroke:#303446,stroke-width:2px,color:#303446
-    classDef moduleNode fill:#D48AEA,stroke:#303446,stroke-width:2px,color:#303446  
-    classDef appNode fill:#6CB6EB,stroke:#303446,stroke-width:2px,color:#303446
-    classDef dataNode fill:#EF9F76,stroke:#303446,stroke-width:2px,color:#303446
-    
-    class F,CONFIGS,DARWIN,HOME,NIXOS configNode
-    class MODULES,CROSS,DARWINMOD,HOMEMOD,NIXOSMOD,FLAKEMOD,OVERLAYS moduleNode
-    class APPS,NORG,RINROCKS,EVILFACTORY,NVIM appNode
-    class DATA,M1,M2,M3,NOTES,SECRETS dataNode
+%%{init: {"theme":"base","themeVariables":{"activationBkgColor":"#16213E","activationBorderColor":"#8A8A9E","actorBkg":"#16213E","actorBorder":"#B8C0D0","actorLineColor":"#B8C0D0","actorTextColor":"#E1E5ED","background":"#1A1A2E","classText":"#E1E5ED","clusterBkg":"#16213E","clusterBorder":"#8A8A9E","edgeLabelBackground":"#1A1A2E","labelBoxBkgColor":"#16213E","labelBoxBorderColor":"#B8C0D0","labelTextColor":"#E1E5ED","lineColor":"#B8C0D0","loopTextColor":"#E1E5ED","mainBkg":"#16213E","nodeBkg":"#16213E","nodeBorder":"#B8C0D0","nodeTextColor":"#E1E5ED","noteBkgColor":"#16213E","noteBorderColor":"#8A8A9E","noteTextColor":"#E1E5ED","pie1":"#EC7279","pie2":"#EF9F76","pie3":"#DBBE80","pie4":"#A0C980","pie5":"#5DBBC1","pie6":"#6CB6EB","pie7":"#D38AEA","pie8":"#B87AD8","pieLegendTextColor":"#E1E5ED","pieOuterStrokeColor":"#8A8A9E","pieSectionTextColor":"#E1E5ED","pieStrokeColor":"#8A8A9E","pieTitleTextColor":"#E1E5ED","primaryBorderColor":"#B8C0D0","primaryColor":"#16213E","primaryTextColor":"#E1E5ED","secondBkg":"#16213E","secondaryBorderColor":"#8A8A9E","secondaryColor":"#16213E","secondaryTextColor":"#E1E5ED","sequenceNumberColor":"#1A1A2E","signalColor":"#B8C0D0","signalTextColor":"#E1E5ED","tertiaryBorderColor":"#8A8A9E","tertiaryColor":"#16213E","tertiaryTextColor":"#E1E5ED","textColor":"#E1E5ED","titleColor":"#E1E5ED"}}}%%
+graph TD
+  aspects([aspects]):::root
+  builder[/"builder"\]:::builder_c
+  den_tests[/"den-tests"\]:::den_tests_c
+  desktop[/"desktop"\]:::desktop_c
+  devshells[/"devshells"\]:::devshells_c
+  eR17[/"eR17"\]:::eR17_c
+  eR17x[/"eR17x"\]:::eR17x_c
+  flake_modules[/"flake-modules"\]:::flake_modules_c
+  foundation[/"foundation"\]:::foundation_c
+  git[/"git"\]:::git_c
+  identity[/"identity"\]:::identity_c
+  mail[/"mail"\]:::mail_c
+  network[/"network"\]:::network_c
+  nix[/"nix"\]:::nix_c
+  nvim_flake[/"nvim-flake"\]:::nvim_flake_c
+  overlays[/"overlays"\]:::overlays_c
+  packages[/"packages"\]:::packages_c
+  r17[/"r17"\]:::r17_c
+  secrets[/"secrets"\]:::secrets_c
+  services[/"services"\]:::services_c
+  shell[/"shell"\]:::shell_c
+  terminal[/"terminal"\]:::terminal_c
+  tooling[/"tooling"\]:::tooling_c
+  wsl_host_aspect[/"wsl-host-aspect"\]:::wsl_host_aspect_c
+
+  eR17 --> nix
+  eR17 --> shell
+  eR17 --> desktop
+  eR17 --> identity
+  eR17 --> packages
+  eR17 --> mail
+  eR17 --> git
+  eR17 --> terminal
+  eR17 --> secrets
+  eR17x --> eR17
+  eR17x --> network
+  eR17x --> builder
+
+  classDef root fill:#6CB6EB,stroke:#6CB6EB,color:#1A1A2E,font-weight:bold
+  classDef builder_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
+  classDef den_tests_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
+  classDef desktop_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef devshells_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
+  classDef eR17_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef eR17x_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef flake_modules_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
+  classDef foundation_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
+  classDef git_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
+  classDef identity_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
+  classDef mail_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
+  classDef network_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
+  classDef nix_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
+  classDef nvim_flake_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
+  classDef overlays_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
+  classDef packages_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
+  classDef r17_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
+  classDef secrets_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
+  classDef services_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
+  classDef shell_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
+  classDef terminal_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef tooling_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
+  classDef wsl_host_aspect_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
 ```
 
-* [Flake](./flake.nix)
-* [configurations](./nix/configurations/)
-* [home](./nix/configurations/home)
-* [r17](./nix/configurations/home/r17.nix) - home-manager configurations for user `r17` and use at host [eR17](./nix/configurations/darwin/eR17.nix) and [eR17x](./nix/configurations/darwin/eR17x.nix)
-* [darwin](./nix/configurations/darwin/)
-* [eR17](./nix/configurations/darwin/eR17.nix)
-* [eR17x](./nix/configurations/darwin/eR17x.nix)
-* [nixos](./nix/configurations/nixos)
-* [vm](./nix/configurations/nixos/vm.nix) - currently deploy to linux-builder at [eR17x](./nix/configurations/darwin/eR17x.nix)
-* [modules](./nix/modules/)
+### Hosts
+
+<details>
+<summary>eR17</summary>
+
+```mermaid
+%%{init: {"theme":"base","themeVariables":{"activationBkgColor":"#16213E","activationBorderColor":"#8A8A9E","actorBkg":"#16213E","actorBorder":"#B8C0D0","actorLineColor":"#B8C0D0","actorTextColor":"#E1E5ED","background":"#1A1A2E","classText":"#E1E5ED","clusterBkg":"#16213E","clusterBorder":"#8A8A9E","edgeLabelBackground":"#1A1A2E","labelBoxBkgColor":"#16213E","labelBoxBorderColor":"#B8C0D0","labelTextColor":"#E1E5ED","lineColor":"#B8C0D0","loopTextColor":"#E1E5ED","mainBkg":"#16213E","nodeBkg":"#16213E","nodeBorder":"#B8C0D0","nodeTextColor":"#E1E5ED","noteBkgColor":"#16213E","noteBorderColor":"#8A8A9E","noteTextColor":"#E1E5ED","pie1":"#EC7279","pie2":"#EF9F76","pie3":"#DBBE80","pie4":"#A0C980","pie5":"#5DBBC1","pie6":"#6CB6EB","pie7":"#D38AEA","pie8":"#B87AD8","pieLegendTextColor":"#E1E5ED","pieOuterStrokeColor":"#8A8A9E","pieSectionTextColor":"#E1E5ED","pieStrokeColor":"#8A8A9E","pieTitleTextColor":"#E1E5ED","primaryBorderColor":"#B8C0D0","primaryColor":"#16213E","primaryTextColor":"#E1E5ED","secondBkg":"#16213E","secondaryBorderColor":"#8A8A9E","secondaryColor":"#16213E","secondaryTextColor":"#E1E5ED","sequenceNumberColor":"#1A1A2E","signalColor":"#B8C0D0","signalTextColor":"#E1E5ED","tertiaryBorderColor":"#8A8A9E","tertiaryColor":"#16213E","tertiaryTextColor":"#E1E5ED","textColor":"#E1E5ED","titleColor":"#E1E5ED"}}}%%
+graph LR
+  eR17([eR17]):::root
+  _policy_hm_user_detect__0_["<policy:hm-user-detect>[0]"]:::_policy_hm_user_detect__0__c
+  den__batteries__define_user[/"batteries/define-user"\]:::den__batteries__define_user_c
+  den__batteries__define_user__r17_eR17{{"batteries/define-user/r17@eR17"}}:::den__batteries__define_user__r17_eR17_c
+  desktop["desktop"]:::desktop_c
+  git["git"]:::git_c
+  hm_user_detect["hm-user-detect"]:::hm_user_detect_c
+  den__batteries__host_aspects[/"batteries/host-aspects"\]:::den__batteries__host_aspects_c
+  host_aspects_project["host-aspects-project"]:::host_aspects_project_c
+  host_to_hm_users["host-to-hm-users"]:::host_to_hm_users_c
+  host_to_users["host-to-users"]:::host_to_users_c
+  den__batteries__hostname[/"batteries/hostname"\]:::den__batteries__hostname_c
+  den__batteries__hostname__os{{"batteries/hostname/os"}}:::den__batteries__hostname__os_c
+  identity["identity"]:::identity_c
+  insecure_predicate["insecure-predicate"]:::insecure_predicate_c
+  insecure_predicate__os{{"insecure-predicate/os"}}:::insecure_predicate__os_c
+  insecure_predicate__user{{"insecure-predicate/user"}}:::insecure_predicate__user_c
+  mail["mail"]:::mail_c
+  nix["nix"]:::nix_c
+  os_to_host_host_eR17["os-to-host"]:::os_to_host_host_eR17_c
+  os_to_host_user_r17["os-to-host"]:::os_to_host_user_r17_c
+  packages["packages"]:::packages_c
+  den__batteries__primary_user_r17_eR17_{{"batteries/primary-user(r17@eR17)"}}:::den__batteries__primary_user_r17_eR17__c
+  r17{{"r17"}}:::r17_c
+  secrets["secrets"]:::secrets_c
+  shell["shell"]:::shell_c
+  terminal["terminal"]:::terminal_c
+  unfree_predicate["unfree-predicate"]:::unfree_predicate_c
+  unfree_predicate__os{{"unfree-predicate/os"}}:::unfree_predicate__os_c
+  unfree_predicate__user{{"unfree-predicate/user"}}:::unfree_predicate__user_c
+  user_to_host["user-to-host"]:::user_to_host_c
+
+  den__batteries__define_user --> den__batteries__define_user__r17_eR17
+  den__batteries__hostname --> den__batteries__hostname__os
+  eR17 --> desktop
+  eR17 --> git
+  eR17 --> identity
+  eR17 --> mail
+  eR17 --> nix
+  eR17 --> packages
+  eR17 --> den__batteries__primary_user_r17_eR17_
+  eR17 --> secrets
+  eR17 --> shell
+  eR17 --> terminal
+  insecure_predicate --> insecure_predicate__os
+  insecure_predicate --> insecure_predicate__user
+  unfree_predicate --> unfree_predicate__os
+  unfree_predicate --> unfree_predicate__user
+
+  classDef root fill:#6CB6EB,stroke:#6CB6EB,color:#1A1A2E,font-weight:bold
+  classDef _policy_hm_user_detect__0__c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-dasharray: 3 3,stroke-width:1px
+  classDef den__batteries__define_user_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:3px
+  classDef den__batteries__define_user__r17_eR17_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef desktop_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:3px
+  classDef eR17_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:3px
+  classDef git_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:3px
+  classDef hm_user_detect_c fill:#DBBE80,stroke:#DBBE80,color:#1A1A2E,stroke-width:2px,stroke-dasharray: 8 4
+  classDef den__batteries__host_aspects_c fill:#DBBE80,stroke:#DBBE80,color:#1A1A2E,stroke-width:3px
+  classDef host_aspects_project_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px,stroke-dasharray: 8 4
+  classDef host_to_hm_users_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px,stroke-dasharray: 8 4
+  classDef host_to_users_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px,stroke-dasharray: 8 4
+  classDef den__batteries__hostname_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:3px
+  classDef den__batteries__hostname__os_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-dasharray: 3 3,stroke-width:1px
+  classDef identity_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:3px
+  classDef insecure_predicate_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:3px
+  classDef insecure_predicate__os_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-dasharray: 3 3,stroke-width:1px
+  classDef insecure_predicate__user_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-dasharray: 3 3,stroke-width:1px
+  classDef mail_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:3px
+  classDef nix_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:3px
+  classDef os_to_host_host_eR17_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px,stroke-dasharray: 8 4
+  classDef os_to_host_user_r17_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px,stroke-dasharray: 8 4
+  classDef packages_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:3px
+  classDef den__batteries__primary_user_r17_eR17__c fill:#DBBE80,stroke:#DBBE80,color:#1A1A2E,stroke-width:2px
+  classDef r17_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:3px
+  classDef secrets_c fill:#DBBE80,stroke:#DBBE80,color:#1A1A2E,stroke-width:3px
+  classDef shell_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:3px
+  classDef terminal_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:3px
+  classDef unfree_predicate_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:3px
+  classDef unfree_predicate__os_c fill:#DBBE80,stroke:#DBBE80,color:#1A1A2E,stroke-dasharray: 3 3,stroke-width:1px
+  classDef unfree_predicate__user_c fill:#DBBE80,stroke:#DBBE80,color:#1A1A2E,stroke-dasharray: 3 3,stroke-width:1px
+  classDef user_to_host_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px,stroke-dasharray: 8 4
+```
+
+</details>
+
+<details>
+<summary>eR17x</summary>
+
+```mermaid
+%%{init: {"theme":"base","themeVariables":{"activationBkgColor":"#16213E","activationBorderColor":"#8A8A9E","actorBkg":"#16213E","actorBorder":"#B8C0D0","actorLineColor":"#B8C0D0","actorTextColor":"#E1E5ED","background":"#1A1A2E","classText":"#E1E5ED","clusterBkg":"#16213E","clusterBorder":"#8A8A9E","edgeLabelBackground":"#1A1A2E","labelBoxBkgColor":"#16213E","labelBoxBorderColor":"#B8C0D0","labelTextColor":"#E1E5ED","lineColor":"#B8C0D0","loopTextColor":"#E1E5ED","mainBkg":"#16213E","nodeBkg":"#16213E","nodeBorder":"#B8C0D0","nodeTextColor":"#E1E5ED","noteBkgColor":"#16213E","noteBorderColor":"#8A8A9E","noteTextColor":"#E1E5ED","pie1":"#EC7279","pie2":"#EF9F76","pie3":"#DBBE80","pie4":"#A0C980","pie5":"#5DBBC1","pie6":"#6CB6EB","pie7":"#D38AEA","pie8":"#B87AD8","pieLegendTextColor":"#E1E5ED","pieOuterStrokeColor":"#8A8A9E","pieSectionTextColor":"#E1E5ED","pieStrokeColor":"#8A8A9E","pieTitleTextColor":"#E1E5ED","primaryBorderColor":"#B8C0D0","primaryColor":"#16213E","primaryTextColor":"#E1E5ED","secondBkg":"#16213E","secondaryBorderColor":"#8A8A9E","secondaryColor":"#16213E","secondaryTextColor":"#E1E5ED","sequenceNumberColor":"#1A1A2E","signalColor":"#B8C0D0","signalTextColor":"#E1E5ED","tertiaryBorderColor":"#8A8A9E","tertiaryColor":"#16213E","tertiaryTextColor":"#E1E5ED","textColor":"#E1E5ED","titleColor":"#E1E5ED"}}}%%
+graph LR
+  eR17x([eR17x]):::root
+  _policy_hm_user_detect__0_["<policy:hm-user-detect>[0]"]:::_policy_hm_user_detect__0__c
+  builder["builder"]:::builder_c
+  den__batteries__define_user[/"batteries/define-user"\]:::den__batteries__define_user_c
+  den__batteries__define_user__r17_eR17x{{"batteries/define-user/r17@eR17x"}}:::den__batteries__define_user__r17_eR17x_c
+  desktop["desktop"]:::desktop_c
+  eR17["eR17"]:::eR17_c
+  git["git"]:::git_c
+  hm_user_detect["hm-user-detect"]:::hm_user_detect_c
+  den__batteries__host_aspects[/"batteries/host-aspects"\]:::den__batteries__host_aspects_c
+  host_aspects_project["host-aspects-project"]:::host_aspects_project_c
+  host_to_hm_users["host-to-hm-users"]:::host_to_hm_users_c
+  host_to_users["host-to-users"]:::host_to_users_c
+  den__batteries__hostname[/"batteries/hostname"\]:::den__batteries__hostname_c
+  den__batteries__hostname__os{{"batteries/hostname/os"}}:::den__batteries__hostname__os_c
+  identity["identity"]:::identity_c
+  insecure_predicate["insecure-predicate"]:::insecure_predicate_c
+  insecure_predicate__os{{"insecure-predicate/os"}}:::insecure_predicate__os_c
+  insecure_predicate__user{{"insecure-predicate/user"}}:::insecure_predicate__user_c
+  mail["mail"]:::mail_c
+  network["network"]:::network_c
+  nix["nix"]:::nix_c
+  os_to_host_user_r17["os-to-host"]:::os_to_host_user_r17_c
+  os_to_host_host_eR17x["os-to-host"]:::os_to_host_host_eR17x_c
+  packages["packages"]:::packages_c
+  den__batteries__primary_user_r17_eR17x_{{"batteries/primary-user(r17@eR17x)"}}:::den__batteries__primary_user_r17_eR17x__c
+  r17{{"r17"}}:::r17_c
+  secrets["secrets"]:::secrets_c
+  shell["shell"]:::shell_c
+  terminal["terminal"]:::terminal_c
+  unfree_predicate["unfree-predicate"]:::unfree_predicate_c
+  unfree_predicate__os{{"unfree-predicate/os"}}:::unfree_predicate__os_c
+  unfree_predicate__user{{"unfree-predicate/user"}}:::unfree_predicate__user_c
+  user_to_host["user-to-host"]:::user_to_host_c
+
+  den__batteries__define_user --> den__batteries__define_user__r17_eR17x
+  den__batteries__hostname --> den__batteries__hostname__os
+  eR17 --> desktop
+  eR17 --> git
+  eR17 --> identity
+  eR17 --> mail
+  eR17 --> nix
+  eR17 --> packages
+  eR17 --> den__batteries__primary_user_r17_eR17x_
+  eR17 --> secrets
+  eR17 --> shell
+  eR17 --> terminal
+  eR17x --> builder
+  eR17x --> eR17
+  eR17x --> network
+  insecure_predicate --> insecure_predicate__os
+  insecure_predicate --> insecure_predicate__user
+  unfree_predicate --> unfree_predicate__os
+  unfree_predicate --> unfree_predicate__user
+
+  classDef root fill:#6CB6EB,stroke:#6CB6EB,color:#1A1A2E,font-weight:bold
+  classDef _policy_hm_user_detect__0__c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-dasharray: 3 3,stroke-width:1px
+  classDef builder_c fill:#DBBE80,stroke:#DBBE80,color:#1A1A2E,stroke-width:3px
+  classDef den__batteries__define_user_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:3px
+  classDef den__batteries__define_user__r17_eR17x_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
+  classDef desktop_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:3px
+  classDef eR17_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:3px
+  classDef eR17x_c fill:#DBBE80,stroke:#DBBE80,color:#1A1A2E,stroke-width:3px
+  classDef git_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:3px
+  classDef hm_user_detect_c fill:#DBBE80,stroke:#DBBE80,color:#1A1A2E,stroke-width:2px,stroke-dasharray: 8 4
+  classDef den__batteries__host_aspects_c fill:#DBBE80,stroke:#DBBE80,color:#1A1A2E,stroke-width:3px
+  classDef host_aspects_project_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px,stroke-dasharray: 8 4
+  classDef host_to_hm_users_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px,stroke-dasharray: 8 4
+  classDef host_to_users_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px,stroke-dasharray: 8 4
+  classDef den__batteries__hostname_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:3px
+  classDef den__batteries__hostname__os_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-dasharray: 3 3,stroke-width:1px
+  classDef identity_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:3px
+  classDef insecure_predicate_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:3px
+  classDef insecure_predicate__os_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-dasharray: 3 3,stroke-width:1px
+  classDef insecure_predicate__user_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-dasharray: 3 3,stroke-width:1px
+  classDef mail_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:3px
+  classDef network_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:3px
+  classDef nix_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:3px
+  classDef os_to_host_user_r17_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px,stroke-dasharray: 8 4
+  classDef os_to_host_host_eR17x_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px,stroke-dasharray: 8 4
+  classDef packages_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:3px
+  classDef den__batteries__primary_user_r17_eR17x__c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
+  classDef r17_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:3px
+  classDef secrets_c fill:#DBBE80,stroke:#DBBE80,color:#1A1A2E,stroke-width:3px
+  classDef shell_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:3px
+  classDef terminal_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:3px
+  classDef unfree_predicate_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:3px
+  classDef unfree_predicate__os_c fill:#DBBE80,stroke:#DBBE80,color:#1A1A2E,stroke-dasharray: 3 3,stroke-width:1px
+  classDef unfree_predicate__user_c fill:#DBBE80,stroke:#DBBE80,color:#1A1A2E,stroke-dasharray: 3 3,stroke-width:1px
+  classDef user_to_host_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px,stroke-dasharray: 8 4
+```
+
+</details>
+
+### Home Manager
+
+<details>
+<summary>r17</summary>
+
+```mermaid
+%%{init: {"theme":"base","themeVariables":{"activationBkgColor":"#16213E","activationBorderColor":"#8A8A9E","actorBkg":"#16213E","actorBorder":"#B8C0D0","actorLineColor":"#B8C0D0","actorTextColor":"#E1E5ED","background":"#1A1A2E","classText":"#E1E5ED","clusterBkg":"#16213E","clusterBorder":"#8A8A9E","edgeLabelBackground":"#1A1A2E","labelBoxBkgColor":"#16213E","labelBoxBorderColor":"#B8C0D0","labelTextColor":"#E1E5ED","lineColor":"#B8C0D0","loopTextColor":"#E1E5ED","mainBkg":"#16213E","nodeBkg":"#16213E","nodeBorder":"#B8C0D0","nodeTextColor":"#E1E5ED","noteBkgColor":"#16213E","noteBorderColor":"#8A8A9E","noteTextColor":"#E1E5ED","pie1":"#EC7279","pie2":"#EF9F76","pie3":"#DBBE80","pie4":"#A0C980","pie5":"#5DBBC1","pie6":"#6CB6EB","pie7":"#D38AEA","pie8":"#B87AD8","pieLegendTextColor":"#E1E5ED","pieOuterStrokeColor":"#8A8A9E","pieSectionTextColor":"#E1E5ED","pieStrokeColor":"#8A8A9E","pieTitleTextColor":"#E1E5ED","primaryBorderColor":"#B8C0D0","primaryColor":"#16213E","primaryTextColor":"#E1E5ED","secondBkg":"#16213E","secondaryBorderColor":"#8A8A9E","secondaryColor":"#16213E","secondaryTextColor":"#E1E5ED","sequenceNumberColor":"#1A1A2E","signalColor":"#B8C0D0","signalTextColor":"#E1E5ED","tertiaryBorderColor":"#8A8A9E","tertiaryColor":"#16213E","tertiaryTextColor":"#E1E5ED","textColor":"#E1E5ED","titleColor":"#E1E5ED"}}}%%
+graph LR
+  r17([r17]):::root
+
+  subgraph ctx_user_r17["user: r17"]
+  _policy_hm_user_detect__0_["<policy:hm-user-detect>[0]"]:::_policy_hm_user_detect__0__c
+  n_default["default"]:::n_default_c
+  hm_user_detect["hm-user-detect"]:::hm_user_detect_c
+  den__batteries__host_aspects[/"batteries/host-aspects"\]:::den__batteries__host_aspects_c
+  host_aspects_project["host-aspects-project"]:::host_aspects_project_c
+  os_to_host["os-to-host"]:::os_to_host_c
+  user["user"]:::user_c
+  user_to_host["user-to-host"]:::user_to_host_c
+  user__resolve_user_["user/resolve(user)"]:::user__resolve_user__c
+  user --> _policy_hm_user_detect__0_
+  user --> n_default
+  user --> den__batteries__host_aspects
+  user --> r17
+  user --> user__resolve_user_
+  end
+
+
+  classDef root fill:#6CB6EB,stroke:#6CB6EB,color:#1A1A2E,font-weight:bold
+  classDef _policy_hm_user_detect__0__c fill:#B87AD8,stroke:#B87AD8,color:#1A1A2E,stroke-dasharray: 3 3,stroke-width:1px
+  classDef n_default_c fill:#B87AD8,stroke:#B87AD8,color:#1A1A2E,stroke-width:3px
+  classDef hm_user_detect_c fill:#EC7279,stroke:#EC7279,color:#1A1A2E,stroke-width:2px,stroke-dasharray: 8 4
+  classDef den__batteries__host_aspects_c fill:#EC7279,stroke:#EC7279,color:#1A1A2E,stroke-width:3px
+  classDef host_aspects_project_c fill:#B87AD8,stroke:#B87AD8,color:#1A1A2E,stroke-width:2px,stroke-dasharray: 8 4
+  classDef os_to_host_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px,stroke-dasharray: 8 4
+  classDef r17_c fill:#B87AD8,stroke:#B87AD8,color:#1A1A2E,stroke-width:3px
+  classDef user_c fill:#B87AD8,stroke:#B87AD8,color:#1A1A2E,stroke-width:3px
+  classDef user_to_host_c fill:#B87AD8,stroke:#B87AD8,color:#1A1A2E,stroke-width:2px,stroke-dasharray: 8 4
+  classDef user__resolve_user__c fill:#16213E,stroke:#8A8A9E,color:#E1E5ED,stroke-dasharray: 2 2,stroke-width:1px
+style ctx_user_r17 fill:#16213E,stroke:#8A8A9E,stroke-width:2px
+```
+
+</details>
+
+### Dependencies
+
+```mermaid
+%%{init: {"theme":"base","themeVariables":{"activationBkgColor":"#16213E","activationBorderColor":"#8A8A9E","actorBkg":"#16213E","actorBorder":"#B8C0D0","actorLineColor":"#B8C0D0","actorTextColor":"#E1E5ED","background":"#1A1A2E","classText":"#E1E5ED","clusterBkg":"#16213E","clusterBorder":"#8A8A9E","edgeLabelBackground":"#1A1A2E","labelBoxBkgColor":"#16213E","labelBoxBorderColor":"#B8C0D0","labelTextColor":"#E1E5ED","lineColor":"#B8C0D0","loopTextColor":"#E1E5ED","mainBkg":"#16213E","nodeBkg":"#16213E","nodeBorder":"#B8C0D0","nodeTextColor":"#E1E5ED","noteBkgColor":"#16213E","noteBorderColor":"#8A8A9E","noteTextColor":"#E1E5ED","pie1":"#EC7279","pie2":"#EF9F76","pie3":"#DBBE80","pie4":"#A0C980","pie5":"#5DBBC1","pie6":"#6CB6EB","pie7":"#D38AEA","pie8":"#B87AD8","pieLegendTextColor":"#E1E5ED","pieOuterStrokeColor":"#8A8A9E","pieSectionTextColor":"#E1E5ED","pieStrokeColor":"#8A8A9E","pieTitleTextColor":"#E1E5ED","primaryBorderColor":"#B8C0D0","primaryColor":"#16213E","primaryTextColor":"#E1E5ED","secondBkg":"#16213E","secondaryBorderColor":"#8A8A9E","secondaryColor":"#16213E","secondaryTextColor":"#E1E5ED","sequenceNumberColor":"#1A1A2E","signalColor":"#B8C0D0","signalTextColor":"#E1E5ED","tertiaryBorderColor":"#8A8A9E","tertiaryColor":"#16213E","tertiaryTextColor":"#E1E5ED","textColor":"#E1E5ED","titleColor":"#E1E5ED"}}}%%
+graph TD
+  aspects([aspects]):::root
+  builder[/"builder · shared"\]:::builder_c
+  den_tests[/"den-tests · shared"\]:::den_tests_c
+  desktop[/"desktop · host"\]:::desktop_c
+  devshells[/"devshells · shared"\]:::devshells_c
+  eR17[/"eR17 · host"\]:::eR17_c
+  eR17x[/"eR17x · host"\]:::eR17x_c
+  flake_modules[/"flake-modules · shared"\]:::flake_modules_c
+  foundation[/"foundation · shared"\]:::foundation_c
+  git[/"git · shared"\]:::git_c
+  identity[/"identity · shared"\]:::identity_c
+  mail[/"mail · shared"\]:::mail_c
+  network[/"network · shared"\]:::network_c
+  nix[/"nix · shared"\]:::nix_c
+  nvim_flake[/"nvim-flake · shared"\]:::nvim_flake_c
+  overlays[/"overlays · shared"\]:::overlays_c
+  packages[/"packages · shared"\]:::packages_c
+  r17[/"r17 · shared"\]:::r17_c
+  secrets[/"secrets · shared"\]:::secrets_c
+  services[/"services · shared"\]:::services_c
+  shell[/"shell · shared"\]:::shell_c
+  terminal[/"terminal · host"\]:::terminal_c
+  tooling[/"tooling · shared"\]:::tooling_c
+  wsl_host_aspect[/"wsl-host-aspect · host"\]:::wsl_host_aspect_c
+
+  aspects --> den_tests
+  aspects --> devshells
+  aspects --> eR17x
+  aspects --> flake_modules
+  aspects --> foundation
+  aspects --> nvim_flake
+  aspects --> overlays
+  aspects --> r17
+  aspects --> services
+  aspects --> tooling
+  aspects --> wsl_host_aspect
+  eR17 --> nix
+  eR17 --> shell
+  eR17 --> desktop
+  eR17 --> identity
+  eR17 --> packages
+  eR17 --> mail
+  eR17 --> git
+  eR17 --> terminal
+  eR17 --> secrets
+  eR17x --> eR17
+  eR17x --> network
+  eR17x --> builder
+
+  classDef root fill:#6CB6EB,stroke:#6CB6EB,color:#1A1A2E,font-weight:bold
+  classDef builder_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef den_tests_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef desktop_c fill:#6CB6EB,stroke:#6CB6EB,color:#1A1A2E,stroke-width:2px
+  classDef devshells_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef eR17_c fill:#6CB6EB,stroke:#6CB6EB,color:#1A1A2E,stroke-width:2px
+  classDef eR17x_c fill:#6CB6EB,stroke:#6CB6EB,color:#1A1A2E,stroke-width:2px
+  classDef flake_modules_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef foundation_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef git_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef identity_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef mail_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef network_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef nix_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef nvim_flake_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef overlays_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef packages_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef r17_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef secrets_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef services_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef shell_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef terminal_c fill:#6CB6EB,stroke:#6CB6EB,color:#1A1A2E,stroke-width:2px
+  classDef tooling_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef wsl_host_aspect_c fill:#6CB6EB,stroke:#6CB6EB,color:#1A1A2E,stroke-width:2px
+```
+
+<!-- END:AUTO-GENERATED -->
 
 ## Usage
 

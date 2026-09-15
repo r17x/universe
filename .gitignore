@@ -60,8 +60,3 @@
 !secrets/**/
 !secrets/**/*.norg
 !secrets/**/*.yaml
-
-# den modules
-!den/
-!den/**/
-!den/**/*.nix

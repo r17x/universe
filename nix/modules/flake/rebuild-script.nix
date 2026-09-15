@@ -7,9 +7,11 @@ top@{
 let
   genRebuildCommand =
     system: config:
-    ''${
-      lib.getExe' config.system.build."${system}-rebuild" "${system}-rebuild"
-    } switch --flake ${top.self}#${config.networking.hostName}'';
+    let
+      rebuild = lib.getExe' config.system.build."${system}-rebuild" "${system}-rebuild";
+      flakeRef = "${top.self}#${config.networking.hostName}";
+    in
+    "sudo ${rebuild} switch --flake ${flakeRef}";
 
   commands = {
     darwin = lib.concatStringsSep "\n" (

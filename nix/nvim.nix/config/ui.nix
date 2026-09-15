@@ -208,6 +208,12 @@
 
     image = {
       enable = true;
+      lazyLoad.enable = true;
+      lazyLoad.settings.ft = [
+        "markdown"
+        "norg"
+        "typst"
+      ];
       settings = {
         integrations.neorg.enabled = true;
         editor_only_render_when_focused = true;
@@ -215,10 +221,21 @@
       };
     };
 
-    presence = {
+    cord = {
       enable = true;
-      settings.enable_line_number = true;
-      settings.auto_update = true;
+      lazyLoad.settings.event = "DeferredUIEnter";
+      settings = {
+        display = {
+          theme = "atom";
+          flavor = "accent";
+        };
+        editor.tooltip = "Neovim";
+        timestamp.reset_on_idle = true;
+        idle = {
+          enabled = true;
+          timeout = 900000;
+        };
+      };
     };
 
     colorizer = {

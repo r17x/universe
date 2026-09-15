@@ -81,6 +81,7 @@ graph TD
   devshells[/"devshells"\]:::devshells_c
   eR17[/"eR17"\]:::eR17_c
   eR17x[/"eR17x"\]:::eR17x_c
+  editor[/"editor"\]:::editor_c
   flake_modules[/"flake-modules"\]:::flake_modules_c
   foundation[/"foundation"\]:::foundation_c
   git[/"git"\]:::git_c
@@ -108,6 +109,7 @@ graph TD
   eR17 --> git
   eR17 --> terminal
   eR17 --> secrets
+  eR17 --> editor
   eR17x --> eR17
   eR17x --> network
   eR17x --> builder
@@ -119,6 +121,7 @@ graph TD
   classDef devshells_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
   classDef eR17_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
   classDef eR17x_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
+  classDef editor_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
   classDef flake_modules_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
   classDef foundation_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
   classDef git_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:2px
@@ -151,6 +154,7 @@ graph LR
   den__batteries__define_user[/"batteries/define-user"\]:::den__batteries__define_user_c
   den__batteries__define_user__r17_eR17{{"batteries/define-user/r17@eR17"}}:::den__batteries__define_user__r17_eR17_c
   desktop["desktop"]:::desktop_c
+  editor["editor"]:::editor_c
   git["git"]:::git_c
   hm_user_detect["hm-user-detect"]:::hm_user_detect_c
   den__batteries__host_aspects[/"batteries/host-aspects"\]:::den__batteries__host_aspects_c
@@ -181,6 +185,7 @@ graph LR
   den__batteries__define_user --> den__batteries__define_user__r17_eR17
   den__batteries__hostname --> den__batteries__hostname__os
   eR17 --> desktop
+  eR17 --> editor
   eR17 --> git
   eR17 --> identity
   eR17 --> mail
@@ -201,6 +206,7 @@ graph LR
   classDef den__batteries__define_user__r17_eR17_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
   classDef desktop_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:3px
   classDef eR17_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:3px
+  classDef editor_c fill:#DBBE80,stroke:#DBBE80,color:#1A1A2E,stroke-width:3px
   classDef git_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:3px
   classDef hm_user_detect_c fill:#DBBE80,stroke:#DBBE80,color:#1A1A2E,stroke-width:2px,stroke-dasharray: 8 4
   classDef den__batteries__host_aspects_c fill:#DBBE80,stroke:#DBBE80,color:#1A1A2E,stroke-width:3px
@@ -244,6 +250,7 @@ graph LR
   den__batteries__define_user__r17_eR17x{{"batteries/define-user/r17@eR17x"}}:::den__batteries__define_user__r17_eR17x_c
   desktop["desktop"]:::desktop_c
   eR17["eR17"]:::eR17_c
+  editor["editor"]:::editor_c
   git["git"]:::git_c
   hm_user_detect["hm-user-detect"]:::hm_user_detect_c
   den__batteries__host_aspects[/"batteries/host-aspects"\]:::den__batteries__host_aspects_c
@@ -275,6 +282,7 @@ graph LR
   den__batteries__define_user --> den__batteries__define_user__r17_eR17x
   den__batteries__hostname --> den__batteries__hostname__os
   eR17 --> desktop
+  eR17 --> editor
   eR17 --> git
   eR17 --> identity
   eR17 --> mail
@@ -300,6 +308,7 @@ graph LR
   classDef desktop_c fill:#A0C980,stroke:#A0C980,color:#1A1A2E,stroke-width:3px
   classDef eR17_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:3px
   classDef eR17x_c fill:#DBBE80,stroke:#DBBE80,color:#1A1A2E,stroke-width:3px
+  classDef editor_c fill:#DBBE80,stroke:#DBBE80,color:#1A1A2E,stroke-width:3px
   classDef git_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:3px
   classDef hm_user_detect_c fill:#DBBE80,stroke:#DBBE80,color:#1A1A2E,stroke-width:2px,stroke-dasharray: 8 4
   classDef den__batteries__host_aspects_c fill:#DBBE80,stroke:#DBBE80,color:#1A1A2E,stroke-width:3px
@@ -387,6 +396,7 @@ graph TD
   devshells[/"devshells · shared"\]:::devshells_c
   eR17[/"eR17 · host"\]:::eR17_c
   eR17x[/"eR17x · host"\]:::eR17x_c
+  editor[/"editor · shared"\]:::editor_c
   flake_modules[/"flake-modules · shared"\]:::flake_modules_c
   foundation[/"foundation · shared"\]:::foundation_c
   git[/"git · shared"\]:::git_c
@@ -425,6 +435,7 @@ graph TD
   eR17 --> git
   eR17 --> terminal
   eR17 --> secrets
+  eR17 --> editor
   eR17x --> eR17
   eR17x --> network
   eR17x --> builder
@@ -436,6 +447,7 @@ graph TD
   classDef devshells_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
   classDef eR17_c fill:#6CB6EB,stroke:#6CB6EB,color:#1A1A2E,stroke-width:2px
   classDef eR17x_c fill:#6CB6EB,stroke:#6CB6EB,color:#1A1A2E,stroke-width:2px
+  classDef editor_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
   classDef flake_modules_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
   classDef foundation_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px
   classDef git_c fill:#EF9F76,stroke:#EF9F76,color:#1A1A2E,stroke-width:2px

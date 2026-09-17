@@ -67,6 +67,7 @@
     nix-on-droid.inputs.home-manager.follows = "home-manager";
 
     #### ---- nixvim
+    nixpkgs-nixvim.url = "github:NixOS/nixpkgs/c7def046b9a883d46974757852106483d741586f";
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.flake-parts.follows = "flake-parts";
 

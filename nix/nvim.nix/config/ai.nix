@@ -1,6 +1,5 @@
 {
   pkgs,
-  lib,
   icons,
   helpers,
   ...
@@ -78,7 +77,7 @@ rec {
         "AvanteToggle"
       ];
       settings = {
-        provider = "copilot";
+        provider = "claude";
 
         diff = {
           autojump = true;
@@ -103,15 +102,7 @@ rec {
         claude.temperature = 0.7;
         claude.max_tokens = 20000;
 
-        copilot.model = "claude-3.5-sonnet";
-        copilot.temperature = 0.3;
-        copilot.max_tokens = 20000;
-
         providers = rec {
-          copilot37 = {
-            model = "claude-3.7-sonnet";
-            __inherited_from = "copilot";
-          };
           grok = groq // {
             api_key_name = "cmd:pass show r17x/grok.api.key";
             model = "grok-2-latest";
@@ -139,15 +130,7 @@ rec {
       };
     };
 
-    copilot-lua.enable = true;
-    copilot-lua.settings.suggestion.enabled = false;
-    copilot-lua.settings.panel.enabled = false;
-    copilot-lua.lazyLoad.enable = true;
-    copilot-lua.lazyLoad.settings.cmd = [ "Copilot" ];
-
-    cmp.settings.sources = lib.optionals plugins.copilot-lua.enable [
-      { name = "copilot"; }
-    ];
+    copilot-lua.enable = false;
 
     which-key.settings.spec = [
       {

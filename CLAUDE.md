@@ -17,6 +17,7 @@ Read `.gitignore` first — it uses an allowlist pattern (`*` then `!`) that def
 
 ```
 flake.nix                          # Entry point — flake-parts + den
+r17.nix                            # Profile data — edit this to change preferences
 nix/
   den/
     default.nix                    # Den configuration — hosts, defaults, policies

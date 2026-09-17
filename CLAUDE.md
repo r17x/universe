@@ -17,6 +17,7 @@ Read `.gitignore` first — it uses an allowlist pattern (`*` then `!`) that def
 
 ```
 flake.nix                          # Entry point — flake-parts + den
+r17.nix                            # User registry data — edit this to change preferences
 nix/
   den/
     default.nix                    # Den configuration — hosts, defaults, policies
@@ -32,7 +33,7 @@ nix/
       mail.nix                     # Email (himalaya)
       network.nix                  # DNS (unbound + dnscrypt) + mesh (yggdrasil)
       builder.nix                  # Linux builder VM
-    schema/user.nix                # User schema extensions + registry data
+    schema/user.nix                # User schema type definitions + policy wiring
     classes/tests.nix              # Test class definition
     tests/                         # Den framework tests
   modules/
@@ -54,7 +55,7 @@ notes/                             # Personal notes (.norg format)
 
 - **Den** aspect-oriented framework composes the system via `nix/den/default.nix`
 - **flake-parts** composes the flake modularly
-- User preferences centralized in `den.users.registry` (`nix/den/schema/user.nix`)
+- User preferences centralized in `den.users.registry` (`r17.nix`)
 - Aspects read from `user.*` args — changing preferences = edit registry only
 - Global args (`icons`, `colors`, `color`) flow via `policies.theming`
 - Three nixpkgs channels available as `pkgs.branches.{stable, master, unstable}`
@@ -62,7 +63,7 @@ notes/                             # Personal notes (.norg format)
 
 ## Den User Schema
 
-To change user preferences, edit `nix/den/schema/user.nix` under `den.users.registry.r17`:
+To change user preferences, edit `r17.nix` under `den.users.registry.r17`:
 
 | Field | Type | Used by |
 |-------|------|---------|

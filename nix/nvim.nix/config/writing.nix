@@ -59,6 +59,14 @@
         __unkeyed-1 = "venn.nvim";
         cmd = [ "Venn" ];
       }
+      {
+        __unkeyed-1 = "markdown-preview.nvim";
+        cmd = [
+          "MarkdownPreview"
+          "MarkdownPreviewStop"
+          "MarkdownPreviewToggle"
+        ];
+      }
     ];
     cmp.settings.sources = [
       { name = "neorg"; }
@@ -133,6 +141,16 @@
       enable = true;
       settings.theme = "dark";
       settings.port = "8686";
+    };
+
+    render-markdown = {
+      enable = true;
+      lazyLoad.settings.ft = "markdown";
+      settings = {
+        preset = "lazy";
+        debounce = 100;
+        max_file_size = 10.0;
+      };
     };
 
     comment = {

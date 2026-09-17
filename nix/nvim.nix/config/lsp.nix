@@ -387,7 +387,7 @@
         hls.autostart = false;
         hls.installGhc = false;
 
-        htmx.enable = !pkgs.stdenv.isDarwin;
+        htmx.enable = !pkgs.stdenv.hostPlatform.isDarwin;
         htmx.autostart = true;
 
         jsonls.enable = true;

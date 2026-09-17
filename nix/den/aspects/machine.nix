@@ -11,6 +11,7 @@
       git
       terminal
       secrets
+      editor
     ];
 
     darwin =
@@ -30,18 +31,15 @@
     homeManager =
       {
         inputs,
-        lib,
         pkgs,
         ...
       }:
       {
         home = {
           packages = [
-            inputs.self.packages.${pkgs.stdenv.system}.nvim
             inputs.self.packages.${pkgs.stdenv.system}.universe
             pkgs.claude-code
           ];
-          sessionVariables.EDITOR = lib.getExe' inputs.self.packages.${pkgs.stdenv.system}.nvim "nvim";
         };
 
       };

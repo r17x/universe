@@ -1,5 +1,6 @@
 local colors = require("colors")
 local icons = require("icons")
+local style = require("style")
 
 -- Padding item required because of bracket
 sbar.add("item", { width = 5 })
@@ -13,21 +14,20 @@ local apple = sbar.add("item", {
 	},
 	label = { drawing = false },
 	background = {
-		color = colors.bg2,
-		border_color = colors.black,
-		border_width = 1,
+		color = colors[style.color_keys.item_bg],
+		border_color = colors[style.color_keys.item_border],
+		border_width = style.background.border_width,
 	},
 	padding_left = 1,
 	padding_right = 1,
 	click_script = "sbar_menus -s 0",
 })
 
--- Double border for apple using a single item bracket
 sbar.add("bracket", { apple.name }, {
 	background = {
 		color = colors.transparent,
-		height = 30,
-		border_color = colors.grey,
+		height = style.background.height + 2,
+		border_color = colors[style.color_keys.bracket_border],
 	},
 })
 

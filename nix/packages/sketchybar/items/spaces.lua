@@ -1,6 +1,7 @@
 local colors = require("colors")
 local icons = require("icons")
 local settings = require("settings")
+local style = require("style")
 local app_icons = require("helpers.app_icons")
 
 local spaces = {}
@@ -20,12 +21,23 @@ end
 
 local function set_space_highlight(i, focused)
 	spaces[i]:set({
-		icon = { highlight = focused },
-		label = { highlight = focused },
-		background = { border_color = focused and colors.black or colors.bg2 },
+		icon = {
+			highlight = focused,
+			padding_left = focused and style.spaces.focused.icon_padding.left or style.spaces.icon_padding.left,
+			padding_right = focused and style.spaces.focused.icon_padding.right or style.spaces.icon_padding.right,
+		},
+		label = {
+			highlight = focused,
+			padding_right = focused and style.spaces.focused.label_padding_right or style.spaces.label_padding_right,
+		},
+		background = {
+			color = focused and colors[style.color_keys.focused_bg] or colors[style.color_keys.space_bg],
+			border_color = colors[style.color_keys.focused_border],
+			height = focused and style.spaces.focused.bg_height or style.spaces.bg_height,
+		},
 	})
 	space_brackets[i]:set({
-		background = { border_color = focused and colors.grey or colors.bg2 },
+		background = { border_color = colors[style.color_keys.bracket_border] },
 	})
 end
 
@@ -36,25 +48,25 @@ for i = 1, 10 do
 		icon = {
 			font = { family = settings.font.numbers },
 			string = i,
-			padding_left = 15,
-			padding_right = 8,
-			color = colors.white,
-			highlight_color = colors.red,
+			padding_left = style.spaces.icon_padding.left,
+			padding_right = style.spaces.icon_padding.right,
+			color = colors[style.color_keys.icon],
+			highlight_color = colors[style.color_keys.icon_highlight],
 		},
 		label = {
-			padding_right = 20,
+			padding_right = style.spaces.label_padding_right,
 			color = colors.grey,
-			highlight_color = colors.white,
+			highlight_color = colors[style.color_keys.label_highlight],
 			font = "sketchybar-app-font:Regular:16.0",
 			y_offset = -1,
 		},
 		padding_right = 1,
 		padding_left = 1,
 		background = {
-			color = colors.bg1,
-			border_width = 1,
-			height = 26,
-			border_color = colors.black,
+			color = colors[style.color_keys.space_bg],
+			border_width = style.spaces.border_width,
+			height = style.spaces.bg_height,
+			border_color = colors[style.color_keys.space_border],
 		},
 		popup = { background = { border_width = 5, border_color = colors.black } },
 	}
@@ -65,9 +77,9 @@ for i = 1, 10 do
 	space_brackets[i] = sbar.add("bracket", { space.name }, {
 		background = {
 			color = colors.transparent,
-			border_color = colors.bg2,
-			height = 28,
-			border_width = 2,
+			border_color = colors[style.color_keys.bracket_border],
+			height = style.background.height,
+			border_width = style.spaces.bracket_border_width,
 		},
 	})
 
@@ -84,7 +96,7 @@ for i = 1, 10 do
 		background = {
 			drawing = true,
 			image = {
-				corner_radius = 9,
+				corner_radius = style.background.corner_radius,
 				scale = 0.2,
 			},
 		},

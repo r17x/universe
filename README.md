@@ -93,6 +93,7 @@ graph TD
   overlays[/"overlays"\]:::overlays_c
   packages[/"packages"\]:::packages_c
   r17[/"r17"\]:::r17_c
+  runtime_manifest[/"runtime-manifest"\]:::runtime_manifest_c
   secrets[/"secrets"\]:::secrets_c
   services[/"services"\]:::services_c
   shell[/"shell"\]:::shell_c
@@ -130,6 +131,7 @@ graph TD
   classDef overlays_c fill:#F5B083,stroke:#F5B083,color:#2B2D3A,stroke-width:2px
   classDef packages_c fill:#F17E84,stroke:#F17E84,color:#2B2D3A,stroke-width:2px
   classDef r17_c fill:#F5B083,stroke:#F5B083,color:#2B2D3A,stroke-width:2px
+  classDef runtime_manifest_c fill:#F5B083,stroke:#F5B083,color:#2B2D3A,stroke-width:2px
   classDef secrets_c fill:#F17E84,stroke:#F17E84,color:#2B2D3A,stroke-width:2px
   classDef services_c fill:#F5B083,stroke:#F5B083,color:#2B2D3A,stroke-width:2px
   classDef shell_c fill:#F17E84,stroke:#F17E84,color:#2B2D3A,stroke-width:2px
@@ -169,6 +171,8 @@ graph LR
   packages["packages"]:::packages_c
   den__batteries__primary_user_r17_eR17_{{"batteries/primary-user(r17@eR17)"}}:::den__batteries__primary_user_r17_eR17__c
   r17{{"r17"}}:::r17_c
+  runtime_manifest_host_eR17["runtime-manifest"]:::runtime_manifest_host_eR17_c
+  runtime_manifest_user_r17["runtime-manifest"]:::runtime_manifest_user_r17_c
   secrets["secrets"]:::secrets_c
   shell["shell"]:::shell_c
   terminal["terminal"]:::terminal_c
@@ -215,6 +219,8 @@ graph LR
   classDef packages_c fill:#F5B083,stroke:#F5B083,color:#2B2D3A,stroke-width:3px
   classDef den__batteries__primary_user_r17_eR17__c fill:#B1D48B,stroke:#B1D48B,color:#2B2D3A,stroke-width:2px
   classDef r17_c fill:#F17E84,stroke:#F17E84,color:#2B2D3A,stroke-width:3px
+  classDef runtime_manifest_host_eR17_c fill:#F17E84,stroke:#F17E84,color:#2B2D3A,stroke-width:3px
+  classDef runtime_manifest_user_r17_c fill:#F17E84,stroke:#F17E84,color:#2B2D3A,stroke-width:2px,stroke-dasharray: 8 4
   classDef secrets_c fill:#B1D48B,stroke:#B1D48B,color:#2B2D3A,stroke-width:3px
   classDef shell_c fill:#F5B083,stroke:#F5B083,color:#2B2D3A,stroke-width:3px
   classDef terminal_c fill:#F5B083,stroke:#F5B083,color:#2B2D3A,stroke-width:3px
@@ -260,6 +266,8 @@ graph LR
   den__batteries__primary_user_r17_eR17x_{{"batteries/primary-user(r17@eR17x)"}}:::den__batteries__primary_user_r17_eR17x__c
   profile_host_effects["profile-host-effects"]:::profile_host_effects_c
   r17{{"r17"}}:::r17_c
+  runtime_manifest_user_r17["runtime-manifest"]:::runtime_manifest_user_r17_c
+  runtime_manifest_host_eR17x["runtime-manifest"]:::runtime_manifest_host_eR17x_c
   secrets["secrets"]:::secrets_c
   shell["shell"]:::shell_c
   terminal["terminal"]:::terminal_c
@@ -311,6 +319,8 @@ graph LR
   classDef den__batteries__primary_user_r17_eR17x__c fill:#F5B083,stroke:#F5B083,color:#2B2D3A,stroke-width:2px
   classDef profile_host_effects_c fill:#F5B083,stroke:#F5B083,color:#2B2D3A,stroke-width:2px,stroke-dasharray: 8 4
   classDef r17_c fill:#F17E84,stroke:#F17E84,color:#2B2D3A,stroke-width:3px
+  classDef runtime_manifest_user_r17_c fill:#F17E84,stroke:#F17E84,color:#2B2D3A,stroke-width:2px,stroke-dasharray: 8 4
+  classDef runtime_manifest_host_eR17x_c fill:#F17E84,stroke:#F17E84,color:#2B2D3A,stroke-width:3px
   classDef secrets_c fill:#B1D48B,stroke:#B1D48B,color:#2B2D3A,stroke-width:3px
   classDef shell_c fill:#F5B083,stroke:#F5B083,color:#2B2D3A,stroke-width:3px
   classDef terminal_c fill:#F5B083,stroke:#F5B083,color:#2B2D3A,stroke-width:3px
@@ -340,6 +350,7 @@ graph LR
   den__batteries__host_aspects[/"batteries/host-aspects"\]:::den__batteries__host_aspects_c
   host_aspects_project["host-aspects-project"]:::host_aspects_project_c
   os_to_host["os-to-host"]:::os_to_host_c
+  runtime_manifest["runtime-manifest"]:::runtime_manifest_c
   theming["theming"]:::theming_c
   user["user"]:::user_c
   user_to_host["user-to-host"]:::user_to_host_c
@@ -364,6 +375,7 @@ graph LR
   classDef host_aspects_project_c fill:#F0F4FA,stroke:#F0F4FA,color:#2B2D3A,stroke-width:2px,stroke-dasharray: 8 4
   classDef os_to_host_c fill:#F17E84,stroke:#F17E84,color:#2B2D3A,stroke-width:2px,stroke-dasharray: 8 4
   classDef r17_c fill:#F0F4FA,stroke:#F0F4FA,color:#2B2D3A,stroke-width:3px
+  classDef runtime_manifest_c fill:#F0F4FA,stroke:#F0F4FA,color:#2B2D3A,stroke-width:2px,stroke-dasharray: 8 4
   classDef theming_c fill:#F0F4FA,stroke:#F0F4FA,color:#2B2D3A,stroke-width:2px,stroke-dasharray: 8 4
   classDef user_c fill:#F0F4FA,stroke:#F0F4FA,color:#2B2D3A,stroke-width:3px
   classDef user_to_host_c fill:#F0F4FA,stroke:#F0F4FA,color:#2B2D3A,stroke-width:2px,stroke-dasharray: 8 4
@@ -397,6 +409,7 @@ graph TD
   overlays[/"overlays · shared"\]:::overlays_c
   packages[/"packages · host"\]:::packages_c
   r17[/"r17 · shared"\]:::r17_c
+  runtime_manifest[/"runtime-manifest · shared"\]:::runtime_manifest_c
   secrets[/"secrets · host"\]:::secrets_c
   services[/"services · shared"\]:::services_c
   shell[/"shell · host"\]:::shell_c
@@ -413,6 +426,7 @@ graph TD
   aspects --> nvim_flake
   aspects --> overlays
   aspects --> r17
+  aspects --> runtime_manifest
   aspects --> services
   aspects --> tooling
   aspects --> wsl_host_aspect
@@ -446,6 +460,7 @@ graph TD
   classDef overlays_c fill:#F17E84,stroke:#F17E84,color:#2B2D3A,stroke-width:2px
   classDef packages_c fill:#DE95F5,stroke:#DE95F5,color:#2B2D3A,stroke-width:2px
   classDef r17_c fill:#F17E84,stroke:#F17E84,color:#2B2D3A,stroke-width:2px
+  classDef runtime_manifest_c fill:#F17E84,stroke:#F17E84,color:#2B2D3A,stroke-width:2px
   classDef secrets_c fill:#DE95F5,stroke:#DE95F5,color:#2B2D3A,stroke-width:2px
   classDef services_c fill:#F17E84,stroke:#F17E84,color:#2B2D3A,stroke-width:2px
   classDef shell_c fill:#DE95F5,stroke:#DE95F5,color:#2B2D3A,stroke-width:2px

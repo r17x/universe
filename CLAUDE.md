@@ -16,25 +16,37 @@ Read `.gitignore` first — it uses an allowlist pattern (`*` then `!`) that def
 ## Repository Structure
 
 ```
-flake.nix                          # Entry point — uses flake-parts + ez-configs
+flake.nix                          # Entry point — flake-parts + den
 nix/
-  default.nix                      # Main flake module imports and configuration
-  devShells.nix                    # Development environments (Node, Go, OCaml, Rust, Bun)
-  nvim.nix/                        # Neovim configuration (nixvim)
-  colors.nix / icons.nix           # Shared color scheme and icon definitions
-  configurations/
-    darwin/eR17.nix                # Base macOS config (aarch64-darwin)
-    darwin/eR17x.nix               # Extended macOS config (adds DNS, Tailscale, linux-builder)
-    home/r17.nix                   # Home-manager config for user r17
-    nixos/vm.nix                   # NixOS VM config (microvm)
+  den/
+    default.nix                    # Den configuration — hosts, defaults, policies
+    aspects/                       # Aspect definitions (18 aspects)
+      machine.nix                  # Host definitions (eR17, eR17x) + tests
+      shell.nix                    # Shell (fish, aliases, prompt, tools)
+      desktop.nix                  # Window management (aerospace, sketchybar)
+      terminal.nix                 # Terminal (ghostty, tmux)
+      packages.nix                 # Packages (system, fonts, homebrew, user)
+      git.nix                      # Git config + url rewrites
+      secrets.nix                  # SOPS-nix, GPG trust, pass
+      identity.nix                 # GPG agent, pinentry
+      mail.nix                     # Email (himalaya)
+      network.nix                  # DNS (unbound + dnscrypt) + mesh (yggdrasil)
+      builder.nix                  # Linux builder VM
+    schema/profile.nix             # Profile-to-host/user resolver
+    schema/types.nix               # Typed host and user capability data
+    schema/user.nix                # Den user schema integration
+    classes/tests.nix              # Test class definition
+    tests/                         # Den framework tests
   modules/
-    cross/                         # Platform-agnostic (nix settings, nixpkgs config, Fish shell)
-    darwin/                        # macOS modules (system, mouseless WM, homebrew, network, GPG, etc.)
-    home/                          # User modules (git, shells, terminal, tmux, packages, etc.)
-    nixos/                         # NixOS modules (user config)
-    flake/                         # Flake-level (universe CLI, rebuild scripts, pkgs-by-name)
-  overlays/                        # Custom overlays (OCaml packages, Node packages, macOS apps, vim)
-  packages/                        # Custom per-system packages (discovered via pkgs-by-name)
+    cross/nix.nix                  # Cross-platform nix settings
+    darwin/                        # macOS modules (unbound, yggdrasil)
+    flake/                         # Flake modules (universe CLI, pkgs-by-name)
+  configurations/nixos/vm.nix      # NixOS VM config (microvm)
+  overlays/                        # Custom overlays (OCaml, Node, macOS apps, vim)
+  packages/                        # Custom packages (pkgs-by-name)
+  colors.nix / icons.nix           # Shared color scheme and icon definitions
+  devShells.nix                    # Development environments (Node, Go, OCaml, Rust, Bun)
+  nvim.nix                         # Neovim configuration (nixvim)
 secrets/                           # SOPS-encrypted secrets (secret.yaml)
 apps/                              # Custom applications (norg, rin.rocks)
 notes/                             # Personal notes (.norg format)
@@ -42,18 +54,49 @@ notes/                             # Personal notes (.norg format)
 
 ## Architecture
 
-- **flake-parts** composes the flake modularly via `nix/default.nix`
-- **ez-configs** auto-discovers configurations and modules from directory conventions
-- Global args (`self`, `inputs`, `icons`, `colors`, `color`, `crossModules`) flow to all modules
+- **Den** aspect-oriented framework composes the system via `nix/den/default.nix`
+- **flake-parts** composes the flake modularly
+- Profile data is centralized in `den.profiles.r17` (`r17.nix`)
+- The profile resolver projects one user entity onto its hosts and includes host effects from typed capabilities
+- User aspects read `user.*`; host effects such as networking, Homebrew, and builders read `host.*`
+- Global args (`icons`, `colors`, `color`) flow via `policies.theming`
 - Three nixpkgs channels available as `pkgs.branches.{stable, master, unstable}`
 - Overlays are applied globally via `inputs.self.nixpkgs.overlays`
+
+## Den Profile Schema
+
+To change the profile, edit `r17.nix` under `den.profiles.r17`. Shared types live in `nix/den/schema/types.nix`:
+
+| Field | Type | Used by |
+|-------|------|---------|
+| `handle` | `str` | mail account key |
+| `shell` | `str` | `den.batteries.user-shell` |
+| `font` | `str` | terminal.nix (ghostty) |
+| `configDirectory` | `str` | shell.nix (aliases, fish functions) |
+| `primaryCache` | `str` | shell.nix (cachix push alias) |
+| `caches` | `attrsOf { url, key }` | builder.nix (substituters) |
+| `secrets` | `listOf str` | secrets.nix (sops secret names) |
+| `gpgTrust` | `attrsOf str` | secrets.nix (secret name -> email) |
+| `browsers` | `listOf str` | secrets.nix (browserpass) |
+| `sessionVariables` | `attrsOf anything` | shell.nix (home.sessionVariables) |
+| `sessionPath` | `listOf str` | shell.nix (home.sessionPath) |
+| `workspaces` | `attrsOf { path, sessionName }` | terminal.nix (tmux) |
+| `packageOverrides` | `attrsOf anything` | shell.nix (atuin), packages.nix (discord) |
+| `mail` | `attrsOf anything` | mail.nix (email accounts) |
+| `git.urlRewrites` | `attrsOf str` | git.nix (extraConfig.url) |
+| `hosts.*.apps.masApps` | `attrsOf int` | packages.nix (homebrew) |
+| `hosts.*.builder` | `{ diskSize, memorySize, cores, maxJobs, systems }` | builder.nix |
+| `hosts.*.dns` | `{ dnscrypt, unbound }` | network.nix |
+| `hosts.*.mesh` | `{ peers, publicKey, settings }` | network.nix |
+
+The resolver creates Den-native host and user entities. User aspects remain parametric per selected user; host capability policies include network and builder effects once per host, avoiding user fan-out.
 
 ## Darwin Hosts
 
 | Host | Description |
 |------|-------------|
-| `eR17` | Base: Fish shell, aerospace WM, homebrew, fonts, GPG |
-| `eR17x` | Extends eR17: dnscrypt-proxy + unbound DNS, Tailscale, linux-builder VM |
+| `eR17` | Base: shell, desktop, identity, packages, mail, git, terminal, secrets |
+| `eR17x` | Extends eR17: + network (DNS, mesh), builder (linux VM), tailscale |
 
 ## Nix Conventions
 

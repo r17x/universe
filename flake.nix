@@ -12,7 +12,6 @@
 
       imports = [
         ./nix
-        ./den
       ];
     };
 
@@ -24,10 +23,6 @@
 
     # utilities for Flake
     flake-parts.url = "github:hercules-ci/flake-parts";
-    ez-configs.url = "github:ehllie/ez-configs";
-    ez-configs.inputs.nixpkgs.follows = "nixpkgs";
-    ez-configs.inputs.flake-parts.follows = "flake-parts";
-
     ### -- nix related tools
     process-compose-flake.url = "github:Platonic-Systems/process-compose-flake";
     services-flake.url = "github:juspay/services-flake";
@@ -60,6 +55,7 @@
     #### ---- MacOS
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    darwin.follows = "nix-darwin";
 
     #### ---- Home
     home-manager.url = "github:nix-community/home-manager/master";
@@ -90,6 +86,8 @@
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     # utilities
+    nix-unit.url = "github:nix-community/nix-unit";
+
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
     pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -99,12 +97,6 @@
     # e.g usage: programs.neovim.plugins = p: [p.rescript-nvim] or [pkgs.vimPlugins.rescript-nvim];
     vimPlugins_vim-rescript = {
       url = "github:rescript-lang/vim-rescript";
-      flake = false;
-    };
-
-    # others
-    nix-env = {
-      url = "github:lilyball/nix-env.fish";
       flake = false;
     };
 

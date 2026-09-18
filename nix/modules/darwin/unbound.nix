@@ -56,7 +56,7 @@ in
     environment.etc."unbound/unbound.conf".source = format.generate "unbound.conf" cfg.settings;
     launchd.daemons.unbound = {
       script = ''
-        ${lib.getExe' cfg.package "unbound"} -p
+        ${lib.getExe' cfg.package "unbound"} -d
       '';
       serviceConfig = {
         RunAtLoad = true;

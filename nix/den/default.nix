@@ -27,7 +27,7 @@ let
   colors = import ../colors.nix { inherit lib; };
   color = colors.mkColor colors.lists.edge;
 
-  inherit (den.lib.policy) resolve;
+  inherit (den.lib.policy) resolve pipe;
 in
 
 {
@@ -79,6 +79,10 @@ in
 
   den.classes.nixvim.description = "Nixvim editor configuration";
 
+  den.quirks.runtime = {
+    description = "Runtime-switchable aspect property declarations";
+  };
+
   den.schema.user.classes = lib.mkDefault [ "homeManager" ];
   den.schema.user.includes = [ config.den.batteries.host-aspects ];
   den.schema.flake-parts.includes = [ config.den.aspects.tooling ];
@@ -96,7 +100,9 @@ in
       hostname
       primary-user
       ({ user, ... }: user-shell user.shell)
+      config.den.aspects.${"runtime-manifest"}
       den.default.policies.theming
+      den.default.policies.runtime-manifest
     ];
 
     policies.theming = _: [
@@ -104,6 +110,15 @@ in
         inherit color colors icons;
       })
     ];
+
+    policies.runtime-manifest =
+      { user, ... }:
+      assert user != null;
+      [
+        (pipe.from "runtime" [
+          pipe.expose
+        ])
+      ];
 
     darwin =
       { inputs, ... }:

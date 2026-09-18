@@ -128,6 +128,10 @@
 
     dns = {
       dnscrypt = {
+        bootstrap_resolvers = [
+          "1.1.1.1:53"
+          "9.9.9.9:53"
+        ];
         netprobe_timeout = 15;
         lb_strategy = "first";
         server_names = [

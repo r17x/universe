@@ -262,11 +262,62 @@ in
     provides.fish =
       { user, ... }:
       {
-        homeManager =
-          { color, pkgs, ... }:
+        runtime =
+          { lib, colors, ... }:
+          let
+            values = lib.mapAttrs (
+              _themeName: themeList:
+              let
+                c = colors.mkColor themeList;
+              in
+              {
+                fish_color_command = c.raw.base04;
+                fish_color_error = c.raw.base01;
+                fish_color_param = c.raw.base04;
+                fish_color_redirection = c.raw.base03;
+                fish_color_operator = c.raw.base03;
+                fish_color_end = c.raw.base05;
+              }
+            ) colors.lists;
+          in
           {
+            name = "shell.fish";
+            mechanism = "command-dispatch";
+            inherit values;
+            commands = {
+              fish_color_command = "fish -c 'set -U fish_color_command {value} --bold'";
+              fish_color_error = "fish -c 'set -U fish_color_error {value} --bold'";
+              fish_color_param = "fish -c 'set -U fish_color_param {value}'";
+              fish_color_redirection = "fish -c 'set -U fish_color_redirection {value}'";
+              fish_color_operator = "fish -c 'set -U fish_color_operator {value}'";
+              fish_color_end = "fish -c 'set -U fish_color_end {value} --bold'";
+            };
+          };
+
+        homeManager =
+          {
+            color,
+            pkgs,
+            lib,
+            ...
+          }:
+          {
+            home.activation.fishColors = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+              if ! ${lib.getExe pkgs.fish} -c 'set -q fish_color_command' 2>/dev/null; then
+                ${lib.getExe pkgs.fish} -c '
+                  set -U fish_color_command ${color.raw.base04} --bold
+                  set -U fish_color_redirection ${color.raw.base03}
+                  set -U fish_color_operator ${color.raw.base03}
+                  set -U fish_color_end ${color.raw.base05} --bold
+                  set -U fish_color_error ${color.raw.base01} --bold
+                  set -U fish_color_param ${color.raw.base04}
+                '
+              fi
+            '';
+
             programs.fish = {
               enable = true;
+              interactiveShellInit = "set fish_greeting";
 
               functions = {
                 ghds = ''
@@ -280,17 +331,6 @@ in
                   ${pkgs.nodejs}/bin/node -e "console.log(Object.entries(require('./package.json').$argv[1]).map(([k,v]) => k.concat(\"@\").concat(v)).join(\"\n\") )"
                 '';
               };
-
-              interactiveShellInit = ''
-                # Fish color
-                set -U fish_color_command ${color.raw.base04} --bold
-                set -U fish_color_redirection DEB974
-                set -U fish_color_operator DEB974
-                set -U fish_color_end C071D8 --bold
-                set -U fish_color_error ${color.raw.base01} --bold
-                set -U fish_color_param ${color.raw.base04}
-                set fish_greeting
-              '';
             };
 
             home.packages = [

@@ -1,14 +1,14 @@
 local icons = require("icons")
 local colors = require("colors")
 local settings = require("settings")
+local style = require("style")
+local accent = require("helpers.accent")
 
--- Execute the event provider binary which provides the event "cpu_update" for
--- the cpu load data, which is fired every 2.0 seconds.
 sbar.exec("killall sbar_cpu_load >/dev/null; sbar_cpu_load cpu_update 2.0")
 
 local cpu = sbar.add("graph", "widgets.cpu", 42, {
 	position = "right",
-	graph = { color = colors.blue },
+	graph = { color = accent("blue") },
 	background = {
 		height = 22,
 		color = { alpha = 0 },
@@ -36,14 +36,14 @@ cpu:subscribe("cpu_update", function(env)
 	local load = tonumber(env.total_load)
 	cpu:push({ load / 100. })
 
-	local color = colors.blue
+	local color = accent("blue")
 	if load > 30 then
 		if load < 60 then
-			color = colors.yellow
+			color = accent("yellow")
 		elseif load < 80 then
-			color = colors.orange
+			color = accent("orange")
 		else
-			color = colors.red
+			color = accent("red")
 		end
 	end
 
@@ -57,9 +57,8 @@ cpu:subscribe("mouse.clicked", function(env)
 	sbar.exec("open -a 'Activity Monitor'")
 end)
 
--- Background around the cpu item
 sbar.add("bracket", "widgets.cpu.bracket", { cpu.name }, {
-	background = { color = colors.bg1 },
+	background = { color = colors[style.color_keys.widget_bg] },
 })
 
 -- Background around the cpu item

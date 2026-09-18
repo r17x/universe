@@ -77,6 +77,99 @@ in
     mkColor
     ;
 
+  semanticPalettes = {
+    edge = {
+      black = "#181819";
+      white = "#e2e2e3";
+      red = "#fc5d7c";
+      green = "#9ed072";
+      blue = "#76cce0";
+      yellow = "#e7c664";
+      orange = "#f39660";
+      magenta = "#b39df3";
+      grey = "#7f8490";
+      barBg = "#2c2e34";
+      barBorder = "#2c2e34";
+      popupBg = "#2c2e34";
+      popupBorder = "#7f8490";
+      bg1 = "#363944";
+      bg2 = "#414550";
+      bg3 = "#4c4f5a";
+    };
+    zenwritten_dark = {
+      black = "#191919";
+      white = "#bbbbbb";
+      red = "#de6e7c";
+      green = "#819b69";
+      blue = "#6099c0";
+      yellow = "#b77e64";
+      orange = "#d68c67";
+      magenta = "#b279a7";
+      grey = "#8e8e8e";
+      barBg = "#252525";
+      barBorder = "#252525";
+      popupBg = "#252525";
+      popupBorder = "#8e8e8e";
+      bg1 = "#2e2e2e";
+      bg2 = "#383838";
+      bg3 = "#424242";
+    };
+    hud-neon = {
+      black = "#1A1A1E";
+      white = "#F8F8F2";
+      red = "#FF5F6A";
+      green = "#50FA7B";
+      blue = "#61AFEF";
+      yellow = "#F1FA8C";
+      orange = "#FF6E79";
+      magenta = "#FF79C6";
+      grey = "#8A8A8E";
+      barBg = "#2A2A2E";
+      barBorder = "#2A2A2E";
+      popupBg = "#2A2A2E";
+      popupBorder = "#8A8A8E";
+      bg1 = "#333338";
+      bg2 = "#3C3C42";
+      bg3 = "#46464C";
+    };
+    hud-cool = {
+      black = "#1A1A1E";
+      white = "#E8E8EC";
+      red = "#E05F65";
+      green = "#7EC49D";
+      blue = "#6E9BCB";
+      yellow = "#D4A957";
+      orange = "#EA7A7F";
+      magenta = "#B07EB5";
+      grey = "#8A8A8E";
+      barBg = "#2A2A2E";
+      barBorder = "#2A2A2E";
+      popupBg = "#2A2A2E";
+      popupBorder = "#8A8A8E";
+      bg1 = "#333338";
+      bg2 = "#3C3C42";
+      bg3 = "#46464C";
+    };
+    hud-warm = {
+      black = "#1A1A1E";
+      white = "#E0DDD8";
+      red = "#D4644A";
+      green = "#8B9E5E";
+      blue = "#5E8FAE";
+      yellow = "#D9A84E";
+      orange = "#E07A62";
+      magenta = "#A87399";
+      grey = "#8A8A8E";
+      barBg = "#2A2A2E";
+      barBorder = "#2A2A2E";
+      popupBg = "#2A2A2E";
+      popupBorder = "#8A8A8E";
+      bg1 = "#333338";
+      bg2 = "#3C3C42";
+      bg3 = "#46464C";
+    };
+  };
+
   lists = {
     /**
       This is inspired by Edge Dark Neon

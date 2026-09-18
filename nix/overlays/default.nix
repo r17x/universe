@@ -17,6 +17,7 @@
         nixd
         nixf
         nixt
+        nushell
         ;
 
       inherit (inputs.llms-agents.packages.${system}) claude-code;

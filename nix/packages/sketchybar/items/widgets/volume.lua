@@ -1,6 +1,8 @@
 local colors = require("colors")
 local icons = require("icons")
 local settings = require("settings")
+local style = require("style")
+local accent = require("helpers.accent")
 
 local popup_width = 250
 
@@ -41,7 +43,7 @@ local volume_bracket = sbar.add("bracket", "widgets.volume.bracket", {
 	volume_icon.name,
 	volume_percent.name,
 }, {
-	background = { color = colors.bg1 },
+	background = { color = colors[style.color_keys.widget_bg] },
 	popup = { align = "center" },
 })
 
@@ -53,7 +55,7 @@ sbar.add("item", "widgets.volume.padding", {
 local volume_slider = sbar.add("slider", popup_width, {
 	position = "popup." .. volume_bracket.name,
 	slider = {
-		highlight_color = colors.blue,
+		highlight_color = accent("blue"),
 		background = {
 			height = 6,
 			corner_radius = 3,

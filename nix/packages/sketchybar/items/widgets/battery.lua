@@ -1,6 +1,8 @@
 local icons = require("icons")
 local colors = require("colors")
 local settings = require("settings")
+local style = require("style")
+local accent = require("helpers.accent")
 
 local battery = sbar.add("item", "widgets.battery", {
 	position = "right",
@@ -43,26 +45,26 @@ battery:subscribe({ "routine", "power_source_change", "system_woke" }, function(
 			"ioreg -rc AppleSmartBattery | grep -E 'IsCharging|ExternalConnected' | grep -v AppleRaw",
 			function(status_info)
 				local icon = icons.battery._0
-				local color = colors.red
+				local color = accent("red")
 
 				local charging = status_info:match("IsCharging.- Yes")
 				local on_ac = status_info:match("ExternalConnected.- Yes")
 
 				if charging or on_ac then
 					icon = icons.battery.charging
-					color = colors.green
+					color = accent("green")
 				elseif charge > 80 then
 					icon = icons.battery._100
-					color = colors.green
+					color = accent("green")
 				elseif charge > 60 then
 					icon = icons.battery._75
-					color = colors.green
+					color = accent("green")
 				elseif charge > 40 then
 					icon = icons.battery._50
-					color = colors.green
+					color = accent("green")
 				elseif charge > 20 then
 					icon = icons.battery._25
-					color = colors.orange
+					color = accent("orange")
 				end
 
 				battery:set({
@@ -101,7 +103,7 @@ battery:subscribe("mouse.clicked", function(env)
 end)
 
 sbar.add("bracket", "widgets.battery.bracket", { battery.name }, {
-	background = { color = colors.bg1 },
+	background = { color = colors[style.color_keys.widget_bg] },
 })
 
 sbar.add("item", "widgets.battery.padding", {

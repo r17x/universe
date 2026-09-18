@@ -3,12 +3,14 @@
   lib,
   writeText,
   sketchybarColors ? null,
+  sketchybarStyle ? null,
   ...
 }:
 
 let
   inherit (lua54Packages) lua buildLuaPackage;
-  inherit (import ../../colors.nix { inherit lib; }) toArgb;
+  colorsLib = import ../../colors.nix { inherit lib; };
+  inherit (colorsLib) toArgb;
 
   solid = toArgb 1.0;
 
@@ -54,25 +56,7 @@ let
       bg3 = solid bg3;
     };
 
-  # Edge-family palette (sonokai variant) — raw "#RRGGBB" values
-  defaultPalette = {
-    black = "#181819";
-    white = "#e2e2e3";
-    red = "#fc5d7c";
-    green = "#9ed072";
-    blue = "#76cce0";
-    yellow = "#e7c664";
-    orange = "#f39660";
-    magenta = "#b39df3";
-    grey = "#7f8490";
-    barBg = "#2c2e34";
-    barBorder = "#2c2e34";
-    popupBg = "#2c2e34";
-    popupBorder = "#7f8490";
-    bg1 = "#363944";
-    bg2 = "#414550";
-    bg3 = "#4c4f5a";
-  };
+  defaultPalette = colorsLib.semanticPalettes.edge;
 
   defaultColors = mkColors defaultPalette;
 
@@ -117,6 +101,189 @@ let
 
     return colors
   '';
+
+  hairlineLayout = {
+    bar = {
+      height = 30;
+      padding = 10;
+    };
+    font = {
+      icon = {
+        style = "Regular";
+        size = 11.0;
+      };
+      label = {
+        family = "numbers";
+        style = "Regular";
+        size = 11.0;
+      };
+    };
+    background = {
+      height = 20;
+      corner_radius = 6;
+      border_width = 0;
+    };
+    popup = {
+      border_width = 1;
+      corner_radius = 6;
+    };
+    spaces = {
+      icon_padding = {
+        left = 6;
+        right = 5;
+      };
+      label_padding_right = 6;
+      bg_height = 20;
+      border_width = 0;
+      bracket_border_width = 0;
+      focused = {
+        bg_height = 22;
+        icon_padding = {
+          left = 8;
+          right = 6;
+        };
+        label_padding_right = 8;
+      };
+    };
+  };
+
+  profiles = {
+    default = {
+      monochrome = false;
+      bar = {
+        height = 40;
+        padding = 2;
+      };
+      font = {
+        icon = {
+          style = "Bold";
+          size = 14.0;
+        };
+        label = {
+          family = "text";
+          style = "Semibold";
+          size = 13.0;
+        };
+      };
+      background = {
+        height = 28;
+        corner_radius = 9;
+        border_width = 2;
+      };
+      popup = {
+        border_width = 2;
+        corner_radius = 9;
+      };
+      color_keys = {
+        icon = "white";
+        label = "white";
+        icon_highlight = "red";
+        label_highlight = "white";
+        bg_border = "bg2";
+        space_bg = "bg1";
+        space_border = "black";
+        bracket_border = "bg2";
+        focused_bg = "bg1";
+        focused_border = "black";
+        item_bg = "bg2";
+        item_border = "black";
+        widget_bg = "bg1";
+      };
+      spaces = {
+        icon_padding = {
+          left = 15;
+          right = 8;
+        };
+        label_padding_right = 20;
+        bg_height = 26;
+        border_width = 1;
+        bracket_border_width = 2;
+        focused = {
+          bg_height = 28;
+          icon_padding = {
+            left = 15;
+            right = 8;
+          };
+          label_padding_right = 20;
+        };
+      };
+    };
+
+    hairline = hairlineLayout // {
+      monochrome = true;
+      color_keys = {
+        icon = "grey";
+        label = "grey";
+        icon_highlight = "white";
+        label_highlight = "grey";
+        bg_border = "transparent";
+        space_bg = "transparent";
+        space_border = "transparent";
+        bracket_border = "transparent";
+        focused_bg = "bg1";
+        focused_border = "transparent";
+        item_bg = "transparent";
+        item_border = "transparent";
+        widget_bg = "transparent";
+      };
+    };
+
+    hairline-color = hairlineLayout // {
+      monochrome = false;
+      color_keys = {
+        icon = "white";
+        label = "white";
+        icon_highlight = "red";
+        label_highlight = "white";
+        bg_border = "transparent";
+        space_bg = "bg1";
+        space_border = "transparent";
+        bracket_border = "transparent";
+        focused_bg = "bg1";
+        focused_border = "transparent";
+        item_bg = "bg1";
+        item_border = "transparent";
+        widget_bg = "bg1";
+      };
+    };
+  };
+
+  luaSerialize =
+    let
+      serializeValue =
+        v:
+        if builtins.isAttrs v then
+          serializeAttrs v
+        else if builtins.isInt v then
+          toString v
+        else if builtins.isFloat v then
+          toString v
+        else if builtins.isString v then
+          ''"${v}"''
+        else if builtins.isBool v then
+          if v then "true" else "false"
+        else
+          throw "luaSerialize: unsupported type";
+      serializeAttrs =
+        attrs:
+        let
+          entries = lib.mapAttrsToList (
+            k: v:
+            let
+              key = if builtins.match "[a-zA-Z_][a-zA-Z0-9_]*" k != null then k else ''["${k}"]'';
+            in
+            "${key} = ${serializeValue v}"
+          ) attrs;
+        in
+        "{ ${lib.concatStringsSep ", " entries} }";
+    in
+    serializeAttrs;
+
+  activeProfile = if sketchybarStyle != null then sketchybarStyle else profiles.default;
+
+  generatedStyleLua = writeText "style.lua" ''
+    return ${luaSerialize activeProfile}
+  '';
 in
 
 buildLuaPackage {
@@ -126,7 +293,10 @@ buildLuaPackage {
   src = lib.cleanSourceWith {
     src = ./.;
     filter =
-      path: type: (type == "directory" || lib.hasSuffix ".lua" path) && baseNameOf path != "colors.lua";
+      path: type:
+      (type == "directory" || lib.hasSuffix ".lua" path)
+      && baseNameOf path != "colors.lua"
+      && baseNameOf path != "style.lua";
   };
   buildPhase = ":";
   installPhase = # bash
@@ -134,9 +304,15 @@ buildLuaPackage {
       mkdir -p "$out/share/lua/${lua.luaversion}"
       cp -r $src/* "$out/share/lua/${lua.luaversion}/"
       cp ${generatedColorsLua} "$out/share/lua/${lua.luaversion}/colors.lua"
+      cp ${generatedStyleLua} "$out/share/lua/${lua.luaversion}/style.lua"
     '';
 
   passthru = {
-    inherit defaultPalette defaultColors mkColors;
+    inherit
+      profiles
+      defaultPalette
+      defaultColors
+      mkColors
+      ;
   };
 }

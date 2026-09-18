@@ -77,6 +77,8 @@ in
       };
     }).config.flake;
 
+  den.classes.nixvim.description = "Nixvim editor configuration";
+
   den.schema.user.classes = lib.mkDefault [ "homeManager" ];
   den.schema.user.includes = [ config.den.batteries.host-aspects ];
   den.schema.flake-parts.includes = [ config.den.aspects.tooling ];

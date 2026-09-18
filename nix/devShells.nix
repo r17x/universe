@@ -27,10 +27,15 @@
         deadnix.enable = true;
         deadnix.excludes = [ "nix/overlays/nodePackages/node2nix" ];
         nixfmt-rfc-style.enable = true;
-        dune-fmt.enable = true;
-        dune-fmt.settings.extraRuntimeInputs = [ pkgs.ocamlPackages.ocamlformat ];
-        dune-fmt.files = "apps/rin.rocks";
-        dune-fmt.entry = "dune build @fmt --root=apps/rin.rocks --auto-promote";
+        nixfmt-rfc-style.excludes = [ "nix/overlays/nodePackages/node2nix" ];
+        dune-fmt.enable = false;
+        update-readme = {
+          enable = true;
+          name = "update-readme";
+          entry = "${self'.packages.update-readme}/bin/update-readme";
+          files = "\\.nix$";
+          pass_filenames = false;
+        };
       };
 
       devShells =
@@ -99,10 +104,11 @@
             pkgName:
             let
               mkShell_ = mkShell pkgName;
+              names = builtins.filter (
+                name: lib.strings.hasPrefix pkgName name && (builtins.tryEval pkgs.${name}).success
+              ) (builtins.attrNames pkgs);
             in
-            builtins.foldl' (acc: name: acc // { "${toCamelCase name}" = mkShell_ name; }) { } (
-              builtins.filter (lib.strings.hasPrefix pkgName) (builtins.attrNames pkgs)
-            );
+            builtins.foldl' (acc: name: acc // { "${toCamelCase name}" = mkShell_ name; }) { } names;
 
         in
         ####################################################################################################
@@ -280,6 +286,10 @@
           #
           #
           bun = pkgs.mkShell { buildInputs = [ pkgs.bun ]; };
+
+          ci = pkgs.mkShell {
+            description = "CI Environment";
+          };
         };
 
     };

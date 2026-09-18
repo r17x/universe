@@ -1,4 +1,20 @@
 { den, ... }:
+let
+  mkGhosttyColors = c: {
+    background = c.scheme.base00;
+    foreground = c.scheme.base07;
+    selection-background = c.scheme.base08;
+    selection-foreground = c.scheme.base0F;
+    cursor-color = c.scheme.base06;
+    cursor-text = c.scheme.base07;
+    palette = c.listKV;
+  };
+
+  mkTmuxColors = c: {
+    pane-border-style = "fg=${c.scheme.base00} bg=${c.scheme.base00}";
+    pane-active-border-style = "fg=${c.scheme.base00} bg=${c.scheme.base00}";
+  };
+in
 {
   den.aspects.terminal = {
     includes = with den.aspects.terminal.provides; [
@@ -20,7 +36,12 @@
       { user, ... }:
       {
         homeManager =
-          { color, pkgs, ... }:
+          {
+            color,
+            config,
+            pkgs,
+            ...
+          }:
           {
             xdg.configFile."ghostty/config".source =
               let
@@ -28,39 +49,110 @@
                   listsAsDuplicateKeys = true;
                 };
               in
-              formatter.generate "config" {
-                desktop-notifications = true;
-                confirm-close-surface = false;
-                shell-integration = "fish";
-                custom-shader-animation = true;
-                window-decoration = false;
-                window-padding-x = 8;
-                window-padding-y = 5;
-                window-padding-color = "background";
-                bold-is-bright = true;
-                background-opacity = 1;
-                background = color.scheme.base00;
-                foreground = color.scheme.base07;
-                selection-background = color.scheme.base08;
-                selection-foreground = color.scheme.base0F;
-                cursor-color = color.scheme.base06;
-                cursor-text = color.scheme.base07;
-                cursor-style = "underline";
-                cursor-style-blink = true;
-                palette = color.listKV;
-                cursor-click-to-move = false;
-                macos-window-shadow = false;
-                macos-titlebar-style = "transparent";
-                font-feature = "liga,calt,dlig";
-                font-family = user.font;
-                font-thicken = true;
-              };
+              formatter.generate "config" (
+                {
+                  desktop-notifications = true;
+                  confirm-close-surface = false;
+                  shell-integration = "fish";
+                  custom-shader-animation = true;
+                  window-decoration = false;
+                  window-padding-x = 8;
+                  window-padding-y = 5;
+                  window-padding-color = "background";
+                  bold-is-bright = true;
+                  background-opacity = 1;
+                  cursor-style = "underline";
+                  cursor-style-blink = true;
+                  cursor-click-to-move = false;
+                  macos-window-shadow = false;
+                  macos-titlebar-style = "transparent";
+                  font-feature = "liga,calt,dlig";
+                  font-family = user.font;
+                  font-thicken = true;
+                  config-file = "?${config.home.homeDirectory}/.universe/ghostty/theme";
+                }
+                // mkGhosttyColors color
+              );
+
+            programs.fish.interactiveShellInit = ''
+              function __universe_ghostty_apply --on-variable __universe_ghostty_theme
+                test -f "$__universe_ghostty_theme"; or return
+                while read -l line
+                  switch $line
+                    case 'background=*'
+                      printf '\e]11;%s\a' (string replace 'background=' "" $line)
+                    case 'foreground=*'
+                      printf '\e]10;%s\a' (string replace 'foreground=' "" $line)
+                    case 'cursor-color=*'
+                      printf '\e]12;%s\a' (string replace 'cursor-color=' "" $line)
+                    case 'palette=*=*'
+                      set -l parts (string replace 'palette=' "" $line | string split '=')
+                      printf '\e]4;%s;%s\a' $parts[1] $parts[2]
+                  end
+                end < "$__universe_ghostty_theme"
+              end
+            '';
+          };
+
+        runtime =
+          {
+            pkgs,
+            lib,
+            colors,
+            ...
+          }:
+          let
+            formatter = pkgs.formats.keyValue { listsAsDuplicateKeys = true; };
+            variants = lib.mapAttrs (
+              themeName: themeList:
+              formatter.generate "ghostty-theme-${themeName}" (mkGhosttyColors (colors.mkColor themeList))
+            ) colors.lists;
+            applyScript = pkgs.writeShellScript "ghostty-apply" ''
+              THEME_FILE="$1"
+              fish -c "set -eU __universe_ghostty_theme; set -U __universe_ghostty_theme $THEME_FILE"
+              [ -e /dev/tty ] || exit 0
+              while IFS= read -r line; do
+                case "$line" in
+                  background=*) printf '\e]11;%s\a' "''${line#background=}" >/dev/tty ;;
+                  foreground=*) printf '\e]10;%s\a' "''${line#foreground=}" >/dev/tty ;;
+                  cursor-color=*) printf '\e]12;%s\a' "''${line#cursor-color=}" >/dev/tty ;;
+                  palette=*=*)
+                    rest="''${line#palette=}"
+                    idx="''${rest%%=*}"
+                    color="''${rest#*=}"
+                    printf '\e]4;%s;%s\a' "$idx" "$color" >/dev/tty
+                    ;;
+                esac
+              done < "$THEME_FILE"
+            '';
+          in
+          {
+            name = "terminal.ghostty";
+            mechanism = "prebuilt-swap";
+            inherit variants;
+            target = "~/.universe/ghostty/theme";
+            applicator = "${applyScript} {variant}";
           };
       };
 
     provides.tmux =
       { user, ... }:
       {
+        runtime =
+          { lib, colors, ... }:
+          let
+            values = lib.mapAttrs (_themeName: themeList: mkTmuxColors (colors.mkColor themeList)) colors.lists;
+          in
+          {
+            name = "terminal.tmux";
+            mechanism = "command-dispatch";
+            inherit values;
+            commands = {
+              pane-border-style = "tmux set -g pane-border-style '{value}'";
+              pane-active-border-style = "tmux set -g pane-active-border-style '{value}'";
+            };
+          };
+
         homeManager =
           {
             lib,

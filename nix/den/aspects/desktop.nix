@@ -1,4 +1,13 @@
 { den, ... }:
+let
+  mkSketchybarLua =
+    pkgs: sbarConfig:
+    pkgs.lua54Packages.lua.withPackages (ps: [
+      ps.lua
+      pkgs.sbarlua
+      sbarConfig
+    ]);
+in
 {
   den.aspects.desktop = {
     includes = with den.aspects.desktop.provides; [
@@ -99,13 +108,11 @@
 
     provides.sketchybar = {
       darwin =
-        { pkgs, ... }:
+        { pkgs, lib, ... }:
         let
-          lua = pkgs.lua54Packages.lua.withPackages (ps: [
-            ps.lua
-            pkgs.sbarlua
-            pkgs.sketchybarConfigLua
-          ]);
+          sketchybarWrapper = pkgs.writeShellScript "sketchybar-start" ''
+            exec ${lib.getExe pkgs.sketchybar} --config "$HOME/.universe/sketchybar/sketchybarrc"
+          '';
         in
         {
           services.sketchybar = {
@@ -114,30 +121,97 @@
               sbar_menus
               sbar_events
             ];
-            config = # lua
-              ''
-                #!${lua}/bin/lua
-                require("init")
-              '';
+            config = "";
+          };
+
+          launchd.user.agents.sketchybar.serviceConfig = {
+            ProgramArguments = lib.mkForce [ "${sketchybarWrapper}" ];
+            ProcessType = "Background";
+            Nice = 5;
+            LowPriorityIO = true;
+            ThrottleInterval = 10;
           };
 
           environment.systemPackages = with pkgs; [
             sbar_menus
             sbar_events
           ];
+        };
 
-          launchd.user.agents.sketchybar.serviceConfig = {
-            ProcessType = "Background";
-            Nice = 5;
-            LowPriorityIO = true;
-            ThrottleInterval = 10;
-          };
+      homeManager =
+        { pkgs, lib, ... }:
+        let
+          lua = mkSketchybarLua pkgs pkgs.sketchybarConfigLua;
+          defaultConfig = pkgs.writeScript "sketchybarrc" ''
+            #!${lua}/bin/lua
+            require("init")
+          '';
+        in
+        {
+          home.activation.sketchybarConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+            mkdir -p "$HOME/.universe/sketchybar"
+            if [ ! -e "$HOME/.universe/sketchybar/sketchybarrc" ]; then
+              ln -sf ${defaultConfig} "$HOME/.universe/sketchybar/sketchybarrc"
+            fi
+          '';
+        };
+
+      runtime =
+        {
+          pkgs,
+          lib,
+          colors,
+          ...
+        }:
+        let
+          mkVariant =
+            profileName: profile: themeName: palette:
+            let
+              themeColors = pkgs.sketchybarConfigLua.mkColors palette;
+              pkg = pkgs.sketchybarConfigLua.override {
+                sketchybarColors = themeColors;
+                sketchybarStyle = profile;
+              };
+              lua = mkSketchybarLua pkgs pkg;
+            in
+            pkgs.writeScript "sketchybarrc-${profileName}-${themeName}" ''
+              #!${lua}/bin/lua
+              require("init")
+            '';
+
+          profileNames = builtins.attrNames pkgs.sketchybarConfigLua.profiles;
+
+          variants = lib.listToAttrs (
+            lib.concatMap (
+              profileName:
+              lib.mapAttrsToList (
+                themeName: palette:
+                lib.nameValuePair "${profileName}.${themeName}" (
+                  mkVariant profileName pkgs.sketchybarConfigLua.profiles.${profileName} themeName palette
+                )
+              ) colors.semanticPalettes
+            ) profileNames
+          );
+        in
+        {
+          name = "desktop.sketchybar";
+          mechanism = "prebuilt-swap";
+          inherit variants;
+          profiles = profileNames;
+          default_profile = "default";
+          target = "~/.universe/sketchybar/sketchybarrc";
+          applicator = "sketchybar --reload";
         };
     };
 
     provides.jankyborders = {
       darwin =
-        { colors, pkgs, ... }:
+        {
+          color,
+          colors,
+          pkgs,
+          ...
+        }:
         let
           withAlpha = colors.toArgb;
           sbarPalette = pkgs.sketchybarConfigLua.defaultPalette;
@@ -147,7 +221,7 @@
             enable = true;
             width = 6.5;
             hidpi = false;
-            active_color = "0xfffeeff0";
+            active_color = colors.toArgb 1.0 color.scheme.base07;
             inactive_color = withAlpha (192.0 / 255) sbarPalette.barBg;
             background_color = withAlpha (48.0 / 255) sbarPalette.barBg;
             style = "round";
@@ -158,6 +232,27 @@
             Nice = 5;
             LowPriorityIO = true;
             ThrottleInterval = 10;
+          };
+        };
+
+      runtime =
+        { lib, colors, ... }:
+        let
+          withAlpha = colors.toArgb;
+          values = lib.mapAttrs (themeName: palette: {
+            active_color = colors.toArgb 1.0 (colors.mkColor (colors.lists.${themeName})).scheme.base07;
+            inactive_color = withAlpha (192.0 / 255) palette.barBg;
+            background_color = withAlpha (48.0 / 255) palette.barBg;
+          }) colors.semanticPalettes;
+        in
+        {
+          name = "desktop.jankyborders";
+          mechanism = "command-dispatch";
+          inherit values;
+          commands = {
+            active_color = "borders active_color={value}";
+            inactive_color = "borders inactive_color={value}";
+            background_color = "borders background_color={value}";
           };
         };
     };

@@ -1,5 +1,6 @@
 local settings = require("settings")
 local colors = require("colors")
+local style = require("style")
 
 -- Padding item required because of bracket
 sbar.add("item", { position = "center", width = settings.group_paddings })
@@ -35,7 +36,7 @@ local cal = sbar.add("item", {
 sbar.add("bracket", { cal.name }, {
 	background = {
 		color = colors.transparent,
-		height = 30,
+		height = style.background.height + 2,
 		border_color = colors.grey,
 	},
 })

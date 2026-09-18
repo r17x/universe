@@ -10,6 +10,7 @@
 !README.md
 !flake.lock
 !flake.nix
+!r17.nix
 
 # .claude - skill definitions
 !.claude/
@@ -60,8 +61,3 @@
 !secrets/**/
 !secrets/**/*.norg
 !secrets/**/*.yaml
-
-# den modules
-!den/
-!den/**/
-!den/**/*.nix

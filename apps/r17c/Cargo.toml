@@ -1,0 +1,45 @@
+[package]
+name = "r17c"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+p256 = { version = "0.13", default-features = false, features = ["ecdsa", "arithmetic"] }
+sha1 = { version = "0.10", default-features = false }
+sha2 = { version = "0.10", default-features = false }
+hmac = { version = "0.12", default-features = false }
+aes = { version = "0.8", default-features = false }
+cbc = { version = "0.1", default-features = false }
+zeroize = { version = "1", default-features = false, features = ["derive"] }
+heapless = "0.8"
+defmt = { version = "0.3", default-features = false }
+
+[target.'cfg(all(target_arch = "arm", target_os = "none"))'.dependencies]
+embassy-executor = { git = "https://github.com/embassy-rs/embassy.git", rev = "81ec6e0ac62e7f778c6b3539c3146de4673974f9", default-features = false, features = ["platform-cortex-m", "executor-thread"] }
+embassy-rp = { git = "https://github.com/embassy-rs/embassy.git", rev = "81ec6e0ac62e7f778c6b3539c3146de4673974f9", default-features = false, features = ["rp2040", "rt", "time-driver", "unstable-pac"] }
+embassy-usb = { git = "https://github.com/embassy-rs/embassy.git", rev = "81ec6e0ac62e7f778c6b3539c3146de4673974f9", default-features = false }
+embassy-sync = { git = "https://github.com/embassy-rs/embassy.git", rev = "81ec6e0ac62e7f778c6b3539c3146de4673974f9", default-features = false }
+embassy-time = { git = "https://github.com/embassy-rs/embassy.git", rev = "81ec6e0ac62e7f778c6b3539c3146de4673974f9", default-features = false }
+embassy-futures = { git = "https://github.com/embassy-rs/embassy.git", rev = "81ec6e0ac62e7f778c6b3539c3146de4673974f9", default-features = false }
+defmt-rtt = { version = "0.4", default-features = false }
+panic-probe = { version = "0.3", features = ["print-defmt"] }
+cortex-m = { version = "0.7", features = ["critical-section-single-core"] }
+cortex-m-rt = "0.7"
+embedded-storage = "0.3"
+static_cell = "2"
+portable-atomic = { version = "1", features = ["critical-section"] }
+embedded-alloc = "0.6"
+
+[profile.dev]
+opt-level = "s"
+debug = 2
+lto = "thin"
+codegen-units = 16
+incremental = true
+
+[profile.release]
+opt-level = "z"
+debug = false
+lto = true
+codegen-units = 1
+strip = "debuginfo"

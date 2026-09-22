@@ -36,6 +36,20 @@
           files = "\\.nix$";
           pass_filenames = false;
         };
+        r17c-check = {
+          enable = true;
+          name = "r17c";
+          entry = "${pkgs.writeShellScript "r17c-check" ''
+            nix develop .#r17c -c bash -c '
+              cd apps/r17c
+              cargo clippy --release --target thumbv6m-none-eabi -- -D warnings
+              cargo test --lib --target "$(rustc -vV | sed -n '"'"'s/^host: //p'"'"')"
+            '
+          ''}";
+          files = "^apps/r17c/";
+          pass_filenames = false;
+          stages = [ "pre-push" ];
+        };
       };
 
       devShells =
@@ -286,6 +300,34 @@
           #
           #
           bun = pkgs.mkShell { buildInputs = [ pkgs.bun ]; };
+
+          r17c =
+            let
+              rust-bin = (pkgs.extend inputs.rust-overlay.overlays.default).rust-bin;
+              rustToolchain = rust-bin.stable.latest.default.override {
+                targets = [ "thumbv6m-none-eabi" ];
+                extensions = [
+                  "rust-src"
+                  "llvm-tools"
+                ];
+              };
+            in
+            pkgs.mkShell {
+              description = "r17c firmware development";
+              nativeBuildInputs = [
+                rustToolchain
+                pkgs.probe-rs
+                pkgs.flip-link
+                pkgs.picotool
+                pkgs.usbutils
+                pkgs.libfido2
+                pkgs.pcsclite
+                pkgs.ccid
+                pkgs.pcsc-tools
+                pkgs.gnupg
+                pkgs.yubikey-manager
+              ];
+            };
 
           ci = pkgs.mkShell {
             description = "CI Environment";

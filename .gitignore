@@ -34,22 +34,45 @@
 !nix/**/*.json
 !nix/**/makefile
 
-# apps - applications (OCaml, Reason, web)
+# apps - applications
 !apps/
-!apps/**/
-!apps/**/*.ml
-!apps/**/*.re
-!apps/**/*.nix
-!apps/**/*.opam
-!apps/**/*.html
-!apps/**/*.json
-!apps/**/*.mjs
-!apps/**/*.ts
-!apps/**/dune
-!apps/**/dune-project
-!apps/**/.ocamlformat
-!apps/**/.yarnrc.yml
-!apps/**/yarn.lock
+
+# apps/norg - OCaml
+!apps/norg/**/
+!apps/norg/**/*.ml
+!apps/norg/**/*.nix
+!apps/norg/**/*.opam
+!apps/norg/**/dune
+!apps/norg/**/dune-project
+
+# apps/rin.rocks - Reason + web
+!apps/rin.rocks/**/
+!apps/rin.rocks/**/*.re
+!apps/rin.rocks/**/*.nix
+!apps/rin.rocks/**/*.html
+!apps/rin.rocks/**/*.json
+!apps/rin.rocks/**/*.mjs
+!apps/rin.rocks/**/*.ts
+!apps/rin.rocks/**/dune
+!apps/rin.rocks/**/dune-project
+!apps/rin.rocks/**/.ocamlformat
+!apps/rin.rocks/**/.yarnrc.yml
+!apps/rin.rocks/**/yarn.lock
+
+# apps/r17c - Rust embedded
+!apps/r17c/
+!apps/r17c/src/
+!apps/r17c/src/*.rs
+!apps/r17c/src/usb/
+!apps/r17c/src/usb/*.rs
+!apps/r17c/*.rs
+!apps/r17c/*.toml
+!apps/r17c/*.x
+!apps/r17c/.cargo/
+!apps/r17c/.cargo/config.toml
+!apps/r17c/Cargo.lock
+!apps/r17c/*.md
+!apps/r17c/*.nu
 
 # notes
 !notes/

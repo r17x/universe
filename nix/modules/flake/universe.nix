@@ -1,6 +1,11 @@
 {
   perSystem =
-    { pkgs, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     let
       # ============================================================
       # Nushell command modules
@@ -20,7 +25,9 @@
       # ============================================================
       # Final Universe CLI (Nushell)
       # ============================================================
+      deps = lib.makeBinPath [ config.packages.r17c ];
       universe = pkgs.writers.writeNuBin "universe" ''
+        $env.PATH = ($env.PATH | prepend ("${deps}" | split row ":"))
         ${switchCommands}
         ${serviceCommands}
         ${identityCommands}
@@ -29,8 +36,8 @@
           cmd_switch_dispatch ...$args
         }
 
-        def "main state" [...args: string] {
-          cmd_state_dispatch ...$args
+        def "main status sync" [] {
+          cmd_state sync
         }
 
         def "main identity" [...args: string] {
@@ -49,12 +56,22 @@
           ^sudo darwin-rebuild switch --flake $flake_root ...$args
         }
 
+        def "main status" [] {
+          cmd_state show
+          let r17c = (which r17c | get 0?.path? | default "")
+          if ($r17c | is-not-empty) {
+            print ""
+            ^$r17c status
+          }
+        }
+
         def main [] {
           print "Usage: universe <command> [options]"
           print ""
           print "Commands:"
           print "  switch      Switch themes at runtime"
-          print "  state       Show or sync current theme state"
+          print "  status      Show theme state and device status"
+          print "  status sync Re-apply current state to all aspects"
           print "  identity    Manage GPG identities for git"
           print "  rebuild     Run darwin-rebuild switch"
           print "  service     Manage system services"

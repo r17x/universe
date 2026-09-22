@@ -370,14 +370,7 @@
     let first = ($args | get -o 0 | default "")
     match $first {
       "sync" => { cmd_state sync }
-      "show" | "" => { cmd_state show }
-      "help" | "-h" | "--help" => {
-        print "Usage: universe state <command>"
-        print ""
-        print "Commands:"
-        print "  show    Show current theme, profiles, and overrides (default)"
-        print "  sync    Re-apply current state to all aspects"
-      }
+      _ => { cmd_state show }
     }
   }
 ''

@@ -19,7 +19,7 @@ jobs:
         shell: nix develop .#ci --command bash {0}
     steps:
       - uses: actions/checkout@v6
-      - uses: DeterminateSystems/nix-installer-action@v21
+      - uses: DeterminateSystems/nix-installer-action@v23
         with:
           github-token: ${{ secrets.GH_TOKEN }}
           extra-conf: "experimental-features = nix-command flakes pipe-operators" 

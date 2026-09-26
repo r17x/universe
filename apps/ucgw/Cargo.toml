@@ -1,0 +1,88 @@
+[workspace]
+resolver = "2"
+members = [
+  "types",
+  "types/usb",
+  "types/overlay",
+  "usb",
+  "iface",
+  "address",
+  "route",
+  "forward",
+  "nat",
+  "consumer",
+  "overlay",
+  "tunnel",
+  "mesh",
+  "control",
+  "test-support",
+  "daemon",
+]
+
+[workspace.package]
+edition = "2021"
+version = "0.1.0"
+license = "MIT OR Apache-2.0"
+rust-version = "1.80"
+
+[workspace.lints.rust]
+unsafe_code = "deny"
+dead_code = "deny"
+
+[workspace.lints.clippy]
+all = { level = "deny", priority = -1 }
+
+[workspace.dependencies]
+tokio = { version = "1", features = ["full"] }
+tokio-util = { version = "0.7", features = ["rt"] }
+serde = { version = "1", features = ["derive"] }
+thiserror = "2"
+bytes = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+nusb = "0.2"
+rtnetlink = "0.23"
+futures-util = "0.3"
+netlink-packet-route = "0.33"
+netlink-packet-netfilter = "0.4"
+netlink-sys = "0.9"
+dhcproto = "0.15"
+nix = { version = "0.31", features = ["socket", "uio", "net", "sched", "ioctl", "fs"] }
+libc = "0.2"
+socket2 = { version = "0.5", features = ["all"] }
+
+hickory-server = { version = "0.26", features = ["resolver"] }
+hickory-resolver = "0.26"
+
+iroh = "1"
+iroh-blobs = "0.103"
+iroh-gossip = "0.101"
+quinn = { version = "0.11", default-features = false }
+ed25519-dalek = { version = "3", features = ["serde"] }
+
+tun = { version = "0.8", features = ["async"] }
+
+rustables = "0.9"
+
+pfctl = "0.7"
+
+sysctl = "0.7"
+
+metrics = "0.24"
+metrics-exporter-prometheus = "0.18"
+notify = "8"
+toml = "1"
+sd-notify = "0.5"
+base64 = "0.22"
+
+system-configuration = "0.8"
+core-foundation = "0.10"
+
+[profile.dev]
+opt-level = 0
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+strip = "debuginfo"

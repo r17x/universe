@@ -34,6 +34,9 @@
 !nix/**/*.json
 !nix/**/makefile
 
+!nix/packages/ucgw/
+!nix/packages/ucgw/package.nix
+
 # apps - applications
 !apps/
 
@@ -73,6 +76,76 @@
 !apps/r17c/Cargo.lock
 !apps/r17c/*.md
 !apps/r17c/*.nu
+
+# apps/ucgw - Rust USB cellular tethering gateway
+!apps/ucgw/
+!apps/ucgw/Cargo.toml
+!apps/ucgw/Cargo.lock
+!apps/ucgw/rust-toolchain.toml
+!apps/ucgw/types/
+!apps/ucgw/types/Cargo.toml
+!apps/ucgw/types/src/
+!apps/ucgw/types/src/*.rs
+!apps/ucgw/types/usb/
+!apps/ucgw/types/usb/Cargo.toml
+!apps/ucgw/types/usb/src/
+!apps/ucgw/types/usb/src/*.rs
+!apps/ucgw/types/overlay/
+!apps/ucgw/types/overlay/Cargo.toml
+!apps/ucgw/types/overlay/src/
+!apps/ucgw/types/overlay/src/*.rs
+!apps/ucgw/usb/
+!apps/ucgw/usb/Cargo.toml
+!apps/ucgw/usb/src/
+!apps/ucgw/usb/src/*.rs
+!apps/ucgw/iface/
+!apps/ucgw/iface/Cargo.toml
+!apps/ucgw/iface/src/
+!apps/ucgw/iface/src/*.rs
+!apps/ucgw/address/
+!apps/ucgw/address/Cargo.toml
+!apps/ucgw/address/src/
+!apps/ucgw/address/src/*.rs
+!apps/ucgw/route/
+!apps/ucgw/route/Cargo.toml
+!apps/ucgw/route/src/
+!apps/ucgw/route/src/*.rs
+!apps/ucgw/forward/
+!apps/ucgw/forward/Cargo.toml
+!apps/ucgw/forward/src/
+!apps/ucgw/forward/src/*.rs
+!apps/ucgw/nat/
+!apps/ucgw/nat/Cargo.toml
+!apps/ucgw/nat/src/
+!apps/ucgw/nat/src/*.rs
+!apps/ucgw/consumer/
+!apps/ucgw/consumer/Cargo.toml
+!apps/ucgw/consumer/src/
+!apps/ucgw/consumer/src/*.rs
+!apps/ucgw/overlay/
+!apps/ucgw/overlay/Cargo.toml
+!apps/ucgw/overlay/src/
+!apps/ucgw/overlay/src/*.rs
+!apps/ucgw/tunnel/
+!apps/ucgw/tunnel/Cargo.toml
+!apps/ucgw/tunnel/src/
+!apps/ucgw/tunnel/src/*.rs
+!apps/ucgw/mesh/
+!apps/ucgw/mesh/Cargo.toml
+!apps/ucgw/mesh/src/
+!apps/ucgw/mesh/src/*.rs
+!apps/ucgw/control/
+!apps/ucgw/control/Cargo.toml
+!apps/ucgw/control/src/
+!apps/ucgw/control/src/*.rs
+!apps/ucgw/test-support/
+!apps/ucgw/test-support/Cargo.toml
+!apps/ucgw/test-support/src/
+!apps/ucgw/test-support/src/*.rs
+!apps/ucgw/daemon/
+!apps/ucgw/daemon/Cargo.toml
+!apps/ucgw/daemon/src/
+!apps/ucgw/daemon/src/*.rs
 
 # notes
 !notes/

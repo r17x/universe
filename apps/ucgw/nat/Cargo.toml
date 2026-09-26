@@ -1,0 +1,23 @@
+[package]
+name = "nat"
+edition.workspace = true
+version.workspace = true
+license.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+types = { path = "../types" }
+tokio = { workspace = true }
+tracing = { workspace = true }
+thiserror = { workspace = true }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+rustables = { workspace = true }
+netlink-packet-netfilter = { workspace = true }
+netlink-sys = { workspace = true }
+nix = { workspace = true }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+pfctl = { workspace = true }

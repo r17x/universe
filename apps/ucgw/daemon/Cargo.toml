@@ -1,0 +1,44 @@
+[package]
+name = "daemon"
+edition.workspace = true
+version.workspace = true
+license.workspace = true
+
+[lints]
+workspace = true
+
+[[bin]]
+name = "gw-daemon"
+path = "src/main.rs"
+
+[[bin]]
+name = "gw-probe"
+path = "src/probe.rs"
+
+[[bin]]
+name = "gw-relay"
+path = "src/relay.rs"
+
+[dependencies]
+types = { path = "../types" }
+types-usb = { path = "../types/usb" }
+types-overlay = { path = "../types/overlay" }
+usb = { path = "../usb" }
+iface = { path = "../iface" }
+address = { path = "../address" }
+route = { path = "../route" }
+forward = { path = "../forward" }
+nat = { path = "../nat" }
+consumer = { path = "../consumer" }
+overlay = { path = "../overlay" }
+tunnel = { path = "../tunnel" }
+mesh = { path = "../mesh" }
+control = { path = "../control" }
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+iroh = { workspace = true }
+iroh-gossip = { workspace = true }
+base64 = { workspace = true }
+ed25519-dalek = { workspace = true }
+socket2 = { workspace = true }

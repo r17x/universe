@@ -50,6 +50,19 @@
           pass_filenames = false;
           stages = [ "pre-push" ];
         };
+        ucgw-check = {
+          enable = true;
+          name = "ucgw";
+          entry = "${pkgs.writeShellScript "ucgw-check" ''
+            nix develop .#ucgw -c bash -c '
+              cd apps/ucgw
+              cargo clippy -- -D warnings
+            '
+          ''}";
+          files = "^apps/ucgw/";
+          pass_filenames = false;
+          stages = [ "pre-push" ];
+        };
       };
 
       devShells =
@@ -338,6 +351,37 @@
                 pkgsBend.bend2
                 pkgsBend.lean4
               ];
+            };
+
+          ucgw =
+            let
+              rust-bin = (pkgs.extend inputs.rust-overlay.overlays.default).rust-bin;
+              rustToolchain = rust-bin.stable."1.91.0".default.override {
+                extensions = [
+                  "rust-src"
+                  "clippy"
+                  "rustfmt"
+                ];
+              };
+            in
+            pkgs.mkShell {
+              description = "ucgw gateway development";
+              RUST_SRC_PATH = "${rustToolchain}/lib/rustlib/src/rust/library";
+              nativeBuildInputs =
+                [
+                  rustToolchain
+                  pkgs.pkg-config
+                ]
+                ++ lib.optionals pkgs.stdenv.isDarwin (
+                  with pkgs.darwin.apple_sdk;
+                  [
+                    pkgs.libiconv
+                    frameworks.Security
+                    frameworks.SystemConfiguration
+                    frameworks.CoreFoundation
+                    frameworks.IOKit
+                  ]
+                );
             };
           ci = pkgs.mkShell {
             description = "CI Environment";

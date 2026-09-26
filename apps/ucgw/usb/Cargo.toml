@@ -1,0 +1,18 @@
+[package]
+name = "usb"
+edition.workspace = true
+version.workspace = true
+license.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+types = { path = "../types" }
+types-usb = { path = "../types/usb" }
+nusb = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+thiserror = { workspace = true }
+bytes = { workspace = true }
+futures-core = "0.3"

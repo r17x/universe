@@ -34,6 +34,7 @@
     nixpkgs.follows = "nixpkgs-unstable";
 
     rust-overlay.url = "github:oxalica/rust-overlay";
+    crane.url = "github:ipetkov/crane";
 
     ### -- Nix Infra / DevOps
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/3.24.0";

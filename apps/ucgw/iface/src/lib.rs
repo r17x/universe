@@ -289,7 +289,7 @@ mod platform {
             let exists = interfaces
                 .iter()
                 .filter_map(|i| i.bsd_name())
-                .any(|n| n.to_string() == name);
+                .any(|n| n == name);
             if !exists {
                 return true;
             }

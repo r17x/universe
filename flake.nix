@@ -94,6 +94,8 @@
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
     pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
 
+    nixpkgs-bend.url = "github:NixOS/nixpkgs/e513db7b0a65def6f6e17bb55195dfe510871944";
+
     # vimPlugins from flake inputs
     # prefix "vimPlugins_"
     # e.g: rescript-nvim to be vimPlugins_rescript-nvim

@@ -51,6 +51,7 @@ nix/
 secrets/                           # SOPS-encrypted secrets (secret.yaml)
 apps/                              # Custom applications (norg, rin.rocks)
 notes/                             # Personal notes (.norg format)
+provness/                          # Formal verification workspaces (git-untracked by design)
 ```
 
 ## Architecture
@@ -107,6 +108,10 @@ The resolver creates Den-native host and user entities. User aspects remain para
 - Custom vim plugins use `vimPlugins_` prefix in flake inputs
 - nixpkgs follows `nixpkgs-unstable`
 
+## Provness
+
+`provness/` is intentionally git-untracked. It holds Bend-language formal verification workspaces (`provness/<name>/`). The dev shell (`bend` — `bend2` + `lean4`, pinned nixpkgs rev) is activated automatically via `.envrc` (direnv, untracked).
+
 ## Secrets
 
 Managed via `sops-nix`. Secrets file: `secrets/secret.yaml`. Contains GPG keys, git identities, API keys. SOPS uses GPG for encryption. Never commit decrypted secrets.
@@ -120,6 +125,7 @@ nix develop .#rust-wasm      # Rust + WASM
 nix develop .#nodejs22       # Node.js 22
 nix develop .#bun            # Bun runtime
 nix develop .#go             # Go
+nix develop .#bend           # Bend + Lean4 (nixpkgs-bend rev pinned)
 
 # Process compose services
 nix run .#ai                 # Ollama with deepseek-r1:1.5b

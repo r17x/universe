@@ -329,6 +329,17 @@
               ];
             };
 
+          bend =
+            let
+              pkgsBend = inputs.nixpkgs-bend.legacyPackages.${system};
+            in
+            pkgsBend.mkShell {
+              description = "Bend language development environment";
+              packages = [
+                pkgsBend.bend2
+                pkgsBend.lean4
+              ];
+            };
           ci = pkgs.mkShell {
             description = "CI Environment";
           };

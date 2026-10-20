@@ -1,7 +1,6 @@
 use std::str::FromStr;
 
 use iroh::{Endpoint, EndpointId, endpoint::presets};
-use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
 const RELAY_ALPN: &[u8] = b"/gw/relay/0";
 

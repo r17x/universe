@@ -21,7 +21,10 @@
       gpgTrust.berkarya_gpg_key = "rin@berkarya.ai";
 
       sessionVariables.CLAUDE_CODE_DISABLE_1M_CONTEXT = 1;
-      sessionPath = [ "$HOME/.yarn/bin" ];
+      sessionPath = [
+        "/nix/var/nix/profiles/default/bin"
+        "$HOME/.yarn/bin"
+      ];
 
       caches = {
         r17 = {
@@ -115,11 +118,6 @@
     hosts = {
       eR17 = {
         system = "aarch64-darwin";
-
-        apps.masApps = {
-          Vimari = 1480933944;
-          WhatsApp = 310633997;
-        };
       };
 
       eR17x = {

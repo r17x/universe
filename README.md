@@ -99,7 +99,6 @@ graph TD
   shell[/"shell"\]:::shell_c
   terminal[/"terminal"\]:::terminal_c
   tooling[/"tooling"\]:::tooling_c
-  ucgw[/"ucgw"\]:::ucgw_c
   wsl_host_aspect[/"wsl-host-aspect"\]:::wsl_host_aspect_c
 
   eR17 --> nix
@@ -138,7 +137,6 @@ graph TD
   classDef shell_c fill:#F17E84,stroke:#F17E84,color:#2B2D3A,stroke-width:2px
   classDef terminal_c fill:#F17E84,stroke:#F17E84,color:#2B2D3A,stroke-width:2px
   classDef tooling_c fill:#F5B083,stroke:#F5B083,color:#2B2D3A,stroke-width:2px
-  classDef ucgw_c fill:#F17E84,stroke:#F17E84,color:#2B2D3A,stroke-width:2px
   classDef wsl_host_aspect_c fill:#F17E84,stroke:#F17E84,color:#2B2D3A,stroke-width:2px
 ```
 
@@ -417,7 +415,6 @@ graph TD
   shell[/"shell · host"\]:::shell_c
   terminal[/"terminal · host"\]:::terminal_c
   tooling[/"tooling · shared"\]:::tooling_c
-  ucgw[/"ucgw · host"\]:::ucgw_c
   wsl_host_aspect[/"wsl-host-aspect · host"\]:::wsl_host_aspect_c
 
   aspects --> builder
@@ -432,7 +429,6 @@ graph TD
   aspects --> runtime_manifest
   aspects --> services
   aspects --> tooling
-  aspects --> ucgw
   aspects --> wsl_host_aspect
   eR17 --> nix
   eR17 --> shell
@@ -470,7 +466,6 @@ graph TD
   classDef shell_c fill:#DE95F5,stroke:#DE95F5,color:#2B2D3A,stroke-width:2px
   classDef terminal_c fill:#DE95F5,stroke:#DE95F5,color:#2B2D3A,stroke-width:2px
   classDef tooling_c fill:#F17E84,stroke:#F17E84,color:#2B2D3A,stroke-width:2px
-  classDef ucgw_c fill:#DE95F5,stroke:#DE95F5,color:#2B2D3A,stroke-width:2px
   classDef wsl_host_aspect_c fill:#DE95F5,stroke:#DE95F5,color:#2B2D3A,stroke-width:2px
 ```
 

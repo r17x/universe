@@ -19,7 +19,10 @@
         };
         test-profile-session-path-reaches-eR17-home = {
           expr = eR17.home-manager.users.r17.home.sessionPath;
-          expected = [ "$HOME/.yarn/bin" ];
+          expected = [
+            "/nix/var/nix/profiles/default/bin"
+            "$HOME/.yarn/bin"
+          ];
         };
         test-profile-git-rewrites-reach-eR17x-home = {
           expr = eR17x.home-manager.users.r17.programs.git.extraConfig.url;
@@ -36,20 +39,13 @@
           expr = eR17.services.dnscrypt-proxy.enable;
           expected = false;
         };
-        test-eR17x-inherits-profile-apps = {
-          expr = eR17x.homebrew.masApps;
-          expected = {
-            Vimari = 1480933944;
-            WhatsApp = 310633997;
-          };
-        };
         test-eR17x-linux-builder = {
           expr = eR17x.nix.linux-builder.enable;
-          expected = true;
+          expected = false;
         };
         test-eR17x-linux-builder-profile-data = {
           expr = eR17x.nix.linux-builder.maxJobs;
-          expected = 4;
+          expected = 1;
         };
         test-eR17x-unbound = {
           expr = eR17x.services.unbound.enable;

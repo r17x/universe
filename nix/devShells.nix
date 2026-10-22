@@ -140,7 +140,6 @@
             shellHook = ''
               ${config.pre-commit.installationScript}
             '';
-            packages = [ inputs.clan-core.packages.${system}.clan-cli ];
           };
 
           #

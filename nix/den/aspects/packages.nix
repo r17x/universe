@@ -4,7 +4,6 @@
     includes = with den.aspects.packages.provides; [
       system
       fonts
-      homebrew
       user
       user-darwin
     ];
@@ -36,25 +35,6 @@
             nerd-fonts.symbols-only
             geist-font
           ];
-        };
-    };
-
-    provides.homebrew = {
-      darwin =
-        { host, config, ... }:
-        {
-          environment.shellInit = ''
-            eval "$(${config.homebrew.brewPrefix}/brew shellenv)"
-          '';
-
-          homebrew.enable = true;
-          homebrew.brews = [ ];
-          homebrew.onActivation.cleanup = "zap";
-          homebrew.global.brewfile = true;
-
-          homebrew.masApps = host.apps.masApps;
-
-          homebrew.casks = [ ];
         };
     };
 

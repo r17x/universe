@@ -72,13 +72,6 @@ let
     };
   };
 
-  appsType = lib.types.submodule {
-    options.masApps = lib.mkOption {
-      type = lib.types.attrsOf lib.types.int;
-      default = { };
-    };
-  };
-
   gitType = lib.types.submodule {
     options.urlRewrites = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;
@@ -152,10 +145,6 @@ in
   };
 
   hostModule = {
-    options.apps = lib.mkOption {
-      type = appsType;
-      default = { };
-    };
     options.builder = lib.mkOption {
       type = lib.types.nullOr builderType;
       default = null;

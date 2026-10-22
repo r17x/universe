@@ -15,8 +15,10 @@
     ];
 
     darwin =
-      { config, ... }:
+      { config, inputs, ... }:
       {
+        imports = [ inputs.determinate.darwinModules.default ];
+
         nixpkgs.hostPlatform = "aarch64-darwin";
 
         nix-settings = {

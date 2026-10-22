@@ -36,6 +36,8 @@
     rust-overlay.url = "github:oxalica/rust-overlay";
 
     ### -- Nix Infra / DevOps
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/3.24.0";
+
     microvm.url = "github:astro/microvm.nix?rev=1e746a8987eb893adc8dd317b84e73d72803b650";
     microvm.inputs.nixpkgs.follows = "nixpkgs";
 

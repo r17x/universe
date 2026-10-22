@@ -15,7 +15,7 @@
           cfg = config.nix.linux-builder;
           builder = host.builder;
         in
-        {
+        lib.mkIf config.nix.enable {
           nix.linux-builder.enable = true;
 
           nix.settings.trusted-users = lib.mkIf cfg.enable [

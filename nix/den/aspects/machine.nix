@@ -73,7 +73,7 @@
       documentation.enable = false;
 
       services = {
-        tailscale.enable = true;
+        tailscale.enable = false;
       };
     };
 
@@ -86,7 +86,7 @@
         };
         test-eR17x-has-tailscale = {
           expr = eR17x.services.tailscale.enable;
-          expected = true;
+          expected = false;
         };
       };
   };

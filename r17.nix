@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
   den.profiles.r17 = {
     user = {
@@ -214,4 +214,27 @@
       };
     };
   };
+
+  # Work laptop: same preferences as r17, but the macOS account is `rin`.
+  den.profiles.rin =
+    let
+      r17 = config.den.profiles.r17;
+    in
+    {
+      user = r17.user // {
+        userName = "rin";
+      };
+
+      hosts.ATSGJP6QDN402 =
+        (removeAttrs r17.hosts.eR17x [
+          "extends"
+          "builder"
+          "mesh"
+        ])
+        // {
+          system = "aarch64-darwin";
+        };
+
+      inherit (r17) services;
+    };
 }

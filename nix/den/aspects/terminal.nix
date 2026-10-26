@@ -121,6 +121,8 @@ in
               theme="${themeFile}"
               out="${configFile}"
               if [ -f "$base" ] || [ -L "$base" ]; then
+                # a stale symlink from an older generation would make the redirect fail
+                rm -f "$out"
                 cat "$base" > "$out"
                 if [ -f "$theme" ]; then
                   cat "$theme" >> "$out"

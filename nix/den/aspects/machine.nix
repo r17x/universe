@@ -1,4 +1,4 @@
-{ den, ... }:
+{ den, lib, ... }:
 {
   den.aspects.eR17 = {
     includes = with den.aspects; [
@@ -88,6 +88,30 @@
           expr = eR17x.services.tailscale.enable;
           expected = false;
         };
+      };
+  };
+
+  den.aspects.ATSGJP6QDN402 = {
+    includes = with den.aspects; [
+      eR17x
+    ];
+
+    darwin = _: {
+      # Determinate Nix manages the daemon, so nix-darwin must not.
+      nix.enable = lib.mkForce false;
+      nix-settings.use = lib.mkForce "minimal";
+
+      homebrew.enable = lib.mkForce false;
+
+      # sketchybar replaces the native menu bar
+      system.defaults.NSGlobalDomain._HIHideMenuBar = true;
+      services.aerospace.settings.gaps.outer.top = lib.mkForce 50;
+    };
+
+    homeManager =
+      { pkgs, ... }:
+      {
+        home.packages = [ pkgs.ghostty-bin ];
       };
   };
 }

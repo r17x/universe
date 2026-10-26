@@ -143,7 +143,7 @@ in
     ))
     (lib.mkIf (cfg.enable && hasFull && !config.nix.enable) {
       environment.etc."nix/nix.custom.conf".text = ''
-        trusted-users = root r17 @admin
+        trusted-users = root r17 rin @admin
         trusted-substituters = https://cache.komunix.org https://nix-community.cachix.org https://r17.cachix.org/
         trusted-public-keys = r17.cachix.org-1:vz0nG6BCbdgTPn7SEiOwe/3QwvjH1sb/VV9WLcBtkAY= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
         extra-substituters = https://cache.komunix.org https://nix-community.cachix.org https://r17.cachix.org/

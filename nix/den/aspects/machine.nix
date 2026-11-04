@@ -1,68 +1,82 @@
 { den, lib, ... }:
 {
-  den.aspects.eR17 = {
-    includes = with den.aspects; [
-      nix
-      shell
-      desktop
-      identity
-      packages
-      mail
-      git
-      terminal
-      secrets
-      editor
-    ];
+  den.aspects.eR17 =
+    { user, ... }:
+    {
+      includes = with den.aspects; [
+        nix
+        shell
+        desktop
+        identity
+        packages
+        mail
+        git
+        terminal
+        secrets
+        editor
+      ];
 
-    darwin =
-      { config, inputs, ... }:
-      {
-        imports = [ inputs.determinate.darwinModules.default ];
+      darwin =
+        {
+          lib,
+          config,
+          inputs,
+          ...
+        }:
+        {
+          imports = [ inputs.determinate.darwinModules.default ];
 
-        nixpkgs.hostPlatform = "aarch64-darwin";
+          nixpkgs.hostPlatform = "aarch64-darwin";
 
-        nix-settings = {
-          enable = true;
-          use = "full";
-          inputs-to-registry = true;
+          nix-settings = {
+            enable = true;
+            use = "full";
+            inputs-to-registry = true;
+          };
+
+          determinateNix.customSettings = {
+            trusted-substituters = lib.mapAttrsToList (_: c: c.url) user.caches;
+            trusted-public-keys = lib.mapAttrsToList (_: c: c.key) user.caches;
+            extra-substituters = lib.mapAttrsToList (_: c: c.url) user.caches;
+            extra-trusted-public-keys = lib.mapAttrsToList (_: c: c.key) user.caches;
+          };
+
+          networking.computerName = config.networking.hostName;
         };
 
-        networking.computerName = config.networking.hostName;
-      };
+      homeManager =
+        {
+          inputs,
+          pkgs,
+          ...
+        }:
+        {
+          home = {
+            packages = [
+              inputs.self.packages.${pkgs.stdenv.system}.universe
+              pkgs.claude-code
+            ];
+          };
 
-    homeManager =
-      {
-        inputs,
-        pkgs,
-        ...
-      }:
-      {
-        home = {
-          packages = [
-            inputs.self.packages.${pkgs.stdenv.system}.universe
-            pkgs.claude-code
-          ];
         };
 
-      };
-
-    tests =
-      { eR17, ... }:
-      {
-        test-eR17-has-fish-shell = {
-          expr = eR17.users.users.r17.shell.pname or null;
-          expected = "fish";
+      tests =
+        { eR17, ... }:
+        {
+          test-eR17-has-fish-shell = {
+            expr = eR17.users.users.r17.shell.pname or null;
+            expected = "fish";
+          };
+          test-eR17-has-aerospace = {
+            expr = eR17.services.aerospace.enable;
+            expected = true;
+          };
+          test-eR17-has-sketchybar = {
+            expr = eR17.services.sketchybar.enable;
+            expected = true;
+          };
         };
-        test-eR17-has-aerospace = {
-          expr = eR17.services.aerospace.enable;
-          expected = true;
-        };
-        test-eR17-has-sketchybar = {
-          expr = eR17.services.sketchybar.enable;
-          expected = true;
-        };
-      };
-  };
+    };
 
   den.aspects.eR17x = {
     includes = with den.aspects; [
@@ -99,7 +113,6 @@
     darwin = _: {
       # Determinate Nix manages the daemon, so nix-darwin must not.
       nix.enable = lib.mkForce false;
-      nix-settings.use = lib.mkForce "minimal";
 
       homebrew.enable = lib.mkForce false;
 

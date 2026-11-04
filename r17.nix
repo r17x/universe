@@ -47,10 +47,6 @@
           url = "https://cache.clan.lol";
           key = "cache.clan.lol-1:3KztgSAB5R1M+Dz7vzkBGzXdodizbgLXGXKXlcQLA28=";
         };
-        boltstart = {
-          url = "https://cache.boltstart.dev";
-          key = "ncps-1:Vql6Qg9lkuACGNzeRg1DsOgNZWSaooQqIz/MujHuy8k=";
-        };
         numtide = {
           url = "https://cache.numtide.com";
           key = "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g=";
